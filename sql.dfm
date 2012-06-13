@@ -6,12 +6,12 @@ object DataModule2: TDataModule2
     CommandTimeout = 10
     ConnectionString = 
       'Provider=SQLOLEDB.1;Password=12345678;Persist Security Info=True' +
-      ';User ID=sa;Initial Catalog=scale_turntable;Data Source=localhos' +
-      't\SQLSERVER;Use Procedure for Prepare=1;Auto Translate=True;Pack' +
-      'et Size=4096;Workstation ID=KRR-WS08022;Use Encryption for Data=' +
-      'False;Tag with column collation when possible=False'
+      ';User ID=sa;Initial Catalog=scale_turntable;Data Source=krr-ws03' +
+      '302;Use Procedure for Prepare=1;Auto Translate=True;Packet Size=' +
+      '4096;Workstation ID=KRR-WS08022;Use Encryption for Data=False;Ta' +
+      'g with column collation when possible=False'
     LoginPrompt = False
-    Provider = 'SQLNCLI10'
+    Provider = 'SQLOLEDB.1'
     Left = 40
     Top = 8
   end

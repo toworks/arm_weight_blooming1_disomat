@@ -44,12 +44,6 @@ type
     DateTimeEnd: TDateTimePicker;
     Label6: TLabel;
     DateTimeStart: TDateTimePicker;
-    l_sql_work1: TLabel;
-    l_sql_work2: TLabel;
-    l_work_p1: TLabel;
-    l_work_p2: TLabel;
-    l_current_shift1: TLabel;
-    l_current_shift2: TLabel;
     Label5: TLabel;
     DBGrid1: TDBGrid;
     b_selected: TButton;
@@ -66,6 +60,16 @@ type
     l_num_heat: TLabel;
     l_datetime: TLabel;
     Label9: TLabel;
+    Panel2: TPanel;
+    p_head: TPanel;
+    l_current_shift1: TLabel;
+    l_sql_work1: TLabel;
+    l_work_p1: TLabel;
+    l_sql_work2: TLabel;
+    l_work_p2: TLabel;
+    l_current_shift2: TLabel;
+    l_calendar1: TLabel;
+    l_calendar2: TLabel;
     procedure InitForm(Sender: TObject);
     procedure InitComPort(Sender: TObject);
     procedure InitSql(Sender: TObject);
@@ -152,7 +156,7 @@ begin
   Timer1.Interval:=500;
 
   DataModule2.ib_timer.Enabled:= True;
-  DataModule2.ib_timer.Interval:=6000; //6cek
+  DataModule2.ib_timer.Interval:=5000; //5cek
 
   //отображение текущей смены
   l_current_shift1.Caption := 'Ќомер смены:';

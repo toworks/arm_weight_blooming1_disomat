@@ -140,8 +140,8 @@ begin
      while not DataModule2.query_reports.Eof do
       begin
         //разбиваем по брегаде или по дате
-        if  (_start <> DataModule2.query_reports.FieldByName('no_shifts').AsInteger)
-            or ((DataModule2.query_reports.FieldByName('no_shifts').AsInteger <> 1) and (DtStart <> copy(DataModule2.query_reports.FieldByName('datetime').AsString,0,10))) then
+        if  (_start <> DataModule2.query_reports.FieldByName('no_shifts').AsString)
+            or (DtStart <> copy(DataModule2.query_reports.FieldByName('datetime').AsString,0,10)) then
             begin
 
                 if _end = 1 then
@@ -188,7 +188,6 @@ begin
                  Writeln(f,'</tr>'+#13+#10);
 
                  _start := DataModule2.query_reports.FieldByName('no_shifts').AsInteger;
-                 DtStart :=copy(DataModule2.query_reports.FieldByName('datetime').AsString,0,10);
                  _end := 1;
                  a_mass_ingot := 0;
                  a_mass := 0;
@@ -329,7 +328,7 @@ begin
       begin
         //разбиваем по брегаде или по дате
         if  (_start <> DataModule2.query_reports.FieldByName('no_shifts').AsString)
-            or ((DataModule2.query_reports.FieldByName('no_shifts').AsString <> '1') and (DtStart <> copy(DataModule2.query_reports.FieldByName('datetime').AsString,0,10))) then
+            or (DtStart <> copy(DataModule2.query_reports.FieldByName('datetime').AsString,0,10)) then
             begin
 
                 if _end = '1' then

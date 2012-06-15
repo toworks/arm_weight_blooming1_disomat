@@ -141,7 +141,7 @@ begin
       begin
         //разбиваем по брегаде или по дате
         if  (_start <> DataModule2.query_reports.FieldByName('no_shifts').AsInteger)
-            or ((DataModule2.query_reports.FieldByName('no_shifts').AsInteger <> 1) and (DtStart <> copy(DataModule2.query_reports.FieldByName('datetime').AsString,0,10))) then
+            or (DtStart <> copy(DataModule2.query_reports.FieldByName('datetime').AsString,0,10)) then
             begin
 
                 if _end = 1 then
@@ -329,7 +329,7 @@ begin
       begin
         //разбиваем по брегаде или по дате
         if  (_start <> DataModule2.query_reports.FieldByName('no_shifts').AsString)
-            or ((DataModule2.query_reports.FieldByName('no_shifts').AsString <> '1') and (DtStart <> copy(DataModule2.query_reports.FieldByName('datetime').AsString,0,10))) then
+            or (DtStart <> copy(DataModule2.query_reports.FieldByName('datetime').AsString,0,10)) then
             begin
 
                 if _end = '1' then

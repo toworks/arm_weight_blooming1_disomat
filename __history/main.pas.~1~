@@ -70,8 +70,6 @@ type
     l_current_shift2: TLabel;
     l_calendar1: TLabel;
     l_calendar2: TLabel;
-    l_num_ingot: TLabel;
-    Label11: TLabel;
     procedure InitForm(Sender: TObject);
     procedure InitComPort(Sender: TObject);
     procedure InitSql(Sender: TObject);
@@ -538,7 +536,6 @@ function ViewWeightIngot(DataIn: bool): bool;
 begin
   if DataIn = true then
     begin
-      Form1.l_num_ingot.Caption:=Form1.DBGrid1.DataSource.DataSet.FieldByName('NUM_INGOT').AsString;
       Form1.l_datetime.Caption:=Form1.DBGrid1.DataSource.DataSet.FieldByName('TIME_INGOT').AsString;
       Form1.l_num_heat.Caption:=Form1.DBGrid1.DataSource.DataSet.FieldByName('NUM_HEAT').AsString;
       Form1.l_name.Caption:=Form1.DBGrid1.DataSource.DataSet.FieldByName('NAME').AsString;
@@ -550,7 +547,6 @@ begin
     end
   else
     begin
-      Form1.l_num_ingot.Caption:='0';
       Form1.l_datetime.Caption:='0';
       Form1.l_num_heat.Caption:='0';
       Form1.l_name.Caption:='0';

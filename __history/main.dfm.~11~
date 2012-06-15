@@ -86,9 +86,9 @@ object Form1: TForm1
     Layout = tlCenter
   end
   object l_calendar1: TLabel
-    Left = 264
+    Left = 279
     Top = 607
-    Width = 40
+    Width = 25
     Height = 20
     Alignment = taRightJustify
     AutoSize = False
@@ -101,9 +101,9 @@ object Form1: TForm1
     ParentFont = False
   end
   object l_calendar2: TLabel
-    Left = 264
+    Left = 279
     Top = 639
-    Width = 40
+    Width = 25
     Height = 20
     Alignment = taRightJustify
     AutoSize = False
@@ -743,7 +743,7 @@ object Form1: TForm1
         Title.Font.Height = -13
         Title.Font.Name = 'Arial Narrow'
         Title.Font.Style = []
-        Width = 160
+        Width = 170
         Visible = True
       end
       item

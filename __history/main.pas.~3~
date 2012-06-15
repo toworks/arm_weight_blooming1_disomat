@@ -550,7 +550,7 @@ begin
     end
   else
     begin
-      Form1.l_num_ingot.Caption:='0';
+    Form1.l_num_ingot.Caption:='0';
       Form1.l_datetime.Caption:='0';
       Form1.l_num_heat.Caption:='0';
       Form1.l_name.Caption:='0';

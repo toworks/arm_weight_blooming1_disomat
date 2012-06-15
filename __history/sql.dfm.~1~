@@ -51,6 +51,7 @@ object DataModule2: TDataModule2
       'Provider=MSDASQL.1;Password=masterkey;Persist Security Info=True' +
       ';User ID=sysdba;Data Source=firebird'
     LoginPrompt = False
+    Provider = 'MSDASQL.1'
     Left = 32
     Top = 224
   end

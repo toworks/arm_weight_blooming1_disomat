@@ -759,6 +759,7 @@ object Form1: TForm1
         Title.Font.Height = -13
         Title.Font.Name = 'Arial Narrow'
         Title.Font.Style = []
+        Width = -1
         Visible = False
       end>
   end

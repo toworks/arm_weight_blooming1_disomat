@@ -457,10 +457,10 @@ begin
 
   if (copy(Data, 2, 6) = '00#TK#') and (copy(Data, 28, 1) = '1') then
   begin
-      SaveWeightSql(trim(copy(Data, 40, 6)));
+      SaveWeightSql(trim(copy(Data, 39, 6)));
     //copy(Data, 2, 6);          //ответ по весу
     //copy(Data, 28, 1);         //признак
-    //trim(copy(Data, 40, 6));   //вес только целая часть
+    //trim(copy(Data, 39, 6));   //вес только целая часть
   end;
 end;
 

@@ -358,7 +358,7 @@ begin
         DataModule2.ADOQuery1.SQL.Add('declare @aberration DECIMAL (16,4)');
         DataModule2.ADOQuery1.SQL.Add('set @mass_difference=('+ PointReplace(Form1.l_weight_ingot.Caption) +'-'+ PointReplace(DataIn) +')');
         DataModule2.ADOQuery1.SQL.Add('set @a_s_c=left(('+ PointReplace(Form1.l_weight_ingot.Caption) +'/'+ PointReplace(DataIn) +'),5)');
-        DataModule2.ADOQuery1.SQL.Add('set @aberration=(-'+ PointReplace(Form1.l_steel_group.Caption) +'+@a_s_c)');
+        DataModule2.ADOQuery1.SQL.Add('set @aberration=('+ PointReplace(Form1.l_steel_group.Caption) +'-@a_s_c)');
 
          DataModule2.ADOQuery1.SQL.Add('Insert INTO scale_turntable.dbo.mass (pkdat, num, num_ingot, datetime, mass, mass_difference, p_s_c, a_s_c, aberration)');
 //        DataModule2.ADOQuery1.SQL.Add('VALUES ('+ pkdat +','+ num +','+ num_ingot +', getdate(),'+ PointReplace(DataIn) +','+ PointReplace(MassDifference(Form1.l_weight_ingot.Caption,DataIn)) +','+ PointReplace(Form1.l_steel_group.Caption) +','+ PointReplace(A_S_C(DataIn,Form1.l_weight_ingot.Caption)) +',0.0)');

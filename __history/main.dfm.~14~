@@ -115,27 +115,26 @@ object Form1: TForm1
     Font.Style = []
     ParentFont = False
   end
-  object p_weight_ingot: TPanel
+  object Panel1: TPanel
     Left = 8
     Top = 295
     Width = 978
     Height = 105
-    Caption = 'p_weight_ingot'
+    Caption = 'Panel1'
     Ctl3D = True
     ParentCtl3D = False
     ShowCaption = False
     TabOrder = 10
-    object Label1: TLabel
-      Left = 756
-      Top = 39
-      Width = 205
+    object Label8: TLabel
+      Left = 7
+      Top = 9
+      Width = 242
       Height = 24
-      Alignment = taCenter
       AutoSize = False
-      Caption = #1055#1083#1072#1085#1086#1074#1099#1081' '#1091#1076'.'#1088#1072#1089#1093'.('#1090'/'#1090')'
+      Caption = #1042#1079#1074#1077#1096#1080#1074#1072#1077#1084#1099#1081' '#1089#1083#1080#1090#1086#1082':'
       Font.Charset = RUSSIAN_CHARSET
       Font.Color = clWindowText
-      Font.Height = -19
+      Font.Height = -21
       Font.Name = 'Arial Narrow'
       Font.Style = []
       ParentFont = False
@@ -157,16 +156,16 @@ object Form1: TForm1
       ParentFont = False
       Layout = tlCenter
     end
-    object l_weight_ingot: TLabel
-      Left = 542
-      Top = 69
-      Width = 184
+    object Label1: TLabel
+      Left = 756
+      Top = 39
+      Width = 205
       Height = 24
       Alignment = taCenter
       AutoSize = False
-      Caption = #1052#1072#1089#1089#1072' '#1089#1083#1080#1090#1082#1072' '#1055#1059'-1('#1090')'
+      Caption = #1055#1083#1072#1085#1086#1074#1099#1081' '#1091#1076'.'#1088#1072#1089#1093'.('#1090'/'#1090')'
       Font.Charset = RUSSIAN_CHARSET
-      Font.Color = 16685313
+      Font.Color = clWindowText
       Font.Height = -19
       Font.Name = 'Arial Narrow'
       Font.Style = []
@@ -189,16 +188,16 @@ object Form1: TForm1
       ParentFont = False
       Layout = tlCenter
     end
-    object Label4: TLabel
-      Left = 385
-      Top = 39
-      Width = 120
+    object l_weight_ingot: TLabel
+      Left = 542
+      Top = 69
+      Width = 184
       Height = 24
       Alignment = taCenter
       AutoSize = False
-      Caption = #1052#1072#1088#1082#1072' '#1089#1090#1072#1083#1080
+      Caption = #1052#1072#1089#1089#1072' '#1089#1083#1080#1090#1082#1072' '#1055#1059'-1('#1090')'
       Font.Charset = RUSSIAN_CHARSET
-      Font.Color = clWindowText
+      Font.Color = 16685313
       Font.Height = -19
       Font.Name = 'Arial Narrow'
       Font.Style = []
@@ -215,6 +214,22 @@ object Form1: TForm1
       Caption = #1052#1072#1088#1082#1072' '#1089#1090#1072#1083#1080
       Font.Charset = RUSSIAN_CHARSET
       Font.Color = 16685313
+      Font.Height = -19
+      Font.Name = 'Arial Narrow'
+      Font.Style = []
+      ParentFont = False
+      Layout = tlCenter
+    end
+    object Label4: TLabel
+      Left = 385
+      Top = 39
+      Width = 120
+      Height = 24
+      Alignment = taCenter
+      AutoSize = False
+      Caption = #1052#1072#1088#1082#1072' '#1089#1090#1072#1083#1080
+      Font.Charset = RUSSIAN_CHARSET
+      Font.Color = clWindowText
       Font.Height = -19
       Font.Name = 'Arial Narrow'
       Font.Style = []
@@ -285,16 +300,17 @@ object Form1: TForm1
       ParentFont = False
       Layout = tlCenter
     end
-    object Label8: TLabel
+    object l_num_ingot: TLabel
       Left = 7
-      Top = 9
-      Width = 242
+      Top = 69
+      Width = 90
       Height = 24
+      Alignment = taCenter
       AutoSize = False
-      Caption = #1042#1079#1074#1077#1096#1080#1074#1072#1077#1084#1099#1081' '#1089#1083#1080#1090#1086#1082':'
+      Caption = #8470' '#1057#1083#1080#1090#1082#1072
       Font.Charset = RUSSIAN_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -21
+      Font.Color = 16685313
+      Font.Height = -19
       Font.Name = 'Arial Narrow'
       Font.Style = []
       ParentFont = False
@@ -310,22 +326,6 @@ object Form1: TForm1
       Caption = #8470' '#1057#1083#1080#1090#1082#1072
       Font.Charset = RUSSIAN_CHARSET
       Font.Color = clWindowText
-      Font.Height = -19
-      Font.Name = 'Arial Narrow'
-      Font.Style = []
-      ParentFont = False
-      Layout = tlCenter
-    end
-    object l_num_ingot: TLabel
-      Left = 7
-      Top = 69
-      Width = 90
-      Height = 24
-      Alignment = taCenter
-      AutoSize = False
-      Caption = #8470' '#1057#1083#1080#1090#1082#1072
-      Font.Charset = RUSSIAN_CHARSET
-      Font.Color = 16685313
       Font.Height = -19
       Font.Name = 'Arial Narrow'
       Font.Style = []

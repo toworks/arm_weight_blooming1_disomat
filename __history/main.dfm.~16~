@@ -115,13 +115,14 @@ object Form1: TForm1
     Font.Style = []
     ParentFont = False
   end
-  object p_weight_ingot: TPanel
+  object Panel1: TPanel
     Left = 8
     Top = 295
     Width = 978
     Height = 105
     Caption = 'p_weight_ingot'
     Ctl3D = True
+    FullRepaint = False
     ParentCtl3D = False
     ShowCaption = False
     TabOrder = 10

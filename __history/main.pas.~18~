@@ -104,7 +104,6 @@ var
   CurrentDir: string;
   HeadName: string = 'АРМ резчика ПУ-4';
   max: integer = 0;
-  no_save: string = '0';
   StartTime: TDateTime;
 
 
@@ -419,10 +418,12 @@ end;
 
 
 function ReceiveData(Data: AnsiString): string;
+var
+  no_save: string = 0;
 begin
-  if (copy(Data, 2, 6) = '00#EK#') and (copy(Data, 8, 1) = '0') then
+  if (copy(Data, 2, 6) = '00#EK#') and (copy(Data, 7, 1) = '0') then
   begin
-      no_save:='0';
+
   end;
 
   if (copy(Data, 2, 6) = '00#TK#') and (copy(Data, 28, 1) = '1') and (no_save = '0') then

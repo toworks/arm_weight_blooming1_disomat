@@ -269,13 +269,9 @@ var
     DtStart: string;
     DtEnd: string;
     FileO: string;
-    _start: integer;
-    _end: integer;
-    a_count: integer;
-
+    _start: string;
+    _end: string;
 begin
-
-    a_count := 0;
 
   If Form1.DateTimeStart.date > Form1.DateTimeEnd.date then
   begin
@@ -344,11 +340,11 @@ begin
      while not DataModule2.query_reports.Eof do
       begin
         //разбиваем по брегаде или по дате
-        if  (_start <> DataModule2.query_reports.FieldByName('no_shifts').AsInteger)
-            or ((_start <> DataModule2.query_reports.FieldByName('no_shifts').AsInteger) and (DataModule2.query_reports.FieldByName('no_shifts').AsInteger <> 1) and (DtStart <> copy(DataModule2.query_reports.FieldByName('datetime').AsString,0,10))) then
+        if  (_start <> DataModule2.query_reports.FieldByName('no_shifts').AsString)
+            or ((_start <> DataModule2.query_reports.FieldByName('no_shifts').AsString) and (DataModule2.query_reports.FieldByName('no_shifts').AsString <> '1') and (DtStart <> copy(DataModule2.query_reports.FieldByName('datetime').AsString,0,10))) then
             begin
 
-                if _end = 1 then
+                if _end = '1' then
                 begin
                     //конец данных
                     Writeln(f,'</table></div><br />'+#13+#10);
@@ -356,17 +352,17 @@ begin
                     //масса в конце
                     Writeln(f,'<div><table class="blank">'+#13+#10);
                     Writeln(f,'<tr><td id="align-left">Конец протокола : '+'</td><td id="align-right">'+
+//                              DT(Form1.query_reports.FieldByName('Dates1').AsString, Form1.query_reports.FieldByName('NSmeni').AsInteger, 1)+'</td></tr>'+#13+#10);
                               DataModule2.query_reports.FieldByName('datetime').AsString+'</td></tr>'+#13+#10);
-                    Writeln(f,'<tr><td id="align-left">Заготовки смены : '+'</td><td id="align-right">'+inttostr(a_count)+' шт</td></tr>'+#13+#10);
                     Writeln(f,'</table></div><br /><br />'+#13+#10);
 
-                    _end := 0;
+                    _end := '0';
                 end;
 
                  Writeln(f,'<div><table class="blank">'+#13+#10);
                  Writeln(f,'<tr><td id="align-left">Номер смены : '+'</td><td id="align-right">'+DataModule2.query_reports.FieldByName('no_shifts').AsString+'</td></tr>'+#13+#10);
                  Writeln(f,'<tr><td id="align-left">Начало протокола : '+'</td><td id="align-right">'+
-                              DataModule2.query_reports.FieldByName('datetime').AsString+'</td></tr>'+#13+#10);
+                           DataModule2.query_reports.FieldByName('datetime').AsString+'</td></tr>'+#13+#10);
                  Writeln(f,'</table></div><br />'+#13+#10);
 
                  //начало данных заголовки столбцов
@@ -383,10 +379,9 @@ begin
                  Writeln(f,'<th>Отклонение от нормы (+/-,т)</th>'+#13+#10);
                  Writeln(f,'</tr>'+#13+#10);
 
-                 _start := DataModule2.query_reports.FieldByName('no_shifts').AsInteger;
+                 _start := DataModule2.query_reports.FieldByName('no_shifts').AsString;
                  DtStart :=copy(DataModule2.query_reports.FieldByName('datetime').AsString,0,10);
-                 _end := 1;
-                 a_count := 0;
+                 _end := '1';
             end
         else
             begin
@@ -403,8 +398,6 @@ begin
                         '</tr>'+#13+#10
                      );
 
-                 a_count := a_count + 1;
-
                DataModule2.query_reports.Next;
             end;
       end;
@@ -417,8 +410,9 @@ begin
                     //масса в конце
                     Writeln(f,'<div><table class="blank">'+#13+#10);
                     Writeln(f,'<tr><td id="align-left">Конец протокола : '+'</td><td id="align-right">'+
+//                              DT(Form1.query_reports.FieldByName('Dates1').AsString, Form1.query_reports.FieldByName('NSmeni').AsInteger, 1)+'</td></tr>'+#13+#10);
                               DataModule2.query_reports.FieldByName('datetime').AsString+'</td></tr>'+#13+#10);
-                    Writeln(f,'<tr><td id="align-left">Заготовки смены : '+'</td><td id="align-right">'+inttostr(a_count)+' шт</td></tr>'+#13+#10);
+                    Writeln(f,'</table></div><br /><br />'+#13+#10);
 
                     Writeln(f,'</table>');
                     Writeln(f,'</div></body>'+#13+'</html>'+#13);

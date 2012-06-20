@@ -357,7 +357,6 @@ begin
                     Writeln(f,'<div><table class="blank">'+#13+#10);
                     Writeln(f,'<tr><td id="align-left">Конец протокола : '+'</td><td id="align-right">'+
                               DataModule2.query_reports.FieldByName('datetime').AsString+'</td></tr>'+#13+#10);
-                    Writeln(f,'<tr><td id="align-left">Заготовки смены : '+'</td><td id="align-right">'+inttostr(a_count)+' шт</td></tr>'+#13+#10);
                     Writeln(f,'</table></div><br /><br />'+#13+#10);
 
                     _end := 0;
@@ -385,8 +384,8 @@ begin
 
                  _start := DataModule2.query_reports.FieldByName('no_shifts').AsInteger;
                  DtStart :=copy(DataModule2.query_reports.FieldByName('datetime').AsString,0,10);
+                 a_count := a_count + 1;
                  _end := 1;
-                 a_count := 0;
             end
         else
             begin
@@ -402,8 +401,6 @@ begin
                         '<td>'+DataModule2.query_reports.FieldByName('aberration').AsString+'</td>'+
                         '</tr>'+#13+#10
                      );
-
-                 a_count := a_count + 1;
 
                DataModule2.query_reports.Next;
             end;

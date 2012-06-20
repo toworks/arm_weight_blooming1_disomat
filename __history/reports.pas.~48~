@@ -385,8 +385,8 @@ begin
 
                  _start := DataModule2.query_reports.FieldByName('no_shifts').AsInteger;
                  DtStart :=copy(DataModule2.query_reports.FieldByName('datetime').AsString,0,10);
+                 a_count := a_count + 1;
                  _end := 1;
-                 a_count := 0;
             end
         else
             begin
@@ -402,8 +402,6 @@ begin
                         '<td>'+DataModule2.query_reports.FieldByName('aberration').AsString+'</td>'+
                         '</tr>'+#13+#10
                      );
-
-                 a_count := a_count + 1;
 
                DataModule2.query_reports.Next;
             end;

@@ -307,12 +307,6 @@ begin
       //גנולÿ נאבמעû ןנמדנאללû
       TimeWorkProgram;
 
-      if no_save = '1' then
-        begin
-              SendAttribute;
-        end;
-
-
 end;
 
 procedure TForm1.FormClose(Sender: TObject; var Action: TCloseAction);

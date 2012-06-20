@@ -105,6 +105,7 @@ var
   HeadName: string = 'АРМ резчика ПУ-4';
   max: integer = 0;
   no_save: string = '0';
+  no_save: string = '0';
   StartTime: TDateTime;
 
 
@@ -307,7 +308,7 @@ begin
       //время работы программы
       TimeWorkProgram;
 
-      if no_save = '1' then
+      if (no_save = '1') then
         begin
               SendAttribute;
         end;

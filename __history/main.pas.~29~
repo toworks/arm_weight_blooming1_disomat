@@ -307,7 +307,7 @@ begin
       //גנולÿ נאבמעû ןנמדנאללû
       TimeWorkProgram;
 
-      if no_save = '1' then
+      if (no_save = '1') and then
         begin
               SendAttribute;
         end;

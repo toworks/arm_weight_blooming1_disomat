@@ -316,6 +316,7 @@ begin
       //отображение текущей смены
       ViewShift;
 
+
 end;
 
 procedure TForm1.FormClose(Sender: TObject; var Action: TCloseAction);
@@ -328,7 +329,7 @@ var
   hMutex : THandle;
 begin
         // закрытие 2 экземл€ра программы
-        hMutex := CreateMutex(0, true , 'AarmWeightBlooming1');
+        hMutex := CreateMutex(0, true , 'main');
         if GetLastError = ERROR_ALREADY_EXISTS then
         begin
 

@@ -313,8 +313,6 @@ begin
               SendAttribute;
         end;
 
-      //отображение текущей смены
-      ViewShift;
 
 end;
 
@@ -328,7 +326,7 @@ var
   hMutex : THandle;
 begin
         // закрытие 2 экземл€ра программы
-        hMutex := CreateMutex(0, true , 'AarmWeightBlooming1');
+        hMutex := CreateMutex(0, true , 'main');
         if GetLastError = ERROR_ALREADY_EXISTS then
         begin
 

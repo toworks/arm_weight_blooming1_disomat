@@ -118,12 +118,12 @@ var
   function CheckData(DataIn, a: AnsiString): bool;
   function ViewSql: bool;
   function NewWeightSql: bool;
+  function ViewShift: bool;
 
   //new
   function TimeWorkProgram: bool;
   function ViewWeightIngot(DataIn: bool): bool;
   function PointReplace(DataIn: string): string;
-  function ViewShift: bool;
 
 
 
@@ -313,8 +313,6 @@ begin
               SendAttribute;
         end;
 
-      //отображение текущей смены
-      ViewShift;
 
 end;
 
@@ -328,7 +326,7 @@ var
   hMutex : THandle;
 begin
         // закрытие 2 экземл€ра программы
-        hMutex := CreateMutex(0, true , 'AarmWeightBlooming1');
+        hMutex := CreateMutex(0, true , 'main');
         if GetLastError = ERROR_ALREADY_EXISTS then
         begin
 
@@ -546,11 +544,8 @@ end;
 
 function ViewShift: bool;
 begin
-      if Form1.l_current_shift2.Caption <> GetShift then
-        begin
-              //отображение текущей смены
-              Form1.l_current_shift2.Caption := GetShift;
-        end;
+      //отображение текущей смены
+      Form1.l_current_shift2.Caption := GetShift;
 end;
 
 {============== PressKey START ===============}

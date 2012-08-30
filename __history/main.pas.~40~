@@ -379,7 +379,7 @@ begin
 
         DataModule2.ADOQuery1.SQL.Add('VALUES ('+ pkdat +','+ num +','+ num_ingot +', getdate(),'+ PointReplace(DataIn) +',@mass_difference,'+ PointReplace(Form1.l_steel_group.Caption) +',@a_s_c,@aberration)');
         DataModule2.ADOQuery1.SQL.Add('Insert INTO scale_turntable.dbo.heats (id_h, num_heat, name, mass_ingot, no_shifts)');
-        DataModule2.ADOQuery1.SQL.Add('VALUES ('+ id_m_max +','+ Form1.l_num_heat.Caption +','''+ Form1.l_name.Caption +''','+ PointReplace(Form1.l_weight_ingot.Caption) +','+ smena +')');
+        DataModule2.ADOQuery1.SQL.Add('VALUES ('+ id_m_max +','+ Form1.l_num_heat.Caption +','''+ Form1.l_name.Caption +''','+ PointReplace(Form1.l_weight_ingot.Caption) +','+ GetShift +')');
         DataModule2.ADOQuery1.ExecSQL;
 
         //шлем признак записи

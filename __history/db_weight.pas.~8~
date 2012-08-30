@@ -169,6 +169,7 @@ begin
                     Form1.l_name.Caption := name;
                     Form1.l_weight_ingot.Caption := weight_ingot;
                     Form1.l_steel_group.Caption := steel_group;
+                    Form1.l_smena.Caption := smena;
 
                     Form1.Label10.Caption:=pkdat+'|'+num+'|'+num_ingot+'|'+smena;
 

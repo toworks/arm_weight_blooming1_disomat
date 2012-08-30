@@ -11,6 +11,7 @@ object Form1: TForm1
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Font.Style = []
+  FormStyle = fsStayOnTop
   KeyPreview = True
   OldCreateOrder = False
   Position = poDesktopCenter
@@ -51,6 +52,7 @@ object Form1: TForm1
     Font.Name = 'Arial Narrow'
     Font.Style = [fsBold]
     ParentFont = False
+    Visible = False
   end
   object Label6: TLabel
     Left = 8
@@ -747,21 +749,6 @@ object Form1: TForm1
       item
         Expanded = False
         FieldName = 'STEEL_GROUP'
-        Font.Charset = RUSSIAN_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -13
-        Font.Name = 'Arial Narrow'
-        Font.Style = []
-        Title.Font.Charset = RUSSIAN_CHARSET
-        Title.Font.Color = clWindowText
-        Title.Font.Height = -13
-        Title.Font.Name = 'Arial Narrow'
-        Title.Font.Style = []
-        Visible = False
-      end
-      item
-        Expanded = False
-        FieldName = 'SMENA'
         Font.Charset = RUSSIAN_CHARSET
         Font.Color = clWindowText
         Font.Height = -13

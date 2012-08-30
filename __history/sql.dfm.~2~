@@ -3,13 +3,13 @@ object DataModule2: TDataModule2
   Height = 299
   Width = 460
   object ADOConnection1: TADOConnection
+    CommandTimeout = 10
     ConnectionString = 
       'Provider=SQLOLEDB.1;Password=12345678;Persist Security Info=True' +
       ';User ID=sa;Initial Catalog=scale_turntable;Data Source=krr-ws03' +
       '302;Use Procedure for Prepare=1;Auto Translate=True;Packet Size=' +
       '4096;Workstation ID=KRR-WS08022;Use Encryption for Data=False;Ta' +
       'g with column collation when possible=False'
-    ConnectionTimeout = 30
     LoginPrompt = False
     Provider = 'SQLOLEDB.1'
     Left = 40
@@ -47,11 +47,9 @@ object DataModule2: TDataModule2
     Top = 120
   end
   object ib_connection: TADOConnection
-    Connected = True
     ConnectionString = 
       'Provider=MSDASQL.1;Password=masterkey;Persist Security Info=True' +
       ';User ID=sysdba;Data Source=firebird'
-    ConnectionTimeout = 30
     LoginPrompt = False
     Left = 32
     Top = 224

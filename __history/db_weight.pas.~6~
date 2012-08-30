@@ -161,7 +161,6 @@ begin
                     name:=DataModule2.ib_query.FieldValues['name'];
                     weight_ingot:=DataModule2.ib_query.FieldValues['weight_ingot'];
                     steel_group:=SteelGroupCoefficient(DataModule2.ib_query.FieldValues['steel_group']);
-                    smena:=DataModule2.ib_query.FieldValues['smena'];
 
                     Form1.l_num_ingot.Caption := num_ingot;
                     Form1.l_datetime.Caption := time_ingot;
@@ -170,7 +169,7 @@ begin
                     Form1.l_weight_ingot.Caption := weight_ingot;
                     Form1.l_steel_group.Caption := steel_group;
 
-                    Form1.Label10.Caption:=pkdat+'|'+num+'|'+num_ingot+'|'+smena;
+                    Form1.Label10.Caption:=pkdat+'|'+num+'|'+num_ingot;
 
                    inc(i);
                    DataModule2.ib_query.Next;

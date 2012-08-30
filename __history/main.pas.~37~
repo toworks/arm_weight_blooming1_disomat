@@ -18,11 +18,6 @@ Parity - pEven
 при настройке interbase
 сначало устанавливается драйвер ODBC firebird
 настраивается соединение в Панель управления>Все элементы панели управления>Администрирование>Источники данных (ODBC)
-название соединения = firebird
-ip = 10.21.22.22
-путь к базе = c:\Account.gdb
-login = SYSDBA
-password = MASTERKEY
 }
 
 unit main;
@@ -379,7 +374,7 @@ begin
 
         DataModule2.ADOQuery1.SQL.Add('VALUES ('+ pkdat +','+ num +','+ num_ingot +', getdate(),'+ PointReplace(DataIn) +',@mass_difference,'+ PointReplace(Form1.l_steel_group.Caption) +',@a_s_c,@aberration)');
         DataModule2.ADOQuery1.SQL.Add('Insert INTO scale_turntable.dbo.heats (id_h, num_heat, name, mass_ingot, no_shifts)');
-        DataModule2.ADOQuery1.SQL.Add('VALUES ('+ id_m_max +','+ Form1.l_num_heat.Caption +','''+ Form1.l_name.Caption +''','+ PointReplace(Form1.l_weight_ingot.Caption) +','+ smena +')');
+        DataModule2.ADOQuery1.SQL.Add('VALUES ('+ id_m_max +','+ Form1.l_num_heat.Caption +','''+ Form1.l_name.Caption +''','+ PointReplace(Form1.l_weight_ingot.Caption) +','+ GetShift +')');
         DataModule2.ADOQuery1.ExecSQL;
 
         //шлем признак записи
@@ -532,7 +527,6 @@ begin
       pkdat:=Form1.DBGrid1.DataSource.DataSet.FieldByName('PKDAT').AsString;
       num:=Form1.DBGrid1.DataSource.DataSet.FieldByName('NUM').AsString;
       num_ingot:=Form1.DBGrid1.DataSource.DataSet.FieldByName('NUM_INGOT').AsString;
-      smena:=Form1.DBGrid1.DataSource.DataSet.FieldByName('SMENA').AsString;
     end
   else
     begin

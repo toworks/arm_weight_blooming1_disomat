@@ -211,13 +211,13 @@ begin
               DataModule2.query_reports.SQL.Clear;
         if InType = 1 then
          begin
-              DataModule2.query_reports.SQL.Add('SELECT max(CONVERT(VARCHAR(19),datetime,120)) AS datetime,num_heat, min(name) name, sum(mass_ingot) s_mass_ingot, sum(mass) s_mass, sum(mass_difference) s_mass_difference,');
+              DataModule2.query_reports.SQL.Add('SELECT min(CONVERT(VARCHAR(19),datetime,120)) AS datetime,num_heat, min(name) name, sum(mass_ingot) s_mass_ingot, sum(mass) s_mass, sum(mass_difference) s_mass_difference,');
               DataModule2.query_reports.SQL.Add('sum(p_s_c) s_p_s_c, sum(a_s_c) s_a_s_c, sum(aberration) s_aberration, count(num_heat) s_count, no_shifts FROM scale_turntable.dbo.mass, scale_turntable.dbo.heats');
          end;
 
         if InType = 2 then
          begin
-              DataModule2.query_reports.SQL.Add('SELECT max(CONVERT(VARCHAR(19),datetime,120)) AS datetime, min(num_heat) num_heat, name, sum(mass_ingot) s_mass_ingot, sum(mass) s_mass, sum(mass_difference) s_mass_difference,');
+              DataModule2.query_reports.SQL.Add('SELECT min(CONVERT(VARCHAR(19),datetime,120)) AS datetime, min(num_heat) num_heat, name, sum(mass_ingot) s_mass_ingot, sum(mass) s_mass, sum(mass_difference) s_mass_difference,');
               DataModule2.query_reports.SQL.Add('sum(p_s_c) s_p_s_c, sum(a_s_c) s_a_s_c, sum(aberration) s_aberration, count(num_heat) s_count, no_shifts FROM scale_turntable.dbo.mass, scale_turntable.dbo.heats');
          end;
 

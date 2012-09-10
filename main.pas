@@ -250,17 +250,23 @@ end;
 
 procedure TForm1.b_report_heatClick(Sender: TObject);
 begin
-      Report(0);
+      //Report(0);
+      //Report Type = 1 - heat
+      ReportDate(1);
 end;
 
 procedure TForm1.b_report_steelClick(Sender: TObject);
 begin
-      Report(1);
+      //Report(1);
+      //Report Type = 2 - name
+      ReportDate(2);
 end;
 
 procedure TForm1.b_report_detailedClick(Sender: TObject);
 begin
-      ReportDetailed;
+      //ReportDetailed;
+      //Report Type = 3 - detailed
+      ReportDate(3);
 end;
 
 procedure TForm1.Button4Click(Sender: TObject);

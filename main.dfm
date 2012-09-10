@@ -51,6 +51,7 @@ object Form1: TForm1
     Font.Name = 'Arial Narrow'
     Font.Style = [fsBold]
     ParentFont = False
+    Visible = False
   end
   object Label6: TLabel
     Left = 8

@@ -1,0 +1,834 @@
+unit Reports;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, DB, ADODB, ShellAPI, StdCtrls, Mask, DBCtrls, Menus, Grids,
+  DBGrids, DBTables, ExtCtrls, ComCtrls, OoMisc, AdPort, AdPacket;
+
+
+var
+    title: string = 'Отчет: Протокол смены резчика ПУ-4';
+    FileReport: string = 'report.html';
+    f:TextFile;
+    FileO: string;
+    count_head: integer = 0;
+
+    function Report(DataIn: integer): bool;
+    function ReportDetailed: bool;
+    function ReportDetailedNew(DataIn: string; InTypeEnd: integer; InType: integer): bool;
+    function ReportNew(DataIn: string; InTypeEnd: integer; InType: integer): bool;
+    function ReportDate(DataIn: integer): bool;
+    function WriteHead: bool;
+    function WriteFoot: bool;
+    function WriteShifts(DataIn: string; InType: integer): bool;
+    function HtmlStyle: bool;
+    function ViewReport: bool;
+
+implementation
+
+uses main,sql;
+
+
+
+{------------------------------------------------------------------------------}
+
+
+function Report(DataIn: integer): bool;
+var
+    DtStart: string;
+    DtEnd: string;
+    FileO:string;
+    _start:integer;
+    _end:integer;
+    a_mass_ingot,a_mass,a_p_s_c,a_a_s_c,a_aberration: Extended;
+    a_count: integer;
+
+begin
+
+    a_mass_ingot :=0;
+    a_mass := 0;
+    a_p_s_c := 0;
+    a_a_s_c := 0;
+    a_aberration := 0;
+    a_count := 0;
+
+  If Form1.DateTimeStart.date > Form1.DateTimeEnd.date then
+  begin
+    showmessage('Дата протокола выбрана неверно.');
+    exit;
+  end;
+
+
+      DtStart := ConvertDateTime(form1.DateTimeStart.date);
+      DtEnd := ConvertDateTime(form1.DateTimeEnd.date);
+
+    // открытие файла отчета
+    DataModule2.query_reports.Active := false;
+    DataModule2.query_reports.SQL.Clear;
+{    DataModule2.query_reports.SQL.Add('SELECT VVES.*, dbo.Protocol.* FROM dbo.Protocol,');
+    DataModule2.query_reports.SQL.Add('(SELECT IDPlavki, NSmeni, COUNT(Ves.IDPlavki) AS KolVo, SUM(VesZagotovki) AS SumVes');
+    DataModule2.query_reports.SQL.Add('FROM  dbo.Ves');
+    DataModule2.query_reports.SQL.Add('WHERE (Ves.NSmeni = 1 and CONVERT(VARCHAR(10),Ves.Dates2,120) = '''+ ConvertDateTime(Form1.DateTimeStart.date - 1) + ''' and DATEPART(hh, Ves.Dates2) >=22)');
+    DataModule2.query_reports.SQL.Add('OR (CONVERT(VARCHAR(10),Ves.Dates2,120) >= ''' + DtStart + '''');
+    DataModule2.query_reports.SQL.Add('AND CONVERT(VARCHAR(10),Dates2,120) < ''' + DtEnd + ''')');
+    DataModule2.query_reports.SQL.Add('OR (CONVERT(VARCHAR(10),Dates2,120) = ''' + DtEnd + ''' AND DATEPART(hh, Ves.Dates2) < 22)');
+    DataModule2.query_reports.SQL.Add('GROUP BY IDPlavki, NSmeni) AS VVES');
+    DataModule2.query_reports.SQL.Add('WHERE VVES.IDPlavki = dbo.Protocol.IDPlavki');
+    DataModule2.query_reports.SQL.Add('ORDER BY dbo.Protocol.Dates1');
+ }
+    if DataIn = 0 then
+      begin
+            DataModule2.query_reports.SQL.Add('SELECT mass.datetime,heats.name,heats.no_shifts, sums.* FROM scale_turntable.dbo.heats, scale_turntable.dbo.mass,');
+            DataModule2.query_reports.SQL.Add('(SELECT min(id_m) as id_m, num_heat, sum(mass_ingot) as s_mass_ingot, sum(mass) as s_mass, sum(mass_difference) as s_mass_difference,');
+            DataModule2.query_reports.SQL.Add('sum(p_s_c) as s_p_s_c, sum(a_s_c) as s_a_s_c, sum(aberration) as s_aberration,');
+            DataModule2.query_reports.SQL.Add('count(num_heat) as s_count, no_shifts FROM scale_turntable.dbo.heats, scale_turntable.dbo.mass');
+            DataModule2.query_reports.SQL.Add('WHERE id_m=id_h');
+            DataModule2.query_reports.SQL.Add('AND (no_shifts = 1 and CONVERT(VARCHAR(10),datetime,120) = '''+ ConvertDateTime(Form1.DateTimeStart.date - 1) + ''' and DATEPART(hh, datetime) >=22');
+            DataModule2.query_reports.SQL.Add('OR (CONVERT(VARCHAR(10),datetime,120) >= ''' + DtStart + '''))');
+            DataModule2.query_reports.SQL.Add('AND (CONVERT(VARCHAR(10),datetime,120) < ''' + DtEnd + '''');
+            DataModule2.query_reports.SQL.Add('OR (CONVERT(VARCHAR(10),datetime,120) =  ''' + DtEnd + ''' AND DATEPART(hh, datetime) < 22))');
+            DataModule2.query_reports.SQL.Add('group by num_heat, no_shifts) as sums');
+      end;
+
+    if DataIn = 1 then
+      begin
+            DataModule2.query_reports.SQL.Add('SELECT mass.datetime,heats.num_heat,heats.no_shifts, sums.* FROM scale_turntable.dbo.heats, scale_turntable.dbo.mass,');
+            DataModule2.query_reports.SQL.Add('(SELECT min(id_m) as id_m, name, sum(mass_ingot) as s_mass_ingot, sum(mass) as s_mass, sum(mass_difference) as s_mass_difference,');
+            DataModule2.query_reports.SQL.Add('sum(p_s_c) as s_p_s_c, sum(a_s_c) as s_a_s_c, sum(aberration) as s_aberration,');
+            DataModule2.query_reports.SQL.Add('count(name) as s_count, no_shifts FROM scale_turntable.dbo.heats, scale_turntable.dbo.mass');
+            DataModule2.query_reports.SQL.Add('WHERE id_m=id_h');
+            DataModule2.query_reports.SQL.Add('AND (no_shifts = 1 and CONVERT(VARCHAR(10),datetime,120) = '''+ ConvertDateTime(Form1.DateTimeStart.date - 1) + ''' and DATEPART(hh, datetime) >=22');
+            DataModule2.query_reports.SQL.Add('OR (CONVERT(VARCHAR(10),datetime,120) >= ''' + DtStart + '''))');
+            DataModule2.query_reports.SQL.Add('AND (CONVERT(VARCHAR(10),datetime,120) < ''' + DtEnd + '''');
+            DataModule2.query_reports.SQL.Add('OR (CONVERT(VARCHAR(10),datetime,120) =  ''' + DtEnd + ''' AND DATEPART(hh, datetime) < 22))');
+            DataModule2.query_reports.SQL.Add('group by name, no_shifts) as sums');
+      end;
+
+
+    DataModule2.query_reports.SQL.Add('where sums.id_m=mass.id_m');
+    DataModule2.query_reports.SQL.Add('and sums.id_m=heats.id_h');
+    DataModule2.query_reports.SQL.Add('ORDER BY datetime asc');
+    DataModule2.query_reports.Active:=true;
+
+//    showmessage(DataModule2.query_reports.sql.text);
+    DataModule2.query_reports.Open;
+
+
+        //запись файла, заголовок
+         if DataModule2.query_reports.RecordCount > 0 then
+           begin
+                    //открытие и перезапись файла
+                    FileO:= CurrentDir+'\'+FileReport;
+                    AssignFile(f,FileO);
+                    //if not FileExists(FileO) then
+                     //begin
+                      Rewrite(f);
+                      CloseFile(f);
+                     //end;
+                     Append(f);
+
+                     //заголовок
+                     Writeln(f,'<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">'+#13);
+                     Writeln(f,'<html>'+#13+'<head>'+#13);
+                     Writeln(f,'<meta http-equiv="Content-Type" content="text/html; charset=windows-1251">'+#13+'</head>'+#13+'<body>'+#13+'<div align="center">'+#13);
+                     Writeln(f,'<title>'+title+'</title>'+#13);
+
+                     //style
+                     HtmlStyle;
+
+                     Writeln(f,'<table>');
+
+                     Writeln(f,'<div><table class="blank"><th>'+title+'</th></table></div><hr><br /><br />'+#13+#10);
+           end
+         else
+           begin
+                     showmessage('За выбраный период данных для отчета нет');
+           end;
+
+     while not DataModule2.query_reports.Eof do
+      begin
+        //разбиваем по брегаде или по дате
+        if  (_start <> DataModule2.query_reports.FieldByName('no_shifts').AsInteger)
+            or ((_start <> DataModule2.query_reports.FieldByName('no_shifts').AsInteger) and (DataModule2.query_reports.FieldByName('no_shifts').AsInteger <> 1) and (DtStart <> copy(DataModule2.query_reports.FieldByName('datetime').AsString,0,10))) then
+            begin
+
+                if _end = 1 then
+                begin
+                    //конец данных
+                    Writeln(f,'</table></div><br />'+#13+#10);
+
+                    //масса в конце
+                    Writeln(f,'<div><table class="blank">'+#13+#10);
+                    Writeln(f,'<tr><td id="align-left">Конец протокола : '+'</td><td id="align-right">'+
+                              DataModule2.query_reports.FieldByName('datetime').AsString+'</td></tr>'+#13+#10);
+                    Writeln(f,'<tr><td id="align-left">Масса слитков за смену ПУ-1: '+'</td><td id="align-right">'+floattostr(a_mass_ingot)+' тонн</td></tr>'+#13+#10);
+                    Writeln(f,'<tr><td id="align-left">Масса блюмов за смену : '+'</td><td id="align-right">'+floattostr(a_mass)+' тонн</td></tr>'+#13+#10);
+                    Writeln(f,'<tr><td id="align-left">Плановый удельный расход за смену : '+'</td><td id="align-right">'+floattostr(a_p_s_c)+' тонн/тонн</td></tr>'+#13+#10);
+                    Writeln(f,'<tr><td id="align-left">Фактический удельный расход за смену : '+'</td><td id="align-right">'+floattostr(a_a_s_c)+' тонн/тонн</td></tr>'+#13+#10);
+                    Writeln(f,'<tr><td id="align-left">Отклонение от нормы (+/-) за смену : '+'</td><td id="align-right">'+floattostr(a_aberration)+' тонн</td></tr>'+#13+#10);
+                    Writeln(f,'<tr><td id="align-left">Заготовки смены : '+'</td><td id="align-right">'+inttostr(a_count)+' шт</td></tr>'+#13+#10);
+                    Writeln(f,'</table></div><br /><br />'+#13+#10);
+
+                    _end:=0;
+                end;
+
+                 Writeln(f,'<div><table class="blank">'+#13+#10);
+                 Writeln(f,'<tr><td id="align-left">Номер смены : '+'</td><td id="align-right">'+DataModule2.query_reports.FieldByName('no_shifts').AsString+'</td></tr>'+#13+#10);
+                 Writeln(f,'<tr><td id="align-left">Начало протокола : '+'</td><td id="align-right">'+
+                           DataModule2.query_reports.FieldByName('datetime').AsString+'</td></tr>'+#13+#10);
+                 Writeln(f,'</table></div><br />'+#13+#10);
+
+                 //начало данных заголовки столбцов
+                 Writeln(f,'<div><table>'+#13+#10);
+                 Writeln(f,'<tr>'+#13+#10);
+                 Writeln(f,'<th>Время</th>'+#13+#10);
+                 Writeln(f,'<th>№ Плавки</th>'+#13+#10);
+                 Writeln(f,'<th>Марка стали</th>'+#13+#10);
+                 Writeln(f,'<th>Количество загот.</th>'+#13+#10);
+                 Writeln(f,'<th>Масса слитка ПУ-1</th>'+#13+#10);
+                 Writeln(f,'<th>Масса блюма</th>'+#13+#10);
+                 Writeln(f,'<th>Разница масс (т)</th>'+#13+#10);
+                 Writeln(f,'<th>Плановый удельный расход (т/т)</th>'+#13+#10);
+                 Writeln(f,'<th>Фактический удельный (т/т)</th>'+#13+#10);
+                 Writeln(f,'<th>Отклонение от нормы (+/-,т)</th>'+#13+#10);
+
+          if DataIn = 0 then
+           begin
+                 Writeln(f,'<th>Расходный коэффициент по плавке (т/т)</th>'+#13+#10);
+           end;
+
+                 Writeln(f,'</tr>'+#13+#10);
+
+                 _start := DataModule2.query_reports.FieldByName('no_shifts').AsInteger;
+                 DtStart :=copy(DataModule2.query_reports.FieldByName('datetime').AsString,0,10);
+                 _end := 1;
+                 a_mass_ingot := 0;
+                 a_mass := 0;
+                 a_p_s_c := 0;
+                 a_a_s_c := 0;
+                 a_aberration := 0;
+                 a_count := 0;
+            end
+        else
+            begin
+              Writeln(f,'<tr>'+
+                        '<td>'+DataModule2.query_reports.FieldByName('datetime').AsString+'</td>'+
+                        '<td>'+DataModule2.query_reports.FieldByName('num_heat').AsString+'</td>'+
+                        '<td>'+DataModule2.query_reports.FieldByName('name').AsString+'</td>'+
+                        '<td>'+DataModule2.query_reports.FieldByName('s_count').AsString+'</td>'+
+                        '<td>'+DataModule2.query_reports.FieldByName('s_mass_ingot').AsString+'</td>'+
+                        '<td>'+DataModule2.query_reports.FieldByName('s_mass').AsString+'</td>'+
+                        '<td>'+DataModule2.query_reports.FieldByName('s_mass_difference').AsString+'</td>'+
+                        '<td>'+DataModule2.query_reports.FieldByName('s_p_s_c').AsString+'</td>'+
+                        '<td>'+DataModule2.query_reports.FieldByName('s_a_s_c').AsString+'</td>'+
+                        '<td>'+DataModule2.query_reports.FieldByName('s_aberration').AsString+'</td>'
+                      );
+
+        if DataIn = 0 then
+           begin
+              Writeln(f,'<td>'+ FormatFloat('0.000', DataModule2.query_reports.FieldByName('s_mass_ingot').AsFloat/DataModule2.query_reports.FieldByName('s_mass').AsFloat) +'</td>');
+           end;
+
+              Writeln(f,'</tr>'+#13+#10
+                     );
+
+                        a_mass_ingot := a_mass_ingot + DataModule2.query_reports.FieldByName('s_mass_ingot').AsExtended;
+                        a_mass := a_mass + DataModule2.query_reports.FieldByName('s_mass').AsExtended;
+                        a_p_s_c := a_p_s_c + DataModule2.query_reports.FieldByName('s_p_s_c').AsExtended;
+                        a_a_s_c := a_a_s_c + DataModule2.query_reports.FieldByName('s_a_s_c').AsExtended;
+                        a_aberration := a_aberration + DataModule2.query_reports.FieldByName('s_aberration').AsExtended;
+                        a_count := a_count + DataModule2.query_reports.FieldByName('s_count').AsInteger;
+              DataModule2.query_reports.Next;
+            end;
+      end;
+
+        if DataModule2.query_reports.RecordCount > 0 then
+         begin
+                    //конец данных
+                    Writeln(f,'</table></div><br />'+#13+#10);
+
+                    //масса в конце
+                    Writeln(f,'<div><table class="blank">'+#13+#10);
+                    Writeln(f,'<tr><td id="align-left">Конец протокола : '+'</td><td id="align-right">'+
+                              DataModule2.query_reports.FieldByName('datetime').AsString+'</td></tr>'+#13+#10);
+                    Writeln(f,'<tr><td id="align-left">Масса слитков за смену ПУ-1: '+'</td><td id="align-right">'+floattostr(a_mass_ingot)+' тонн</td></tr>'+#13+#10);
+                    Writeln(f,'<tr><td id="align-left">Масса блюмов за смену : '+'</td><td id="align-right">'+floattostr(a_mass)+' тонн</td></tr>'+#13+#10);
+                    Writeln(f,'<tr><td id="align-left">Плановый удельный расход за смену : '+'</td><td id="align-right">'+floattostr(a_p_s_c)+' тонн/тонн</td></tr>'+#13+#10);
+                    Writeln(f,'<tr><td id="align-left">Фактический удельный расход за смену : '+'</td><td id="align-right">'+floattostr(a_a_s_c)+' тонн/тонн</td></tr>'+#13+#10);
+                    Writeln(f,'<tr><td id="align-left">Отклонение от нормы (+/-) за смену : '+'</td><td id="align-right">'+floattostr(a_aberration)+' тонн</td></tr>'+#13+#10);
+                    Writeln(f,'<tr><td id="align-left">Заготовки смены : '+'</td><td id="align-right">'+inttostr(a_count)+' шт</td></tr>'+#13+#10);
+                    Writeln(f,'</table></div><br /><br />'+#13+#10);
+
+                    Writeln(f,'</table>');
+                    Writeln(f,'</div></body>'+#13+'</html>'+#13);
+
+                    //cброс в файл и закрытие оного
+                    Flush(f);
+                    CloseFile(f);
+
+                    ViewReport;
+         end;
+end;
+
+function ReportDetailed: bool;
+var
+    DtStart: string;
+    DtEnd: string;
+    FileO: string;
+    _start: integer;
+    _end: integer;
+    a_count: integer;
+
+begin
+
+    a_count := 0;
+
+  If Form1.DateTimeStart.date > Form1.DateTimeEnd.date then
+  begin
+    showmessage('Дата протокола выбрана неверно.');
+    exit;
+  end;
+
+
+      DtStart := ConvertDateTime(form1.DateTimeStart.date);
+      DtEnd := ConvertDateTime(form1.DateTimeEnd.date);
+
+    // открытие файла отчета
+    DataModule2.query_reports.Active := false;
+    DataModule2.query_reports.SQL.Clear;
+    {
+    DataModule2.query_reports.SQL.Add('SELECT V.Dates2,V.VesZagotovki,V.NSMeni, Nv.* FROM  Ps150.dbo.Ves AS V,');
+    DataModule2.query_reports.SQL.Add('(SELECT NEdIz,NPlavki,NPartii,MarkaStali,idplavki  FROM Ps150.dbo.Protocol) AS Nv');
+    DataModule2.query_reports.SQL.Add('WHERE V.IDPlavki = Nv.IDPlavki');
+    DataModule2.query_reports.SQL.Add('AND (V.NSmeni = 1 and CONVERT(VARCHAR(10),V.Dates2,120) = '''+ ConvertDateTime(Form1.DateTimeStart.date - 1) + ''' and DATEPART(hh, V.Dates2) >=22');
+    DataModule2.query_reports.SQL.Add('OR (CONVERT(VARCHAR(10),V.Dates2,120) >= ''' + DtStart + '''))');
+    DataModule2.query_reports.SQL.Add('AND (CONVERT(VARCHAR(10),V.Dates2,120) < ''' + DtEnd + '''');
+    DataModule2.query_reports.SQL.Add('OR (CONVERT(VARCHAR(10),V.Dates2,120) =  ''' + DtEnd + ''' AND DATEPART(hh, V.Dates2) < 22))');
+    DataModule2.query_reports.SQL.Add('ORDER BY V.Dates2 ASC');
+    }
+    DataModule2.query_reports.SQL.Add('SELECT CONVERT(VARCHAR(19),datetime,120) AS datetime,num_heat, name, mass_ingot, mass, mass_difference, p_s_c, a_s_c, aberration, no_shifts FROM scale_turntable.dbo.mass, scale_turntable.dbo.heats');
+    DataModule2.query_reports.SQL.Add('WHERE id_m=id_h');
+    DataModule2.query_reports.SQL.Add('AND (no_shifts = 1 and CONVERT(VARCHAR(10),datetime,120) = '''+ ConvertDateTime(Form1.DateTimeStart.date - 1) + ''' and DATEPART(hh, datetime) >=22');
+    DataModule2.query_reports.SQL.Add('OR (CONVERT(VARCHAR(10),datetime,120) >= ''' + DtStart + '''))');
+    DataModule2.query_reports.SQL.Add('AND (CONVERT(VARCHAR(10),datetime,120) < ''' + DtEnd + '''');
+    DataModule2.query_reports.SQL.Add('OR (CONVERT(VARCHAR(10),datetime,120) =  ''' + DtEnd + ''' AND DATEPART(hh, datetime) < 22))');
+    DataModule2.query_reports.SQL.Add('ORDER BY datetime ASC');
+    DataModule2.query_reports.Active:=true;
+    DataModule2.query_reports.Open;
+
+        //запись файла, заголовок
+         if DataModule2.query_reports.RecordCount > 0 then
+           begin
+                    //открытие и перезапись файла
+                    FileO:= CurrentDir+'\'+FileReport;
+                    AssignFile(f,FileO);
+                    //if not FileExists(FileO) then
+                     //begin
+                      Rewrite(f);
+                      CloseFile(f);
+                     //end;
+                     Append(f);
+
+                     //заголовок
+                     Writeln(f,'<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">'+#13);
+                     Writeln(f,'<html>'+#13+'<head>'+#13);
+                     Writeln(f,'<meta http-equiv="Content-Type" content="text/html; charset=windows-1251">'+#13+'</head>'+#13+'<body>'+#13+'<div align="center">'+#13);
+                     Writeln(f,'<title>'+title+'</title>'+#13);
+
+                     //style
+                     HtmlStyle;
+
+                     Writeln(f,'<table>');
+
+                     Writeln(f,'<div><table class="blank"><th>'+title+'</th></table></div><hr><br /><br />'+#13+#10);
+           end
+         else
+           begin
+                     showmessage('За выбраный период данных для отчета нет');
+           end;
+
+     while not DataModule2.query_reports.Eof do
+      begin
+        //разбиваем по брегаде или по дате
+        if  (_start <> DataModule2.query_reports.FieldByName('no_shifts').AsInteger)
+            or ((_start <> DataModule2.query_reports.FieldByName('no_shifts').AsInteger) and (DataModule2.query_reports.FieldByName('no_shifts').AsInteger <> 1) and (DtStart <> copy(DataModule2.query_reports.FieldByName('datetime').AsString,0,10))) then
+            begin
+
+                if _end = 1 then
+                begin
+                    //конец данных
+                    Writeln(f,'</table></div><br />'+#13+#10);
+
+                    //масса в конце
+                    Writeln(f,'<div><table class="blank">'+#13+#10);
+                    Writeln(f,'<tr><td id="align-left">Конец протокола : '+'</td><td id="align-right">'+
+                              DataModule2.query_reports.FieldByName('datetime').AsString+'</td></tr>'+#13+#10);
+                    Writeln(f,'<tr><td id="align-left">Заготовки смены : '+'</td><td id="align-right">'+inttostr(a_count)+' шт</td></tr>'+#13+#10);
+                    Writeln(f,'</table></div><br /><br />'+#13+#10);
+
+                    _end := 0;
+                end;
+
+                 Writeln(f,'<div><table class="blank">'+#13+#10);
+                 Writeln(f,'<tr><td id="align-left">Номер смены : '+'</td><td id="align-right">'+DataModule2.query_reports.FieldByName('no_shifts').AsString+'</td></tr>'+#13+#10);
+                 Writeln(f,'<tr><td id="align-left">Начало протокола : '+'</td><td id="align-right">'+
+                              DataModule2.query_reports.FieldByName('datetime').AsString+'</td></tr>'+#13+#10);
+                 Writeln(f,'</table></div><br />'+#13+#10);
+
+                 //начало данных заголовки столбцов
+                 Writeln(f,'<div><table>'+#13+#10);
+                 Writeln(f,'<tr>'+#13+#10);
+                 Writeln(f,'<th>Время</th>'+#13+#10);
+                 Writeln(f,'<th>№ Плавки</th>'+#13+#10);
+                 Writeln(f,'<th>Марка стали</th>'+#13+#10);
+                 Writeln(f,'<th>Масса слитка ПУ-1</th>'+#13+#10);
+                 Writeln(f,'<th>Масса блюма</th>'+#13+#10);
+                 Writeln(f,'<th>Разница масс (т)</th>'+#13+#10);
+                 Writeln(f,'<th>Плановый удельный расход (т/т)</th>'+#13+#10);
+                 Writeln(f,'<th>Фактический удельный (т/т)</th>'+#13+#10);
+                 Writeln(f,'<th>Отклонение от нормы (+/-,т)</th>'+#13+#10);
+                 Writeln(f,'</tr>'+#13+#10);
+
+                 _start := DataModule2.query_reports.FieldByName('no_shifts').AsInteger;
+                 DtStart :=copy(DataModule2.query_reports.FieldByName('datetime').AsString,0,10);
+                 _end := 1;
+                 a_count := 0;
+            end
+        else
+            begin
+              Writeln(f,'<tr>'+
+                        '<td>'+DataModule2.query_reports.FieldByName('datetime').AsString+'</td>'+
+                        '<td>'+DataModule2.query_reports.FieldByName('num_heat').AsString+'</td>'+
+                        '<td>'+DataModule2.query_reports.FieldByName('name').AsString+'</td>'+
+                        '<td>'+DataModule2.query_reports.FieldByName('mass_ingot').AsString+'</td>'+
+                        '<td>'+DataModule2.query_reports.FieldByName('mass').AsString+'</td>'+
+                        '<td>'+DataModule2.query_reports.FieldByName('mass_difference').AsString+'</td>'+
+                        '<td>'+DataModule2.query_reports.FieldByName('p_s_c').AsString+'</td>'+
+                        '<td>'+DataModule2.query_reports.FieldByName('a_s_c').AsString+'</td>'+
+                        '<td>'+DataModule2.query_reports.FieldByName('aberration').AsString+'</td>'+
+                        '</tr>'+#13+#10
+                     );
+
+                 a_count := a_count + 1;
+
+               DataModule2.query_reports.Next;
+            end;
+      end;
+
+        if DataModule2.query_reports.RecordCount > 0 then
+         begin
+                    //конец данных
+                    Writeln(f,'</table></div><br />'+#13+#10);
+
+                    //масса в конце
+                    Writeln(f,'<div><table class="blank">'+#13+#10);
+                    Writeln(f,'<tr><td id="align-left">Конец протокола : '+'</td><td id="align-right">'+
+                              DataModule2.query_reports.FieldByName('datetime').AsString+'</td></tr>'+#13+#10);
+                    Writeln(f,'<tr><td id="align-left">Заготовки смены : '+'</td><td id="align-right">'+inttostr(a_count)+' шт</td></tr>'+#13+#10);
+
+                    Writeln(f,'</table>');
+                    Writeln(f,'</div></body>'+#13+'</html>'+#13);
+
+                    //cброс в файл и закрытие оного
+                    Flush(f);
+                    CloseFile(f);
+
+                    ViewReport;
+         end;
+end;
+
+function ViewReport: bool;
+begin
+                   //не пишем "\" если в корне
+                   if  CurrentDir[length(CurrentDir)] <> '\' then
+                    begin
+                          //ShellExecute(Form1.Handle, 'open', 'c:\tmp\arm_ps1_spc1_disomat\report.html', nil, nil, SW_SHOWNORMAL);
+                          ShellExecute(0,'open','iexplore.exe',pchar(CurrentDir+'\'+FileReport),nil,SW_SHOWNORMAL);
+                    end
+                   else
+                    begin
+                          ShellExecute(0,'open','iexplore.exe',pchar(CurrentDir+FileReport),nil,SW_SHOWNORMAL);
+                    end;
+end;
+
+function HtmlStyle: bool;
+begin
+                   //style
+                   Writeln(f,'<style type="text/css">'+#13+
+                             'table {'+#13+
+                                              'border-width: 0px;'+#13+
+                                              'margin: 1px;'+#13+
+                                              'border-spacing: 2px;'+#13+
+                                              'border-style: outset;'+#13+
+                                              'border-color: gray;'+#13+
+                                              'border-collapse: collapse;'+#13+
+                                              'font-size: 1em;'+#13+
+                                              'text-align: center;'+#13+
+                                      '}'+#13+
+
+                              'table th {'+#13+
+                                              'border-width: 1px;'+#13+
+                                              'padding: 1px;'+#13+
+                                              'border-style: solid;'+#13+
+                                              'border-color: gray;'+#13+
+                                              '-moz-border-radius: 0px 0px 0px 0px;'+#13+
+                                       '}'+#13+
+
+                              'table td {'+#13+
+                                              'border-width: 1px;'+#13+
+                                              'padding: 1px;'+#13+
+                                              'border-style: solid;'+#13+
+                                              'border-color: gray;'+#13+
+                                              '-moz-border-radius: 0px 0px 0px 0px;'+#13+
+                                       '}'+#13+
+
+                              'table.blank {'+#13+
+                                              'border-width: 0px;'+#13+
+                                              'font-size: 1em;'+#13+
+                                      '}'+#13+
+
+                              'table.blank th {'+#13+
+                                                  'border-width: 0px;'+#13+
+                                                  'font-size: 1em;'+#13+
+                                              '}'+#13+
+
+                              'table.blank td {'+#13+
+                                                  'border-width: 0px;'+#13+
+                                                  'font-size: 1em;'+#13+
+                                              '}'+#13+
+
+                              '#align-left {'+#13+
+                                                  'text-align: left;'+#13+
+                                           '}'+#13+
+
+                              '#align-right {'+#13+
+                                                  'text-align: right;'+#13+
+                                           '}'+#13+
+
+                             '</style>'+#13);
+end;
+
+function ReportDate(DataIn: integer): bool;
+var
+    date: tdatetime;
+begin
+
+      If Form1.DateTimeStart.date > Form1.DateTimeEnd.date then
+      begin
+          showmessage('Дата протокола выбрана неверно.');
+          exit;
+      end;
+
+      date:=Form1.DateTimeStart.date;
+
+      while date <= Form1.DateTimeEnd.date do
+      begin
+            if date = Form1.DateTimeEnd.date then
+              begin
+                      if DataIn = 1 then
+                      begin
+                        ReportNew(datetimetostr(date),1,1);
+                      end;
+                      if DataIn = 2 then
+                      begin
+                        ReportNew(datetimetostr(date),1,2);
+                      end;
+                      if DataIn = 3 then
+                      begin
+                        ReportDetailedNew(datetimetostr(date),1,3);
+                      end;
+              end
+            else
+              begin
+                      if DataIn = 1 then
+                      begin
+                        ReportNew(datetimetostr(date),0,1);
+                      end;
+                      if DataIn = 2 then
+                      begin
+                        ReportNew(datetimetostr(date),0,2);
+                      end;
+                      if DataIn = 3 then
+                      begin
+                        ReportDetailedNew(datetimetostr(date),0,3);
+                      end;
+              end;
+
+            date := date+1;
+
+      end;
+end;
+
+function ReportDetailedNew(DataIn: string; InTypeEnd: integer; InType: integer): bool;
+var
+    shifts: integer;
+begin
+
+    for shifts := 1 to 3 do
+    begin
+
+              // открытие файла отчета
+              DataModule2.query_reports.Active := false;
+              DataModule2.query_reports.SQL.Clear;
+              DataModule2.query_reports.SQL.Add('SELECT CONVERT(VARCHAR(19),datetime,120) AS datetime,num_heat, name, mass_ingot, mass, mass_difference, p_s_c, a_s_c, aberration, no_shifts FROM scale_turntable.dbo.mass, scale_turntable.dbo.heats');
+              DataModule2.query_reports.SQL.Add('WHERE id_m=id_h');
+      if shifts = 1 then
+      begin
+              DataModule2.query_reports.SQL.Add('and ((no_shifts=1 and CONVERT(VARCHAR(10),datetime,120) =  '''+ ConvertDateTime((strtodatetime(DataIn)) - 1) + ''' and DATEPART(hh, datetime) > 20)');
+              DataModule2.query_reports.SQL.Add('or ((CONVERT(VARCHAR(10),datetime,120) = ''' + ConvertDateTime(strtodatetime(DataIn)) + ''')) and (no_shifts=1 and DATEPART(hh, datetime) < 09))');
+      end;
+      if (shifts = 2) or (shifts = 3) then
+      begin
+              DataModule2.query_reports.SQL.Add('and (CONVERT(VARCHAR(10),datetime,120) = ''' + ConvertDateTime(strtodatetime(DataIn)) + ''') and (no_shifts = '''+ inttostr(shifts) +''')');
+      end;
+              DataModule2.query_reports.SQL.Add('ORDER BY datetime ASC');
+              DataModule2.query_reports.Active:=true;
+              DataModule2.query_reports.Open;
+
+
+        //запись файла, заголовок
+         if DataModule2.query_reports.RecordCount > 0 then
+           begin
+                    WriteHead;
+                    WriteShifts(DataIn, InType);
+           end;
+
+          if (shifts = 3) and (InTypeEnd = 1) and (count_head = 1) then
+           begin
+                     WriteFoot;
+           end;
+
+    end;
+
+end;
+
+function ReportNew(DataIn: string; InTypeEnd: integer; InType: integer): bool;
+var
+    shifts: integer;
+begin
+
+    for shifts := 1 to 3 do
+    begin
+              // открытие файла отчета
+              DataModule2.query_reports.Active := false;
+              DataModule2.query_reports.SQL.Clear;
+              DataModule2.query_reports.SQL.Add('SELECT min(CONVERT(VARCHAR(19),datetime,120)) AS datetime,num_heat, min(name) name, sum(mass_ingot) s_mass_ingot, sum(mass) s_mass, sum(mass_difference) s_mass_difference,');
+              DataModule2.query_reports.SQL.Add('sum(p_s_c) s_p_s_c, sum(a_s_c) s_a_s_c, sum(aberration) s_aberration, count(num_heat) s_count, no_shifts FROM scale_turntable.dbo.mass, scale_turntable.dbo.heats');
+              DataModule2.query_reports.SQL.Add('WHERE id_m=id_h');
+      if shifts = 1 then
+      begin
+              DataModule2.query_reports.SQL.Add('and ((no_shifts=1 and CONVERT(VARCHAR(10),datetime,120) =  '''+ ConvertDateTime((strtodatetime(DataIn)) - 1) + ''' and DATEPART(hh, datetime) > 20)');
+              DataModule2.query_reports.SQL.Add('or ((CONVERT(VARCHAR(10),datetime,120) = ''' + ConvertDateTime(strtodatetime(DataIn)) + ''')) and (no_shifts=1 and DATEPART(hh, datetime) < 09))');
+      end;
+      if (shifts = 2) or (shifts = 3) then
+      begin
+              DataModule2.query_reports.SQL.Add('and (CONVERT(VARCHAR(10),datetime,120) = ''' + ConvertDateTime(strtodatetime(DataIn)) + ''') and (no_shifts = '''+ inttostr(shifts) +''')');
+      end;
+              DataModule2.query_reports.SQL.Add('GROUP BY num_heat, no_shifts');
+              DataModule2.query_reports.SQL.Add('ORDER BY datetime ASC');
+              DataModule2.query_reports.Active:=true;
+              DataModule2.query_reports.Open;
+
+
+        //запись файла, заголовок
+         if DataModule2.query_reports.RecordCount > 0 then
+           begin
+                    WriteHead;
+                    WriteShifts(DataIn, InType);
+           end;
+
+          if (shifts = 3) and (InTypeEnd = 1) and (count_head = 1) then
+           begin
+                     WriteFoot;
+           end;
+
+    end;
+
+end;
+
+
+function WriteHead: bool;
+begin
+             if count_head = 0 then
+              begin
+                    //открытие и перезапись файла
+                    FileO:= CurrentDir+'\'+FileReport;
+                    AssignFile(f,FileO);
+
+                      Rewrite(f);
+
+                     //заголовок
+                     Writeln(f,'<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">'+#13);
+                     Writeln(f,'<html>'+#13+'<head>'+#13);
+                     Writeln(f,'<meta http-equiv="Content-Type" content="text/html; charset=windows-1251">'+#13+'</head>'+#13+'<body>'+#13+'<div align="center">'+#13);
+                     Writeln(f,'<title>'+title+'</title>'+#13);
+
+                     //style
+                     HtmlStyle;
+
+                     Writeln(f,'<table>');
+
+                     Writeln(f,'<div><table class="blank"><th>'+title+'</th></table></div><hr><br /><br />'+#13+#10);
+
+                     count_head:=1;
+
+                     //cброс в файл и закрытие оного
+                     Flush(f);
+                     CloseFile(f);
+              end;
+end;
+
+
+function WriteFoot: bool;
+begin
+                    Append(f);
+
+                    Writeln(f,'</table>');
+                    Writeln(f,'</div></body>'+#13+'</html>'+#13);
+
+                    //cброс в файл и закрытие оного
+                    Flush(f);
+                    CloseFile(f);
+
+                    count_head := 0;
+
+                    ViewReport;
+end;
+
+
+function WriteShifts(DataIn: string; InType: integer): bool;
+begin
+                 Append(f);
+
+                 Writeln(f,'<div><table class="blank">'+#13+#10);
+                 Writeln(f,'<tr><td id="align-left">Номер смены : '+'</td><td id="align-right">'+DataModule2.query_reports.FieldByName('no_shifts').AsString+'</td></tr>'+#13+#10);
+                 Writeln(f,'<tr><td id="align-left">Начало протокола : '+'</td><td id="align-right">');
+                 Writeln(f,DataModule2.query_reports.FieldByName('datetime').AsString);
+                 Writeln(f,'</td></tr>'+#13+#10);
+                 Writeln(f,'</table></div><br />'+#13+#10);
+
+  if InType = 3 then
+   begin
+                 //начало данных заголовки столбцов
+                 Writeln(f,'<div><table>'+#13+#10);
+                 Writeln(f,'<tr>'+#13+#10);
+                 Writeln(f,'<th>Время</th>'+#13+#10);
+                 Writeln(f,'<th>№ Плавки</th>'+#13+#10);
+                 Writeln(f,'<th>Марка стали</th>'+#13+#10);
+                 Writeln(f,'<th>Масса слитка ПУ-1</th>'+#13+#10);
+                 Writeln(f,'<th>Масса блюма</th>'+#13+#10);
+                 Writeln(f,'<th>Разница масс (т)</th>'+#13+#10);
+                 Writeln(f,'<th>Плановый удельный расход (т/т)</th>'+#13+#10);
+                 Writeln(f,'<th>Фактический удельный (т/т)</th>'+#13+#10);
+                 Writeln(f,'<th>Отклонение от нормы (+/-,т)</th>'+#13+#10);
+                 Writeln(f,'</tr>'+#13+#10);
+
+     while not DataModule2.query_reports.Eof do
+      begin
+                Writeln(f,'<tr>'+
+                        '<td>'+DataModule2.query_reports.FieldByName('datetime').AsString+'</td>'+
+                        '<td>'+DataModule2.query_reports.FieldByName('num_heat').AsString+'</td>'+
+                        '<td>'+DataModule2.query_reports.FieldByName('name').AsString+'</td>'+
+                        '<td>'+DataModule2.query_reports.FieldByName('mass_ingot').AsString+'</td>'+
+                        '<td>'+DataModule2.query_reports.FieldByName('mass').AsString+'</td>'+
+                        '<td>'+DataModule2.query_reports.FieldByName('mass_difference').AsString+'</td>'+
+                        '<td>'+DataModule2.query_reports.FieldByName('p_s_c').AsString+'</td>'+
+                        '<td>'+DataModule2.query_reports.FieldByName('a_s_c').AsString+'</td>'+
+                        '<td>'+DataModule2.query_reports.FieldByName('aberration').AsString+'</td>'+
+                        '</tr>'+#13+#10
+                     );
+
+               DataModule2.query_reports.Next;
+      end;
+  end;
+
+  if InType = 1 then
+   begin
+                 //начало данных заголовки столбцов
+                 Writeln(f,'<div><table>'+#13+#10);
+                 Writeln(f,'<tr>'+#13+#10);
+                 Writeln(f,'<th>Время</th>'+#13+#10);
+                 Writeln(f,'<th>№ Плавки</th>'+#13+#10);
+                 Writeln(f,'<th>Марка стали</th>'+#13+#10);
+                 Writeln(f,'<th>Количество загот.</th>'+#13+#10);
+                 Writeln(f,'<th>Масса слитка ПУ-1</th>'+#13+#10);
+                 Writeln(f,'<th>Масса блюма</th>'+#13+#10);
+                 Writeln(f,'<th>Разница масс (т)</th>'+#13+#10);
+                 Writeln(f,'<th>Плановый удельный расход (т/т)</th>'+#13+#10);
+                 Writeln(f,'<th>Фактический удельный (т/т)</th>'+#13+#10);
+                 Writeln(f,'<th>Отклонение от нормы (+/-,т)</th>'+#13+#10);
+                 Writeln(f,'<th>Расходный коэффициент по плавке (т/т)</th>'+#13+#10);
+                 Writeln(f,'</tr>'+#13+#10);
+
+     while not DataModule2.query_reports.Eof do
+      begin
+              Writeln(f,'<tr>'+
+                        '<td>'+DataModule2.query_reports.FieldByName('datetime').AsString+'</td>'+
+                        '<td>'+DataModule2.query_reports.FieldByName('num_heat').AsString+'</td>'+
+                        '<td>'+DataModule2.query_reports.FieldByName('name').AsString+'</td>'+
+                        '<td>'+DataModule2.query_reports.FieldByName('s_count').AsString+'</td>'+
+                        '<td>'+DataModule2.query_reports.FieldByName('s_mass_ingot').AsString+'</td>'+
+                        '<td>'+DataModule2.query_reports.FieldByName('s_mass').AsString+'</td>'+
+                        '<td>'+DataModule2.query_reports.FieldByName('s_mass_difference').AsString+'</td>'+
+                        '<td>'+DataModule2.query_reports.FieldByName('s_p_s_c').AsString+'</td>'+
+                        '<td>'+DataModule2.query_reports.FieldByName('s_a_s_c').AsString+'</td>'+
+                        '<td>'+DataModule2.query_reports.FieldByName('s_aberration').AsString+'</td>'+
+                        '<td>'+ FormatFloat('0.000', DataModule2.query_reports.FieldByName('s_mass_ingot').AsFloat/DataModule2.query_reports.FieldByName('s_mass').AsFloat) +'</td>'
+                      );
+
+                     DataModule2.query_reports.Next;
+        end;
+   end;
+
+                 //конец данных
+                 Writeln(f,'</table></div><br />'+#13+#10);
+
+
+  if InType = 3 then
+   begin
+                 //масса в конце
+                 Writeln(f,'<div><table class="blank">'+#13+#10);
+                 Writeln(f,'<tr><td id="align-left">Конец протокола : '+'</td><td id="align-right">');
+                 Writeln(f,DataModule2.query_reports.FieldByName('datetime').AsString);
+
+                 Writeln(f,'</td></tr>'+#13+#10);
+
+                 Writeln(f,'<tr><td id="align-left">Заготовки смены : '+'</td><td id="align-right">'+inttostr(DataModule2.query_reports.RecordCount)+' шт</td></tr>'+#13+#10);
+                 Writeln(f,'</table></div><br /><br />'+#13+#10);
+   end;
+
+  if InType = 1 then
+   begin
+                    //масса в конце
+                    Writeln(f,'<div><table class="blank">'+#13+#10);
+                    Writeln(f,'<tr><td id="align-left">Конец протокола : '+'</td><td id="align-right">'+
+                              DataModule2.query_reports.FieldByName('datetime').AsString+'</td></tr>'+#13+#10);
+                    Writeln(f,'<tr><td id="align-left">Масса слитков за смену ПУ-1: '+'</td><td id="align-right">'+floattostr(a_mass_ingot)+' тонн</td></tr>'+#13+#10);
+                    Writeln(f,'<tr><td id="align-left">Масса блюмов за смену : '+'</td><td id="align-right">'+floattostr(a_mass)+' тонн</td></tr>'+#13+#10);
+                    Writeln(f,'<tr><td id="align-left">Плановый удельный расход за смену : '+'</td><td id="align-right">'+floattostr(a_p_s_c)+' тонн/тонн</td></tr>'+#13+#10);
+                    Writeln(f,'<tr><td id="align-left">Фактический удельный расход за смену : '+'</td><td id="align-right">'+floattostr(a_a_s_c)+' тонн/тонн</td></tr>'+#13+#10);
+                    Writeln(f,'<tr><td id="align-left">Отклонение от нормы (+/-) за смену : '+'</td><td id="align-right">'+floattostr(a_aberration)+' тонн</td></tr>'+#13+#10);
+                    Writeln(f,'<tr><td id="align-left">Заготовки смены : '+'</td><td id="align-right">'+inttostr(a_count)+' шт</td></tr>'+#13+#10);
+                    Writeln(f,'</table></div><br /><br />'+#13+#10);
+
+                    Writeln(f,'</table>');
+                    Writeln(f,'</div></body>'+#13+'</html>'+#13);
+
+   end;
+
+
+
+
+      //cброс в файл и закрытие оного
+      Flush(f);
+      CloseFile(f);
+end;
+
+
+
+
+
+
+end.

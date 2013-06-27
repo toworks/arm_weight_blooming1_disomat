@@ -3,151 +3,498 @@ object Form1: TForm1
   Top = 0
   BorderStyle = bsSingle
   Caption = 'Form1'
-  ClientHeight = 705
-  ClientWidth = 994
+  ClientHeight = 315
+  ClientWidth = 644
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Font.Style = []
+  Icon.Data = {
+    0000010001002020000001002000A81000001600000028000000200000004000
+    0000010020000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    00000000000200000004000000070000000A0000000D0000000F000000100000
+    00100000000F0000000D0000000A000000070000000400000002000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000020000
+    0005000000090000000F000000160000001E000000260000002D000000310000
+    00310000002D000000270000001F000000160000000F00000009000000050000
+    0002000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000003000000070000
+    000D00000018000000270C07003F0C07005C080400790D0700902918009F2A19
+    009F110900900B06007A0D07005C0B06003F00000029000000190000000F0000
+    0007000000030000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000300000007000000100000
+    001F10090042160D0077875408C1BD750AEADA8506FCF09206FFF79707FFFA9B
+    0BFFF7990CFFD68307FBB26D05E8784903BF0E080078160D0045020000230000
+    0012000000070000000300000000000000000000000000000000000000000000
+    000000000000000000000000000000000002000000060000000F170E00262113
+    005CAC6903C8DC8503FFD48001FFEE9511FEFBA01BFFFCA11AFFFBA31FFFFBA6
+    26FFFCA525FFF89E18FFE78F0CFED78203FFE08907FE9B5F04C6150C0061190F
+    002B000000120000000700000002000000000000000000000000000000000000
+    0000000000000000000000000001000000040000000B241600239059087BE088
+    04FACE7C02FFCF7D03FFEC8E02FFFCA118FFF59507FFFBAA30FFFBA82CFFFBA9
+    2FFFFBA82CFFFAA525FFFBA82BFFF7980AFFE48B05FED07D02FFDC8605F5653D
+    01792C1B002A0000000E00000005000000010000000000000000000000000000
+    00000000000000000000000000010000000540250017CD821389DE8807FFD581
+    02FEE48A03FFDB8403FFED8F03FFF49304FFF69504FFFA9B0CFFFA9F16FFFBA0
+    1AFFFBA526FFFB9B0DFFFA9807FFFA9908FFF99705FFF29203FFD38003FEDD85
+    03FF9A5D027F4026001F00000008000000030000000000000000000000000000
+    0000000000000000000000000002965A000EE5941C75EB9008FFDD8603FEE88C
+    03FFEA8D02FFE18803FFE58A03FFF89604FFFA9B0CFFFA9D10FFFB9B0EFFFB9D
+    11FFFB9E15FFFB9E16FFFA9D12FFFB9C0EFFFA9908FFFA9807FFFA9805FFD480
+    03FEDA8403FFA76502666B410114000000030000000100000000000000000000
+    00000000000000000000CA7E0B06F9A3233FFBA119FFE38904FEF09103FFED8F
+    02FFF19203FFE98C02FFE68A02FFFB9B0CFFFA9F16FFFBA019FFFBA11AFFFA9F
+    16FFFBA21DFFFBA321FFFBA019FFFB9E14FFFA9C0FFFFB9A0CFFFB9A0AFFE88C
+    03FFC67703FECB7A03FFB86E02317E4C01070000000100000000000000000000
+    000000000000926E3700FCBB5709FAA627E7F3960BFEEC8F02FFEF9002FFF292
+    03FFEE8F03FFE28903FFE68B02FFF7980BFFFB9F15FFFBA21DFFFBA320FFFB9C
+    0EFFFAA11BFFFBA92EFFFBA425FFFBA018FFFB9E15FFFB9D11FFFB9D11FFF596
+    09FFD48002FFC77802FEE48A03CCD07C000C1B10000100000000000000000000
+    000000000000FCBD6105FBAC3671FBA320FFEF9105FFF39303FFF49303FFF594
+    03FFE58A02FFE88C03FFED8F02FFF69709FFFB9E15FFFBA31FFFFBA629FFFBA1
+    1BFFFAA422FFFBAC35FFFBAF3EFFFBAC34FFFBA423FFFBA322FFFBA21FFFFBA2
+    1EFFF69B12FFE88D05FFEC8E02FFF3960D50F69C160600000000000000000000
+    000000000000FEEED605FAAA30E4FBA21DFEF29203FFF79604FFFA9908FFF997
+    05FFEA8E02FFEF9002FFF79709FFFB9E13FFFBA422FFFBAA33FFFAB142FFFBA9
+    30FFFBA92FFFFBB040FFFBB041FFFBAF3EFFFBA92EFFFBA82BFFFBA526FFFBA2
+    1DFFFBA21DFFF49303FFF79809FEF59709C3FFBE5D080000000000000000E990
+    0A00FBAD3801FBAB3534FBAB34FFFBA421FFF89705FFFA9B0BFFFB9E13FFFBA1
+    19FFF69504FFF79708FFFBA21DFFFBA82BFFFBA92EFFFAAC35FFFBB449FFFAAD
+    38FFFAAB33FFFBB348FFFAB143FFFBAE3DFFFBAE3DFFFAAB34FFFBA729FFFBA7
+    2BFFFBA628FFFA9807FFFBA018FFFA9F17FFF6A52F18F9A32401000000000000
+    0000F9AA3505FBAD3978FAAA32FFFAA629FFFB9B0DFFFBA11BFFFBA524FFFAA4
+    24FFFBA627FFFBA627FFFBA82DFFFAA930FFFAAA32FFFAAA33FFFCB142FFFBAD
+    38FFFAAD39FFFAAC38FFFAB142FFFAAF3EFFFAB040FFFBB246FFFAA92DFFFBAB
+    34FFFBA526FFFB9D0FFFFBA21EFFFBA525FFFAA42358FAA93104000000000000
+    0000FAA82C06FAAE3BA4FBB03EFEFBAD3AFFFBA01AFFFBA524FFFBA320FFFBA8
+    2BFFFBB040FFFBB03FFFFBAF3EFFFBB54CFFFCB955FFFCB852FFFBB954FFFBBB
+    5AFFFCBE62FFFCBD61FFFCBD5EFFFCB54DFFFBAD3AFFFBAE3CFFFBA82DFFFBAC
+    36FFFBA423FFFB9F17FFFBA930FFFBA82CFFFAA42484FBAA3108000000000000
+    0000FBAE3C06FBB347BCFBB750FFFCB54DFFFAAA33FFFAA629FFFBA72BFFFBAE
+    3BFFFCB64FFFFCC16AFFFBBB5AFFFCBB59FFFCBA59FFFCB956FFFCBB5BFFFCBB
+    5BFFFCBB5BFFFCC067FFFCC26BFFFBBC5CFFFBB346FFFBAB34FFFBA92FFFFBA9
+    30FFFAA421FFFAA931FFFBAB34FFFBAB34FEFAA5259AFAA72C09000000000000
+    0000FCB75006FCBB59BEFCBD60FFFBBD61FFFCB54CFFFBAE3CFFFAAA31FFFBB0
+    42FFFCC067FFFCC066FFFCBF65FFFCBE63FFFCBF64FFFCBE63FFFCBE63FFFCBE
+    61FFFCBD5FFFFCC16AFFFCBF64FFFCB852FFFCB64DFFFCB54CFFFAA82CFFFAA8
+    2BFFFBB64DFFFBB347FFFAAF3DFFFBB03FFEFAA82B9CF9A82F09000000000000
+    0000FBBB5A07FCBE63ACFCC16AFEFCC36EFFFBBC5CFFFCB650FFFCBA58FFFBBC
+    5DFFFCC573FFFCC97EFFFCC97CFFFCC470FFFCC16BFFFCC675FFFCC169FFFCC2
+    6DFFFCC26DFFFCBE62FFFCC068FFFCBC5CFFFCB750FFFBB448FFFCB750FFFCBA
+    57FFFBBE61FFFCB955FFFBB245FFFCB347FFFAAA338AFAAA3208000000000000
+    0000FCC06607FCC26E87FCC573FFFCC574FFFCC36DFFFCBF64FFFCC471FFFCC4
+    70FFFCC87AFFFBCA7FFFFBCB81FFFCCB82FFFCC97DFFFBC97CFFFCCA80FFFCCA
+    7FFFFCC574FFFCC067FFFCC26EFFFCC066FFFCBA58FFFCBB5AFFFCC069FFFCC4
+    72FFFCC169FFFCBE62FFFCB851FFFCB64EFFFAAE3D63F8A83006000000000000
+    0000FCC37003FCC5734AFCC779FFFCC677FFFCC87CFFFCC36EFFFCC674FFFCC6
+    75FFFCC97DFFFCCC84FFFCCA7EFFFCCB81FFFCCB80FFFCCB81FFFCCB81FFFBCA
+    7FFFFCC97EFFFBC36EFFFCC471FFFCC778FFFCC879FFFCC26DFFFCC068FFFCC7
+    77FFFCC068FFFCC36FFFFCBD5FFFFCB751FFFBB14225FAAA3401EB9516000000
+    0000FFF3DC00FBBA5C0CFCC97CF8FBCA7FFFFCCB81FFFCCA7EFFFCC675FFFCC9
+    7CFFFCCB81FFFCCC83FFFCC87BFFFDCE88FFFDCD86FFFDCD87FFFDCE89FFFDCE
+    88FFFDCE89FFFCCB81FFFCC87CFFFCC779FFFCC675FFFCC26DFFFCC26BFFFCC7
+    78FFFCC471FFFCC470FFFCBE62FEFBB752D7FCBD610A00000000000000000000
+    000000000000FBC77609FCCC8391FCCC85FFFDCC84FFFDCD87FFFBC677FFFBC8
+    79FFFCCC83FFFCCA7FFFFCCD85FFFDCE89FFFDCC85FFFDCF8BFFFDCF8BFFFCCB
+    81FFFCC97DFFFBC97DFFFBCA7FFFFCC97CFFFCC574FFFCC068FFFCC471FFFCC6
+    76FFFCC36FFFFCC36FFFFCB956FFFCB7526CFBB54D0800000000000000000000
+    0000FDCD8700FCCB8101FCC57219FDCF8AFCFBC97EFEFBC97CFFFBCA7EFFFBC4
+    72FFFCCC82FFFCCC84FFFCCB82FFFDCE89FFFCCB81FFFDCC85FFFCCE89FFFCCD
+    86FFFCCB83FFFCCB81FFFCC97EFFFCC87BFFFCC677FFFCC574FFFCC472FFFCC1
+    69FFFCC26DFFFCBF64FEFCB751E6FCBD610CFBA93000F9AA3500000000000000
+    00000000000000000000FCC87908FCCB8164FCCC83FFFCCA80FFFCCC83FFFCCE
+    88FFFCC97DFFFCCC84FFFCCB81FFFCCB83FFFCCC85FFFDCF8BFFFDD08DFFFDCC
+    83FFFCCC84FFFDCE88FFFBC97EFFFCC87BFFFCC778FFFCC676FFFCC575FFFCC1
+    69FFFCC36DFEFCBF65FFFCBC5C43FBB955070000000000000000000000000000
+    000000000000FCC6730000000000FBB75309FCCC84A1FDCD86FFFCCE87FFFCCC
+    82FFFCCB80FFFCC97CFFFCCA7FFFFCCB81FFFDCF8AFFFDCF8BFFFDCF8AFFFCCE
+    88FFFCCA7FFFFBC675FFFCC676FFFBC777FFFCC676FFFCC472FFFCC572FFFCC7
+    78FFFCC472FFFCBB5B7BFCC0650B00000000FCB7510000000000000000000000
+    0000000000000000000000000000FCBF6201FABA5609FCCE88AEFCD08DFFFCD0
+    8DFEFDCD85FFFDCF8AFFFCCC84FFFCC87AFFFCC97CFFFDCD85FFFDCD85FFFCCA
+    7FFFFBC776FFFCC573FFFBC676FFFCC779FFFCC36FFFFCC067FFFCC470FEFCC3
+    6EFFFBC1698CFCC7790AFC920000FCBA58000000000000000000000000000000
+    000000000000000000000000000000000000FCC26B01FAC26D09FDCE8981FDD2
+    92FFFDD190FEFDD08EFFFDD08DFFFDD08EFFFCCC84FFFCC878FFFBC472FFFBC3
+    6EFFFCC26DFFFBC470FFFBC370FFFBC16AFFFBC470FFFCC878FEFBC778FFFBC7
+    7963FBC06709F8B44800FCBB5C00000000000000000000000000000000000000
+    00000000000000000000000000000000000000000000FCC67900FCCC840AFCCE
+    8935FCD18FCCFDD395FFFDD293FFFDD293FFFDD08EFFFCCE8AFFFDCE89FFFCCC
+    83FFFCCA7FFFFCCA80FFFDCA80FFFDCC86FFFDCE89FFFCCC85B7FCC67923FBC4
+    6F0800000000FBBD600000000000000000000000000000000000000000000000
+    00000000000000000000000000000000000000000000FCCA7E0000000000FCCC
+    8604FDD59909FCCD8740FDD18FA3FCD190EFFDD293FFFCD292FFFDD393FFFDD2
+    93FFFDD291FFFDD190FFFCCE89E5FCCB8195FBC87A2FFBCC8509FCC572030000
+    0000FABD60000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    000000000000FDCE8A02FDD59A09FDDBAA09FBCB8222FDCC8548FDCD8559FDCC
+    8457FDCB8145FCCB811BFDD09009FCCA7F07F9C3700200000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    000000000000FDD292000000000000000000FDC26C00FCC77702FCC87903F6BF
+    6B03FBC47102F9B64D000000000000000000F9C4740000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000C87903000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    000000000000000000000000000000000000000000000000000000000000FFFF
+    FFFFFFFFFFFFFFFC3FFFFFE007FFFF8001FFFF0000FFFC00007FFC00003FF800
+    001FF000000FF000000FE0000007E0000007E0000007C0000003C0000003C000
+    0003C0000003C0000007E0000007E0000007E000000FF000000FF800001FF800
+    003FFC00003FFE0000FFFF8001FFFFE007FFFFFFFFFFFFFFFFFFFFFFFFFF}
   KeyPreview = True
   OldCreateOrder = False
   Position = poDesktopCenter
-  OnClose = FormClose
+  OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
-  OnKeyDown = FormKeyDown
-  OnShow = InitForm
   PixelsPerInch = 96
   TextHeight = 13
-  object Label7: TLabel
-    AlignWithMargins = True
-    Left = 567
-    Top = 152
-    Width = 233
-    Height = 28
-    Alignment = taCenter
-    AutoSize = False
-    Caption = 'Label7'
-    Font.Charset = RUSSIAN_CHARSET
-    Font.Color = 16685313
-    Font.Height = -24
-    Font.Name = 'Arial Narrow'
-    Font.Style = [fsBold]
-    ParentFont = False
-    Visible = False
-  end
-  object Label10: TLabel
-    Left = 567
-    Top = 198
-    Width = 233
-    Height = 28
-    Alignment = taCenter
-    AutoSize = False
-    Caption = 'last  '#1074#1079#1074#1077#1096#1077#1085#1085#1072#1103
-    Font.Charset = RUSSIAN_CHARSET
-    Font.Color = 16685313
-    Font.Height = -24
-    Font.Name = 'Arial Narrow'
-    Font.Style = [fsBold]
-    ParentFont = False
-    Visible = False
-  end
-  object Label6: TLabel
+  object gb_global: TGroupBox
     Left = 8
-    Top = 607
-    Width = 27
-    Height = 20
-    Caption = 'help'
-    Font.Charset = RUSSIAN_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -16
-    Font.Name = 'Arial Narrow'
-    Font.Style = [fsBold]
-    ParentFont = False
-  end
-  object Label5: TLabel
-    AlignWithMargins = True
-    Left = 8
-    Top = 121
-    Width = 177
-    Height = 25
-    AutoSize = False
-    BiDiMode = bdLeftToRight
-    Caption = #1044#1072#1085#1085#1099#1077' '#1089' '#1055#1059'-1'
-    Font.Charset = RUSSIAN_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -21
-    Font.Name = 'Arial Narrow'
-    Font.Style = []
-    ParentBiDiMode = False
-    ParentFont = False
-    Layout = tlCenter
-  end
-  object l_calendar1: TLabel
-    Left = 264
-    Top = 607
-    Width = 40
-    Height = 20
-    Alignment = taRightJustify
-    AutoSize = False
-    Caption = #1089':'
-    Font.Charset = RUSSIAN_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -21
-    Font.Name = 'Arial Narrow'
-    Font.Style = []
-    ParentFont = False
-  end
-  object l_calendar2: TLabel
-    Left = 264
-    Top = 639
-    Width = 40
-    Height = 20
-    Alignment = taRightJustify
-    AutoSize = False
-    Caption = #1087#1086':'
-    Font.Charset = RUSSIAN_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -21
-    Font.Name = 'Arial Narrow'
-    Font.Style = []
-    ParentFont = False
-  end
-  object p_weight_ingot: TPanel
-    Left = 8
-    Top = 295
-    Width = 978
-    Height = 105
-    Caption = 'p_weight_ingot'
-    Ctl3D = True
-    ParentCtl3D = False
-    ShowCaption = False
-    TabOrder = 10
-    object Label1: TLabel
-      Left = 756
-      Top = 39
-      Width = 205
-      Height = 24
+    Top = 1
+    Width = 629
+    Height = 56
+    TabOrder = 0
+    object l_current_shift: TLabel
+      Left = 106
+      Top = 10
+      Width = 68
+      Height = 42
+      Caption = 'value'
+      Font.Charset = RUSSIAN_CHARSET
+      Font.Color = 16685313
+      Font.Height = -35
+      Font.Name = 'Arial Narrow'
+      Font.Style = []
+      ParentFont = False
+    end
+    object l_n_current_shift: TLabel
+      Left = 3
+      Top = 10
+      Width = 97
+      Height = 42
+      Caption = #1057#1084#1077#1085#1072':'
+      Font.Charset = RUSSIAN_CHARSET
+      Font.Color = clBlack
+      Font.Height = -35
+      Font.Name = 'Arial Narrow'
+      Font.Style = []
+      ParentFont = False
+    end
+    object l_next_id: TLabel
+      Left = 481
+      Top = 32
+      Width = 96
+      Height = 20
       Alignment = taCenter
-      AutoSize = False
-      Caption = #1055#1083#1072#1085#1086#1074#1099#1081' '#1091#1076'.'#1088#1072#1089#1093'.('#1090'/'#1090')'
+      Caption = #1074#1079#1074#1077#1096#1080#1074#1072#1077#1084#1072#1103
+      Font.Charset = RUSSIAN_CHARSET
+      Font.Color = 16685313
+      Font.Height = -16
+      Font.Name = 'Arial Narrow'
+      Font.Style = [fsBold]
+      ParentFont = False
+      Visible = False
+    end
+    object l_current_id: TLabel
+      AlignWithMargins = True
+      Left = 481
+      Top = 10
+      Width = 53
+      Height = 20
+      Alignment = taCenter
+      Caption = #1090#1077#1082#1091#1097#1072#1103
+      Font.Charset = RUSSIAN_CHARSET
+      Font.Color = 16685313
+      Font.Height = -16
+      Font.Name = 'Arial Narrow'
+      Font.Style = [fsBold]
+      ParentFont = False
+      Visible = False
+    end
+    object l_n_last_save_weight: TLabel
+      Left = 178
+      Top = 24
+      Width = 185
+      Height = 23
+      Caption = #1087#1086#1089#1083#1077#1076#1085#1077#1077' '#1074#1079#1074#1077#1096#1080#1074#1072#1085#1080#1077':'
       Font.Charset = RUSSIAN_CHARSET
       Font.Color = clWindowText
       Font.Height = -19
       Font.Name = 'Arial Narrow'
       Font.Style = []
       ParentFont = False
-      Layout = tlCenter
     end
-    object l_steel_group: TLabel
-      Left = 756
-      Top = 69
-      Width = 205
+    object l_last_save_weight: TLabel
+      Left = 369
+      Top = 24
+      Width = 37
+      Height = 23
+      Caption = 'value'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = 16685313
+      Font.Height = -19
+      Font.Name = 'Arial Narrow'
+      Font.Style = []
+      ParentFont = False
+    end
+  end
+  object gb_data_pu1: TGroupBox
+    Left = 8
+    Top = 59
+    Width = 629
+    Height = 165
+    Caption = #1044#1072#1085#1085#1099#1077' '#1089' '#1055#1059'-1'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -21
+    Font.Name = 'Arial Narrow'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 1
+    DesignSize = (
+      629
+      165)
+    object DBGrid1: TDBGrid
+      Left = 3
+      Top = 32
+      Width = 529
+      Height = 121
+      DataSource = Module1.FIB_DataSource
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
+      ParentFont = False
+      ReadOnly = True
+      TabOrder = 0
+      TitleFont.Charset = DEFAULT_CHARSET
+      TitleFont.Color = clWindowText
+      TitleFont.Height = -11
+      TitleFont.Name = 'MS Sans Serif'
+      TitleFont.Style = []
+      Columns = <
+        item
+          Alignment = taCenter
+          Expanded = False
+          FieldName = 'NUM_INGOT'
+          Font.Charset = RUSSIAN_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Arial Narrow'
+          Font.Style = []
+          Title.Alignment = taCenter
+          Title.Caption = #8470' '#1057#1083#1080#1090#1082#1072
+          Title.Font.Charset = RUSSIAN_CHARSET
+          Title.Font.Color = clWindowText
+          Title.Font.Height = -13
+          Title.Font.Name = 'Arial Narrow'
+          Title.Font.Style = []
+          Width = 70
+          Visible = True
+        end
+        item
+          Alignment = taCenter
+          Expanded = False
+          FieldName = 'time_ingot'
+          Font.Charset = RUSSIAN_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Arial Narrow'
+          Font.Style = []
+          Title.Alignment = taCenter
+          Title.Caption = #1042#1088#1077#1084#1103
+          Title.Font.Charset = RUSSIAN_CHARSET
+          Title.Font.Color = clWindowText
+          Title.Font.Height = -13
+          Title.Font.Name = 'Arial Narrow'
+          Title.Font.Style = []
+          Width = 72
+          Visible = True
+        end
+        item
+          Alignment = taCenter
+          Expanded = False
+          FieldName = 'NUM_HEAT'
+          Font.Charset = RUSSIAN_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Arial Narrow'
+          Font.Style = []
+          Title.Alignment = taCenter
+          Title.Caption = #8470' '#1055#1083#1072#1074#1082#1080
+          Title.Font.Charset = RUSSIAN_CHARSET
+          Title.Font.Color = clWindowText
+          Title.Font.Height = -13
+          Title.Font.Name = 'Arial Narrow'
+          Title.Font.Style = []
+          Width = 100
+          Visible = True
+        end
+        item
+          Alignment = taCenter
+          Expanded = False
+          FieldName = 'NAME'
+          Font.Charset = RUSSIAN_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Arial Narrow'
+          Font.Style = []
+          Title.Alignment = taCenter
+          Title.Caption = #1052#1072#1088#1082#1072' '#1089#1090#1072#1083#1080
+          Title.Font.Charset = RUSSIAN_CHARSET
+          Title.Font.Color = clWindowText
+          Title.Font.Height = -13
+          Title.Font.Name = 'Arial Narrow'
+          Title.Font.Style = []
+          Width = 100
+          Visible = True
+        end
+        item
+          Alignment = taCenter
+          Expanded = False
+          FieldName = 'WEIGHT_INGOT'
+          Font.Charset = RUSSIAN_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Arial Narrow'
+          Font.Style = []
+          Title.Alignment = taCenter
+          Title.Caption = #1052#1072#1089#1089#1072' '#1089#1083#1080#1090#1082#1072' '#1055#1059'-1 ('#1090')'
+          Title.Font.Charset = RUSSIAN_CHARSET
+          Title.Font.Color = clWindowText
+          Title.Font.Height = -13
+          Title.Font.Name = 'Arial Narrow'
+          Title.Font.Style = []
+          Width = 160
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'STEEL_GROUP'
+          Font.Charset = RUSSIAN_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Arial Narrow'
+          Font.Style = []
+          Title.Font.Charset = RUSSIAN_CHARSET
+          Title.Font.Color = clWindowText
+          Title.Font.Height = -13
+          Title.Font.Name = 'Arial Narrow'
+          Title.Font.Style = []
+          Visible = False
+        end
+        item
+          Expanded = False
+          FieldName = 'SMENA'
+          Font.Charset = RUSSIAN_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Arial Narrow'
+          Font.Style = []
+          Title.Font.Charset = RUSSIAN_CHARSET
+          Title.Font.Color = clWindowText
+          Title.Font.Height = -13
+          Title.Font.Name = 'Arial Narrow'
+          Title.Font.Style = []
+          Visible = False
+        end>
+    end
+    object b_selected: TButton
+      Left = 536
+      Top = 119
+      Width = 87
+      Height = 34
+      Anchors = [akTop, akBottom]
+      BiDiMode = bdLeftToRight
+      Caption = #1042#1079#1074#1077#1096#1080#1074#1072#1077#1084#1099#1081' '#1089#1083#1080#1090#1086#1082
+      Font.Charset = RUSSIAN_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Arial Narrow'
+      Font.Style = []
+      ParentBiDiMode = False
+      ParentFont = False
+      TabOrder = 1
+      WordWrap = True
+      OnClick = b_selectedClick
+    end
+  end
+  object gb_weighed_ingot: TGroupBox
+    Left = 8
+    Top = 230
+    Width = 628
+    Height = 81
+    Caption = #1042#1079#1074#1077#1096#1080#1074#1072#1077#1084#1099#1081' '#1089#1083#1080#1090#1086#1082':'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -21
+    Font.Name = 'Arial Narrow'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 2
+    object l_datetime: TLabel
+      Left = 99
+      Top = 53
+      Width = 90
       Height = 24
       Alignment = taCenter
       AutoSize = False
-      Caption = #1055#1083#1072#1085#1086#1074#1099#1081' '#1091#1076'.'#1088#1072#1089#1093'.('#1090'/'#1090')'
+      Caption = #1042#1088#1077#1084#1103
+      Font.Charset = RUSSIAN_CHARSET
+      Font.Color = 16685313
+      Font.Height = -19
+      Font.Name = 'Arial Narrow'
+      Font.Style = []
+      ParentFont = False
+      Layout = tlCenter
+    end
+    object l_grade: TLabel
+      Left = 304
+      Top = 53
+      Width = 120
+      Height = 24
+      Alignment = taCenter
+      AutoSize = False
+      Caption = #1052#1072#1088#1082#1072' '#1089#1090#1072#1083#1080
+      Font.Charset = RUSSIAN_CHARSET
+      Font.Color = 16685313
+      Font.Height = -19
+      Font.Name = 'Arial Narrow'
+      Font.Style = []
+      ParentFont = False
+      Layout = tlCenter
+    end
+    object l_heat: TLabel
+      Left = 178
+      Top = 53
+      Width = 120
+      Height = 24
+      Alignment = taCenter
+      AutoSize = False
+      Caption = #8470' '#1055#1083#1072#1074#1082#1080
+      Font.Charset = RUSSIAN_CHARSET
+      Font.Color = 16685313
+      Font.Height = -19
+      Font.Name = 'Arial Narrow'
+      Font.Style = []
+      ParentFont = False
+      Layout = tlCenter
+    end
+    object l_number_ingot: TLabel
+      Left = 3
+      Top = 53
+      Width = 90
+      Height = 24
+      Alignment = taCenter
+      AutoSize = False
+      Caption = #8470' '#1057#1083#1080#1090#1082#1072
       Font.Charset = RUSSIAN_CHARSET
       Font.Color = 16685313
       Font.Height = -19
@@ -157,8 +504,8 @@ object Form1: TForm1
       Layout = tlCenter
     end
     object l_weight_ingot: TLabel
-      Left = 542
-      Top = 69
+      Left = 430
+      Top = 53
       Width = 184
       Height = 24
       Alignment = taCenter
@@ -172,9 +519,41 @@ object Form1: TForm1
       ParentFont = False
       Layout = tlCenter
     end
-    object Label3: TLabel
-      Left = 542
-      Top = 39
+    object l_n_number_ingot: TLabel
+      Left = 3
+      Top = 23
+      Width = 90
+      Height = 24
+      Alignment = taCenter
+      AutoSize = False
+      Caption = #8470' '#1057#1083#1080#1090#1082#1072
+      Font.Charset = RUSSIAN_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -19
+      Font.Name = 'Arial Narrow'
+      Font.Style = []
+      ParentFont = False
+      Layout = tlCenter
+    end
+    object l_n_heat: TLabel
+      Left = 178
+      Top = 23
+      Width = 120
+      Height = 24
+      Alignment = taCenter
+      AutoSize = False
+      Caption = #8470' '#1055#1083#1072#1074#1082#1080
+      Font.Charset = RUSSIAN_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -19
+      Font.Name = 'Arial Narrow'
+      Font.Style = []
+      ParentFont = False
+      Layout = tlCenter
+    end
+    object l_n_weight_ingot: TLabel
+      Left = 430
+      Top = 23
       Width = 184
       Height = 24
       Alignment = taCenter
@@ -188,9 +567,9 @@ object Form1: TForm1
       ParentFont = False
       Layout = tlCenter
     end
-    object Label4: TLabel
-      Left = 385
-      Top = 39
+    object l_n_grade: TLabel
+      Left = 304
+      Top = 23
       Width = 120
       Height = 24
       Alignment = taCenter
@@ -204,73 +583,9 @@ object Form1: TForm1
       ParentFont = False
       Layout = tlCenter
     end
-    object l_name: TLabel
-      Left = 385
-      Top = 69
-      Width = 120
-      Height = 24
-      Alignment = taCenter
-      AutoSize = False
-      Caption = #1052#1072#1088#1082#1072' '#1089#1090#1072#1083#1080
-      Font.Charset = RUSSIAN_CHARSET
-      Font.Color = 16685313
-      Font.Height = -19
-      Font.Name = 'Arial Narrow'
-      Font.Style = []
-      ParentFont = False
-      Layout = tlCenter
-    end
-    object Label2: TLabel
-      Left = 241
-      Top = 39
-      Width = 120
-      Height = 24
-      Alignment = taCenter
-      AutoSize = False
-      Caption = #8470' '#1055#1083#1072#1074#1082#1080
-      Font.Charset = RUSSIAN_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -19
-      Font.Name = 'Arial Narrow'
-      Font.Style = []
-      ParentFont = False
-      Layout = tlCenter
-    end
-    object l_num_heat: TLabel
-      Left = 241
-      Top = 69
-      Width = 120
-      Height = 24
-      Alignment = taCenter
-      AutoSize = False
-      Caption = #8470' '#1055#1083#1072#1074#1082#1080
-      Font.Charset = RUSSIAN_CHARSET
-      Font.Color = 16685313
-      Font.Height = -19
-      Font.Name = 'Arial Narrow'
-      Font.Style = []
-      ParentFont = False
-      Layout = tlCenter
-    end
-    object l_datetime: TLabel
-      Left = 135
-      Top = 69
-      Width = 90
-      Height = 24
-      Alignment = taCenter
-      AutoSize = False
-      Caption = #1042#1088#1077#1084#1103
-      Font.Charset = RUSSIAN_CHARSET
-      Font.Color = 16685313
-      Font.Height = -19
-      Font.Name = 'Arial Narrow'
-      Font.Style = []
-      ParentFont = False
-      Layout = tlCenter
-    end
-    object Label9: TLabel
-      Left = 135
-      Top = 39
+    object l_n_datetime: TLabel
+      Left = 99
+      Top = 23
       Width = 90
       Height = 24
       Alignment = taCenter
@@ -284,647 +599,155 @@ object Form1: TForm1
       ParentFont = False
       Layout = tlCenter
     end
-    object Label8: TLabel
-      Left = 7
-      Top = 9
-      Width = 242
-      Height = 24
-      AutoSize = False
-      Caption = #1042#1079#1074#1077#1096#1080#1074#1072#1077#1084#1099#1081' '#1089#1083#1080#1090#1086#1082':'
-      Font.Charset = RUSSIAN_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -21
-      Font.Name = 'Arial Narrow'
-      Font.Style = []
-      ParentFont = False
-      Layout = tlCenter
-    end
-    object Label11: TLabel
-      Left = 7
-      Top = 39
-      Width = 90
-      Height = 24
-      Alignment = taCenter
-      AutoSize = False
-      Caption = #8470' '#1057#1083#1080#1090#1082#1072
-      Font.Charset = RUSSIAN_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -19
-      Font.Name = 'Arial Narrow'
-      Font.Style = []
-      ParentFont = False
-      Layout = tlCenter
-    end
-    object l_num_ingot: TLabel
-      Left = 7
-      Top = 69
-      Width = 90
-      Height = 24
-      Alignment = taCenter
-      AutoSize = False
-      Caption = #8470' '#1057#1083#1080#1090#1082#1072
-      Font.Charset = RUSSIAN_CHARSET
-      Font.Color = 16685313
-      Font.Height = -19
-      Font.Name = 'Arial Narrow'
-      Font.Style = []
-      ParentFont = False
-      Layout = tlCenter
-    end
-    object Panel2: TPanel
-      Left = 16
-      Top = 216
-      Width = 185
-      Height = 41
-      Caption = 'Panel2'
-      TabOrder = 0
-    end
   end
-  object Button1: TButton
-    Left = 865
-    Top = 639
-    Width = 121
-    Height = 26
-    Caption = #1086#1073#1085#1086#1074#1080#1090#1100' DBGrid'
-    Font.Charset = RUSSIAN_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -13
-    Font.Name = 'Arial Narrow'
-    Font.Style = []
-    ParentFont = False
-    TabOrder = 0
-    Visible = False
-    WordWrap = True
-    OnClick = Button1Click
-  end
-  object Button4: TButton
-    Left = 865
-    Top = 607
-    Width = 121
-    Height = 26
-    Caption = #1074#1077#1089' '#1090#1077#1089#1090' '#1079#1072#1087#1080#1089#1080
-    Font.Charset = RUSSIAN_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -13
-    Font.Name = 'Arial Narrow'
-    Font.Style = []
-    ParentFont = False
-    TabOrder = 1
-    Visible = False
-    WordWrap = True
-    OnClick = Button4Click
-  end
-  object DBGrid2: TDBGrid
-    Left = 8
-    Top = 416
-    Width = 978
-    Height = 167
-    DataSource = DataModule2.DataSource1
-    Font.Charset = RUSSIAN_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = '@Arial Unicode MS'
-    Font.Style = []
-    Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
-    ParentFont = False
-    ReadOnly = True
-    TabOrder = 7
-    TitleFont.Charset = RUSSIAN_CHARSET
-    TitleFont.Color = clWindowText
-    TitleFont.Height = -11
-    TitleFont.Name = '@Arial Unicode MS'
-    TitleFont.Style = []
-    Touch.ParentTabletOptions = False
-    Touch.TabletOptions = [toPressAndHold]
-    Columns = <
-      item
-        Alignment = taCenter
-        Expanded = False
-        FieldName = 'datetime'
-        Font.Charset = RUSSIAN_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -13
-        Font.Name = 'Arial Narrow'
-        Font.Style = []
-        Title.Alignment = taCenter
-        Title.Caption = #1042#1088#1077#1084#1103
-        Title.Font.Charset = RUSSIAN_CHARSET
-        Title.Font.Color = clWindowText
-        Title.Font.Height = -13
-        Title.Font.Name = 'Arial Narrow'
-        Title.Font.Style = []
-        Width = 128
-        Visible = True
-      end
-      item
-        Alignment = taCenter
-        Expanded = False
-        FieldName = 'num_heat'
-        Font.Charset = RUSSIAN_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -13
-        Font.Name = 'Arial Narrow'
-        Font.Style = []
-        Title.Alignment = taCenter
-        Title.Caption = #8470' '#1055#1083#1072#1074#1082#1080
-        Title.Font.Charset = RUSSIAN_CHARSET
-        Title.Font.Color = clWindowText
-        Title.Font.Height = -13
-        Title.Font.Name = 'Arial Narrow'
-        Title.Font.Style = []
-        Width = 100
-        Visible = True
-      end
-      item
-        Alignment = taCenter
-        Expanded = False
-        FieldName = 'name'
-        Font.Charset = RUSSIAN_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -13
-        Font.Name = 'Arial Narrow'
-        Font.Style = []
-        Title.Alignment = taCenter
-        Title.Caption = #1052#1072#1088#1082#1072' '#1089#1090#1072#1083#1080
-        Title.Font.Charset = RUSSIAN_CHARSET
-        Title.Font.Color = clWindowText
-        Title.Font.Height = -13
-        Title.Font.Name = 'Arial Narrow'
-        Title.Font.Style = []
-        Width = 100
-        Visible = True
-      end
-      item
-        Alignment = taCenter
-        Expanded = False
-        FieldName = 'mass_ingot'
-        Font.Charset = RUSSIAN_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -13
-        Font.Name = 'Arial Narrow'
-        Font.Style = []
-        Title.Alignment = taCenter
-        Title.Caption = #1052#1072#1089#1089#1072' '#1089#1083#1080#1090#1082#1072' '#1055#1059'-1 ('#1090')'
-        Title.Font.Charset = RUSSIAN_CHARSET
-        Title.Font.Color = clWindowText
-        Title.Font.Height = -13
-        Title.Font.Name = 'Arial Narrow'
-        Title.Font.Style = []
-        Width = 100
-        Visible = True
-      end
-      item
-        Alignment = taCenter
-        Expanded = False
-        FieldName = 'mass'
-        Font.Charset = RUSSIAN_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -13
-        Font.Name = 'Arial Narrow'
-        Font.Style = []
-        Title.Alignment = taCenter
-        Title.Caption = #1052#1072#1089#1089#1072' '#1073#1083#1102#1084#1072' ('#1090')'
-        Title.Font.Charset = RUSSIAN_CHARSET
-        Title.Font.Color = clWindowText
-        Title.Font.Height = -13
-        Title.Font.Name = 'Arial Narrow'
-        Title.Font.Style = []
-        Width = 100
-        Visible = True
-      end
-      item
-        Alignment = taCenter
-        Expanded = False
-        FieldName = 'mass_difference'
-        Font.Charset = RUSSIAN_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -13
-        Font.Name = 'Arial Narrow'
-        Font.Style = []
-        Title.Alignment = taCenter
-        Title.Caption = #1056#1072#1079#1085#1080#1094#1072' '#1084#1072#1089#1089' ('#1090')'
-        Title.Font.Charset = RUSSIAN_CHARSET
-        Title.Font.Color = clWindowText
-        Title.Font.Height = -13
-        Title.Font.Name = 'Arial Narrow'
-        Title.Font.Style = []
-        Width = 100
-        Visible = True
-      end
-      item
-        Alignment = taCenter
-        Expanded = False
-        FieldName = 'p_s_c'
-        Font.Charset = RUSSIAN_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -13
-        Font.Name = 'Arial Narrow'
-        Font.Style = []
-        Title.Alignment = taCenter
-        Title.Caption = #1055#1083#1072#1085#1086#1074#1099#1081' '#1091#1076#1077#1083#1100#1085#1099#1081' '#1088#1072#1089#1093#1086#1076' ('#1090'/'#1090')'
-        Title.Font.Charset = RUSSIAN_CHARSET
-        Title.Font.Color = clWindowText
-        Title.Font.Height = -13
-        Title.Font.Name = 'Arial Narrow'
-        Title.Font.Style = []
-        Width = 100
-        Visible = True
-      end
-      item
-        Alignment = taCenter
-        Expanded = False
-        FieldName = 'a_s_c'
-        Font.Charset = RUSSIAN_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -13
-        Font.Name = 'Arial Narrow'
-        Font.Style = []
-        Title.Alignment = taCenter
-        Title.Caption = #1060#1072#1082#1090#1080#1095#1077#1089#1082#1080#1081' '#1091#1076#1077#1083#1100#1085#1099#1081' ('#1090'/'#1090')'
-        Title.Font.Charset = RUSSIAN_CHARSET
-        Title.Font.Color = clWindowText
-        Title.Font.Height = -13
-        Title.Font.Name = 'Arial Narrow'
-        Title.Font.Style = []
-        Width = 100
-        Visible = True
-      end
-      item
-        Alignment = taCenter
-        Expanded = False
-        FieldName = 'aberration'
-        Font.Charset = RUSSIAN_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -13
-        Font.Name = 'Arial Narrow'
-        Font.Style = []
-        Title.Alignment = taCenter
-        Title.Caption = #1054#1090#1082#1083#1086#1085#1077#1085#1080#1077' '#1086#1090' '#1085#1086#1088#1084#1099' (+/-,'#1090')'
-        Title.Font.Charset = RUSSIAN_CHARSET
-        Title.Font.Color = clWindowText
-        Title.Font.Height = -13
-        Title.Font.Name = 'Arial Narrow'
-        Title.Font.Style = []
-        Width = 100
-        Visible = True
-      end>
-  end
-  object b_report_detailed: TButton
-    Left = 446
-    Top = 671
-    Width = 145
-    Height = 26
-    Caption = #1044#1077#1090#1072#1083#1100#1085#1099#1081' '#1086#1090#1095#1077#1090
-    Font.Charset = RUSSIAN_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -13
-    Font.Name = 'Arial Narrow'
-    Font.Style = []
-    ParentFont = False
-    TabOrder = 2
-    OnClick = b_report_detailedClick
-  end
-  object b_report_heat: TButton
-    Left = 446
-    Top = 607
-    Width = 145
-    Height = 26
-    Caption = #1054#1090#1095#1077#1090' '#1087#1086' '#1087#1083#1072#1074#1082#1077
-    Font.Charset = RUSSIAN_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -13
-    Font.Name = 'Arial Narrow'
-    Font.Style = []
-    ParentFont = False
+  object b_test: TButton
+    Left = 591
+    Top = 32
+    Width = 40
+    Height = 21
+    Caption = 'test'
     TabOrder = 3
-    OnClick = b_report_heatClick
+    Visible = False
+    OnClick = b_testClick
   end
-  object DateTimeEnd: TDateTimePicker
-    Left = 310
-    Top = 639
-    Width = 113
-    Height = 24
-    Date = 0.434715162038628500
-    Time = 0.434715162038628500
-    Font.Charset = RUSSIAN_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -13
-    Font.Name = 'Arial Narrow'
-    Font.Style = []
-    ParentFont = False
-    TabOrder = 4
-  end
-  object DateTimeStart: TDateTimePicker
-    Left = 310
-    Top = 607
-    Width = 113
-    Height = 24
-    Date = 0.434715162038628500
-    Time = 0.434715162038628500
-    Font.Charset = RUSSIAN_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -13
-    Font.Name = 'Arial Narrow'
-    Font.Style = []
-    ParentFont = False
-    TabOrder = 5
-  end
-  object DBGrid1: TDBGrid
-    Left = 8
-    Top = 152
-    Width = 545
-    Height = 121
-    DataSource = DataModule2.ib_datasource
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = 'MS Sans Serif'
-    Font.Style = []
-    Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
-    ParentFont = False
-    ReadOnly = True
-    TabOrder = 6
-    TitleFont.Charset = DEFAULT_CHARSET
-    TitleFont.Color = clWindowText
-    TitleFont.Height = -11
-    TitleFont.Name = 'MS Sans Serif'
-    TitleFont.Style = []
-    Columns = <
-      item
-        Alignment = taCenter
-        Expanded = False
-        FieldName = 'NUM_INGOT'
-        Font.Charset = RUSSIAN_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -13
-        Font.Name = 'Arial Narrow'
-        Font.Style = []
-        Title.Alignment = taCenter
-        Title.Caption = #8470' '#1057#1083#1080#1090#1082#1072
-        Title.Font.Charset = RUSSIAN_CHARSET
-        Title.Font.Color = clWindowText
-        Title.Font.Height = -13
-        Title.Font.Name = 'Arial Narrow'
-        Title.Font.Style = []
-        Width = 70
-        Visible = True
-      end
-      item
-        Alignment = taCenter
-        Expanded = False
-        FieldName = 'time_ingot'
-        Font.Charset = RUSSIAN_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -13
-        Font.Name = 'Arial Narrow'
-        Font.Style = []
-        Title.Alignment = taCenter
-        Title.Caption = #1042#1088#1077#1084#1103
-        Title.Font.Charset = RUSSIAN_CHARSET
-        Title.Font.Color = clWindowText
-        Title.Font.Height = -13
-        Title.Font.Name = 'Arial Narrow'
-        Title.Font.Style = []
-        Width = 72
-        Visible = True
-      end
-      item
-        Alignment = taCenter
-        Expanded = False
-        FieldName = 'NUM_HEAT'
-        Font.Charset = RUSSIAN_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -13
-        Font.Name = 'Arial Narrow'
-        Font.Style = []
-        Title.Alignment = taCenter
-        Title.Caption = #8470' '#1055#1083#1072#1074#1082#1080
-        Title.Font.Charset = RUSSIAN_CHARSET
-        Title.Font.Color = clWindowText
-        Title.Font.Height = -13
-        Title.Font.Name = 'Arial Narrow'
-        Title.Font.Style = []
-        Width = 100
-        Visible = True
-      end
-      item
-        Alignment = taCenter
-        Expanded = False
-        FieldName = 'NAME'
-        Font.Charset = RUSSIAN_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -13
-        Font.Name = 'Arial Narrow'
-        Font.Style = []
-        Title.Alignment = taCenter
-        Title.Caption = #1052#1072#1088#1082#1072' '#1089#1090#1072#1083#1080
-        Title.Font.Charset = RUSSIAN_CHARSET
-        Title.Font.Color = clWindowText
-        Title.Font.Height = -13
-        Title.Font.Name = 'Arial Narrow'
-        Title.Font.Style = []
-        Width = 100
-        Visible = True
-      end
-      item
-        Alignment = taCenter
-        Expanded = False
-        FieldName = 'WEIGHT_INGOT'
-        Font.Charset = RUSSIAN_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -13
-        Font.Name = 'Arial Narrow'
-        Font.Style = []
-        Title.Alignment = taCenter
-        Title.Caption = #1052#1072#1089#1089#1072' '#1089#1083#1080#1090#1082#1072' '#1055#1059'-1 ('#1090')'
-        Title.Font.Charset = RUSSIAN_CHARSET
-        Title.Font.Color = clWindowText
-        Title.Font.Height = -13
-        Title.Font.Name = 'Arial Narrow'
-        Title.Font.Style = []
-        Width = 160
-        Visible = True
-      end
-      item
-        Expanded = False
-        FieldName = 'STEEL_GROUP'
-        Font.Charset = RUSSIAN_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -13
-        Font.Name = 'Arial Narrow'
-        Font.Style = []
-        Title.Font.Charset = RUSSIAN_CHARSET
-        Title.Font.Color = clWindowText
-        Title.Font.Height = -13
-        Title.Font.Name = 'Arial Narrow'
-        Title.Font.Style = []
-        Visible = False
-      end
-      item
-        Expanded = False
-        FieldName = 'SMENA'
-        Font.Charset = RUSSIAN_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -13
-        Font.Name = 'Arial Narrow'
-        Font.Style = []
-        Title.Font.Charset = RUSSIAN_CHARSET
-        Title.Font.Color = clWindowText
-        Title.Font.Height = -13
-        Title.Font.Name = 'Arial Narrow'
-        Title.Font.Style = []
-        Visible = False
-      end>
-  end
-  object b_selected: TButton
-    Left = 567
-    Top = 247
-    Width = 145
-    Height = 26
-    Caption = #1042#1079#1074#1077#1096#1080#1074#1072#1077#1084#1099#1081' '#1089#1083#1080#1090#1086#1082
-    Font.Charset = RUSSIAN_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -13
-    Font.Name = 'Arial Narrow'
-    Font.Style = []
-    ParentFont = False
-    TabOrder = 8
-    OnClick = b_selectedClick
-  end
-  object b_report_steel: TButton
-    Left = 446
-    Top = 639
-    Width = 145
-    Height = 26
-    Caption = #1054#1090#1095#1077#1090' '#1087#1086' '#1084#1072#1088#1082#1077' '#1089#1090#1072#1083#1080
-    Font.Charset = RUSSIAN_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -13
-    Font.Name = 'Arial Narrow'
-    Font.Style = []
-    ParentFont = False
-    TabOrder = 9
-    OnClick = b_report_steelClick
-  end
-  object p_head: TPanel
-    Left = 8
-    Top = 16
-    Width = 978
-    Height = 83
-    Caption = 'p_head'
-    ShowCaption = False
-    TabOrder = 11
-    object l_current_shift1: TLabel
-      Left = 612
-      Top = 20
-      Width = 264
-      Height = 42
-      AutoSize = False
-      Caption = 'l_current_shift1'
-      Font.Charset = RUSSIAN_CHARSET
-      Font.Color = 16685313
-      Font.Height = -35
-      Font.Name = 'Arial Narrow'
-      Font.Style = []
-      ParentFont = False
-    end
-    object l_sql_work1: TLabel
-      Left = 7
-      Top = 13
-      Width = 218
-      Height = 18
-      AutoSize = False
-      Caption = 'l_sql_work1'
-      Font.Charset = ANSI_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -16
-      Font.Name = 'Arial Narrow'
-      Font.Style = [fsBold]
-      ParentFont = False
-    end
-    object l_work_p1: TLabel
-      Left = 7
-      Top = 45
-      Width = 218
-      Height = 18
-      AutoSize = False
-      Caption = 'l_work_p1'
-      Font.Charset = ANSI_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -16
-      Font.Name = 'Arial Narrow'
-      Font.Style = [fsBold]
-      ParentFont = False
-    end
-    object l_sql_work2: TLabel
-      Left = 256
-      Top = 13
-      Width = 137
-      Height = 18
-      AutoSize = False
-      Caption = 'l_sql_work2'
-      Font.Charset = RUSSIAN_CHARSET
-      Font.Color = clGreen
-      Font.Height = -16
-      Font.Name = 'Arial Narrow'
-      Font.Style = [fsBold]
-      ParentFont = False
-    end
-    object l_work_p2: TLabel
-      Left = 256
-      Top = 45
-      Width = 137
-      Height = 18
-      AutoSize = False
-      Caption = 'l_work_p2'
-      Font.Charset = RUSSIAN_CHARSET
-      Font.Color = clGreen
-      Font.Height = -16
-      Font.Name = 'Arial Narrow'
-      Font.Style = [fsBold]
-      ParentFont = False
-    end
-    object l_current_shift2: TLabel
-      Left = 900
-      Top = 20
-      Width = 48
-      Height = 42
-      AutoSize = False
-      Caption = 'l_current_shift2'
-      Font.Charset = RUSSIAN_CHARSET
-      Font.Color = 16685313
-      Font.Height = -35
-      Font.Name = 'Arial Narrow'
-      Font.Style = []
-      ParentFont = False
-    end
-  end
-  object Timer1: TTimer
-    Enabled = False
-    Interval = 500
-    OnTimer = Timer1Timer
-    Left = 16
-    Top = 640
-  end
-  object ApdComPort1: TApdComPort
-    ComNumber = 1
-    Baud = 9600
-    Parity = pEven
-    TraceName = 'APRO.TRC'
-    LogName = 'APRO.LOG'
-    LogHex = False
-    Left = 72
-    Top = 640
-  end
-  object ApdDataPacket1: TApdDataPacket
-    Enabled = True
-    EndCond = [ecString]
-    StartString = '#2'
-    EndString = '#3'
-    ComPort = ApdComPort1
-    PacketSize = 0
-    OnStringPacket = ApdDataPacket1StringPacket
-    Left = 152
-    Top = 640
+  object TrayIcon: TTrayIcon
+    Icon.Data = {
+      0000010001002020000001002000A81000001600000028000000200000004000
+      0000010020000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      00000000000200000004000000070000000A0000000D0000000F000000100000
+      00100000000F0000000D0000000A000000070000000400000002000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000020000
+      0005000000090000000F000000160000001E000000260000002D000000310000
+      00310000002D000000270000001F000000160000000F00000009000000050000
+      0002000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000003000000070000
+      000D00000018000000270C07003F0C07005C080400790D0700902918009F2A19
+      009F110900900B06007A0D07005C0B06003F00000029000000190000000F0000
+      0007000000030000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000300000007000000100000
+      001F10090042160D0077875408C1BD750AEADA8506FCF09206FFF79707FFFA9B
+      0BFFF7990CFFD68307FBB26D05E8784903BF0E080078160D0045020000230000
+      0012000000070000000300000000000000000000000000000000000000000000
+      000000000000000000000000000000000002000000060000000F170E00262113
+      005CAC6903C8DC8503FFD48001FFEE9511FEFBA01BFFFCA11AFFFBA31FFFFBA6
+      26FFFCA525FFF89E18FFE78F0CFED78203FFE08907FE9B5F04C6150C0061190F
+      002B000000120000000700000002000000000000000000000000000000000000
+      0000000000000000000000000001000000040000000B241600239059087BE088
+      04FACE7C02FFCF7D03FFEC8E02FFFCA118FFF59507FFFBAA30FFFBA82CFFFBA9
+      2FFFFBA82CFFFAA525FFFBA82BFFF7980AFFE48B05FED07D02FFDC8605F5653D
+      01792C1B002A0000000E00000005000000010000000000000000000000000000
+      00000000000000000000000000010000000540250017CD821389DE8807FFD581
+      02FEE48A03FFDB8403FFED8F03FFF49304FFF69504FFFA9B0CFFFA9F16FFFBA0
+      1AFFFBA526FFFB9B0DFFFA9807FFFA9908FFF99705FFF29203FFD38003FEDD85
+      03FF9A5D027F4026001F00000008000000030000000000000000000000000000
+      0000000000000000000000000002965A000EE5941C75EB9008FFDD8603FEE88C
+      03FFEA8D02FFE18803FFE58A03FFF89604FFFA9B0CFFFA9D10FFFB9B0EFFFB9D
+      11FFFB9E15FFFB9E16FFFA9D12FFFB9C0EFFFA9908FFFA9807FFFA9805FFD480
+      03FEDA8403FFA76502666B410114000000030000000100000000000000000000
+      00000000000000000000CA7E0B06F9A3233FFBA119FFE38904FEF09103FFED8F
+      02FFF19203FFE98C02FFE68A02FFFB9B0CFFFA9F16FFFBA019FFFBA11AFFFA9F
+      16FFFBA21DFFFBA321FFFBA019FFFB9E14FFFA9C0FFFFB9A0CFFFB9A0AFFE88C
+      03FFC67703FECB7A03FFB86E02317E4C01070000000100000000000000000000
+      000000000000926E3700FCBB5709FAA627E7F3960BFEEC8F02FFEF9002FFF292
+      03FFEE8F03FFE28903FFE68B02FFF7980BFFFB9F15FFFBA21DFFFBA320FFFB9C
+      0EFFFAA11BFFFBA92EFFFBA425FFFBA018FFFB9E15FFFB9D11FFFB9D11FFF596
+      09FFD48002FFC77802FEE48A03CCD07C000C1B10000100000000000000000000
+      000000000000FCBD6105FBAC3671FBA320FFEF9105FFF39303FFF49303FFF594
+      03FFE58A02FFE88C03FFED8F02FFF69709FFFB9E15FFFBA31FFFFBA629FFFBA1
+      1BFFFAA422FFFBAC35FFFBAF3EFFFBAC34FFFBA423FFFBA322FFFBA21FFFFBA2
+      1EFFF69B12FFE88D05FFEC8E02FFF3960D50F69C160600000000000000000000
+      000000000000FEEED605FAAA30E4FBA21DFEF29203FFF79604FFFA9908FFF997
+      05FFEA8E02FFEF9002FFF79709FFFB9E13FFFBA422FFFBAA33FFFAB142FFFBA9
+      30FFFBA92FFFFBB040FFFBB041FFFBAF3EFFFBA92EFFFBA82BFFFBA526FFFBA2
+      1DFFFBA21DFFF49303FFF79809FEF59709C3FFBE5D080000000000000000E990
+      0A00FBAD3801FBAB3534FBAB34FFFBA421FFF89705FFFA9B0BFFFB9E13FFFBA1
+      19FFF69504FFF79708FFFBA21DFFFBA82BFFFBA92EFFFAAC35FFFBB449FFFAAD
+      38FFFAAB33FFFBB348FFFAB143FFFBAE3DFFFBAE3DFFFAAB34FFFBA729FFFBA7
+      2BFFFBA628FFFA9807FFFBA018FFFA9F17FFF6A52F18F9A32401000000000000
+      0000F9AA3505FBAD3978FAAA32FFFAA629FFFB9B0DFFFBA11BFFFBA524FFFAA4
+      24FFFBA627FFFBA627FFFBA82DFFFAA930FFFAAA32FFFAAA33FFFCB142FFFBAD
+      38FFFAAD39FFFAAC38FFFAB142FFFAAF3EFFFAB040FFFBB246FFFAA92DFFFBAB
+      34FFFBA526FFFB9D0FFFFBA21EFFFBA525FFFAA42358FAA93104000000000000
+      0000FAA82C06FAAE3BA4FBB03EFEFBAD3AFFFBA01AFFFBA524FFFBA320FFFBA8
+      2BFFFBB040FFFBB03FFFFBAF3EFFFBB54CFFFCB955FFFCB852FFFBB954FFFBBB
+      5AFFFCBE62FFFCBD61FFFCBD5EFFFCB54DFFFBAD3AFFFBAE3CFFFBA82DFFFBAC
+      36FFFBA423FFFB9F17FFFBA930FFFBA82CFFFAA42484FBAA3108000000000000
+      0000FBAE3C06FBB347BCFBB750FFFCB54DFFFAAA33FFFAA629FFFBA72BFFFBAE
+      3BFFFCB64FFFFCC16AFFFBBB5AFFFCBB59FFFCBA59FFFCB956FFFCBB5BFFFCBB
+      5BFFFCBB5BFFFCC067FFFCC26BFFFBBC5CFFFBB346FFFBAB34FFFBA92FFFFBA9
+      30FFFAA421FFFAA931FFFBAB34FFFBAB34FEFAA5259AFAA72C09000000000000
+      0000FCB75006FCBB59BEFCBD60FFFBBD61FFFCB54CFFFBAE3CFFFAAA31FFFBB0
+      42FFFCC067FFFCC066FFFCBF65FFFCBE63FFFCBF64FFFCBE63FFFCBE63FFFCBE
+      61FFFCBD5FFFFCC16AFFFCBF64FFFCB852FFFCB64DFFFCB54CFFFAA82CFFFAA8
+      2BFFFBB64DFFFBB347FFFAAF3DFFFBB03FFEFAA82B9CF9A82F09000000000000
+      0000FBBB5A07FCBE63ACFCC16AFEFCC36EFFFBBC5CFFFCB650FFFCBA58FFFBBC
+      5DFFFCC573FFFCC97EFFFCC97CFFFCC470FFFCC16BFFFCC675FFFCC169FFFCC2
+      6DFFFCC26DFFFCBE62FFFCC068FFFCBC5CFFFCB750FFFBB448FFFCB750FFFCBA
+      57FFFBBE61FFFCB955FFFBB245FFFCB347FFFAAA338AFAAA3208000000000000
+      0000FCC06607FCC26E87FCC573FFFCC574FFFCC36DFFFCBF64FFFCC471FFFCC4
+      70FFFCC87AFFFBCA7FFFFBCB81FFFCCB82FFFCC97DFFFBC97CFFFCCA80FFFCCA
+      7FFFFCC574FFFCC067FFFCC26EFFFCC066FFFCBA58FFFCBB5AFFFCC069FFFCC4
+      72FFFCC169FFFCBE62FFFCB851FFFCB64EFFFAAE3D63F8A83006000000000000
+      0000FCC37003FCC5734AFCC779FFFCC677FFFCC87CFFFCC36EFFFCC674FFFCC6
+      75FFFCC97DFFFCCC84FFFCCA7EFFFCCB81FFFCCB80FFFCCB81FFFCCB81FFFBCA
+      7FFFFCC97EFFFBC36EFFFCC471FFFCC778FFFCC879FFFCC26DFFFCC068FFFCC7
+      77FFFCC068FFFCC36FFFFCBD5FFFFCB751FFFBB14225FAAA3401EB9516000000
+      0000FFF3DC00FBBA5C0CFCC97CF8FBCA7FFFFCCB81FFFCCA7EFFFCC675FFFCC9
+      7CFFFCCB81FFFCCC83FFFCC87BFFFDCE88FFFDCD86FFFDCD87FFFDCE89FFFDCE
+      88FFFDCE89FFFCCB81FFFCC87CFFFCC779FFFCC675FFFCC26DFFFCC26BFFFCC7
+      78FFFCC471FFFCC470FFFCBE62FEFBB752D7FCBD610A00000000000000000000
+      000000000000FBC77609FCCC8391FCCC85FFFDCC84FFFDCD87FFFBC677FFFBC8
+      79FFFCCC83FFFCCA7FFFFCCD85FFFDCE89FFFDCC85FFFDCF8BFFFDCF8BFFFCCB
+      81FFFCC97DFFFBC97DFFFBCA7FFFFCC97CFFFCC574FFFCC068FFFCC471FFFCC6
+      76FFFCC36FFFFCC36FFFFCB956FFFCB7526CFBB54D0800000000000000000000
+      0000FDCD8700FCCB8101FCC57219FDCF8AFCFBC97EFEFBC97CFFFBCA7EFFFBC4
+      72FFFCCC82FFFCCC84FFFCCB82FFFDCE89FFFCCB81FFFDCC85FFFCCE89FFFCCD
+      86FFFCCB83FFFCCB81FFFCC97EFFFCC87BFFFCC677FFFCC574FFFCC472FFFCC1
+      69FFFCC26DFFFCBF64FEFCB751E6FCBD610CFBA93000F9AA3500000000000000
+      00000000000000000000FCC87908FCCB8164FCCC83FFFCCA80FFFCCC83FFFCCE
+      88FFFCC97DFFFCCC84FFFCCB81FFFCCB83FFFCCC85FFFDCF8BFFFDD08DFFFDCC
+      83FFFCCC84FFFDCE88FFFBC97EFFFCC87BFFFCC778FFFCC676FFFCC575FFFCC1
+      69FFFCC36DFEFCBF65FFFCBC5C43FBB955070000000000000000000000000000
+      000000000000FCC6730000000000FBB75309FCCC84A1FDCD86FFFCCE87FFFCCC
+      82FFFCCB80FFFCC97CFFFCCA7FFFFCCB81FFFDCF8AFFFDCF8BFFFDCF8AFFFCCE
+      88FFFCCA7FFFFBC675FFFCC676FFFBC777FFFCC676FFFCC472FFFCC572FFFCC7
+      78FFFCC472FFFCBB5B7BFCC0650B00000000FCB7510000000000000000000000
+      0000000000000000000000000000FCBF6201FABA5609FCCE88AEFCD08DFFFCD0
+      8DFEFDCD85FFFDCF8AFFFCCC84FFFCC87AFFFCC97CFFFDCD85FFFDCD85FFFCCA
+      7FFFFBC776FFFCC573FFFBC676FFFCC779FFFCC36FFFFCC067FFFCC470FEFCC3
+      6EFFFBC1698CFCC7790AFC920000FCBA58000000000000000000000000000000
+      000000000000000000000000000000000000FCC26B01FAC26D09FDCE8981FDD2
+      92FFFDD190FEFDD08EFFFDD08DFFFDD08EFFFCCC84FFFCC878FFFBC472FFFBC3
+      6EFFFCC26DFFFBC470FFFBC370FFFBC16AFFFBC470FFFCC878FEFBC778FFFBC7
+      7963FBC06709F8B44800FCBB5C00000000000000000000000000000000000000
+      00000000000000000000000000000000000000000000FCC67900FCCC840AFCCE
+      8935FCD18FCCFDD395FFFDD293FFFDD293FFFDD08EFFFCCE8AFFFDCE89FFFCCC
+      83FFFCCA7FFFFCCA80FFFDCA80FFFDCC86FFFDCE89FFFCCC85B7FCC67923FBC4
+      6F0800000000FBBD600000000000000000000000000000000000000000000000
+      00000000000000000000000000000000000000000000FCCA7E0000000000FCCC
+      8604FDD59909FCCD8740FDD18FA3FCD190EFFDD293FFFCD292FFFDD393FFFDD2
+      93FFFDD291FFFDD190FFFCCE89E5FCCB8195FBC87A2FFBCC8509FCC572030000
+      0000FABD60000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000FDCE8A02FDD59A09FDDBAA09FBCB8222FDCC8548FDCD8559FDCC
+      8457FDCB8145FCCB811BFDD09009FCCA7F07F9C3700200000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000FDD292000000000000000000FDC26C00FCC77702FCC87903F6BF
+      6B03FBC47102F9B64D000000000000000000F9C4740000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000C87903000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000000000000000000000FFFF
+      FFFFFFFFFFFFFFFC3FFFFFE007FFFF8001FFFF0000FFFC00007FFC00003FF800
+      001FF000000FF000000FE0000007E0000007E0000007C0000003C0000003C000
+      0003C0000003C0000007E0000007E0000007E000000FF000000FF800001FF800
+      003FFC00003FFE0000FFFF8001FFFFE007FFFFFFFFFFFFFFFFFFFFFFFFFF}
+    OnClick = TrayIconClick
+    Left = 576
+    Top = 112
   end
 end

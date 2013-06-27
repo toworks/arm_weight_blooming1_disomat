@@ -1,0 +1,168 @@
+object Module1: TModule1
+  OldCreateOrder = False
+  OnCreate = DataModuleCreate
+  Height = 299
+  Width = 460
+  object ADOConnection1: TADOConnection
+    ConnectionString = 
+      'Provider=SQLOLEDB.1;Password=12345678;Persist Security Info=True' +
+      ';User ID=sa;Initial Catalog=scale_turntable;Data Source=krr-ws03' +
+      '302;Use Procedure for Prepare=1;Auto Translate=True;Packet Size=' +
+      '4096;Workstation ID=KRR-WS08022;Use Encryption for Data=False;Ta' +
+      'g with column collation when possible=False'
+    ConnectionTimeout = 30
+    LoginPrompt = False
+    Provider = 'SQLOLEDB.1'
+    Left = 40
+    Top = 8
+  end
+  object ADOQuery1: TADOQuery
+    Connection = ADOConnection1
+    CursorType = ctStatic
+    Parameters = <>
+    SQL.Strings = (
+      'SELECT *  FROM  scale_turntable.dbo.mass')
+    Left = 200
+    Top = 8
+  end
+  object DataSource1: TDataSource
+    DataSet = ADOQuery1
+    Left = 128
+    Top = 8
+  end
+  object query_count: TADOQuery
+    Connection = ADOConnection1
+    Parameters = <>
+    Left = 264
+    Top = 8
+  end
+  object ib_datasource: TDataSource
+    DataSet = ib_query_view
+    Left = 128
+    Top = 72
+  end
+  object ib_timer: TTimer
+    Enabled = False
+    OnTimer = ib_timerTimer
+    Left = 40
+    Top = 128
+  end
+  object ib_connection: TADOConnection
+    ConnectionString = 
+      'Provider=MSDASQL.1;Password=masterkey;Persist Security Info=True' +
+      ';User ID=sysdba;Data Source=firebird'
+    ConnectionTimeout = 30
+    LoginPrompt = False
+    Provider = 'MSDASQL.1'
+    Left = 40
+    Top = 72
+  end
+  object ib_query: TADOQuery
+    Connection = ib_connection
+    Parameters = <>
+    Left = 200
+    Top = 72
+  end
+  object ib_query_count: TADOQuery
+    Connection = ib_connection
+    Parameters = <>
+    Left = 272
+    Top = 72
+  end
+  object ib_query_view: TADOQuery
+    Connection = ib_connection
+    Parameters = <>
+    Left = 352
+    Top = 72
+  end
+  object query_reports: TADOQuery
+    Connection = ADOConnection1
+    CursorType = ctStatic
+    Parameters = <>
+    SQL.Strings = (
+      'SELECT *  FROM  scale_turntable.dbo.mass')
+    Left = 336
+    Top = 8
+  end
+  object query_s_g_c: TADOQuery
+    Connection = ADOConnection1
+    Parameters = <>
+    Left = 408
+    Top = 8
+  end
+  object ApdDataPacket1: TApdDataPacket
+    Enabled = True
+    EndCond = [ecString]
+    StartString = '#2'
+    EndString = '#3'
+    ComPort = ApdComPort1
+    PacketSize = 0
+    OnStringPacket = ApdDataPacket1StringPacket
+    Left = 104
+    Top = 251
+  end
+  object ApdComPort1: TApdComPort
+    ComNumber = 1
+    Baud = 9600
+    Parity = pEven
+    TraceName = 'APRO.TRC'
+    LogName = 'APRO.LOG'
+    LogHex = False
+    OnPortClose = ApdComPort1PortClose
+    OnPortOpen = ApdComPort1PortOpen
+    Left = 24
+    Top = 251
+  end
+  object pFIBDatabase1: TpFIBDatabase
+    AutoReconnect = True
+    SQLDialect = 1
+    Timeout = 0
+    WaitForRestoreConnect = 0
+    Left = 32
+    Top = 184
+  end
+  object pFibErrorHandler1: TpFibErrorHandler
+    OnFIBErrorEvent = pFibErrorHandler1FIBErrorEvent
+    Left = 376
+    Top = 184
+  end
+  object pFIBDataSet1: TpFIBDataSet
+    Transaction = pFIBTransaction1
+    Database = pFIBDatabase1
+    DataSource = DataSource1
+    Left = 288
+    Top = 184
+  end
+  object pFIBQuery1: TpFIBQuery
+    Transaction = pFIBTransaction1
+    Database = pFIBDatabase1
+    Left = 208
+    Top = 184
+  end
+  object pFIBTransaction1: TpFIBTransaction
+    DefaultDatabase = pFIBDatabase1
+    TimeoutAction = TACommit
+    TRParams.Strings = (
+      'write'
+      'isc_tpb_nowait'
+      'read_committed'
+      'rec_version')
+    TPBMode = tpbDefault
+    Left = 120
+    Top = 184
+  end
+  object OraSession1: TOraSession
+    LoginPrompt = False
+    Left = 320
+    Top = 248
+  end
+  object OraQuery1: TOraQuery
+    Left = 384
+    Top = 248
+  end
+  object DataSource2: TDataSource
+    DataSet = pFIBDataSet1
+    Left = 224
+    Top = 248
+  end
+end

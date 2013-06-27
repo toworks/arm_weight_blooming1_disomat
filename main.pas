@@ -31,69 +31,40 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, DB, ADODB, ShellAPI, StdCtrls, Mask, DBCtrls, Menus, Grids,
-  DBGrids, DBTables, ExtCtrls, ComCtrls, OoMisc, AdPort, AdPacket, Reports,db_weight;
+  Dialogs, ShellAPI, StdCtrls, Mask, Menus, Grids, DBGrids, DBTables, ExtCtrls,
+  CommCtrl, StrUtils, DateUtils;
 
 type
   TForm1 = class(TForm)
-    Button1: TButton;
-    Button4: TButton;
-    Timer1: TTimer;
-    DBGrid2: TDBGrid;
-    ApdComPort1: TApdComPort;
-    ApdDataPacket1: TApdDataPacket;
-    Label7: TLabel;
-    Label10: TLabel;
-    b_report_detailed: TButton;
-    b_report_heat: TButton;
-    DateTimeEnd: TDateTimePicker;
-    Label6: TLabel;
-    DateTimeStart: TDateTimePicker;
-    Label5: TLabel;
+    l_current_id: TLabel;
+    l_next_id: TLabel;
     DBGrid1: TDBGrid;
     b_selected: TButton;
-    b_report_steel: TButton;
-    p_weight_ingot: TPanel;
-    Label8: TLabel;
-    l_steel_group: TLabel;
-    Label1: TLabel;
-    Label3: TLabel;
+    l_n_weight_ingot: TLabel;
     l_weight_ingot: TLabel;
-    l_name: TLabel;
-    Label4: TLabel;
-    Label2: TLabel;
-    l_num_heat: TLabel;
+    l_grade: TLabel;
+    l_n_grade: TLabel;
+    l_n_heat: TLabel;
+    l_heat: TLabel;
     l_datetime: TLabel;
-    Label9: TLabel;
-    Panel2: TPanel;
-    p_head: TPanel;
-    l_current_shift1: TLabel;
-    l_sql_work1: TLabel;
-    l_work_p1: TLabel;
-    l_sql_work2: TLabel;
-    l_work_p2: TLabel;
-    l_current_shift2: TLabel;
-    l_calendar1: TLabel;
-    l_calendar2: TLabel;
-    l_num_ingot: TLabel;
-    Label11: TLabel;
-    procedure InitForm(Sender: TObject);
-    procedure InitComPort(Sender: TObject);
-    procedure InitSql(Sender: TObject);
-    procedure Timer1Timer(Sender: TObject);
-    procedure Button1Click(Sender: TObject);
-    procedure b_report_heatClick(Sender: TObject);
-    procedure b_report_steelClick(Sender: TObject);
-    procedure b_report_detailedClick(Sender: TObject);
-    procedure Button4Click(Sender: TObject);
+    l_n_datetime: TLabel;
+    l_n_current_shift: TLabel;
+    l_current_shift: TLabel;
+    l_number_ingot: TLabel;
+    l_n_number_ingot: TLabel;
+    TrayIcon: TTrayIcon;
+    gb_global: TGroupBox;
+    gb_data_pu1: TGroupBox;
+    gb_weighed_ingot: TGroupBox;
+    b_test: TButton;
+    l_n_last_save_weight: TLabel;
+    l_last_save_weight: TLabel;
     procedure FormCreate(Sender: TObject);
-    procedure ApdDataPacket1StringPacket(Sender: TObject; Data: AnsiString);
-    procedure FormClose(Sender: TObject; var Action: TCloseAction);
-    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure TrayIconClick(Sender: TObject);
+    procedure TrayPopUpCloseClick(Sender: TObject);
+    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure b_selectedClick(Sender: TObject);
-
-
-
+    procedure b_testClick(Sender: TObject);
 
 
   private
@@ -105,475 +76,314 @@ type
 
 var
   Form1: TForm1;
-  formattedDateTime: string;
-  CurrentDir: string;
-  HeadName: string = 'АРМ резчика ПУ-4';
-  max: integer = 0;
-  no_save: string = '0';
-  StartTime: TDateTime;
+    CurrentDir: string;
+    HeadName: string = 'АРМ резчика ПУ-4';
+    Version: string = '0.0alpha';
+    DBFile: string = 'data.sdb';
+    LogFile: string = 'app.log';
+    PopupTray: TPopupMenu;
+    TrayMark: bool = false;
+
+    formattedDateTime: string;
 
 
-  // конвертирование даты в sql формат
-  function ConvertDateTime(date: TDateTime): string;
-  function GetShift: string;
-  function hash_bcc(InChar :string):char;
-  function ReceiveData(Data: AnsiString): string;
-  function SendAttribute: Bool;
-  function SaveWeightSql(DataIn: AnsiString): Bool;
-  function CheckData(DataIn, a: AnsiString): bool;
-  function ViewSql: bool;
-  function NewWeightSql: bool;
-
-  //new
-  function TimeWorkProgram: bool;
-  function ViewWeightIngot(DataIn: bool): bool;
-  function PointReplace(DataIn: string): string;
-  function ViewShift: bool;
+//    {$DEFINE DEBUG}
 
 
+    //new
+    function ViewSelectedIngot: bool;
+    function PointReplace(DataIn: string): string;
+
+    function TrayAppRun: bool;
+    function CheckAppRun: bool;
+    function ViewClear: bool;
+    function CurrentShift: string;
+    function NextWeightToRecord: bool;
+    function ShowTrayMessage(InTitle, InMessage: string; InFlag: integer): bool;
+    function ManipulationWithDate(InDate: string; InType: integer): string;
 
 implementation
 
 uses
-  sql;
+  settings, logging, module, thread_comport, thread_sql, sql;
 
 {$R *.dfm}
 
-procedure TForm1.InitForm(Sender: TObject);
-begin
-
-  //время работы программы
-  StartTime :=  NOW;
-
-  Form1.Caption := HeadName;
-  //заголовки к showmessage
-  Application.Title := HeadName;
-
-  //текущая дириктория
-  CurrentDir := GetCurrentDir;
-
-  InitSql(Sender);
-
-  DateTimeStart.DateTime := date;
-  DateTimeEnd.DateTime := date;
 
 
-  InitComPort(Sender);
-
-  //запуск таймера
-  Timer1.Enabled:= True;
-  Timer1.Interval:=500;
-
-  DataModule2.ib_timer.Enabled:= True;
-  DataModule2.ib_timer.Interval:=5000; //5cek
-
-  //отображение текущей смены
-  l_current_shift1.Caption := 'Номер смены:';
-  l_current_shift2.Caption := GetShift;
-
-  //получение локальных данных в DBGrid из базы
-  ViewSql;
-  //получение удаленных данных в DBGrid из базы
-  ViewDbWeight;
-
-  Label6.Caption:='F1 - Отчет по плавке'+#13+'F2 - Отчет по марке стали'
-                   +#13+'F3 - Детальный отчет';
-
-  //время работы программы
-  TimeWorkProgram;
-
-  //очищаем Caption
-  if strtoint(MaxIdDBWeight)-1 = 0 then
-    begin
-        ViewWeightIngot(false);
-    end
-  else
-    begin
-      NextRecDbWeight;
-//      ViewWeightIngot(true);
-    end;
-
-end;
-
-
-procedure TForm1.InitComPort(Sender: TObject);
-begin
-
-      //init port
-      ApdComPort1.Baud := 9600;
-      ApdComPort1.DataBits := 8;
-      ApdComPort1.Parity := pEven;
-      ApdComPort1.StopBits := 1;
-
-      //конфигурируем разбор пакета
-      ApdDataPacket1.StartCond := scString;
-      ApdDataPacket1.StartString := #2; //start bit
-      ApdDataPacket1.EndCond := [ecString];
-      ApdDataPacket1.EndString := #3; //stop bit
-      ApdDataPacket1.IncludeStrings := true;
-
-end;
-
-procedure TForm1.InitSql(Sender: TObject);
-begin
-  try
-        DataModule2.ADOConnection1.CommandTimeout:=30;
-        DataModule2.ADOConnection1.ConnectionTimeout:=30;
-        DataModule2.ADOConnection1.Connected:=True;
-  except
-        showmessage('Ошибка соединения с локальной базой данных.' +#13#10+ 'Приложение будет закрыто.');
-        DataModule2.ADOConnection1.Connected:=False;
-        TerminateProcess(GetCurrentProcess, 0);
-  end;
-
-  try
-        DataModule2.ib_connection.CommandTimeout:=30;
-        DataModule2.ib_connection.ConnectionTimeout:=30;
-        DataModule2.ib_connection.Connected:=True;
-  except
-        showmessage('Ошибка соединения с удаленной базой данных.' +#13#10+ 'Приложение будет закрыто.');
-        DataModule2.ib_connection.Connected:=False;
-        TerminateProcess(GetCurrentProcess, 0);
-  end;
-
-  l_sql_work1.Caption := 'Соединение с БД: ';
-  l_sql_work2.Caption := datetostr(NOW) + ' ' + FormatDateTime('hh:mm', NOW);
-
-{ ConnectionString
-  MSSQL
-  Provider=SQLOLEDB.1;Password=12345678;Persist Security Info=True;User ID=sa;Initial Catalog=scale_turntable;Data Source=krr-ws03302;Use Procedure for Prepare=1;Auto Translate=True;Packet Size=4096;Workstation ID=KRR-WS08022;Use Encryption for Data=False;Tag with column collation when possible=False
-
-  interbase
-  Provider=MSDASQL.1;Password=masterkey;Persist Security Info=True;User ID=sysdba;Data Source=firebird
-}
-end;
-
-procedure TForm1.b_report_heatClick(Sender: TObject);
-begin
-      //Report(0);
-      //Report Type = 1 - heat
-      ReportDate(1);
-end;
-
-procedure TForm1.b_report_steelClick(Sender: TObject);
-begin
-      //Report(1);
-      //Report Type = 2 - name
-      ReportDate(2);
-end;
-
-procedure TForm1.b_report_detailedClick(Sender: TObject);
-begin
-      //ReportDetailed;
-      //Report Type = 3 - detailed
-      ReportDate(3);
-end;
-
-procedure TForm1.Button4Click(Sender: TObject);
-begin
-
-    //test
-    SaveWeightSql('6,1');
-
-    //обновить label
-    NewRecDbWeight;
-
-    //для теста - следущий слиток
-    //NextRecDbWeight;
-
-end;
 
 
 procedure TForm1.b_selectedClick(Sender: TObject);
 begin
-      if MessageDlg('Выбрать заготовку для взвешивания?', mtCustom, mbYesNo, 0) = mrYes then
-        begin
-               ViewWeightIngot(true);
-        end;
-end;
-
-procedure TForm1.ApdDataPacket1StringPacket(Sender: TObject; Data: AnsiString);
-begin
-        ReceiveData(Data);
-end;
-
-procedure TForm1.Button1Click(Sender: TObject);
-begin
-
-    //обновить label
-    NewRecDbWeight;
-
-    //для теста - следущий слиток
-    //NextRecDbWeight;
-
-end;
-
-procedure TForm1.Timer1Timer(Sender: TObject);
-begin
-      //постоянно читаем с порта
-      ApdComPort1.OutPut := #2'00#TK#'#16#3+hash_bcc('00#TK#'#16#3);
-
-      //
-      NewWeightSql;
-
-      //время работы программы
-      TimeWorkProgram;
-
-      if no_save = '1' then
-        begin
-              SendAttribute;
-        end;
-
-      //отображение текущей смены
-      ViewShift;
-
-end;
-
-procedure TForm1.FormClose(Sender: TObject; var Action: TCloseAction);
-begin
-      ApdComPort1.open := False;
-end;
-
-procedure TForm1.FormCreate(Sender: TObject);
-var
-  hMutex : THandle;
-begin
-        // закрытие 2 экземляра программы
-        hMutex := CreateMutex(0, true , 'AarmWeightBlooming1');
-        if GetLastError = ERROR_ALREADY_EXISTS then
-        begin
-
-
-          Application.Title := HeadName;
-          //прячим форму и выводим сообщение
-          Application.ShowMainForm:=false;
-          showmessage('Экземпляр программы уже запущен');
-
-
-          CloseHandle(hMutex);
-          TerminateProcess(GetCurrentProcess, 0);
-        end;
-
-end;
-
-Function ConvertDateTime(date: TDateTime): string;
-begin
-  DateTimeToString(formattedDateTime, 'yyyy-mm-dd', date);
-  Result := formattedDateTime;
-end;
-
-function SaveWeightSql(DataIn: AnsiString): Bool;
-var
-    id_m_max: string;
-begin
-
-    id_m_max := MaxIdDBWeight;
-
-        try
-        // запись веса с disomat в SQL
-        DataModule2.ADOQuery1.Active := false;
-        DataModule2.ADOQuery1.SQL.Clear;
-        DataModule2.ADOQuery1.SQL.Add('declare @mass_difference DECIMAL (16,4)');
-        DataModule2.ADOQuery1.SQL.Add('declare @a_s_c DECIMAL (16,4)');
-        DataModule2.ADOQuery1.SQL.Add('declare @aberration DECIMAL (16,4)');
-        DataModule2.ADOQuery1.SQL.Add('set @mass_difference=('+ PointReplace(Form1.l_weight_ingot.Caption) +'-'+ PointReplace(DataIn) +')');
-        DataModule2.ADOQuery1.SQL.Add('set @a_s_c=left(('+ PointReplace(Form1.l_weight_ingot.Caption) +'/'+ PointReplace(DataIn) +'),5)');
-        DataModule2.ADOQuery1.SQL.Add('set @aberration=(-'+ PointReplace(Form1.l_steel_group.Caption) +'+@a_s_c)');
-
-         DataModule2.ADOQuery1.SQL.Add('Insert INTO scale_turntable.dbo.mass (pkdat, num, num_ingot, datetime, mass, mass_difference, p_s_c, a_s_c, aberration)');
-//        DataModule2.ADOQuery1.SQL.Add('VALUES ('+ pkdat +','+ num +','+ num_ingot +', getdate(),'+ PointReplace(DataIn) +','+ PointReplace(MassDifference(Form1.l_weight_ingot.Caption,DataIn)) +','+ PointReplace(Form1.l_steel_group.Caption) +','+ PointReplace(A_S_C(DataIn,Form1.l_weight_ingot.Caption)) +',0.0)');
-
-        DataModule2.ADOQuery1.SQL.Add('VALUES ('+ pkdat +','+ num +','+ num_ingot +', getdate(),'+ PointReplace(DataIn) +',@mass_difference,'+ PointReplace(Form1.l_steel_group.Caption) +',@a_s_c,@aberration)');
-        DataModule2.ADOQuery1.SQL.Add('Insert INTO scale_turntable.dbo.heats (id_h, num_heat, name, mass_ingot, no_shifts)');
-        DataModule2.ADOQuery1.SQL.Add('VALUES ('+ id_m_max +','+ Form1.l_num_heat.Caption +','''+ Form1.l_name.Caption +''','+ PointReplace(Form1.l_weight_ingot.Caption) +','+ smena +')');
-        DataModule2.ADOQuery1.ExecSQL;
-
-        //шлем признак записи
-        SendAttribute;
-
-        //следующая запись (слиток) от записаной
-        NextRecDbWeight;
-
-        except
-             showmessage('Ошибка записи веса в БД');
-             exit;
-        end;
-end;
-
-function GetShift: string;
-var
-  CurrentTime: TDateTime;
-  CTime: string;
-begin
-  CurrentTime := NOW;
-  CTime := FormatDateTime('hh:mm:ss', CurrentTime);
-
-  // 2 смена
-  if (CTime > '07:00:00') and (CTime < '15:00:00') then
-  begin
-    Result := '2';
-  end;
-
-  // 3 смена
-  if (CTime > '15:00:00') and (CTime < '22:00:00') then
-  begin
-    Result := '3';
-  end;
-
-  // 1 смена
-  if (CTime > '22:00:00') or (CTime < '07:00:00') then
-  begin
-     Result := '1';
-  end;
-end;
-
-
-function hash_bcc(InChar :string):char;
-var
-    i :byte;
-begin
-  result := InChar[1];
-  for i := 2 to length(InChar) do
-  result := char(ord(result) xor ord(InChar[i]));
-end;
-
-
-function ReceiveData(Data: AnsiString): string;
-begin
-  if (copy(Data, 2, 6) = '00#EK#') and (copy(Data, 8, 1) = '0') then
-  begin
-      no_save:='0';
-  end;
-
-  if (copy(Data, 2, 6) = '00#TK#') and (copy(Data, 28, 1) = '1') and (no_save = '0') then
-  begin
-      SaveWeightSql(trim(copy(Data, 40, 6)));
-      no_save:='1';
-    //copy(Data, 2, 6);          //ответ по весу
-    //copy(Data, 28, 1);         //признак
-    //trim(copy(Data, 40, 6));   //вес только целая часть
-  end;
-end;
-
-function SendAttribute: Bool;
-begin
-      //передаем ЭОД вход1-4 переменные 1|0|0|0
-      Form1.ApdComPort1.OutPut := #2'00#EK#1#0#0#0#'#16#3+hash_bcc('00#EK#1#0#0#0#'#16#3);
-end;
-
-function CheckData(DataIn, a: AnsiString): bool;
-var
-    i:integer;
-begin
-
-      Trim(DataIn);
-
- if (length(DataIn)=0) then
+  if MessageDlg('Выбрать заготовку для взвешивания?', mtCustom, mbYesNo, 0) = mrYes then
    begin
-             result:=false;
-             exit;
+      ViewSelectedIngot;
+   end;
+end;
+
+
+procedure TForm1.b_testClick(Sender: TObject);
+begin
+
+  l_current_id.Caption := pkdat+'|'+num+'|'+num_ingot;
+
+  //test
+  if pkdat <> '' then
+   begin
+      SqlSaveInBuffer(inttostr(random(100))+'.88');
+      //SqlSaveToOracleOfBuffer;
    end;
 
-      for i:=1 to length(DataIn) do
-      begin
-          if not (DataIn[i] in ['0'..'9']) and (a<>'') then
-            begin
-                  result:=false;
-                  break;
-            end
-          else
-            begin
-                  result:=true;
-                  break;
-            end;
-      end;
-
 end;
 
-function ViewSql: bool;
+
+procedure TForm1.FormCreate(Sender: TObject);
 begin
-        // получение данных в DBGrid из базы
-        DataModule2.ADOQuery1.Active:=false;
-        DataModule2.ADOQuery1.SQL.Clear;
-        DataModule2.ADOQuery1.SQL.Add('SELECT TOP 100 CONVERT(VARCHAR(19),datetime,120) AS datetime,num_heat, name, mass_ingot, mass, mass_difference, p_s_c, a_s_c, aberration');
-        DataModule2.ADOQuery1.SQL.Add('FROM  scale_turntable.dbo.mass, scale_turntable.dbo.heats');
-        DataModule2.ADOQuery1.SQL.Add('where id_m=id_h');
-        DataModule2.ADOQuery1.SQL.Add('ORDER BY datetime desc');
-        DataModule2.ADOQuery1.Active:=true;
-        DataModule2.ADOQuery1.Open;
+  //проверка 1 экземпляра программы
+  CheckAppRun;
+
+  Form1.Caption := HeadName+' v'+Version;
+  //заголовки к showmessage
+  Application.Title := HeadName+' v'+Version;
+
+  //текущая дириктория
+  CurrentDir := GetCurrentDir;
+
+  //запрет на изменение формы
+  Form1.BorderStyle := bsToolWindow;
+  Form1.BorderIcons :=  Form1.BorderIcons - [biMaximize];
+
+  SaveLog('app'+#9#9+'start');
+
+  //инициализация трея
+  TrayAppRun;
+
+  form1.l_current_shift.Caption := CurrentShift;
+
+  ViewClear;
+
+  ConfigSettings(true);
+
+  ThreadComPortInit;
+
+  ThreadSqlInit;
+
 end;
 
-function NewWeightSql: bool;
+
+function NextWeightToRecord: bool;
+var
+  KeyValues : Variant;
 begin
-        DataModule2.query_count.Active:=false;
-        DataModule2.query_count.SQL.Clear;
-        DataModule2.query_count.SQL.Add('SELECT COUNT(id_m) AS count FROM scale_turntable.dbo.mass');
-        DataModule2.query_count.Active:=true;
-        DataModule2.query_count.Open;
 
-        if max < DataModule2.query_count.FieldValues['count'] then
-        begin
-               max:=DataModule2.query_count.FieldValues['count'];
-               ViewSql;
-        end;
+  SQuery.Close;
+  SQuery.SQL.Clear;
+  SQuery.SQL.Add('SELECT pkdat, num, num_ingot FROM weight');
+  SQuery.SQL.Add('order by id desc limit 1');
+  SQuery.Open;
+
+  //отключаем управление
+  form1.DBGrid1.DataSource.DataSet.DisableControls;
+  try
+      //переменные по которым будет производиться поиск
+      KeyValues := VarArrayOf([SQuery.FieldByName('pkdat').AsString,
+                               SQuery.FieldByName('num').AsString,
+                               SQuery.FieldByName('num_ingot').AsString]);
+      //поиск по ключивым полям
+      form1.DBGrid1.DataSource.DataSet.Locate('pkdat;num;num_ingot', KeyValues, []);
+  finally
+      //включаем управление
+      form1.DBGrid1.DataSource.DataSet.EnableControls;
+  end;
+
+  //перемещение вверх
+  form1.DBGrid1.DataSource.DataSet.MoveBy(-1);
+
+  pkdat := Form1.DBGrid1.DataSource.DataSet.FieldByName('pkdat').AsString;
+  num := Form1.DBGrid1.DataSource.DataSet.FieldByName('num').AsString;
+  num_ingot  := Form1.DBGrid1.DataSource.DataSet.FieldByName('num_ingot').AsString;
+  time_ingot := Form1.DBGrid1.DataSource.DataSet.FieldByName('time_ingot').AsString;
+  num_heat := Form1.DBGrid1.DataSource.DataSet.FieldByName('num_heat').AsString;
+  name := Form1.DBGrid1.DataSource.DataSet.FieldByName('name').AsString;
+  weight_ingot := Form1.DBGrid1.DataSource.DataSet.FieldByName('weight_ingot').AsString;
+  smena := Form1.DBGrid1.DataSource.DataSet.FieldByName('smena').AsString;
+
+  Form1.l_number_ingot.Caption := num_ingot;
+  Form1.l_datetime.Caption := time_ingot;
+  Form1.l_heat.Caption := num_heat;
+  Form1.l_grade.Caption := name;
+  Form1.l_weight_ingot.Caption := weight_ingot;
+
+  //test
+  Form1.l_next_id.Caption:=pkdat+'|'+num+'|'+num_ingot;
 end;
 
-function TimeWorkProgram: bool;
+
+function ViewSelectedIngot: bool;
 begin
-       form1.l_work_p1.Caption := 'Время работы программы: ';
-       form1.l_work_p2.Caption := timetostr(StartTime-NOW);
-       //FormatDateTime('hh:mm:ss', NOW);
+  Form1.l_number_ingot.Caption := Form1.DBGrid1.DataSource.DataSet.FieldByName('NUM_INGOT').AsString;
+  Form1.l_datetime.Caption := Form1.DBGrid1.DataSource.DataSet.FieldByName('TIME_INGOT').AsString;
+  Form1.l_heat.Caption := Form1.DBGrid1.DataSource.DataSet.FieldByName('NUM_HEAT').AsString;
+  Form1.l_grade.Caption := Form1.DBGrid1.DataSource.DataSet.FieldByName('NAME').AsString;
+  Form1.l_weight_ingot.Caption := Form1.DBGrid1.DataSource.DataSet.FieldByName('WEIGHT_INGOT').AsString;
+  pkdat := Form1.DBGrid1.DataSource.DataSet.FieldByName('PKDAT').AsString;
+  num := Form1.DBGrid1.DataSource.DataSet.FieldByName('NUM').AsString;
+  num_ingot := Form1.DBGrid1.DataSource.DataSet.FieldByName('NUM_INGOT').AsString;
+  smena := Form1.DBGrid1.DataSource.DataSet.FieldByName('SMENA').AsString;
 end;
 
-function ViewWeightIngot(DataIn: bool): bool;
-begin
-  if DataIn = true then
-    begin
-      Form1.l_num_ingot.Caption:=Form1.DBGrid1.DataSource.DataSet.FieldByName('NUM_INGOT').AsString;
-      Form1.l_datetime.Caption:=Form1.DBGrid1.DataSource.DataSet.FieldByName('TIME_INGOT').AsString;
-      Form1.l_num_heat.Caption:=Form1.DBGrid1.DataSource.DataSet.FieldByName('NUM_HEAT').AsString;
-      Form1.l_name.Caption:=Form1.DBGrid1.DataSource.DataSet.FieldByName('NAME').AsString;
-      Form1.l_weight_ingot.Caption:=Form1.DBGrid1.DataSource.DataSet.FieldByName('WEIGHT_INGOT').AsString;
-      Form1.l_steel_group.Caption:=SteelGroupCoefficient(Form1.DBGrid1.DataSource.DataSet.FieldByName('STEEL_GROUP').AsString);
-      pkdat:=Form1.DBGrid1.DataSource.DataSet.FieldByName('PKDAT').AsString;
-      num:=Form1.DBGrid1.DataSource.DataSet.FieldByName('NUM').AsString;
-      num_ingot:=Form1.DBGrid1.DataSource.DataSet.FieldByName('NUM_INGOT').AsString;
-      smena:=Form1.DBGrid1.DataSource.DataSet.FieldByName('SMENA').AsString;
-    end
-  else
-    begin
-      Form1.l_num_ingot.Caption:='0';
-      Form1.l_datetime.Caption:='0';
-      Form1.l_num_heat.Caption:='0';
-      Form1.l_name.Caption:='0';
-      Form1.l_weight_ingot.Caption:='0';
-      Form1.l_steel_group.Caption:='0';
-    end;
-end;
 
 function PointReplace(DataIn: string): string;
 begin
       result:=StringReplace(Datain,',','.', [rfReplaceAll]);
 end;
 
-function ViewShift: bool;
+
+function CurrentShift: string;
 begin
-      if Form1.l_current_shift2.Caption <> GetShift then
-        begin
-              //отображение текущей смены
-              Form1.l_current_shift2.Caption := GetShift;
-        end;
+    if (time > strtotime('22:00:00')) and (time < strtotime('07:00:00')) then
+      Result := '1';
+    if (time > strtotime('07:00:00')) and (time < strtotime('15:00:00')) then
+      Result := '2';
+    if (time > strtotime('15:00:00')) and (time < strtotime('22:00:00')) then
+      Result := '3';
 end;
 
-{============== PressKey START ===============}
-procedure TForm1.FormKeyDown(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
+
+function ViewClear: bool;
+var
+  i: integer;
 begin
-          if ord(Key) = 112 then b_report_heat.Click; //F1 = 112
-          if ord(Key) = 113 then b_report_steel.Click; //F2 = 113
-          if ord(Key) = 114 then b_report_detailed.Click; //F3 = 114
+
+  for i:=0 to form1.ComponentCount - 1 do
+   begin
+    if (form1.Components[i] is Tlabel) then
+      begin
+        if copy(form1.Components[i].Name,1,4) <> 'l_n_' then
+          Tlabel(Form1.FindComponent(form1.Components[i].Name)).Caption := '';
+      end;
+   end;
+
 end;
-{============== PressKey END ===============}
+
+
+function ShowTrayMessage(InTitle, InMessage: string; InFlag: integer): bool;
+begin
+{
+bfNone = 0
+bfInfo = 1
+bfWarning = 2
+bfError = 3
+}
+
+  form1.TrayIcon.BalloonTitle := InTitle;
+  form1.TrayIcon.BalloonHint := TimeToStr(NOW)+#9+InMessage;
+  form1.TrayIcon.BalloonFlags := TBalloonFlags(InFlag);
+  form1.TrayIcon.BalloonTimeout := 4;
+  form1.TrayIcon.ShowBalloonHint;
+  form1.TrayIcon.OnBalloonClick := form1.TrayIconClick;
+end;
+
+
+function ManipulationWithDate(InDate: string; InType: integer): string;
+var
+  pkdat_correct: string;
+begin
+    pkdat_correct := InDate;
+    pkdat_correct := StuffString(pkdat_correct, 5, 2, copy(InDate, 1,2));
+    pkdat_correct := StuffString(pkdat_correct, 1, 2, copy(InDate, 5,2));
+    if InType = 0 then
+      Result := pkdat_correct;
+    insert('.', pkdat_correct, 5);
+    insert('.', pkdat_correct, 3);
+    if InType = 1 then
+      Result := FormatDateTime('yymmdd', (IncDay(strtodate(pkdat_correct), -1)));
+end;
+
+
+
+
+
+
+function TrayAppRun: bool;
+begin
+    PopupTray := TPopupMenu.Create(nil);
+    Form1.Trayicon.Hint := HeadName;
+    Form1.Trayicon.PopupMenu := PopupTray;
+    PopupTray.Items.Add(NewItem('выход', 0, False, True, Form1.TrayPopUpCloseClick, 0, 'close'));
+    Form1.Trayicon.Visible := True;
+end;
+
+
+procedure TForm1.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+begin
+    CanClose := False;
+    Form1.Hide;
+end;
+
+
+procedure TForm1.TrayPopUpCloseClick(Sender: TObject);
+var
+  buttonSelected: Integer;
+begin
+  ConfigComPort(false);
+
+  ThreadComPort.Terminate;
+  ThreadSql.Terminate;
+
+  SaveLog('app'+#9#9+'close');
+
+  Trayicon.Visible := false;
+  //закрываем приложение
+  TerminateProcess(GetCurrentProcess, 0);
+end;
+
+
+procedure TForm1.TrayIconClick(Sender: TObject);
+begin
+    if TrayMark then
+     begin
+//        ShowWindow(Wind, SW_SHOWNOACTIVATE);
+//        SetForegroundWindow(Application.Handle);
+        form1.show;
+        TrayMark := false;
+     end
+    else
+     begin
+//        ShowWindow(Application.MainForm.Handle, SW_HIDE);
+//        SetForegroundWindow(Application.MainForm.Handle);
+        form1.hide;
+        TrayMark := true;
+     end
+
+//    Trayicon1.Visible := False;
+//    PopupTray.Items.Delete(0);
+end;
+
+
+function CheckAppRun: bool;
+var
+  hMutex : THandle;
+begin
+    // закрытие 2 экземляра программы
+    hMutex := CreateMutex(0, true , 'ArmWeightBlooming1');
+    if GetLastError = ERROR_ALREADY_EXISTS then
+     begin
+        Application.Title := HeadName+' v'+Version;
+        //прячим форму и выводим сообщение
+        Application.ShowMainForm:=false;
+        showmessage('Экземпляр программы уже запущен');
+
+        CloseHandle(hMutex);
+        TerminateProcess(GetCurrentProcess, 0);
+     end;
+
+end;
+
+
+
+
+
 
 
 end.

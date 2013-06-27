@@ -1,0 +1,142 @@
+unit module;
+
+interface
+
+uses
+  SysUtils, Classes, WideStrings, DBXMsSQL, DB, SqlExpr, DBTables, ADODB,
+  IBCustomDataSet, IBQuery, IBDatabase, IBSQL, Vcl.ExtCtrls, Windows, Messages,
+  Graphics, Dialogs, AdPort, OoMisc, AdPacket, FIB, FIBDatabase, pFIBDatabase,
+  FIBQuery, pFIBQuery, FIBDataSet, pFIBDataSet, pFIBErrorHandler, MemDS,
+  DBAccess, Ora, ZAbstractDataset, ZDataset, ZAbstractConnection, ZConnection,
+  ZAbstractRODataset, ZStoredProcedure;
+
+type
+  TModule1 = class(TDataModule)
+    ApdDataPacket1: TApdDataPacket;
+    ApdComPort1: TApdComPort;
+    pFIBDatabase1: TpFIBDatabase;
+    pFibErrorHandler1: TpFibErrorHandler;
+    pFIBDataSet1: TpFIBDataSet;
+    pFIBQuery1: TpFIBQuery;
+    pFIBTransaction1: TpFIBTransaction;
+    OraSession1: TOraSession;
+    OraQuery1: TOraQuery;
+    FIB_DataSource: TDataSource;
+    procedure ApdDataPacket1StringPacket(Sender: TObject; Data: AnsiString);
+    procedure ApdComPort1PortClose(Sender: TObject);
+    procedure ApdComPort1PortOpen(Sender: TObject);
+    procedure DataModuleCreate(Sender: TObject);
+    procedure pFibErrorHandler1FIBErrorEvent(Sender: TObject;
+      ErrorValue: EFIBError; KindIBError: TKindIBError; var DoRaise: Boolean);
+  
+
+
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Module1: TModule1;
+    function FbInit: bool;
+    function OracleInit: bool;
+    function SqliteInit: bool;
+
+
+implementation
+
+uses
+  main, settings, logging, thread_comport, sql;
+
+
+{$R *.dfm}
+
+
+
+
+procedure TModule1.ApdComPort1PortClose(Sender: TObject);
+begin
+  SaveLog('serial'+#9#9+'COM'+ComPortConfigArray[5]+#9+'close');
+end;
+
+
+procedure TModule1.ApdComPort1PortOpen(Sender: TObject);
+begin
+  SaveLog('serial'+#9#9+'COM'+ComPortConfigArray[5]+#9+'open');
+end;
+
+
+procedure TModule1.ApdDataPacket1StringPacket(Sender: TObject;
+  Data: AnsiString);
+begin
+  ReceiveData(Data);
+end;
+
+
+procedure TModule1.DataModuleCreate(Sender: TObject);
+begin
+  ConfigComPort(true);
+  FbInit;
+  OracleInit;
+end;
+
+function FbInit: bool;
+begin
+  try
+    Module1.pFIBDatabase1.Connected := false;
+    Module1.pFIBDatabase1.LibraryName := '.\'+FbSqlConfigArray[3];
+    Module1.pFIBDatabase1.DBName := FbSqlConfigArray[1]+':'+FbSqlConfigArray[2];
+    Module1.pFIBDatabase1.ConnectParams.UserName := FbSqlConfigArray[5];
+    Module1.pFIBDatabase1.ConnectParams.Password := FbSqlConfigArray[6];
+    Module1.pFIBDatabase1.ConnectParams.CharSet := 'NONE';//'UNICODE_FSS';//'UTF8';//'ASCII';//'WIN1251';
+    Module1.pFIBDatabase1.SQLDialect := strtoint(FbSqlConfigArray[4]);
+    Module1.pFIBDatabase1.UseLoginPrompt := false;
+    Module1.pFIBDatabase1.Timeout := 0;
+    Module1.pFIBDatabase1.Connected := true;
+    Module1.pFIBTransaction1.Active := false;
+    Module1.pFIBTransaction1.Timeout := 0;
+    Module1.pFIBQuery1.Database := Module1.pFIBDatabase1;
+    Module1.pFIBQuery1.Transaction := Module1.pFIBTransaction1;
+    Module1.pFIBDataSet1.Database := Module1.pFIBDatabase1;
+    Module1.pFIBDataSet1.Transaction := Module1.pFIBTransaction1;
+  except
+      on E : Exception do
+        SaveLog('error'+#9#9+E.ClassName+', с сообщением: '+E.Message);
+  end;
+end;
+
+
+function OracleInit: bool;
+begin
+  try
+    Module1.OraSession1.Username := OraSqlConfigArray[4];
+    Module1.OraSession1.Password := OraSqlConfigArray[5];
+    Module1.OraSession1.Server := OraSqlConfigArray[1]+':'+OraSqlConfigArray[2]+
+                                      ':'+OraSqlConfigArray[3];//'krr-sql13:1521:ovp68';
+    Module1.OraSession1.Options.Direct := true;
+    Module1.OraSession1.Options.DateFormat := 'DD.MM.RR';//формат даты дд.мм.гг
+    Module1.OraSession1.Options.Charset := 'CL8MSWIN1251';// 'AL32UTF8';//CL8MSWIN1251
+    //DataModule1.OraSession1.Options.UseUnicode := true;
+  except
+      on E : Exception do
+        SaveLog('error'+#9#9+E.ClassName+', с сообщением: '+E.Message);
+  end;
+end;
+
+
+procedure TModule1.pFibErrorHandler1FIBErrorEvent(Sender: TObject;
+  ErrorValue: EFIBError; KindIBError: TKindIBError; var DoRaise: Boolean);
+begin
+    if KindIBError = keLostConnect then
+        showmessage('lost connect');
+end;
+
+
+
+
+
+
+
+
+end.

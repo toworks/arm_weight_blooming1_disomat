@@ -8,7 +8,6 @@ uses
 
 
   function SaveLog(InData: string): bool;
-//  function ReadLog: bool;
 
 
 implementation
@@ -23,19 +22,24 @@ function SaveLog(InData: string): bool;
 var
    f: TextFile;
 begin
-    AssignFile(f, CurrentDir+'\'+LogFile);
-    if not FileExists(CurrentDir+'\'+LogFile) then
-     begin
-        Rewrite(f);
-        CloseFile(f);
-     end;
+  try
+      AssignFile(f, CurrentDir+'\'+LogFile);
+      if not FileExists(CurrentDir+'\'+LogFile) then
+       begin
+          Rewrite(f);
+          CloseFile(f);
+       end;
 
-    Append(f);
+      Append(f);
 
-    Writeln(f,DateTimeToStr(NOW)+#9+InData);
+      Writeln(f,DateTimeToStr(NOW)+#9+InData);
 
-    Flush(f);
-    CloseFile(f);
+      Flush(f);
+      CloseFile(f);
+  except
+    on E : Exception do
+      SaveLog('error'+#9#9+E.ClassName+', с сообщением: '+E.Message);
+  end;
 end;
 
 

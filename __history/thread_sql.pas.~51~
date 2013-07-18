@@ -61,9 +61,9 @@ end;
 
 procedure WrapperSql;
 begin
+  Application.ProcessMessages;//следующая операция не тормозит интерфейс
   try
-      Application.ProcessMessages;//следующая операция не тормозит интерфейс
-      SqlNewRecord;
+    SqlNewRecord;
   except
     on E : Exception do
       SaveLog('error'+#9#9+E.ClassName+', с сообщением: '+E.Message);

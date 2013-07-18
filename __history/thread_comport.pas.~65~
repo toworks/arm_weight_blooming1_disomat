@@ -104,8 +104,8 @@ end;
 
 procedure WrapperComPort;
 begin
+  Application.ProcessMessages;//следующая операция не тормозит интерфейс
   try
-      Application.ProcessMessages;//следующая операция не тормозит интерфейс
       ReadComPort;
   except
     on E : Exception do

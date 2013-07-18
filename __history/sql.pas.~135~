@@ -57,7 +57,6 @@ begin
   Module1.pFIBQuery1.SQL.Add('and i.pkdat=sh.pkdat');
   Module1.pFIBQuery1.SQL.Add('and h.steel_grade=s.steel_grade');
   Module1.pFIBQuery1.SQL.Add('order by i.pkdat asc, i.num asc, i.num_ingot asc');
-  Application.ProcessMessages;//следующая операция не тормозит интерфейс
   Module1.pFIBQuery1.ExecQuery;
 
 
@@ -252,7 +251,6 @@ begin
     Module1.OraQuery1.SQL.Add('INSERT INTO crop');
     Module1.OraQuery1.SQL.Add('(id_asutp, weight_bloom)');
     Module1.OraQuery1.SQL.Add('VALUES ('+IdIn+', '+PointReplace(WeightIn)+')');
-    Application.ProcessMessages;//следующая операция не тормозит интерфейс
     Module1.OraQuery1.ExecSQL;
 
   {$IFDEF DEBUG}

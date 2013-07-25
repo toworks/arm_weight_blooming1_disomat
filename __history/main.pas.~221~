@@ -78,7 +78,7 @@ var
   Form1: TForm1;
     CurrentDir: string;
     HeadName: string = 'ј–ћ резчика ѕ”-4';
-    Version: string = ' v0.0alpha';
+    Version: string = '0.0alpha';
     DBFile: string = 'data.sdb';
     LogFile: string = 'app.log';
     PopupTray: TPopupMenu;
@@ -142,9 +142,9 @@ begin
   //проверка 1 экземпл€ра программы
   CheckAppRun;
 
-  Form1.Caption := HeadName+Version;
+  Form1.Caption := HeadName+' v'+Version;
   //заголовки к showmessage
-  Application.Title := HeadName+Version;
+  Application.Title := HeadName+' v'+Version;
 
   //текуща€ дириктори€
   CurrentDir := GetCurrentDir;
@@ -369,7 +369,7 @@ begin
     hMutex := CreateMutex(0, true , 'ArmWeightBlooming1');
     if GetLastError = ERROR_ALREADY_EXISTS then
      begin
-        Application.Title := HeadName+Version;
+        Application.Title := HeadName+' v'+Version;
         //пр€чим форму и выводим сообщение
         Application.ShowMainForm:=false;
         showmessage('Ёкземпл€р программы уже запущен');

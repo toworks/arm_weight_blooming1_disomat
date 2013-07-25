@@ -120,7 +120,7 @@ begin
   //постоянно читаем с порта
   Module1.ApdComPort1.OutPut := #2'00#TK#'#16#3+hash_bcc('00#TK#'#16#3);
 
-  Form1.Caption := HeadName+Version+'  '+timetostr(time);
+  Form1.Caption := HeadName+' v'+Version+'  '+timetostr(time);
 
   if no_save then
     SendAttribute;

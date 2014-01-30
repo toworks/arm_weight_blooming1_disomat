@@ -7,7 +7,7 @@ uses
   IBCustomDataSet, IBQuery, IBDatabase, IBSQL, Vcl.ExtCtrls, Windows, Messages,
   Graphics, Dialogs, AdPort, OoMisc, AdPacket, FIB, FIBDatabase, pFIBDatabase,
   FIBQuery, pFIBQuery, FIBDataSet, pFIBDataSet, pFIBErrorHandler, MemDS,
-  DBAccess, Ora, MemData, ZDataset;
+  DBAccess, Ora, ZDataset;
 
 type
   TModule1 = class(TDataModule)
@@ -27,10 +27,6 @@ type
     procedure DataModuleCreate(Sender: TObject);
     procedure pFibErrorHandler1FIBErrorEvent(Sender: TObject;
       ErrorValue: EFIBError; KindIBError: TKindIBError; var DoRaise: Boolean);
-    procedure OraSession1ConnectionLost(Sender: TObject; Component: TComponent;
-      ConnLostCause: TConnLostCause; var RetryMode: TRetryMode);
-    procedure pFIBDatabase1LostConnect(Database: TFIBDatabase; E: EFIBError;
-      var Actions: TOnLostConnectActions; var DoRaise: Boolean);
 
 
   private
@@ -86,8 +82,7 @@ begin
   ConfigSqliteSetting;
 end;
 
-
-function ConfigFirebirdSetting(InData: bool): bool;
+function FbInit(InData: bool): bool;
 begin
   if InData then
   begin
@@ -116,58 +111,34 @@ begin
 end;
 
 
-procedure TModule1.pFibErrorHandler1FIBErrorEvent(Sender: TObject;
-  ErrorValue: EFIBError; KindIBError: TKindIBError; var DoRaise: Boolean);
+function OracleInit(InData: bool): bool;
 begin
-    if KindIBError = keLostConnect then
-      DoRaise := false;
-    Abort;
-end;
-
-
-procedure TModule1.pFIBDatabase1LostConnect(Database: TFIBDatabase;
-  E: EFIBError; var Actions: TOnLostConnectActions; var DoRaise: Boolean);
-begin
-      Actions := laWaitRestore;
-      SaveLog('error'+#9#9+'Firebird: связь потеряна');
-end;
-
-
-function ConfigOracleSetting(InData: bool): bool;
-begin
-  if InData then
-  begin
-      try
-        Module1.OraSession1.Username := OraSqlConfigArray[4];
-        Module1.OraSession1.Password := OraSqlConfigArray[5];
-        Module1.OraSession1.Server := OraSqlConfigArray[1]+':'+OraSqlConfigArray[2]+
-                                          ':'+OraSqlConfigArray[3];//'krr-sql13:1521:ovp68';
-        Module1.OraSession1.Options.Direct := true;
-        Module1.OraSession1.Options.DateFormat := 'DD.MM.RR';//формат даты дд.мм.гг
-        Module1.OraSession1.Options.Charset := 'CL8MSWIN1251';// 'AL32UTF8';//CL8MSWIN1251
-        //DataModule1.OraSession1.Options.UseUnicode := true;
-      except
-          on E : Exception do
-            SaveLog('error'+#9#9+E.ClassName+', с сообщением: '+E.Message);
-      end;
-  end
-  else
-  begin
-      FreeAndNil(Module1.OraQuery1);
-      FreeAndNil(Module1.OraSession1);
+  try
+  Module1.OraSession1.Ping
+    Module1.OraSession1.Username := OraSqlConfigArray[4];
+    Module1.OraSession1.Password := OraSqlConfigArray[5];
+    Module1.OraSession1.Server := OraSqlConfigArray[1]+':'+OraSqlConfigArray[2]+
+                                      ':'+OraSqlConfigArray[3];//'krr-sql13:1521:ovp68';
+    Module1.OraSession1.Options.Direct := true;
+    Module1.OraSession1.Options.DateFormat := 'DD.MM.RR';//формат даты дд.мм.гг
+    Module1.OraSession1.Options.Charset := 'CL8MSWIN1251';// 'AL32UTF8';//CL8MSWIN1251
+    //DataModule1.OraSession1.Options.UseUnicode := true;
+  except
+      on E : Exception do
+        SaveLog('error'+#9#9+E.ClassName+', с сообщением: '+E.Message);
   end;
 end;
 
 
-procedure TModule1.OraSession1ConnectionLost(Sender: TObject;
-  Component: TComponent; ConnLostCause: TConnLostCause;
-  var RetryMode: TRetryMode);
+procedure TModule1.pFibErrorHandler1FIBErrorEvent(Sender: TObject;
+  ErrorValue: EFIBError; KindIBError: TKindIBError; var DoRaise: Boolean);
 begin
-    RetryMode := rmReconnect; // rmReconnectExecute
+    if KindIBError = keLostConnect then
+        showmessage('lost connect');
 end;
 
 
-function ConfigSqliteSetting: bool;
+function SqliteInit: bool;
 begin
   try
       SLQuery := TZQuery.Create(nil);

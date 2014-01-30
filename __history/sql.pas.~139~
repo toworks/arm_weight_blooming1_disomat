@@ -9,9 +9,9 @@ uses
 var
     time_ingot, pkdat, num, num_ingot, num_heat, name, weight_ingot, steel_group,
     smena: string;
+    SDataSource : TDataSource;
 
-
-//    {$DEFINE DEBUG}
+    {$DEFINE DEBUG}
 
 
     function SqlNextWeightToRecord: bool;
@@ -19,7 +19,7 @@ var
     function SqlSaveInBuffer(DataIn: AnsiString): Bool;
     function SqlSaveToOracle(IdIn, WeightIn: AnsiString): Bool;
     function SqlSaveToOracleOfBuffer: Bool;
-
+    function SqlReadTableLocal: bool;
 
 implementation
 
@@ -95,7 +95,7 @@ var
   num_correct, num_ingot_correct, pkdat_correct: string;
 begin
 
-  pkdat_correct := ManipulationWithDate(pkdat, 0);
+  pkdat_correct := ManipulationWithDate(pkdat);
   num_correct := '';
   num_ingot_correct := num_correct;
 
@@ -134,6 +134,10 @@ begin
       SQuery.SQL.Add(', transferred NUMERIC(1,1) DEFAULT(0))');
       SQuery.ExecSQL;
 
+SDataSource := TDataSource.Create(nil);
+SDataSource.DataSet := SQuery;
+form1.DBGrid2.DataSource := SDataSource;
+
       SQuery.Close;
       SQuery.SQL.Clear;
       SQuery.SQL.Add('INSERT INTO weight');
@@ -149,7 +153,8 @@ begin
 
   SQuery.Close;
   SQuery.SQL.Clear;
-  SQuery.SQL.Add('SELECT pkdat, num, num_ingot, id_asutp, weight FROM weight');
+  SQuery.SQL.Add('SELECT pkdat, num, num_ingot, id_asutp,');
+  SQuery.SQL.Add('datetime(timestamp, ''unixepoch'', ''localtime'') as timestamp, weight FROM weight');
   SQuery.SQL.Add('where id_asutp='+pkdat_correct+num_correct+num_ingot_correct+'');
   SQuery.Open;
 
@@ -161,7 +166,8 @@ begin
   {$IFDEF DEBUG}
     SaveLog('debug'+#9#9+'pkdat_correct -> '+SQuery.FieldByName('id_asutp').AsString);
   {$ENDIF}
-
+//-- test
+exit;
   try
     SqlSaveToOracle(SQuery.FieldByName('id_asutp').AsString, SQuery.FieldByName('weight').AsString);
 
@@ -273,9 +279,8 @@ begin
   Module1.pFIBDataSet1.SQLs.SelectSQL.Add('and i.num=h.num');
   Module1.pFIBDataSet1.SQLs.SelectSQL.Add('and h.steel_grade=s.steel_grade');
 //  Module1.pFIBDataSet1.SQLs.SelectSQL.Add('and Pkdat=(select max(PKdat) from heats)');
-  Module1.pFIBDataSet1.SQLs.SelectSQL.Add('and pkdat in ('+InData+')');
+  Module1.pFIBDataSet1.SQLs.SelectSQL.Add('and i.pkdat in ('+InData+')');
   Module1.pFIBDataSet1.SQLs.SelectSQL.Add('order by i.pkdat desc, i.num desc, i.num_ingot desc');
-  Application.ProcessMessages;//следующая операция не тормозит интерфейс
   Module1.pFIBDataSet1.Open;
   Module1.pFIBDataSet1.Active := true;
 
@@ -285,6 +290,31 @@ begin
   form1.l_current_shift.Caption := CurrentShift;
 end;
 
+
+function SqlReadTableLocal: bool;
+var
+  SLQuery: TZQuery;
+begin
+  SLQuery := TZQuery.Create(nil);
+  SLQuery.Connection := SConnect;
+
+
+
+  Module1.pFIBDataSet1.Active := false;
+  Module1.pFIBDataSet1.Close;
+  Module1.pFIBDataSet1.SQLs.SelectSQL.Clear;
+  Module1.pFIBDataSet1.SQLs.SelectSQL.Add('select i.pkdat,i.num,i.num_ingot,h.num_heat, s.name,i.weight_ingot, i.time_ingot, s.steel_group, sh.smena');
+  Module1.pFIBDataSet1.SQLs.SelectSQL.Add('from ingots i, heats h, steels s, shifts sh');
+  Module1.pFIBDataSet1.SQLs.SelectSQL.Add('where i.pkdat=h.pkdat');
+  Module1.pFIBDataSet1.SQLs.SelectSQL.Add('and i.pkdat=sh.pkdat');
+  Module1.pFIBDataSet1.SQLs.SelectSQL.Add('and i.num=h.num');
+  Module1.pFIBDataSet1.SQLs.SelectSQL.Add('and h.steel_grade=s.steel_grade');
+//  Module1.pFIBDataSet1.SQLs.SelectSQL.Add('and Pkdat=(select max(PKdat) from heats)');
+  Module1.pFIBDataSet1.SQLs.SelectSQL.Add('and i.pkdat in ('+InData+')');
+  Module1.pFIBDataSet1.SQLs.SelectSQL.Add('order by i.pkdat desc, i.num desc, i.num_ingot desc');
+  Module1.pFIBDataSet1.Open;
+  Module1.pFIBDataSet1.Active := true;
+end;
 
 
 end.

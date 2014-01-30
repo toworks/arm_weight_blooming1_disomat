@@ -120,7 +120,7 @@ procedure TModule1.pFibErrorHandler1FIBErrorEvent(Sender: TObject;
   ErrorValue: EFIBError; KindIBError: TKindIBError; var DoRaise: Boolean);
 begin
     if KindIBError = keLostConnect then
-      DoRaise := false;
+      DoRaise := true;
     Abort;
 end;
 
@@ -163,6 +163,8 @@ procedure TModule1.OraSession1ConnectionLost(Sender: TObject;
   Component: TComponent; ConnLostCause: TConnLostCause;
   var RetryMode: TRetryMode);
 begin
+//    ConfigOracleSetting(false);
+//    ConfigOracleSetting(true);
     RetryMode := rmReconnect; // rmReconnectExecute
 end;
 

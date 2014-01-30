@@ -19,7 +19,6 @@ type
 var
   ThreadSql: TThreadSql;
   SqlMax: integer = 0;
-  FutureDate: TDateTime;
 
 
   function ThreadSqlInit: bool;
@@ -27,7 +26,7 @@ var
   procedure WrapperSql;//обертка для синхронизации и выполнения с другим потоком
 
 
-//  {$DEFINE DEBUG}
+  //{$DEFINE DEBUG}
 
 
 implementation
@@ -90,7 +89,6 @@ begin
     Module1.pFIBQuery1.SQL.Add('order by pkdat desc rows 3');
     Module1.pFIBQuery1.ExecQuery;
 
-    //подготавливаем данные для выборки в dbgrid
     i:=0;
     count:=i;
     while not Module1.pFIBQuery1.Eof do
@@ -105,14 +103,17 @@ begin
       Module1.pFIBQuery1.Next;
     end;
 
+    //подготавливаем дату для выборки dbgrid
+//    pkdat_in := copy(Module1.pFIBQuery1.FieldByName('max').AsString, 1, 6);
+
     if SqlMax < count then
      begin
         SqlMax := count;
         //обновление отображение записанных данных ViewDbWeight;
         SqlReadTable(pkdat_in);
 
-        //-- test -> при обновлении DBGrid записывается новая заготовка
-        //-- Form1.b_test.Click;
+        //test -> при обновлении DBGrid записывается новая заготовка
+        //Form1.b_test.Click;
 
   {$IFDEF DEBUG}
     SaveLog('debug'+#9#9+'count -> '+inttostr(count));
@@ -123,33 +124,6 @@ begin
     on E : Exception do
       SaveLog('error'+#9#9+E.ClassName+', с сообщением: '+E.Message);
   end;
-
-  try
-      SqlReadTableLocal;//views взвешенные заготовки
-  {$IFDEF DEBUG}
-    SaveLog('debug'+#9#9+'SLQuery.RecordCount -> '+inttostr(SLQuery.RecordCount));
-  {$ENDIF}
-  except
-    on E : Exception do
-      SaveLog('error'+#9#9+E.ClassName+', с сообщением: '+E.Message);
-  end;
-
-  // двигаем мышку
-  try
-      if NOW > FutureDate then
-      begin
-        FutureDate := Now + 3 / (24 * 60); //+3 minutes
-        MouseMoved;//views взвешенные заготовки
-      end;
-  {$IFDEF DEBUG}
-    SaveLog('debug'+#9#9+'NOW -> '+datetimetostr(now));
-    SaveLog('debug'+#9#9+'FutureDate -> '+datetimetostr(FutureDate));
-  {$ENDIF}
-  except
-    on E : Exception do
-      SaveLog('error'+#9#9+E.ClassName+', с сообщением: '+E.Message);
-  end;
-
 end;
 
 

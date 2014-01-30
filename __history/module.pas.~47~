@@ -163,6 +163,8 @@ procedure TModule1.OraSession1ConnectionLost(Sender: TObject;
   Component: TComponent; ConnLostCause: TConnLostCause;
   var RetryMode: TRetryMode);
 begin
+//    ConfigOracleSetting(false);
+//    ConfigOracleSetting(true);
     RetryMode := rmReconnect; // rmReconnectExecute
 end;
 

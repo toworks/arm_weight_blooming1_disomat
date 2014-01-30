@@ -31,7 +31,6 @@ object Module1: TModule1
     SQLDialect = 1
     Timeout = 0
     WaitForRestoreConnect = 0
-    OnLostConnect = pFIBDatabase1LostConnect
     Left = 32
     Top = 8
   end
@@ -66,7 +65,6 @@ object Module1: TModule1
   end
   object OraSession1: TOraSession
     LoginPrompt = False
-    OnConnectionLost = OraSession1ConnectionLost
     Left = 32
     Top = 176
   end

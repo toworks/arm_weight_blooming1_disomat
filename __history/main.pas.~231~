@@ -52,19 +52,23 @@ type
     l_current_shift: TLabel;
     l_number_ingot: TLabel;
     l_n_number_ingot: TLabel;
-    TrayIcon: TTrayIcon;
     gb_global: TGroupBox;
     gb_data_pu1: TGroupBox;
     gb_weighed_ingot: TGroupBox;
     b_test: TButton;
     l_n_last_save_weight: TLabel;
     l_last_save_weight: TLabel;
+    gb_weighed_ingot_in_sql: TGroupBox;
+    DBGrid2: TDBGrid;
+    TrayIcon: TTrayIcon;
     procedure FormCreate(Sender: TObject);
     procedure TrayIconClick(Sender: TObject);
     procedure TrayPopUpCloseClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure b_selectedClick(Sender: TObject);
     procedure b_testClick(Sender: TObject);
+    procedure DBGrid2DrawColumnCell(Sender: TObject; const Rect: TRect;
+      DataCol: Integer; Column: TColumn; State: TGridDrawState);
 
 
   private
@@ -100,7 +104,8 @@ var
     function CurrentShift: string;
     function NextWeightToRecord: bool;
     function ShowTrayMessage(InTitle, InMessage: string; InFlag: integer): bool;
-    function ManipulationWithDate(InDate: string; InType: integer): string;
+    function ManipulationWithDate(InDate: string): string;
+    function MouseMoved: bool;
 
 implementation
 
@@ -123,7 +128,14 @@ end;
 
 
 procedure TForm1.b_testClick(Sender: TObject);
+var
+  MousePoint: TPoint;
 begin
+ GetCursorPos(MousePoint);
+ SetCursorPos(MousePoint.X+1, MousePoint.Y+1);
+ SetCursorPos(MousePoint.X-1, MousePoint.Y-1);
+
+
 
   l_current_id.Caption := pkdat+'|'+num+'|'+num_ingot;
 
@@ -176,7 +188,22 @@ var
   KeyValues : Variant;
 begin
 
-  SQuery.Close;
+  SqlNextWeightToRecord;
+
+  //отключаем управление
+  form1.DBGrid1.DataSource.DataSet.DisableControls;
+  try
+      //переменные по которым будет производиться поиск
+      KeyValues := VarArrayOf([pkdat,num,num_ingot]);
+      //поиск по ключивым полям
+      form1.DBGrid1.DataSource.DataSet.Locate('pkdat;num;num_ingot', KeyValues, []);
+  finally
+      //включаем управление
+      form1.DBGrid1.DataSource.DataSet.EnableControls;
+  end;
+
+ // код для работы с dbgrid вместо sql
+{  SQuery.Close;
   SQuery.SQL.Clear;
   SQuery.SQL.Add('SELECT pkdat, num, num_ingot FROM weight');
   SQuery.SQL.Add('order by id desc limit 1');
@@ -213,7 +240,7 @@ begin
   Form1.l_heat.Caption := num_heat;
   Form1.l_grade.Caption := name;
   Form1.l_weight_ingot.Caption := weight_ingot;
-
+}
   //test
   Form1.l_next_id.Caption:=pkdat+'|'+num+'|'+num_ingot;
 end;
@@ -267,6 +294,46 @@ begin
 end;
 
 
+procedure TForm1.DBGrid2DrawColumnCell(Sender: TObject; const Rect: TRect;
+  DataCol: Integer; Column: TColumn; State: TGridDrawState);
+var
+  R: TRect;
+begin
+    R := Rect;
+    Dec(R.Bottom, 2);
+    //проверка первого старта и отсутствие таблицы weight
+    if SqlMaxLocal <> 0 then
+    begin
+
+        if (Column.FieldName = 'transferred') then
+        begin
+          if SLQuery.FieldByName('transferred').AsString = 'не передан' then
+           begin
+              with DBGrid2.Canvas do
+              begin
+                Font.Color := clRed;
+                font.Style:= [fsBold];
+                (Sender as TDBGrid).Canvas.TextRect(Rect, Rect.Left + 2,
+                                      Rect.Top + 2, Column.Field.AsWideString);
+              end
+           end
+          else
+           begin
+              with DBGrid2.Canvas do
+              begin
+                Font.Color := clGreen;
+                font.Style:= [fsBold];
+                (Sender as TDBGrid).Canvas.TextRect(Rect, Rect.Left + 2,
+                                      Rect.Top + 2, Column.Field.AsWideString);
+              end
+          end;
+      end
+      else
+        Dbgrid2.DefaultDrawColumnCell(Rect, DataCol, Column, State);
+    end;
+end;
+
+
 function ShowTrayMessage(InTitle, InMessage: string; InFlag: integer): bool;
 begin
 {
@@ -284,22 +351,23 @@ bfError = 3
   form1.TrayIcon.OnBalloonClick := form1.TrayIconClick;
 end;
 
-
-function ManipulationWithDate(InDate: string; InType: integer): string;
+// изменение последовательноси 1401292 -> 2901142, для id_asutp
+function ManipulationWithDate(InDate: string): string;
 var
   pkdat_correct: string;
 begin
     pkdat_correct := InDate;
     pkdat_correct := StuffString(pkdat_correct, 5, 2, copy(InDate, 1,2));
     pkdat_correct := StuffString(pkdat_correct, 1, 2, copy(InDate, 5,2));
-    if InType = 0 then
-      Result := pkdat_correct;
-    insert('.', pkdat_correct, 5);
-    insert('.', pkdat_correct, 3);
-    if InType = 1 then
-      Result := FormatDateTime('yymmdd', (IncDay(strtodate(pkdat_correct), -1)));
+    Result := pkdat_correct;
 end;
 
+
+function MouseMoved: bool;
+begin
+
+
+end;
 
 
 

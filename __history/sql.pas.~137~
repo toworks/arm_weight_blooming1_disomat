@@ -275,7 +275,6 @@ begin
 //  Module1.pFIBDataSet1.SQLs.SelectSQL.Add('and Pkdat=(select max(PKdat) from heats)');
   Module1.pFIBDataSet1.SQLs.SelectSQL.Add('and pkdat in ('+InData+')');
   Module1.pFIBDataSet1.SQLs.SelectSQL.Add('order by i.pkdat desc, i.num desc, i.num_ingot desc');
-  Application.ProcessMessages;//следующая операция не тормозит интерфейс
   Module1.pFIBDataSet1.Open;
   Module1.pFIBDataSet1.Active := true;
 

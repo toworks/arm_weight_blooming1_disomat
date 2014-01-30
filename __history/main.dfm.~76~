@@ -279,7 +279,6 @@ object Form1: TForm1
       TitleFont.Height = -11
       TitleFont.Name = 'MS Sans Serif'
       TitleFont.Style = []
-      OnDrawColumnCell = DBGrid1DrawColumnCell
       Columns = <
         item
           Alignment = taCenter
@@ -608,7 +607,6 @@ object Form1: TForm1
     Height = 21
     Caption = 'test'
     TabOrder = 3
-    Visible = False
     OnClick = b_testClick
   end
   object gb_weighed_ingot_in_sql: TGroupBox

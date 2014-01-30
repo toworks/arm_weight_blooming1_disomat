@@ -9,9 +9,9 @@ uses
 var
     time_ingot, pkdat, num, num_ingot, num_heat, name, weight_ingot, steel_group,
     smena: string;
+    SqlMaxLocal: integer = 0;
 
-
-//    {$DEFINE DEBUG}
+    {$DEFINE DEBUG}
 
 
     function SqlNextWeightToRecord: bool;
@@ -19,7 +19,7 @@ var
     function SqlSaveInBuffer(DataIn: AnsiString): Bool;
     function SqlSaveToOracle(IdIn, WeightIn: AnsiString): Bool;
     function SqlSaveToOracleOfBuffer: Bool;
-
+    function SqlReadTableLocal: bool;
 
 implementation
 
@@ -60,6 +60,9 @@ begin
   Application.ProcessMessages;//следующая операция не тормозит интерфейс
   Module1.pFIBQuery1.ExecQuery;
 
+//  {$IFDEF DEBUG}
+    SaveLog('debug'+#9#9+'pFIBQuery1 -> '+Module1.pFIBQuery1.SQL.Text);
+//  {$ENDIF}
 
   while not Module1.pFIBQuery1.Eof do
    begin
@@ -95,7 +98,7 @@ var
   num_correct, num_ingot_correct, pkdat_correct: string;
 begin
 
-  pkdat_correct := ManipulationWithDate(pkdat, 0);
+  pkdat_correct := ManipulationWithDate(pkdat);
   num_correct := '';
   num_ingot_correct := num_correct;
 
@@ -149,14 +152,15 @@ begin
 
   SQuery.Close;
   SQuery.SQL.Clear;
-  SQuery.SQL.Add('SELECT pkdat, num, num_ingot, id_asutp, weight FROM weight');
+  SQuery.SQL.Add('SELECT pkdat, num, num_ingot, id_asutp,');
+  SQuery.SQL.Add('datetime(timestamp, ''unixepoch'', ''localtime'') as timestamp, weight FROM weight');
   SQuery.SQL.Add('where id_asutp='+pkdat_correct+num_correct+num_ingot_correct+'');
   SQuery.Open;
 
   SaveLog('sql'+#9#9+'write'+#9+'id_asutp -> '+SQuery.FieldByName('id_asutp').AsString);
   SaveLog('sql'+#9#9+'write'+#9+'weight -> '+SQuery.FieldByName('weight').AsString);
   //сообщение оператору
-  ShowTrayMessage('Заготовка', '№: '+num+#9+'вес: '+SQuery.FieldByName('weight').AsString, 1);
+  ShowTrayMessage('Заготовка', '№: '+num_ingot+#9+'вес: '+SQuery.FieldByName('weight').AsString, 1);
 
   {$IFDEF DEBUG}
     SaveLog('debug'+#9#9+'pkdat_correct -> '+SQuery.FieldByName('id_asutp').AsString);
@@ -273,9 +277,8 @@ begin
   Module1.pFIBDataSet1.SQLs.SelectSQL.Add('and i.num=h.num');
   Module1.pFIBDataSet1.SQLs.SelectSQL.Add('and h.steel_grade=s.steel_grade');
 //  Module1.pFIBDataSet1.SQLs.SelectSQL.Add('and Pkdat=(select max(PKdat) from heats)');
-  Module1.pFIBDataSet1.SQLs.SelectSQL.Add('and pkdat in ('+InData+')');
+  Module1.pFIBDataSet1.SQLs.SelectSQL.Add('and i.pkdat in ('+InData+')');
   Module1.pFIBDataSet1.SQLs.SelectSQL.Add('order by i.pkdat desc, i.num desc, i.num_ingot desc');
-  Application.ProcessMessages;//следующая операция не тормозит интерфейс
   Module1.pFIBDataSet1.Open;
   Module1.pFIBDataSet1.Active := true;
 
@@ -285,6 +288,44 @@ begin
   form1.l_current_shift.Caption := CurrentShift;
 end;
 
+
+function SqlReadTableLocal: bool;
+begin
+
+  if SqlMaxLocal = 0 then
+  begin
+      SLQuery.Close;
+      SLQuery.SQL.Clear;
+      SLQuery.SQL.Add('select * from sqlite_master');
+      SLQuery.SQL.Add('where type = ''table'' and tbl_name = ''weight''');
+      SLQuery.Open;
+
+      if SLQuery.FieldByName('tbl_name').IsNull then
+        exit;
+  end;
+
+  SDataSource.DataSet.ControlsDisabled;
+
+  SLQuery.Close;
+  SLQuery.SQL.Clear;
+  SLQuery.SQL.Add('SELECT num_ingot,');
+  SLQuery.SQL.Add('datetime(timestamp, ''unixepoch'', ''localtime'' ) as timestamp,');
+  SLQuery.SQL.Add('weight,');
+  SLQuery.SQL.Add('case when transferred = 1 then ''передан'' else ''не передан'' end as transferred');
+  SLQuery.SQL.Add('FROM weight');
+  SLQuery.SQL.Add('order by timestamp desc limit 100');
+  SLQuery.Open;
+
+  if (SqlMaxLocal < SLQuery.RecordCount) and SDataSource.Enabled then
+  begin
+        SqlMaxLocal := SLQuery.RecordCount;
+        SDataSource.DataSet.EnableControls;
+  end;
+
+  //исправляем отображение даты в DBGrid -> 20 characters
+  TStringField(SDataSource.DataSet.FieldByName('timestamp')).DisplayWidth := 20;
+  TStringField(SDataSource.DataSet.FieldByName('transferred')).DisplayWidth := 20;
+end;
 
 
 end.

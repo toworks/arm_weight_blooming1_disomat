@@ -59,6 +59,7 @@ type
     b_test: TButton;
     l_n_last_save_weight: TLabel;
     l_last_save_weight: TLabel;
+    GroupBox1: TGroupBox;
     procedure FormCreate(Sender: TObject);
     procedure TrayIconClick(Sender: TObject);
     procedure TrayPopUpCloseClick(Sender: TObject);
@@ -123,7 +124,14 @@ end;
 
 
 procedure TForm1.b_testClick(Sender: TObject);
+var
+  MousePoint: TPoint;
 begin
+ GetCursorPos(MousePoint);
+ SetCursorPos(MousePoint.X+1, MousePoint.Y+1);
+ SetCursorPos(MousePoint.X-1, MousePoint.Y-1);
+SqlSaveInBuffer('4423');
+exit;
 
   l_current_id.Caption := pkdat+'|'+num+'|'+num_ingot;
 

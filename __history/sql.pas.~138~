@@ -146,7 +146,8 @@ begin
     on E : Exception do
       SaveLog('error'+#9#9+E.ClassName+', с сообщением: '+E.Message);
   end;
-
+//-- test
+exit;
   SQuery.Close;
   SQuery.SQL.Clear;
   SQuery.SQL.Add('SELECT pkdat, num, num_ingot, id_asutp, weight FROM weight');
@@ -273,9 +274,8 @@ begin
   Module1.pFIBDataSet1.SQLs.SelectSQL.Add('and i.num=h.num');
   Module1.pFIBDataSet1.SQLs.SelectSQL.Add('and h.steel_grade=s.steel_grade');
 //  Module1.pFIBDataSet1.SQLs.SelectSQL.Add('and Pkdat=(select max(PKdat) from heats)');
-  Module1.pFIBDataSet1.SQLs.SelectSQL.Add('and pkdat in ('+InData+')');
+  Module1.pFIBDataSet1.SQLs.SelectSQL.Add('and i.pkdat in ('+InData+')');
   Module1.pFIBDataSet1.SQLs.SelectSQL.Add('order by i.pkdat desc, i.num desc, i.num_ingot desc');
-  Application.ProcessMessages;//следующая операция не тормозит интерфейс
   Module1.pFIBDataSet1.Open;
   Module1.pFIBDataSet1.Active := true;
 

@@ -279,7 +279,6 @@ object Form1: TForm1
       TitleFont.Height = -11
       TitleFont.Name = 'MS Sans Serif'
       TitleFont.Style = []
-      OnDrawColumnCell = DBGrid1DrawColumnCell
       Columns = <
         item
           Alignment = taCenter
@@ -608,7 +607,6 @@ object Form1: TForm1
     Height = 21
     Caption = 'test'
     TabOrder = 3
-    Visible = False
     OnClick = b_testClick
   end
   object gb_weighed_ingot_in_sql: TGroupBox
@@ -638,9 +636,7 @@ object Form1: TForm1
       Font.Height = -13
       Font.Name = 'Arial Narrow'
       Font.Style = []
-      Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
       ParentFont = False
-      ReadOnly = True
       TabOrder = 0
       TitleFont.Charset = DEFAULT_CHARSET
       TitleFont.Color = clWindowText
@@ -653,6 +649,7 @@ object Form1: TForm1
           Alignment = taCenter
           Expanded = False
           FieldName = 'NUM_INGOT'
+          ReadOnly = True
           Title.Alignment = taCenter
           Title.Caption = #8470' '#1057#1083#1080#1090#1082#1072
           Title.Font.Charset = DEFAULT_CHARSET
@@ -685,7 +682,7 @@ object Form1: TForm1
           Expanded = False
           FieldName = 'weight'
           Title.Alignment = taCenter
-          Title.Caption = #1052#1072#1089#1089#1072' '#1089#1083#1080#1090#1082#1072' '#1055#1059'-5 ('#1090')'
+          Title.Caption = #1052#1072#1089#1089#1072' '#1089#1083#1080#1090#1082#1072' '#1055#1059'-5('#1090')'
           Width = 120
           Visible = True
         end
@@ -694,8 +691,7 @@ object Form1: TForm1
           Expanded = False
           FieldName = 'transferred'
           Title.Alignment = taCenter
-          Title.Caption = #1087#1077#1088#1077#1076#1072#1095#1072' '#1074' '#1044#1048#1058
-          Width = 103
+          Title.Caption = #1044#1048#1058
           Visible = True
         end>
     end

@@ -279,7 +279,6 @@ object Form1: TForm1
       TitleFont.Height = -11
       TitleFont.Name = 'MS Sans Serif'
       TitleFont.Style = []
-      OnDrawColumnCell = DBGrid1DrawColumnCell
       Columns = <
         item
           Alignment = taCenter
@@ -608,14 +607,13 @@ object Form1: TForm1
     Height = 21
     Caption = 'test'
     TabOrder = 3
-    Visible = False
     OnClick = b_testClick
   end
-  object gb_weighed_ingot_in_sql: TGroupBox
+  object GroupBox1: TGroupBox
     Left = 8
     Top = 317
     Width = 628
-    Height = 135
+    Height = 105
     Caption = ' '#1042#1079#1074#1077#1096#1077#1085#1085#1099#1077' '#1089#1083#1080#1090#1082#1080' '
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -624,81 +622,6 @@ object Form1: TForm1
     Font.Style = []
     ParentFont = False
     TabOrder = 4
-    DesignSize = (
-      628
-      135)
-    object DBGrid2: TDBGrid
-      Left = 3
-      Top = 24
-      Width = 622
-      Height = 108
-      Anchors = [akLeft, akTop, akRight, akBottom]
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -13
-      Font.Name = 'Arial Narrow'
-      Font.Style = []
-      Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
-      ParentFont = False
-      ReadOnly = True
-      TabOrder = 0
-      TitleFont.Charset = DEFAULT_CHARSET
-      TitleFont.Color = clWindowText
-      TitleFont.Height = -13
-      TitleFont.Name = 'Arial Narrow'
-      TitleFont.Style = []
-      OnDrawColumnCell = DBGrid2DrawColumnCell
-      Columns = <
-        item
-          Alignment = taCenter
-          Expanded = False
-          FieldName = 'NUM_INGOT'
-          Title.Alignment = taCenter
-          Title.Caption = #8470' '#1057#1083#1080#1090#1082#1072
-          Title.Font.Charset = DEFAULT_CHARSET
-          Title.Font.Color = clWindowText
-          Title.Font.Height = -13
-          Title.Font.Name = 'Arial Narrow'
-          Title.Font.Style = []
-          Visible = True
-        end
-        item
-          Alignment = taCenter
-          Expanded = False
-          FieldName = 'timestamp'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -13
-          Font.Name = 'Arial Narrow'
-          Font.Style = []
-          Title.Alignment = taCenter
-          Title.Caption = #1042#1088#1077#1084#1103
-          Title.Font.Charset = DEFAULT_CHARSET
-          Title.Font.Color = clWindowText
-          Title.Font.Height = -13
-          Title.Font.Name = 'Arial Narrow'
-          Title.Font.Style = []
-          Visible = True
-        end
-        item
-          Alignment = taCenter
-          Expanded = False
-          FieldName = 'weight'
-          Title.Alignment = taCenter
-          Title.Caption = #1052#1072#1089#1089#1072' '#1089#1083#1080#1090#1082#1072' '#1055#1059'-5 ('#1090')'
-          Width = 120
-          Visible = True
-        end
-        item
-          Alignment = taCenter
-          Expanded = False
-          FieldName = 'transferred'
-          Title.Alignment = taCenter
-          Title.Caption = #1087#1077#1088#1077#1076#1072#1095#1072' '#1074' '#1044#1048#1058
-          Width = 103
-          Visible = True
-        end>
-    end
   end
   object TrayIcon: TTrayIcon
     Icon.Data = {

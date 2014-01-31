@@ -655,14 +655,29 @@ object Form1: TForm1
           FieldName = 'NUM_INGOT'
           Title.Alignment = taCenter
           Title.Caption = #8470' '#1057#1083#1080#1090#1082#1072
+          Title.Font.Charset = DEFAULT_CHARSET
+          Title.Font.Color = clWindowText
+          Title.Font.Height = -13
+          Title.Font.Name = 'Arial Narrow'
+          Title.Font.Style = []
           Visible = True
         end
         item
           Alignment = taCenter
           Expanded = False
           FieldName = 'timestamp'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Arial Narrow'
+          Font.Style = []
           Title.Alignment = taCenter
           Title.Caption = #1042#1088#1077#1084#1103
+          Title.Font.Charset = DEFAULT_CHARSET
+          Title.Font.Color = clWindowText
+          Title.Font.Height = -13
+          Title.Font.Name = 'Arial Narrow'
+          Title.Font.Style = []
           Visible = True
         end
         item

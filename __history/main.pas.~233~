@@ -385,13 +385,9 @@ var
   MousePoint: TPoint;
 begin
   GetCursorPos(MousePoint);
-  {Преобразуем MousePoint к "mickeys" (аболютным координатам курсора мышки}
-  MousePoint.x := Round(MousePoint.x * (65535 / Screen.Width));
-  MousePoint.y := Round(MousePoint.y * (65535 / Screen.Height));
-  {Переместим курсор мыши}
-  Mouse_Event(MOUSEEVENTF_ABSOLUTE or MOUSEEVENTF_MOVE, MousePoint.x-20, MousePoint.y-20, 0, 0);
-  {Переместим курсор мыши}
-  Mouse_Event(MOUSEEVENTF_ABSOLUTE or MOUSEEVENTF_MOVE, MousePoint.x+20, MousePoint.y+20, 0, 0);
+  SetCursorPos(MousePoint.X+1, MousePoint.Y+1);
+  GetCursorPos(MousePoint);
+  SetCursorPos(MousePoint.X-1, MousePoint.Y-1);
 end;
 
 

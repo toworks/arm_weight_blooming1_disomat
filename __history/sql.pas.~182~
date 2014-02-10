@@ -77,9 +77,7 @@ begin
       SaveLog('error'+#9#9+E.ClassName+', с сообщением: '+E.Message);
   end;
 
-  {$IFDEF DEBUG}
-    SaveLog('debug'+#9#9+'pkdat empty? -> '+FQueryNextRecord.FieldByName('pkdat').AsString);
-  {$ENDIF}
+  SaveLog('debug'+#9#9+'pkdat || -> '+FQueryNextRecord.FieldByName('pkdat').AsString);
 
   // маркер следующей заготовки (ожидание)
   if FQueryNextRecord.FieldByName('pkdat').AsString = '' then

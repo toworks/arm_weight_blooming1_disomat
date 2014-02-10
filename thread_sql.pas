@@ -4,7 +4,7 @@ unit thread_sql;
 interface
 
 uses
-  SysUtils, Classes, Windows, ActiveX, Graphics, Forms;
+  SysUtils, Classes, Windows, ActiveX, Graphics, Forms, pFIBQuery, ZDataset;
 
 type
   //Здесь необходимо описать класс TThreadSql:
@@ -33,7 +33,7 @@ var
 implementation
 
 uses
-  main, logging, settings, module, sql;
+  main, logging, settings, module, thread_comport, sql;
 
 
 
@@ -45,7 +45,7 @@ begin
   while True do
    begin
       Synchronize(WrapperSql);
-      sleep(5000);
+      sleep(1000);
    end;
    CoUninitialize;
 end;
@@ -74,42 +74,80 @@ end;
 
 function SqlNewRecord: bool;
 var
+  FQueryNewRecord: TpFIBQuery;
+  SQueryCount: TZQuery;
   pkdat_in: string;
-  i, count: integer;
+  i, count, timestamp: integer;
 begin
+  FQueryNewRecord := TpFIBQuery.Create(nil);
+  FQueryNewRecord.Database := Module1.pFIBDatabase1;
+  FQueryNewRecord.Transaction := Module1.pFIBTransaction1;
 
-  //сообщение оператору
-  if pkdat.IsEmpty then
-    ShowTrayMessage('Оператор', 'Для работы выбери взвешиваемую заготовку', 2);
+  SQueryCount := TZQuery.Create(nil);
+  SQueryCount.Connection := SConnect;
+
+  Status;
+
+  // двигаем мышку
+  try
+      if NOW > FutureDate then
+      begin
+        FutureDate := Now + 4 / (24 * 60); //+4 minutes
+        MouseMoved;//views взвешенные заготовки
+      end;
+  {$IFDEF DEBUG}
+    SaveLog('debug'+#9#9+'NOW -> '+datetimetostr(now));
+    SaveLog('debug'+#9#9+'FutureDate -> '+datetimetostr(FutureDate));
+  {$ENDIF}
+  except
+    on E : Exception do
+      SaveLog('error'+#9#9+E.ClassName+', с сообщением: '+E.Message);
+  end;
 
   try
-    Module1.pFIBQuery1.Close;
-    Module1.pFIBQuery1.SQL.Clear;
-    Module1.pFIBQuery1.SQL.Add('select distinct pkdat, count(pkdat) as c from ingots');
-    Module1.pFIBQuery1.SQL.Add('group by pkdat');
-    Module1.pFIBQuery1.SQL.Add('order by pkdat desc rows 3');
-    Module1.pFIBQuery1.ExecQuery;
+    FQueryNewRecord.Close;
+    FQueryNewRecord.SQL.Clear;
+    FQueryNewRecord.SQL.Add('select distinct pkdat from ingots');
+    FQueryNewRecord.SQL.Add('group by pkdat');
+    FQueryNewRecord.SQL.Add('order by pkdat desc rows 3');
+    Application.ProcessMessages;//следующая операция не тормозит интерфейс
+    FQueryNewRecord.ExecQuery;
 
     //подготавливаем данные для выборки в dbgrid
     i:=0;
-    count:=i;
-    while not Module1.pFIBQuery1.Eof do
+    while not FQueryNewRecord.Eof do
     begin
       if i = 0 then
-        pkdat_in := ''''+Module1.pFIBQuery1.FieldByName('pkdat').AsString+''''
+        pkdat_in := ''''+FQueryNewRecord.FieldByName('pkdat').AsString+''''
       else
-        pkdat_in := pkdat_in+','+''''+Module1.pFIBQuery1.FieldByName('pkdat').AsString+'''';
-
-      count := count + Module1.pFIBQuery1.FieldByName('c').AsInt64;
+        pkdat_in := pkdat_in+','+''''+FQueryNewRecord.FieldByName('pkdat').AsString+'''';
       inc(i);
-      Module1.pFIBQuery1.Next;
+      FQueryNewRecord.Next;
     end;
+
+    count:=0;
+    FQueryNewRecord.Close;
+    FQueryNewRecord.SQL.Clear;
+    FQueryNewRecord.SQL.Add('select pkdat||num||num_ingot as c from ingots');
+//    FQueryNewRecord.SQL.Add('select cast(pkdat||num||num_ingot as integer) as c from ingots');
+    FQueryNewRecord.SQL.Add('order by pkdat desc, num desc ,num_ingot desc');
+    FQueryNewRecord.SQL.Add('rows 1');
+    Application.ProcessMessages;//следующая операция не тормозит интерфейс
+    FQueryNewRecord.ExecQuery;
+
+    count := FQueryNewRecord.FieldByName('c').AsInt64;
+
+    FreeAndNil(FQueryNewRecord);
 
     if SqlMax < count then
      begin
         SqlMax := count;
         //обновление отображение записанных данных ViewDbWeight;
         SqlReadTable(pkdat_in);
+
+        //dbgrid текущая выбраная заготовка
+        if not pkdat.IsEmpty then
+          NextWeightToRecordLocation;
 
         //-- test -> при обновлении DBGrid записывается новая заготовка
         //-- Form1.b_test.Click;
@@ -124,33 +162,50 @@ begin
       SaveLog('error'+#9#9+E.ClassName+', с сообщением: '+E.Message);
   end;
 
-  try
-      SqlReadTableLocal;//views взвешенные заготовки
-  {$IFDEF DEBUG}
-    SaveLog('debug'+#9#9+'SLQuery.RecordCount -> '+inttostr(SLQuery.RecordCount));
-  {$ENDIF}
-  except
-    on E : Exception do
-      SaveLog('error'+#9#9+E.ClassName+', с сообщением: '+E.Message);
-  end;
+  // маркер следующей заготовки
+  if MarkerNextWait then
+    SqlNextWeightToRecord;
 
-  // двигаем мышку
+  //-- локальные данные
   try
-      if NOW > FutureDate then
+      if SqlMaxLocal = 0 then
       begin
-        FutureDate := Now + 3 / (24 * 60); //+3 minutes
-        MouseMoved;//views взвешенные заготовки
+          SQueryCount.Close;
+          SQueryCount.SQL.Clear;
+          SQueryCount.SQL.Add('select * from sqlite_master');
+          SQueryCount.SQL.Add('where type = ''table'' and tbl_name = ''weight''');
+          SQueryCount.Open;
+
+          if SQueryCount.FieldByName('tbl_name').IsNull then
+          begin
+            FreeAndNil(SQueryCount);
+            exit;
+          end;
       end;
-  {$IFDEF DEBUG}
-    SaveLog('debug'+#9#9+'NOW -> '+datetimetostr(now));
-    SaveLog('debug'+#9#9+'FutureDate -> '+datetimetostr(FutureDate));
-  {$ENDIF}
+
+      SQueryCount.Close;
+      SQueryCount.SQL.Clear;
+      SQueryCount.SQL.Add('SELECT timestamp');
+      SQueryCount.SQL.Add('FROM weight');
+      SQueryCount.SQL.Add('order by timestamp desc limit 1');
+      SQueryCount.Open;
+
+      timestamp := SQueryCount.FieldByName('timestamp').AsInteger;
+      FreeAndNil(SQueryCount);
+
+      if SqlMaxLocal >= timestamp then
+        exit;
+
+      SqlMaxLocal := timestamp;
+      //views взвешенные заготовки
+      SqlReadTableLocal;
   except
     on E : Exception do
       SaveLog('error'+#9#9+E.ClassName+', с сообщением: '+E.Message);
   end;
-
+  //-- локальные данные
 end;
+
 
 
 

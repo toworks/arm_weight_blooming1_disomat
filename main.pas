@@ -39,7 +39,6 @@ type
     l_current_id: TLabel;
     l_next_id: TLabel;
     DBGrid1: TDBGrid;
-    b_selected: TButton;
     l_n_weight_ingot: TLabel;
     l_weight_ingot: TLabel;
     l_grade: TLabel;
@@ -48,29 +47,27 @@ type
     l_heat: TLabel;
     l_datetime: TLabel;
     l_n_datetime: TLabel;
-    l_n_current_shift: TLabel;
-    l_current_shift: TLabel;
     l_number_ingot: TLabel;
     l_n_number_ingot: TLabel;
     gb_global: TGroupBox;
     gb_data_pu1: TGroupBox;
     gb_weighed_ingot: TGroupBox;
     b_test: TButton;
-    l_n_last_save_weight: TLabel;
-    l_last_save_weight: TLabel;
     gb_weighed_ingot_in_sql: TGroupBox;
     DBGrid2: TDBGrid;
     TrayIcon: TTrayIcon;
+    l_n_message: TLabel;
+    l_status: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure TrayIconClick(Sender: TObject);
     procedure TrayPopUpCloseClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
-    procedure b_selectedClick(Sender: TObject);
     procedure b_testClick(Sender: TObject);
     procedure DBGrid2DrawColumnCell(Sender: TObject; const Rect: TRect;
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
     procedure DBGrid1DrawColumnCell(Sender: TObject; const Rect: TRect;
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
+    procedure DBGrid1DblClick(Sender: TObject);
 
 
   private
@@ -83,8 +80,8 @@ type
 var
   Form1: TForm1;
     CurrentDir: string;
-    HeadName: string = 'АРМ резчика ПУ-4';
-    Version: string = ' v0.0alpha';
+    HeadName: string = ' АРМ резчика ПУ-4 ';
+    Version: string = ' v0.0b';
     DBFile: string = 'data.sdb';
     LogFile: string = 'app.log';
     PopupTray: TPopupMenu;
@@ -103,11 +100,13 @@ var
     function TrayAppRun: bool;
     function CheckAppRun: bool;
     function ViewClear: bool;
-    function CurrentShift: string;
     function NextWeightToRecord: bool;
     function ShowTrayMessage(InTitle, InMessage: string; InFlag: integer): bool;
     function ManipulationWithDate(InDate: string): string;
     function MouseMoved: bool;
+    function NextWeightToRecordLocation: bool;
+    function Status: string;
+
 
 implementation
 
@@ -118,15 +117,6 @@ uses
 
 
 
-
-
-procedure TForm1.b_selectedClick(Sender: TObject);
-begin
-  if MessageDlg('Выбрать заготовку для взвешивания?', mtCustom, mbYesNo, 0) = mrYes then
-   begin
-      ViewSelectedIngot;
-   end;
-end;
 
 
 procedure TForm1.b_testClick(Sender: TObject);
@@ -158,14 +148,12 @@ begin
 
   //запрет на изменение формы
   Form1.BorderStyle := bsToolWindow;
-  Form1.BorderIcons :=  Form1.BorderIcons - [biMaximize];
+  Form1.BorderIcons := Form1.BorderIcons - [biMaximize];
 
   SaveLog('app'+#9#9+'start');
 
   //инициализация трея
   TrayAppRun;
-
-  form1.l_current_shift.Caption := CurrentShift;
 
   ViewClear;
 
@@ -183,14 +171,12 @@ var
   KeyValues : Variant;
 begin
 
-  //отключаем управление
-  form1.DBGrid1.DataSource.DataSet.DisableControls;
-  SqlNextWeightToRecord;
   try
-      //переменные по которым будет производиться поиск
-      KeyValues := VarArrayOf([pkdat,num,num_ingot]);
-      //поиск по ключивым полям
-      form1.DBGrid1.DataSource.DataSet.Locate('pkdat;num;num_ingot', KeyValues, []);
+      //отключаем управление
+      form1.DBGrid1.DataSource.DataSet.DisableControls;
+      SqlNextWeightToRecord;
+      //dbgrid текущая выбраная заготовка
+      NextWeightToRecordLocation;
   finally
       //включаем управление
       form1.DBGrid1.DataSource.DataSet.EnableControls;
@@ -235,7 +221,27 @@ begin
   Form1.l_grade.Caption := name;
   Form1.l_weight_ingot.Caption := weight_ingot;
 }
-  //test
+  //-- test
+  Form1.l_next_id.Caption:=pkdat+'|'+num+'|'+num_ingot;
+end;
+
+
+function NextWeightToRecordLocation: bool;
+var
+  KeyValues : Variant;
+begin
+  try
+      //отключаем управление
+      form1.DBGrid1.DataSource.DataSet.DisableControls;
+      //переменные по которым будет производиться поиск
+      KeyValues := VarArrayOf([pkdat,num,num_ingot]);
+      //поиск по ключивым полям
+      form1.DBGrid1.DataSource.DataSet.Locate('pkdat;num;num_ingot', KeyValues, []);
+  finally
+      //включаем управление
+      form1.DBGrid1.DataSource.DataSet.EnableControls;
+  end;
+  //-- test
   Form1.l_next_id.Caption:=pkdat+'|'+num+'|'+num_ingot;
 end;
 
@@ -250,6 +256,7 @@ begin
   pkdat := Form1.DBGrid1.DataSource.DataSet.FieldByName('PKDAT').AsString;
   num := Form1.DBGrid1.DataSource.DataSet.FieldByName('NUM').AsString;
   num_ingot := Form1.DBGrid1.DataSource.DataSet.FieldByName('NUM_INGOT').AsString;
+  num_heat := Form1.DBGrid1.DataSource.DataSet.FieldByName('NUM_HEAT').AsString;
   smena := Form1.DBGrid1.DataSource.DataSet.FieldByName('SMENA').AsString;
 end;
 
@@ -257,17 +264,6 @@ end;
 function PointReplace(DataIn: string): string;
 begin
       result:=StringReplace(Datain,',','.', [rfReplaceAll]);
-end;
-
-
-function CurrentShift: string;
-begin
-    if (time > strtotime('22:00:00')) and (time < strtotime('07:00:00')) then
-      Result := '1';
-    if (time > strtotime('07:00:00')) and (time < strtotime('15:00:00')) then
-      Result := '2';
-    if (time > strtotime('15:00:00')) and (time < strtotime('22:00:00')) then
-      Result := '3';
 end;
 
 
@@ -288,6 +284,20 @@ begin
 end;
 
 
+procedure TForm1.DBGrid1DblClick(Sender: TObject);
+begin
+  try
+      //отключаем управление
+      form1.DBGrid1.DataSource.DataSet.DisableControls;
+      if MessageDlg('Выбрать заготовку для взвешивания?', mtCustom, mbYesNo, 0) = mrYes then
+        ViewSelectedIngot;
+  finally
+      //включаем управление
+      form1.DBGrid1.DataSource.DataSet.EnableControls;
+  end;
+end;
+
+
 procedure TForm1.DBGrid1DrawColumnCell(Sender: TObject; const Rect: TRect;
   DataCol: Integer; Column: TColumn; State: TGridDrawState);
 begin
@@ -301,6 +311,7 @@ begin
     end;
     Dbgrid1.DefaultDrawColumnCell(Rect, DataCol, Column, State);
 end;
+
 
 procedure TForm1.DBGrid2DrawColumnCell(Sender: TObject; const Rect: TRect;
   DataCol: Integer; Column: TColumn; State: TGridDrawState);
@@ -368,6 +379,7 @@ bfError = 3
   form1.TrayIcon.OnBalloonClick := form1.TrayIconClick;
 end;
 
+
 // изменение последовательноси 1401292 -> 2901142, для id_asutp
 function ManipulationWithDate(InDate: string): string;
 var
@@ -393,6 +405,41 @@ begin
   {Переместим курсор мыши}
   Mouse_Event(MOUSEEVENTF_ABSOLUTE or MOUSEEVENTF_MOVE, MousePoint.x+20, MousePoint.y+20, 0, 0);
 end;
+
+
+
+function Status: string;
+var
+  status: bool;
+begin
+  if pkdat.IsEmpty then
+  begin
+    //сообщение оператору
+    ShowTrayMessage('Оператор', 'Для работы выбери взвешиваемую заготовку', 2);
+    form1.l_status.Caption := 'выбор заготовки оператором';
+    status := true;
+  end;
+
+  if (not pkdat.IsEmpty) and (not no_save) then
+  begin
+    form1.l_status.Caption := 'ожидание данных с весового контроллера';
+    status := true;
+  end;
+
+  if (not pkdat.IsEmpty) and no_save then
+  begin
+    form1.l_status.Caption := 'подтверждение записи веса весовому контроллеру';
+    status := true;
+  end;
+
+  if status then
+    form1.l_status.Visible := true
+  else
+    form1.l_status.Visible := false;
+
+
+end;
+
 
 
 

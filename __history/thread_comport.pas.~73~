@@ -127,7 +127,7 @@ begin
 
   //тестирование
   if TestingStatus then
-    MemoTestingAdd('transmit Com'+ComPortConfigArray[5]+' -> #2''00#TK#''#16#3'+hash_bcc('00#TK#'#16#3));
+    MemoTestingAdd('send Com'+ComPortConfigArray[5]+' -> #2''00#TK#''#16#3'+hash_bcc('00#TK#'#16#3));
 end;
 
 
@@ -145,13 +145,16 @@ function ReceiveData(Data: AnsiString): string;
 begin
   if (copy(Data, 2, 6) = '00#EK#') and (copy(Data, 8, 1) = '0') then
   begin
-      no_save := false;//запрещаем отправку подтверждения в контроллер -> сброс в SqlSaveInBuffer
+      no_save := false;
   end;
 
   if (copy(Data, 2, 6) = '00#TK#') and (copy(Data, 28, 1) = '1') and (no_save = false) then
   begin
       if pkdat <> '' then
-        SqlSaveInBuffer(trim(copy(Data, 40, 6)))
+       begin
+          SqlSaveInBuffer(trim(copy(Data, 40, 6)));
+          no_save := true;
+       end
       else
         SaveLog('warning'+#9#9+'заготовка не выбрана'+#9+'weight -> '+trim(copy(Data, 40, 6)));
     //copy(Data, 2, 6);          //ответ по весу
@@ -161,7 +164,8 @@ begin
 
   //тестирование
   if TestingStatus then
-    MemoTestingAdd('receive Com'+ComPortConfigArray[5]+' -> '+Data);
+    MemoTestingAdd('read Com'+ComPortConfigArray[5]+' -> '+Data);
+
 end;
 
 
@@ -177,7 +181,7 @@ begin
 
   //тестирование
   if TestingStatus then
-    MemoTestingAdd('transmit Com'+ComPortConfigArray[5]+' -> #2''00#EK#1#0#0#0#''#16#3'+hash_bcc('00#EK#1#0#0#0#'#16#3));
+    MemoTestingAdd('read Com'+ComPortConfigArray[5]+' -> '+Data);
 end;
 
 

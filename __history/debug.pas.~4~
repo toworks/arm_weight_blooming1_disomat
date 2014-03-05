@@ -1,0 +1,51 @@
+unit debug;
+
+interface
+
+uses
+   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+   Dialogs, StdCtrls, StrUtils, Data.DB, pFIBQuery;
+
+type
+//  TDebugForm = class(TForm)
+  TDebugForm = class(TForm)
+
+
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+    constructor CreateNew(AOwner: TComponent; Dummy: Integer = 0); override;
+  end;
+
+
+//var
+//  dd: bool;
+    procedure db(Sender: TObject);
+
+implementation
+
+
+uses
+    main, settings, logging, module, thread_comport, thread_sql;
+
+
+
+procedure db(Sender: TObject);
+var
+  DebugForm: TDebugForm;
+begin
+//Application.CreateForm(TDebugForm, DebugForm);
+  inherited CreateNew(AOwner);
+DebugForm:=TDebugForm.CreateNew(nil);
+//  DebugForm := TDebugForm.Create(Application);
+  DebugForm.caption := 'DynaForm';
+  DebugForm.Position := poScreenCenter;
+  DebugForm.ShowModal;
+  DebugForm.Free;
+end;
+
+
+
+
+end.

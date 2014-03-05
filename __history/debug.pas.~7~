@@ -1,0 +1,85 @@
+unit debug;
+
+interface
+
+uses
+   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+   Dialogs, StdCtrls, StrUtils, Data.DB, pFIBQuery;
+
+type
+//  TDebugForm = class(TForm)
+  TDebugForm = class(TForm)
+
+  private
+    { Private declarations }
+    FButton: TButton;
+  public
+    { Public declarations }
+    constructor CreateNew(AOwner: TComponent; Dummy: Integer = 0); override;
+  end;
+
+
+var
+    DebugForm: TDebugForm;
+    MemoDebug: TMemo;
+    procedure db(Sender: TObject);
+
+implementation
+
+
+uses
+    main, settings, logging, module, thread_comport, thread_sql;
+
+
+constructor TDebugForm.CreateNew(AOwner: TComponent; Dummy: Integer = 0);
+begin
+  inherited CreateNew(AOwner);
+  MemoDebug := TMemo.Create(Self);
+  MemoDebug.Ctl3D := False;
+  MemoDebug.SetBounds(2, 2, 590, 300);
+  MemoDebug.Parent := Self;
+
+  FButton := TButton.Create(Self);
+  FButton.SetBounds(10, 10, 60, 24);
+  FButton.Caption := 'OK';
+  FButton.Parent := Self;
+end;
+
+
+procedure db(Sender: TObject);
+begin
+  DebugForm := TDebugForm.CreateNew(nil);
+  try
+    DebugForm.Height := 400;
+    DebugForm.Width := 600;
+    //запрет на изменение формы
+    DebugForm.BorderStyle := bsToolWindow;
+    DebugForm.BorderIcons := DebugForm.BorderIcons - [biMaximize];
+    DebugForm.Caption := ' тестирование';
+    DebugForm.Icon := Form1.Icon;
+    DebugForm.ShowModal;
+  finally
+    DebugForm.Free;
+    TESTING := false;
+    form1.cb_debug.Checked := TESTING;
+  end;
+
+{
+  DebugForm.MemoDebug := TMemo.Create(nil);
+  DebugForm.MemoDebug.Height := 398;
+  DebugForm.MemoDebug.Width := 598;
+{
+//Application.CreateForm(TDebugForm, DebugForm);
+DebugForm:=TDebugForm.CreateNew(nil);
+//  DebugForm := TDebugForm.Create(Application);
+  DebugForm.caption := 'DynaForm';
+  DebugForm.Position := poScreenCenter;
+  DebugForm.ShowModal;
+  DebugForm.Free;
+}
+end;
+
+
+
+
+end.

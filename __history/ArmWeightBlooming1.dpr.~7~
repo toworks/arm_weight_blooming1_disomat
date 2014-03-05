@@ -8,8 +8,7 @@ uses
   settings in 'settings.pas',
   logging in 'logging.pas',
   thread_comport in 'thread_comport.pas',
-  thread_sql in 'thread_sql.pas',
-  testing in 'testing.pas';
+  thread_sql in 'thread_sql.pas';
 
 {$R *.res}
 

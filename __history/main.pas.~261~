@@ -290,7 +290,7 @@ begin
   if cb_testing.Checked then
   begin
     TestingStatus := true;;
-    CreateTestingForm(self);
+    db(self);
   end;
 end;
 

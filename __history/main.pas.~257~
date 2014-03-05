@@ -58,7 +58,6 @@ type
     TrayIcon: TTrayIcon;
     l_n_message: TLabel;
     l_status: TLabel;
-    cb_testing: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure TrayIconClick(Sender: TObject);
     procedure TrayPopUpCloseClick(Sender: TObject);
@@ -69,7 +68,6 @@ type
     procedure DBGrid1DrawColumnCell(Sender: TObject; const Rect: TRect;
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
     procedure DBGrid1DblClick(Sender: TObject);
-    procedure cb_testingClick(Sender: TObject);
 
 
   private
@@ -113,7 +111,7 @@ var
 implementation
 
 uses
-  settings, logging, module, thread_comport, thread_sql, sql, testing;
+  settings, logging, module, thread_comport, thread_sql, sql;
 
 {$R *.dfm}
 
@@ -164,6 +162,7 @@ begin
   ThreadComPortInit;
 
   ThreadSqlInit;
+
 end;
 
 
@@ -284,15 +283,6 @@ begin
 
 end;
 
-
-procedure TForm1.cb_testingClick(Sender: TObject);
-begin
-  if cb_testing.Checked then
-  begin
-    TestingStatus := true;;
-    CreateTestingForm(self);
-  end;
-end;
 
 procedure TForm1.DBGrid1DblClick(Sender: TObject);
 begin

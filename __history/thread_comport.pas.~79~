@@ -162,6 +162,7 @@ begin
   //тестирование
   if TestingStatus then
     MemoTestingAdd('receive Com'+ComPortConfigArray[5]+' -> '+Data);
+
 end;
 
 

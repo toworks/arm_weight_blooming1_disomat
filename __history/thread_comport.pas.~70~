@@ -19,6 +19,7 @@ type
 var
   ThreadComPort: TThreadComPort;
   no_save: bool = false;
+  TESTING: bool = false;
 
   function ThreadComPortInit: bool;
   function ConfigComPort(InData: bool): bool;
@@ -36,7 +37,7 @@ var
 implementation
 
 uses
-  main, logging, settings, module, sql, testing;
+  main, logging, settings, module, sql, debug;
 
 
 
@@ -126,8 +127,15 @@ begin
     SendAttribute;
 
   //тестирование
-  if TestingStatus then
-    MemoTestingAdd('transmit Com'+ComPortConfigArray[5]+' -> #2''00#TK#''#16#3'+hash_bcc('00#TK#'#16#3));
+  if TESTING then
+  begin
+    if MemoDebug.Lines.Count = 0 then
+      MemoDebug.Lines.add(timetostr(now)+#9+'test'+#9+'send Com'+ComPortConfigArray[5]+' -> #2''00#TK#''#16#3'+hash_bcc('00#TK#'#16#3))
+    else
+      MemoDebug.Lines.Insert(0, timetostr(now)+#9+'test'+#9+'send Com'+ComPortConfigArray[5]+' -> #2''00#TK#''#16#3'+hash_bcc('00#TK#'#16#3));
+      MemoDebug.SelStart := 0;
+      MemoDebug.SelLength := 0;
+  end;
 end;
 
 
@@ -145,13 +153,16 @@ function ReceiveData(Data: AnsiString): string;
 begin
   if (copy(Data, 2, 6) = '00#EK#') and (copy(Data, 8, 1) = '0') then
   begin
-      no_save := false;//запрещаем отправку подтверждени€ в контроллер -> сброс в SqlSaveInBuffer
+      no_save := false;
   end;
 
   if (copy(Data, 2, 6) = '00#TK#') and (copy(Data, 28, 1) = '1') and (no_save = false) then
   begin
       if pkdat <> '' then
-        SqlSaveInBuffer(trim(copy(Data, 40, 6)))
+       begin
+          SqlSaveInBuffer(trim(copy(Data, 40, 6)));
+          no_save := true;
+       end
       else
         SaveLog('warning'+#9#9+'заготовка не выбрана'+#9+'weight -> '+trim(copy(Data, 40, 6)));
     //copy(Data, 2, 6);          //ответ по весу
@@ -160,24 +171,23 @@ begin
   end;
 
   //тестирование
-  if TestingStatus then
-    MemoTestingAdd('receive Com'+ComPortConfigArray[5]+' -> '+Data);
+  if TESTING then
+  begin
+    if MemoDebug.Lines.Count = 0 then
+      MemoDebug.Lines.add(timetostr(now)+#9+'test'+#9+'read Com'+ComPortConfigArray[5]+' -> '+Data)
+    else
+      MemoDebug.Lines.Insert(0, timetostr(now)+#9+'test'+#9+'read Com'+ComPortConfigArray[5]+' -> '+Data);
+      MemoDebug.SelStart := 0;
+      MemoDebug.SelLength := 0;
+  end;
+
 end;
 
 
 function SendAttribute: Bool;
 begin
-  try
-    //передаем Ёќƒ вход1-4 переменные 1|0|0|0
-    Module1.ApdComPort1.OutPut := #2'00#EK#1#0#0#0#'#16#3+hash_bcc('00#EK#1#0#0#0#'#16#3);
-  except
-    on E : Exception do
-      SaveLog('error'+#9#9+E.ClassName+', с сообщением: '+E.Message);
-  end;
-
-  //тестирование
-  if TestingStatus then
-    MemoTestingAdd('transmit Com'+ComPortConfigArray[5]+' -> #2''00#EK#1#0#0#0#''#16#3'+hash_bcc('00#EK#1#0#0#0#'#16#3));
+      //передаем Ёќƒ вход1-4 переменные 1|0|0|0
+      Module1.ApdComPort1.OutPut := #2'00#EK#1#0#0#0#'#16#3+hash_bcc('00#EK#1#0#0#0#'#16#3);
 end;
 
 

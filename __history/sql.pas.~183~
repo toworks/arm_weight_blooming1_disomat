@@ -209,8 +209,6 @@ begin
       SaveLog('error'+#9#9+E.ClassName+', с сообщением: '+E.Message);
   end;
 
-  no_save := true;//разрешаем отправку подтверждения в контроллер
-
   SQuery.Close;
   SQuery.SQL.Clear;
   SQuery.SQL.Add('SELECT pkdat, num, num_ingot, id_asutp,');
@@ -261,12 +259,11 @@ begin
     on E : Exception do
       SaveLog('error'+#9#9+E.ClassName+', с сообщением: '+E.Message);
   end;
+  //следующая запись (слиток) от записаной
+  NextWeightToRecord;
 
   //шлем признак записи
   SendAttribute;
-
-  //следующая запись (слиток) от записаной
-  NextWeightToRecord;
 
   //записываем, что не записано до этого
   SqlSaveToOracleOfBuffer;

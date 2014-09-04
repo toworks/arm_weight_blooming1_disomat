@@ -53,7 +53,7 @@ procedure CreateTestingForm(Sender: TObject);
 begin
   TestingForm := TTestingForm.CreateNew(nil);
   try
-    TestingForm.Height := 400;
+    TestingForm.Height := 360;
     TestingForm.Width := 600;
     //запрет на изменение формы
     TestingForm.BorderStyle := bsToolWindow;

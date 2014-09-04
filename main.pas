@@ -81,11 +81,6 @@ type
 
 var
   Form1: TForm1;
-    CurrentDir: string;
-    HeadName: string = ' АРМ резчика ПУ-4 ';
-    Version: string = ' v0.0b';
-    DBFile: string = 'data.sdb';
-    LogFile: string = 'app.log';
     PopupTray: TPopupMenu;
     TrayMark: bool = false;
 
@@ -141,12 +136,9 @@ begin
   //проверка 1 экземпляра программы
   CheckAppRun;
 
-  Form1.Caption := HeadName+Version;
+  Form1.Caption := HeadName+'  build('+GetVersion+')';
   //заголовки к showmessage
-  Application.Title := HeadName+Version;
-
-  //текущая дириктория
-  CurrentDir := GetCurrentDir;
+  Application.Title := Form1.Caption;
 
   //запрет на изменение формы
   Form1.BorderStyle := bsToolWindow;
@@ -158,12 +150,6 @@ begin
   TrayAppRun;
 
   ViewClear;
-
-  ConfigSettings(true);
-
-  ThreadComPortInit;
-
-  ThreadSqlInit;
 end;
 
 
@@ -183,8 +169,8 @@ begin
       form1.DBGrid1.DataSource.DataSet.EnableControls;
   end;
 
- // код для работы с dbgrid вместо sql
-{  SQuery.Close;
+{ // код для работы с dbgrid вместо sql
+  SQuery.Close;
   SQuery.SQL.Clear;
   SQuery.SQL.Add('SELECT pkdat, num, num_ingot FROM weight');
   SQuery.SQL.Add('order by id desc limit 1');
@@ -200,14 +186,51 @@ begin
       //поиск по ключивым полям
       form1.DBGrid1.DataSource.DataSet.Locate('pkdat;num;num_ingot', KeyValues, []);
   finally
+      //перемещение вверх
+      form1.DBGrid1.DataSource.DataSet.MoveBy(-1);
       //включаем управление
       form1.DBGrid1.DataSource.DataSet.EnableControls;
   end;
 
   //перемещение вверх
-  form1.DBGrid1.DataSource.DataSet.MoveBy(-1);
+//  form1.DBGrid1.DataSource.DataSet.MoveBy(-1);
 
-  pkdat := Form1.DBGrid1.DataSource.DataSet.FieldByName('pkdat').AsString;
+{}
+  // маркер следующей заготовки (ожидание)
+{  if (form1.DBGrid1.DataSource.DataSet.FieldByName('pkdat').AsString =
+     SQuery.FieldByName('pkdat').AsString) and
+     (form1.DBGrid1.DataSource.DataSet.FieldByName('num').AsString =
+     SQuery.FieldByName('num').AsString) and
+     (form1.DBGrid1.DataSource.DataSet.FieldByName('num_ingot').AsString =
+     SQuery.FieldByName('num_ingot').AsString)
+  then
+  begin
+      SqlMax := 0;
+      form1.l_n_message.Visible := true;
+      form1.l_n_message.Font.Color := $002CB902;//green
+      form1.l_n_message.Caption := ' Ожидание сдедующей заготовки ';
+      MarkerNextWait := true;
+
+      form1.l_weight_ingot.Visible := false;
+      form1.l_grade.Visible := false;
+      form1.l_heat.Visible := false;
+      form1.l_datetime.Visible := false;
+      form1.l_number_ingot.Visible := false;
+      exit;
+  end
+  else
+  begin
+      form1.l_n_message.Visible := false;
+      MarkerNextWait := false;
+      form1.l_weight_ingot.Visible := true;
+      form1.l_grade.Visible := true;
+      form1.l_heat.Visible := true;
+      form1.l_datetime.Visible := true;
+      form1.l_number_ingot.Visible := true;
+  end;
+{}
+
+{  pkdat := Form1.DBGrid1.DataSource.DataSet.FieldByName('pkdat').AsString;
   num := Form1.DBGrid1.DataSource.DataSet.FieldByName('num').AsString;
   num_ingot  := Form1.DBGrid1.DataSource.DataSet.FieldByName('num_ingot').AsString;
   time_ingot := Form1.DBGrid1.DataSource.DataSet.FieldByName('time_ingot').AsString;
@@ -221,9 +244,9 @@ begin
   Form1.l_heat.Caption := num_heat;
   Form1.l_grade.Caption := name;
   Form1.l_weight_ingot.Caption := weight_ingot;
-}
+
   //-- test
-  Form1.l_next_id.Caption:=pkdat+'|'+num+'|'+num_ingot;
+  Form1.l_next_id.Caption:=pkdat+'|'+num+'|'+num_ingot;}
 end;
 
 
@@ -296,14 +319,17 @@ end;
 
 procedure TForm1.DBGrid1DblClick(Sender: TObject);
 begin
-  try
-      //отключаем управление
-      form1.DBGrid1.DataSource.DataSet.DisableControls;
-      if MessageDlg('Выбрать заготовку для взвешивания?', mtCustom, mbYesNo, 0) = mrYes then
-        ViewSelectedIngot;
-  finally
-      //включаем управление
-      form1.DBGrid1.DataSource.DataSet.EnableControls;
+  // маркер следующей заготовки
+  if not MarkerNextWait then begin
+    try
+        //отключаем управление
+        form1.DBGrid1.DataSource.DataSet.DisableControls;
+        if MessageDlg('Выбрать заготовку для взвешивания?', mtCustom, mbYesNo, 0) = mrYes then
+          ViewSelectedIngot;
+    finally
+        //включаем управление
+        form1.DBGrid1.DataSource.DataSet.EnableControls;
+    end;
   end;
 end;
 
@@ -476,8 +502,6 @@ procedure TForm1.TrayPopUpCloseClick(Sender: TObject);
 var
   buttonSelected: Integer;
 begin
-  ConfigComPort(false);
-
   ThreadComPort.Terminate;
   ThreadSql.Terminate;
 

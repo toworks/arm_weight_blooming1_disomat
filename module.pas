@@ -5,14 +5,12 @@ interface
 uses
   SysUtils, Classes, WideStrings, DBXMsSQL, DB, SqlExpr, DBTables, ADODB,
   IBCustomDataSet, IBQuery, IBDatabase, IBSQL, Vcl.ExtCtrls, Windows, Messages,
-  Graphics, Dialogs, AdPort, OoMisc, AdPacket, FIB, FIBDatabase, pFIBDatabase,
+  Graphics, Dialogs, OoMisc, FIB, FIBDatabase, pFIBDatabase,
   FIBQuery, pFIBQuery, FIBDataSet, pFIBDataSet, pFIBErrorHandler, MemDS,
   DBAccess, Ora, MemData, ZDataset;
 
 type
   TModule1 = class(TDataModule)
-    ApdDataPacket1: TApdDataPacket;
-    ApdComPort1: TApdComPort;
     pFIBDatabase1: TpFIBDatabase;
     pFibErrorHandler1: TpFibErrorHandler;
     pFIBDataSet1: TpFIBDataSet;
@@ -21,9 +19,6 @@ type
     OraSession1: TOraSession;
     OraQuery1: TOraQuery;
     FIB_DataSource: TDataSource;
-    procedure ApdDataPacket1StringPacket(Sender: TObject; Data: AnsiString);
-    procedure ApdComPort1PortClose(Sender: TObject);
-    procedure ApdComPort1PortOpen(Sender: TObject);
     procedure DataModuleCreate(Sender: TObject);
     procedure pFibErrorHandler1FIBErrorEvent(Sender: TObject;
       ErrorValue: EFIBError; KindIBError: TKindIBError; var DoRaise: Boolean);
@@ -59,28 +54,8 @@ uses
 
 
 
-procedure TModule1.ApdComPort1PortClose(Sender: TObject);
-begin
-  SaveLog('serial'+#9#9+'COM'+ComPortConfigArray[5]+#9+'close');
-end;
-
-
-procedure TModule1.ApdComPort1PortOpen(Sender: TObject);
-begin
-  SaveLog('serial'+#9#9+'COM'+ComPortConfigArray[5]+#9+'open');
-end;
-
-
-procedure TModule1.ApdDataPacket1StringPacket(Sender: TObject;
-  Data: AnsiString);
-begin
-  ReceiveData(Data);
-end;
-
-
 procedure TModule1.DataModuleCreate(Sender: TObject);
 begin
-  ConfigComPort(true);
   ConfigFirebirdSetting(true);
   ConfigOracleSetting(true);
   ConfigSqliteSetting;

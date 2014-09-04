@@ -13,7 +13,7 @@ uses
 implementation
 
 uses
-  main;
+  settings;
 
 
 

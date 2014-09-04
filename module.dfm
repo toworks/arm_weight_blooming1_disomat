@@ -2,30 +2,7 @@ object Module1: TModule1
   OldCreateOrder = False
   OnCreate = DataModuleCreate
   Height = 234
-  Width = 319
-  object ApdDataPacket1: TApdDataPacket
-    Enabled = True
-    EndCond = [ecString]
-    StartString = '#2'
-    EndString = '#3'
-    ComPort = ApdComPort1
-    PacketSize = 0
-    OnStringPacket = ApdDataPacket1StringPacket
-    Left = 248
-    Top = 11
-  end
-  object ApdComPort1: TApdComPort
-    ComNumber = 1
-    Baud = 9600
-    Parity = pEven
-    TraceName = 'APRO.TRC'
-    LogName = 'APRO.LOG'
-    LogHex = False
-    OnPortClose = ApdComPort1PortClose
-    OnPortOpen = ApdComPort1PortOpen
-    Left = 248
-    Top = 75
-  end
+  Width = 216
   object pFIBDatabase1: TpFIBDatabase
     AutoReconnect = True
     SQLDialect = 1

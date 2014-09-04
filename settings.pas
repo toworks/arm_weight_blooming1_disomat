@@ -36,16 +36,19 @@ uses
 
 type
   TSettings = class
-
-
   private
     { Private declarations }
-  protected
-
+  public
+    Constructor Create; overload;
+    Destructor Destroy; override;
   end;
 
 var
    SettingsApp: TSettings;
+   CurrentDir: string;
+   HeadName: string = ' АРМ резчика ПУ-4 ';
+   DBFile: string = 'data.sdb';
+   LogFile: string = 'app.log';
    SConnect: TZConnection;
    SQuery: TZQuery;
 
@@ -57,6 +60,7 @@ var
 
    function ConfigSettings(InData: bool): bool;
    function ReadConfigSettings: bool;
+   function GetVersion: string;// Версия сборки программы
 
 
 implementation
@@ -64,6 +68,22 @@ implementation
 uses
   main, logging;
 
+
+
+constructor TSettings.Create;
+begin
+  inherited Create;
+  //текущая дириктория
+  CurrentDir := GetCurrentDir;
+  ConfigSettings(true);
+end;
+
+
+destructor TSettings.Destroy;
+begin
+  ConfigSettings(false);
+  inherited Destroy;
+end;
 
 
 function ConfigSettings(InData: bool): bool;
@@ -145,7 +165,7 @@ begin
       if SQuery.FieldByName('name').AsString = '::ComPort::data_bits' then
         ComPortConfigArray[2] := SQuery.FieldByName('value').AsString;
       if SQuery.FieldByName('name').AsString = '::ComPort::parity' then
-        ComPortConfigArray[3] := SQuery.FieldByName('value').AsString;
+        ComPortConfigArray[3] := AnsiLowerCase(SQuery.FieldByName('value').AsString);
       if SQuery.FieldByName('name').AsString = '::ComPort::stop_bits' then
         ComPortConfigArray[4] := SQuery.FieldByName('value').AsString;
       if SQuery.FieldByName('name').AsString = '::ComPort::number' then
@@ -165,13 +185,35 @@ begin
 end;
 
 
+function GetVersion: string;
+type
+  TVerInfo=packed record
+    Nevazhno: array[0..47] of byte; // ненужные нам 48 байт
+    Minor, Major, Build, Release: word; // а тут версия
+  end;
+var
+  s: TResourceStream;
+  v: TVerInfo;
+begin
+  result := '';
+  try
+    s := TResourceStream.Create(HInstance, '#1', RT_VERSION); // достаём ресурс
+    if s.Size > 0 then begin
+      s.Read(v,SizeOf(v)); // читаем нужные нам байты
+      result := Format('%d%d%d%d', [v.Major, v.Minor, v.Release, v.Build]);
+   end;
+  finally
+      s.Free;
+  end;
+end;
+
 
 // При загрузке программы класс будет создаваться
 initialization
-  SettingsApp := TSettings.Create;
+SettingsApp := TSettings.Create;
 
 //При закрытии программы уничтожаться
 finalization
-  SettingsApp.Destroy;
+SettingsApp.Destroy;
 
 end.

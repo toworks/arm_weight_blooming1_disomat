@@ -14,6 +14,9 @@ type
     { Private declarations }
   protected
     procedure Execute; override;
+  public
+    Constructor Create; overload;
+    Destructor Destroy; override;
   end;
 
 var
@@ -22,7 +25,6 @@ var
   FutureDate: TDateTime;
 
 
-  function ThreadSqlInit: bool;
   function SqlNewRecord: bool;
   procedure WrapperSql;//обертка для синхронизации и выполнения с другим потоком
 
@@ -38,6 +40,25 @@ uses
 
 
 
+constructor TThreadSql.Create;
+begin
+  inherited;
+  // создаем поток True - создание остановка, False - создание старт
+  ThreadSql := TThreadSql.Create(True);
+  ThreadSql.Priority := tpNormal;
+  ThreadSql.FreeOnTerminate := True;
+  ThreadSql.Start;
+end;
+
+
+destructor TThreadSql.Destroy;
+begin
+  if ThreadSql <> nil then begin
+    ThreadSql.Terminate;
+  end;
+  inherited Destroy;
+end;
+
 
 procedure TThreadSql.Execute;
 begin
@@ -45,25 +66,15 @@ begin
   while True do
    begin
       Synchronize(WrapperSql);
-      sleep(1000);
+      sleep(5000);
    end;
    CoUninitialize;
-end;
-
-
-function ThreadSqlInit: bool;
-begin
-  //создаем поток
-  ThreadSql := TThreadSql.Create(False);
-  ThreadSql.Priority := tpNormal;
-  ThreadSql.FreeOnTerminate := True;
 end;
 
 
 procedure WrapperSql;
 begin
   try
-      Application.ProcessMessages;//следующая операция не тормозит интерфейс
       SqlNewRecord;
   except
     on E : Exception do
@@ -129,7 +140,6 @@ begin
     FQueryNewRecord.Close;
     FQueryNewRecord.SQL.Clear;
     FQueryNewRecord.SQL.Add('select pkdat||num||num_ingot as c from ingots');
-//    FQueryNewRecord.SQL.Add('select cast(pkdat||num||num_ingot as integer) as c from ingots');
     FQueryNewRecord.SQL.Add('order by pkdat desc, num desc ,num_ingot desc');
     FQueryNewRecord.SQL.Add('rows 1');
     Application.ProcessMessages;//следующая операция не тормозит интерфейс
@@ -139,7 +149,7 @@ begin
 
     FreeAndNil(FQueryNewRecord);
 
-    if SqlMax < count then
+    if (SqlMax < count) then
      begin
         SqlMax := count;
         //обновление отображение записанных данных ViewDbWeight;
@@ -154,6 +164,7 @@ begin
 
   {$IFDEF DEBUG}
     SaveLog('debug'+#9#9+'count -> '+inttostr(count));
+    SaveLog('debug'+#9#9+'SqlMax -> '+inttostr(SqlMax));
     SaveLog('debug'+#9#9+'pkdat_in -> '+pkdat_in);
   {$ENDIF}
      end;
@@ -164,7 +175,7 @@ begin
 
   // маркер следующей заготовки
   if MarkerNextWait then
-    SqlNextWeightToRecord;
+    NextWeightToRecord; //следующая запись (слиток) от записаной
 
   //-- локальные данные
   try
@@ -207,6 +218,14 @@ begin
 end;
 
 
+// При загрузке программы класс будет создаваться
+initialization
+ThreadSql := TThreadSql.Create;
+
+
+// При закрытии программы уничтожаться
+finalization
+ThreadSql.Destroy;
 
 
 end.

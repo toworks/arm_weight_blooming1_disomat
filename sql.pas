@@ -106,10 +106,10 @@ begin
       form1.l_grade.Visible := true;
       form1.l_heat.Visible := true;
       form1.l_datetime.Visible := true;
-      form1.l_number_ingot.Visible := true;      
+      form1.l_number_ingot.Visible := true;
   end;
 
-  
+
   try
       while not FQueryNextRecord.Eof do
       begin
@@ -149,6 +149,7 @@ end;
 function SqlSaveInBuffer(DataIn: AnsiString): Bool;
 var
   num_correct, num_ingot_correct, pkdat_correct: string;
+  sindex: string;
 begin
 
   // маркер следующей заготовки (ожидание)
@@ -187,12 +188,36 @@ begin
       SQuery.SQL.Add('CREATE TABLE IF NOT EXISTS weight');
       SQuery.SQL.Add('(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE');
       SQuery.SQL.Add(', pkdat NUMERIC(7) NOT NULL, num NUMERIC(3) NOT NULL');
-      SQuery.SQL.Add(', num_ingot NUMERIC(2) NOT NULL');      
+      SQuery.SQL.Add(', num_ingot NUMERIC(2) NOT NULL');
       SQuery.SQL.Add(', id_asutp NUMERIC(12) NOT NULL');
       SQuery.SQL.Add(', heat VARCHAR(16) NOT NULL');
       SQuery.SQL.Add(', timestamp INTEGER(12) NOT NULL');
       SQuery.SQL.Add(', weight NUMERIC(16,4)');
       SQuery.SQL.Add(', transferred NUMERIC(1,1) DEFAULT(0))');
+      SQuery.ExecSQL;
+
+      sindex := 'CREATE INDEX IF NOT EXISTS idx_weight_asc ON weight (' +
+                'id        ASC, ' +
+                'id_asutp  ASC, ' +
+                'num       ASC, ' +
+                'pkdat     ASC, ' +
+                'num_ingot ASC)';
+
+      SQuery.Close;
+      SQuery.SQL.Clear;
+      SQuery.SQL.Text := sindex;
+      SQuery.ExecSQL;
+
+      sindex := 'CREATE INDEX IF NOT EXISTS idx_weight_desc ON weight (' +
+                'id        DESC, ' +
+                'id_asutp  DESC, ' +
+                'num       DESC, ' +
+                'pkdat     DESC, ' +
+                'num_ingot DESC)';
+
+      SQuery.Close;
+      SQuery.SQL.Clear;
+      SQuery.SQL.Text := sindex;
       SQuery.ExecSQL;
 
       SQuery.Close;
@@ -327,28 +352,66 @@ end;
 
 function SqlSaveToOracle(IdIn, WeightIn, TimestampIn: AnsiString): Bool;
 begin
-
-    Module1.OraQuery1.FetchAll := true;
+  try
     Module1.OraQuery1.Close;
     Module1.OraQuery1.SQL.Clear;
     Module1.OraQuery1.SQL.Add('INSERT INTO crop');
     Module1.OraQuery1.SQL.Add('(id_asutp, weight_bloom, date_weight_bloom)');
     Module1.OraQuery1.SQL.Add('VALUES ('+IdIn+', '+PointReplace(WeightIn)+',');
     Module1.OraQuery1.SQL.Add('TO_DATE('''+TimestampIn+''', ''yyyy-mm-dd hh24:mi:ss''))');
+
+{    Module1.OraQuery1.SQL.Add('begin');
+    Module1.OraQuery1.SQL.Add('INSERT INTO crop');
+    Module1.OraQuery1.SQL.Add('(id_asutp, weight_bloom, date_weight_bloom)');
+    Module1.OraQuery1.SQL.Add('VALUES ('+IdIn+', '+PointReplace(WeightIn)+',');
+    Module1.OraQuery1.SQL.Add('TO_DATE('''+TimestampIn+''', ''yyyy-mm-dd hh24:mi:ss''));');
+    Module1.OraQuery1.SQL.Add('exception');
+    Module1.OraQuery1.SQL.Add('when dup_val_on_index then');
+    Module1.OraQuery1.SQL.Add('update crop');
+    Module1.OraQuery1.SQL.Add('set weight_bloom = '+PointReplace(WeightIn)+',');
+    Module1.OraQuery1.SQL.Add('date_weight_bloom = TO_DATE('''+TimestampIn+''', ''yyyy-mm-dd hh24:mi:ss'')');
+    Module1.OraQuery1.SQL.Add('where id_asutp = '+IdIn+';');
+    Module1.OraQuery1.SQL.Add('end;');}
+
+{    Module1.OraQuery1.SQL.Add('MERGE INTO crop USING dual ON');
+    Module1.OraQuery1.SQL.Add('(id_asutp = '+IdIn+')');
+    Module1.OraQuery1.SQL.Add('WHEN MATCHED THEN UPDATE');
+    Module1.OraQuery1.SQL.Add('SET weight_bloom = '+PointReplace(WeightIn)+',');
+    Module1.OraQuery1.SQL.Add('date_weight_bloom = TO_DATE('''+TimestampIn+''', ''yyyy-mm-dd hh24:mi:ss'')');
+    Module1.OraQuery1.SQL.Add('WHEN NOT MATCHED THEN INSERT');
+    Module1.OraQuery1.SQL.Add('(id_asutp, weight_bloom, date_weight_bloom)');
+    Module1.OraQuery1.SQL.Add('VALUES ('+IdIn+', '+PointReplace(WeightIn)+',');
+    Module1.OraQuery1.SQL.Add('TO_DATE('''+TimestampIn+''', ''yyyy-mm-dd hh24:mi:ss''))');}
+
     Application.ProcessMessages;//следующа€ операци€ не тормозит интерфейс
-//-- test отключаю передачу в сит
     Module1.OraQuery1.ExecSQL;
-//-- test
 
   {$IFDEF DEBUG}
     SaveLog('debug'+#9#9+'Module1.OraQuery1.SQL.Text -> '+Module1.OraQuery1.SQL.Text);
   {$ENDIF}
+  except
+    on E : Exception do begin
+    Module1.OraQuery1.Close;
+    Module1.OraQuery1.SQL.Clear;
+    Module1.OraQuery1.SQL.Add('update crop');
+    Module1.OraQuery1.SQL.Add('set weight_bloom = '+PointReplace(WeightIn)+',');
+    Module1.OraQuery1.SQL.Add('date_weight_bloom = TO_DATE('''+TimestampIn+''',');
+    Module1.OraQuery1.SQL.Add('''yyyy-mm-dd hh24:mi:ss'')');
+    Module1.OraQuery1.SQL.Add('where id_asutp = '+IdIn+'');
+
+    Application.ProcessMessages;//следующа€ операци€ не тормозит интерфейс
+    Module1.OraQuery1.ExecSQL;
+
+  {$IFDEF DEBUG}
+    SaveLog('debug'+#9#9+'Module1.OraQuery1.SQL.Text -> '+Module1.OraQuery1.SQL.Text);
+  {$ENDIF}
+    end;
+  end;
+
 end;
 
 
 function SqlReadTable(InData: string): bool;
-var
-  KeyValues : Variant;
 begin
   try
       Module1.pFIBDataSet1.Active := false;
@@ -362,7 +425,7 @@ begin
       Module1.pFIBDataSet1.SQLs.SelectSQL.Add('and h.steel_grade=s.steel_grade');
       Module1.pFIBDataSet1.SQLs.SelectSQL.Add('and i.pkdat in ('+InData+')');
       Module1.pFIBDataSet1.SQLs.SelectSQL.Add('order by i.pkdat desc, i.num desc, i.num_ingot desc');
-    //  Application.ProcessMessages;//следующа€ операци€ не тормозит интерфейс
+//      Application.ProcessMessages;//следующа€ операци€ не тормозит интерфейс
       Module1.pFIBDataSet1.Open;
       Module1.pFIBDataSet1.Active := true;
   except

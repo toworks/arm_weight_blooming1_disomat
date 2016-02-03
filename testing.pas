@@ -4,7 +4,7 @@ interface
 
 uses
    Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-   Dialogs, StdCtrls, StrUtils, Data.DB, pFIBQuery;
+   Dialogs, StdCtrls, StrUtils, Data.DB;
 
 type
   TTestingForm = class(TForm)
@@ -22,7 +22,6 @@ type
 var
     TestingForm: TTestingForm;
     MemoTesting: TMemo;
-    TestingStatus: bool = false;
     function MemoTestingAdd(InData: AnsiString): bool;
     procedure CreateTestingForm(Sender: TObject);
 
@@ -30,7 +29,7 @@ implementation
 
 
 uses
-    main, settings, logging, module, thread_comport, thread_sql;
+    main, settings, logging, thread_comport;
 
 
 constructor TTestingForm.CreateNew(AOwner: TComponent; Dummy: Integer = 0);
@@ -50,6 +49,8 @@ end;
 
 
 procedure CreateTestingForm(Sender: TObject);
+var
+  i: integer;
 begin
   TestingForm := TTestingForm.CreateNew(nil);
   try
@@ -63,9 +64,8 @@ begin
     TestingForm.Position := poMainFormCenter;
     TestingForm.ShowModal;
   finally
-    TestingForm.Free;
-    TestingStatus := false;
-    form1.cb_testing.Checked := TestingStatus;
+    FreeAndNil(MemoTesting);
+    FreeAndNil(TestingForm);
   end;
 end;
 
@@ -86,14 +86,14 @@ begin
 
   except
     on E : Exception do
-      SaveLog('error'+#9#9+E.ClassName+', с сообщением: '+E.Message);
+      Log.save('e', E.ClassName+', с сообщением: '+E.Message);
   end;
 end;
 
 
 procedure TTestingForm.b_ForceSendAttributeClick(Sender: TObject);
 begin
-    SendAttribute;
+    ThreadComPort.SendAttribute;
 end;
 
 

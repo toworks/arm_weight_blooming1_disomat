@@ -31,8 +31,8 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, ShellAPI, StdCtrls, Mask, Menus, Grids, DBGrids, DBTables, ExtCtrls,
-  CommCtrl, StrUtils, DateUtils;
+  Dialogs, ShellAPI, StdCtrls, Mask, Menus, Grids, DBGrids, ExtCtrls,
+  CommCtrl, StrUtils, DateUtils, Data.DB;
 
 type
   TForm1 = class(TForm)
@@ -52,25 +52,22 @@ type
     gb_global: TGroupBox;
     gb_data_pu1: TGroupBox;
     gb_weighed_ingot: TGroupBox;
-    b_test: TButton;
     gb_weighed_ingot_in_sql: TGroupBox;
     DBGrid2: TDBGrid;
     TrayIcon: TTrayIcon;
     l_n_message: TLabel;
     l_status: TLabel;
-    cb_testing: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure TrayIconClick(Sender: TObject);
     procedure TrayPopUpCloseClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
-    procedure b_testClick(Sender: TObject);
     procedure DBGrid2DrawColumnCell(Sender: TObject; const Rect: TRect;
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
     procedure DBGrid1DrawColumnCell(Sender: TObject; const Rect: TRect;
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
     procedure DBGrid1DblClick(Sender: TObject);
-    procedure cb_testingClick(Sender: TObject);
-
+    function CreateMenu: bool;
+    procedure ActionMenuItemClick(Sender: TObject);
 
   private
     { Private declarations }
@@ -83,6 +80,8 @@ var
   Form1: TForm1;
     PopupTray: TPopupMenu;
     TrayMark: bool = false;
+{    MainMenu: TMainMenu;
+    menuItem: TMenuItem;}
 
     formattedDateTime: string;
 
@@ -108,27 +107,12 @@ var
 implementation
 
 uses
-  settings, logging, module, thread_comport, thread_sql, sql, testing;
+  settings, logging, thread_comport, thread_sql_read, sql, testing, calibration;
 
 {$R *.dfm}
 
 
 
-
-
-procedure TForm1.b_testClick(Sender: TObject);
-begin
-
-  l_current_id.Caption := pkdat+'|'+num+'|'+num_ingot;
-
-  //test
-  if pkdat <> '' then
-   begin
-      SqlSaveInBuffer(inttostr(random(100))+'.88');
-      //SqlSaveToOracleOfBuffer;
-   end;
-
-end;
 
 
 procedure TForm1.FormCreate(Sender: TObject);
@@ -144,12 +128,18 @@ begin
   Form1.BorderStyle := bsToolWindow;
   Form1.BorderIcons := Form1.BorderIcons - [biMaximize];
 
-  SaveLog('app'+#9#9+'start');
+  Log.save('i', 'app start');
 
   //инициализация трея
   TrayAppRun;
 
   ViewClear;
+
+  //отображение в dbgrid
+  DBGRid1.DataSource := FDataSource;
+  DBGrid2.DataSource := SLDataSource;
+
+  CreateMenu;
 end;
 
 
@@ -307,15 +297,6 @@ begin
 
 end;
 
-
-procedure TForm1.cb_testingClick(Sender: TObject);
-begin
-  if cb_testing.Checked then
-  begin
-    TestingStatus := true;;
-    CreateTestingForm(self);
-  end;
-end;
 
 procedure TForm1.DBGrid1DblClick(Sender: TObject);
 begin
@@ -503,9 +484,9 @@ var
   buttonSelected: Integer;
 begin
   ThreadComPort.Terminate;
-  ThreadSql.Terminate;
+  ThreadSqlRead.Terminate;
 
-  SaveLog('app'+#9#9+'close');
+  Log.save('i', 'app close');
 
   Trayicon.Visible := false;
   //закрываем приложение
@@ -555,7 +536,52 @@ begin
 end;
 
 
+function TForm1.CreateMenu: bool;
+var
+    MainMenu: TMainMenu;
+    itemMenu, itemTesting, itemCalibration, itemExit: TMenuItem;
+begin
+  MainMenu := TMainMenu.Create(form1);
+  itemMenu := TMenuItem.Create(MainMenu);
 
+  itemMenu.Caption := 'Меню';
+  itemMenu.Name:='main';
+  MainMenu.Items.Add(itemMenu);
+
+  itemTesting := TMenuItem.Create(itemMenu);
+  itemTesting.Caption := 'Тестирование';
+  itemTesting.Name := 'testing';
+  itemTesting.OnClick:= ActionMenuItemClick;
+  itemMenu.Insert(0, itemTesting);
+
+  itemCalibration := TMenuItem.Create(itemMenu);
+  itemCalibration.Caption := 'Калибровка';
+  itemCalibration.Name := 'calibration';
+  itemCalibration.OnClick:= ActionMenuItemClick;
+  itemMenu.Insert(1, itemCalibration);
+
+  itemExit := TMenuItem.Create(itemMenu);
+  itemExit.Caption := 'Выход';
+  itemExit.Name := 'exit';
+  itemExit.OnClick:= ActionMenuItemClick;
+  itemMenu.Insert(2, itemExit);
+end;
+
+
+procedure TForm1.ActionMenuItemClick(Sender: TObject);
+begin
+  if TMenuItem(Sender).Name = 'testing' then begin
+    CreateTestingForm(self);
+  end;
+
+  if TMenuItem(Sender).Name = 'calibration' then begin
+    CreateCalibrationForm(self);
+  end;
+
+  if TMenuItem(Sender).Name = 'exit' then begin
+    TrayPopUpCloseClick(Self);
+  end;
+end;
 
 
 

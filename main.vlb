@@ -43,9 +43,6 @@ Coordinates=63,77,86,51
 [l_n_heat]
 Coordinates=23,173,56,51
 
-[b_test]
-Coordinates=534,232,44,51
-
 [gb_data_pu1]
 Coordinates=534,155,77,51
 
@@ -65,7 +62,7 @@ Coordinates=379,1,103,51
 Coordinates=661,243,79,51
 
 []
-Coordinates=300,173,77,58
+Coordinates=534,232,44,51
 
 [l_status]
 Coordinates=0,0,53,51

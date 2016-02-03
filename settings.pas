@@ -43,6 +43,24 @@ type
     Destructor Destroy; override;
   end;
 
+  TSqlSettings = Record
+    ip            : string[20];
+    port          : string[10];
+    db_name       : string[255];
+    lib           : string[20];
+    dialect       : string[1];
+    user          : string[50];
+    password      : string[50];
+  end;
+
+  TSerialSettings = Record
+    baud                  : string[10];
+    data_bits             : string[1];
+    parity                : string[10];
+    stop_bits             : string[1];
+    serial_port_number    : string[3];
+  end;
+
 var
    SettingsApp: TSettings;
    CurrentDir: string;
@@ -52,9 +70,9 @@ var
    SConnect: TZConnection;
    SQuery: TZQuery;
 
-   FbSqlConfigArray: Array[1..6] of String;
-   OraSqlConfigArray: Array[1..5] of String;
-   ComPortConfigArray: Array[1..5] of String;
+   FbSqlSettings: TSqlSettings;
+   OraSqlSettings: TSqlSettings;
+   SerialPortSettings: TSerialSettings;
 
 //   {$DEFINE DEBUG}
 
@@ -66,7 +84,7 @@ var
 implementation
 
 uses
-  main, logging;
+  main, logging, sql;
 
 
 
@@ -108,7 +126,7 @@ begin
 
       except
         on E : Exception do
-          SaveLog('error'+#9#9+E.ClassName+', с сообщением: '+E.Message);
+          Log.save('e', E.ClassName+', с сообщением: '+E.Message);
       end;
    end
   else
@@ -135,51 +153,51 @@ begin
      begin
       //fbsql
       if SQuery.FieldByName('name').AsString = '::FbSql::ip' then
-        FbSqlConfigArray[1] := SQuery.FieldByName('value').AsString;
+        FbSqlSettings.ip := SQuery.FieldByName('value').AsString;
       if SQuery.FieldByName('name').AsString = '::FbSql::db_name' then
-        FbSqlConfigArray[2] := SQuery.FieldByName('value').AsString;
+        FbSqlSettings.db_name := SQuery.FieldByName('value').AsString;
       if SQuery.FieldByName('name').AsString = '::FbSql::library' then
-        FbSqlConfigArray[3] := SQuery.FieldByName('value').AsString;
+        FbSqlSettings.lib := SQuery.FieldByName('value').AsString;
       if SQuery.FieldByName('name').AsString = '::FbSql::dialect' then
-        FbSqlConfigArray[4] := SQuery.FieldByName('value').AsString;
+        FbSqlSettings.dialect := SQuery.FieldByName('value').AsString;
       if SQuery.FieldByName('name').AsString = '::FbSql::user' then
-        FbSqlConfigArray[5] := SQuery.FieldByName('value').AsString;
+        FbSqlSettings.user := SQuery.FieldByName('value').AsString;
       if SQuery.FieldByName('name').AsString = '::FbSql::password' then
-        FbSqlConfigArray[6] := SQuery.FieldByName('value').AsString;
+        FbSqlSettings.password := SQuery.FieldByName('value').AsString;
 
       //orasql
       if SQuery.FieldByName('name').AsString = '::OraSql::ip' then
-        OraSqlConfigArray[1] := SQuery.FieldByName('value').AsString;
+        OraSqlSettings.ip := SQuery.FieldByName('value').AsString;
       if SQuery.FieldByName('name').AsString = '::OraSql::port' then
-        OraSqlConfigArray[2] := SQuery.FieldByName('value').AsString;
+        OraSqlSettings.port := SQuery.FieldByName('value').AsString;
       if SQuery.FieldByName('name').AsString = '::OraSql::db_name' then
-        OraSqlConfigArray[3] := SQuery.FieldByName('value').AsString;
+        OraSqlSettings.db_name := SQuery.FieldByName('value').AsString;
       if SQuery.FieldByName('name').AsString = '::OraSql::user' then
-        OraSqlConfigArray[4] := SQuery.FieldByName('value').AsString;
+        OraSqlSettings.user := SQuery.FieldByName('value').AsString;
       if SQuery.FieldByName('name').AsString = '::OraSql::password' then
-        OraSqlConfigArray[5] := SQuery.FieldByName('value').AsString;
+        OraSqlSettings.password := SQuery.FieldByName('value').AsString;
 
       //comport
       if SQuery.FieldByName('name').AsString = '::ComPort::baud' then
-        ComPortConfigArray[1] := SQuery.FieldByName('value').AsString;
+        SerialPortSettings.baud := SQuery.FieldByName('value').AsString;
       if SQuery.FieldByName('name').AsString = '::ComPort::data_bits' then
-        ComPortConfigArray[2] := SQuery.FieldByName('value').AsString;
+        SerialPortSettings.data_bits := SQuery.FieldByName('value').AsString;
       if SQuery.FieldByName('name').AsString = '::ComPort::parity' then
-        ComPortConfigArray[3] := AnsiLowerCase(SQuery.FieldByName('value').AsString);
+        SerialPortSettings.parity := AnsiLowerCase(SQuery.FieldByName('value').AsString);
       if SQuery.FieldByName('name').AsString = '::ComPort::stop_bits' then
-        ComPortConfigArray[4] := SQuery.FieldByName('value').AsString;
+        SerialPortSettings.stop_bits := SQuery.FieldByName('value').AsString;
       if SQuery.FieldByName('name').AsString = '::ComPort::number' then
-        ComPortConfigArray[5] := SQuery.FieldByName('value').AsString;
+        SerialPortSettings.serial_port_number := SQuery.FieldByName('value').AsString;
 
         SQuery.Next;
      end;
 
  {$IFDEF DEBUG}
-  SaveLog('debug'+#9#9+'ComPortConfigArray[1] -> '+ComPortConfigArray[1]);
-  SaveLog('debug'+#9#9+'ComPortConfigArray[2] -> '+ComPortConfigArray[2]);
-  SaveLog('debug'+#9#9+'ComPortConfigArray[3] -> '+ComPortConfigArray[3]);
-  SaveLog('debug'+#9#9+'ComPortConfigArray[4] -> '+ComPortConfigArray[4]);
-  SaveLog('debug'+#9#9+'ComPortConfigArray[5] -> '+ComPortConfigArray[5]);
+  Log.save('debug'+#9#9+'SerialPortSettings.baud -> '+SerialPortSettings.baud);
+  Log.save('debug'+#9#9+'SerialPortSettings.data_bits -> '+SerialPortSettings.data_bits);
+  Log.save('debug'+#9#9+'SerialPortSettings.parity -> '+SerialPortSettings.parity);
+  Log.save('debug'+#9#9+'SerialPortSettings.stop_bits -> '+SerialPortSettings.stop_bits);
+  Log.save('debug'+#9#9+'SerialPortSettings.serial_port_number -> '+SerialPortSettings.serial_port_number);
  {$ENDIF}
 
 end;
@@ -211,9 +229,16 @@ end;
 // При загрузке программы класс будет создаваться
 initialization
 SettingsApp := TSettings.Create;
+ConfigFirebirdSetting(true);
+ConfigOracleSetting(true);
+ConfigSqliteSetting;
+SqlLocalCreateTable; //create local sqlite table
 
 //При закрытии программы уничтожаться
 finalization
+ConfigFirebirdSetting(false);
+ConfigOracleSetting(false);
 SettingsApp.Destroy;
 
 end.
+

@@ -11,25 +11,26 @@ type
   TThreadComPort = class(TThread)
 
   private
-    { Private declarations }
+    procedure ReadToMessage;
+
+    var
+      count: integer;
   protected
     procedure Execute; override;
   public
     Constructor Create; overload;
     Destructor Destroy; override;
+
+    function CPortParity(InData: String): Char;
+    function SendReadToSerial(InData: AnsiString): AnsiString;
+    function SendAttribute: boolean;
+    function hash_bcc(InChar: string): Char;
+    function ReceiveData(Data: AnsiString): string;
   end;
 
 var
   ThreadComPort: TThreadComPort;
   no_save: bool = false;
-
-  function CPortParity(InData: String): Char;
-  procedure WrapperComPort;//обертка для синхронизации и выполнения с другим потоком
-  function SendReadToSerial(InData: AnsiString): AnsiString;
-  function ReadToMessage: boolean;
-  function SendAttribute: boolean;
-  function hash_bcc(InChar: string): Char;
-  function ReceiveData(Data: AnsiString): string;
 
 
 //  {$DEFINE DEBUG}
@@ -38,7 +39,7 @@ var
 implementation
 
 uses
-  main, logging, settings, sql, testing;
+  main, logging, settings, sql, testing, calibration;
 
 
 
@@ -51,6 +52,8 @@ begin
   ThreadComPort.Priority := tpNormal;
   ThreadComPort.FreeOnTerminate := True;
   ThreadComPort.Start;
+
+  count := 10;
 end;
 
 
@@ -68,49 +71,46 @@ begin
   CoInitialize(nil);
   while True do
    begin
-      Synchronize(WrapperComPort);
-      sleep(1500);
+      Synchronize(ReadToMessage);
+      sleep(1000);
    end;
    CoUninitialize;
 end;
 
 
-procedure WrapperComPort;
-begin
-  try
-      ReadToMessage;
-  except
-    on E : Exception do
-      SaveLog('error'+#9#9+E.ClassName+', с сообщением: '+E.Message);
-  end;
-end;
-
-
-function SendReadToSerial(InData: AnsiString): AnsiString;
+function TThreadComPort.SendReadToSerial(InData: AnsiString): AnsiString;
 var
   serial_port: TBlockserial;
 begin
-    serial_port := TBlockserial.Create;
-    serial_port.RaiseExcept := false; //false игнорировать ошибки порта
+    //status работы с контроллером
+    if count > 10 then begin
+      Status;
+      count := 0;
+    end
+    else
+      inc(count);
+
     try
-       serial_port.Connect('COM'+ComPortConfigArray[5]);
-       if serial_port.InstanceActive then begin
+        serial_port := TBlockserial.Create;
+        serial_port.RaiseExcept := false; //false игнорировать ошибки порта
+        serial_port.Connect('COM'+SerialPortSettings.serial_port_number);
+        if serial_port.InstanceActive then begin
 //          serial_port.Config(19200,8,'E',SB2,false,false);
-          serial_port.Config(strtoint(ComPortConfigArray[1]),
-                             strtoint(ComPortConfigArray[2]),
-                             CPortParity(ComPortConfigArray[3]),
-                             strtoint(ComPortConfigArray[4]),false,false);
+          serial_port.Config( strtoint(SerialPortSettings.baud),
+                              strtoint(SerialPortSettings.data_bits),
+                              CPortParity(SerialPortSettings.parity),
+                              strtoint(SerialPortSettings.stop_bits),false,false);
           serial_port.SendString(InData);
           sleep(200);
           Result := serial_port.RecvBufferStr(serial_port.WaitingData, 200);
        end;
     finally
-        serial_port.Free;
+          FreeAndNil(serial_port);
     end;
 end;
 
 
-function ReadToMessage: boolean;
+procedure TThreadComPort.ReadToMessage;
 var
     msg: AnsiString;
 begin
@@ -122,12 +122,12 @@ begin
     SendAttribute;
 
   {$IFDEF DEBUG}
-    SaveLog('debug'+#9#9+'no_save -> '+booltostr(no_save));
+    Log.save('d', 'no_save | '+booltostr(no_save));
   {$ENDIF}
 end;
 
 
-function hash_bcc(InChar: string): char;
+function TThreadComPort.hash_bcc(InChar: string): char;
 var
     i: byte;
 begin
@@ -137,32 +137,39 @@ begin
 end;
 
 
-function ReceiveData(Data: AnsiString): string;
+function TThreadComPort.ReceiveData(Data: AnsiString): string;
 begin
   if (copy(Data, 2, 6) = '00#EK#') and (copy(Data, 8, 1) = '0') then
   begin
       no_save := false;//запрещаем отправку подтверждения в контроллер -> сброс в SqlSaveInBuffer
   end;
 //{ test }  if (copy(Data, 2, 6) = '00#TK#') and (copy(Data, 26, 1) = '1') and (no_save = false) then
-  if (copy(Data, 2, 6) = '00#TK#') and (copy(Data, 28, 1) = '1') and (no_save = false) then
+  if ( copy(Data, 2, 6) = '00#TK#' ) and (copy(Data, 28, 1) = '1')
+      and (no_save = false) then
   begin
-      if pkdat <> '' then
-//{ test }      SqlSaveInBuffer(trim(copy(Data, 60, 6)))
-        SqlSaveInBuffer(trim(copy(Data, 40, 6)))
-      else
-        SaveLog('warning'+#9#9+'заготовка не выбрана'+#9+'weight -> '+trim(copy(Data, 40, 6)));
-    //copy(Data, 2, 6);          //ответ по весу
-    //copy(Data, 28, 1);         //признак
-    //trim(copy(Data, 40, 6));   //вес только целая часть
+      if ( trim(copy(Data, 40, 6)) <> '' ) then begin //не пропускать пустых значений
+          if pkdat <> '' then
+    //{ test }      SqlSaveInBuffer(trim(copy(Data, 60, 6)))
+            SqlSaveInBuffer(trim(copy(Data, 40, 6)))
+          else
+            Log.save('w', 'заготовка не выбрана'+#9+'weight -> '+trim(copy(Data, 40, 6)));
+        //copy(Data, 2, 6);          //ответ по весу
+        //copy(Data, 28, 1);         //признак
+        //trim(copy(Data, 40, 6));   //вес только целая часть
+      end;
   end;
 
   //тестирование
-  if TestingStatus then
-    MemoTestingAdd('receive Com'+ComPortConfigArray[5]+' -> '+Data);
+  if assigned(MemoTesting) then
+    MemoTestingAdd('receive Com'+SerialPortSettings.serial_port_number+' | '+Data);
+
+  //калибровка
+  if assigned(CalibrationForm) then
+    CalibrationForm.l_calibration.caption := trim(copy(Data, 40, 6));
 end;
 
 
-function SendAttribute: boolean;
+function TThreadComPort.SendAttribute: boolean;
 var
     msg: AnsiString;
 begin
@@ -172,12 +179,12 @@ begin
     ReceiveData(msg);
   except
     on E : Exception do
-      SaveLog('error'+#9#9+E.ClassName+', с сообщением: '+E.Message);
+      Log.save('e', E.ClassName+', с сообщением: '+E.Message);
   end;
 end;
 
 
-function CPortParity(InData: String): Char;
+function TThreadComPort.CPortParity(InData: String): Char;
 {
 pNone=0
 pOdd=1

@@ -80,9 +80,6 @@ var
   Form1: TForm1;
     PopupTray: TPopupMenu;
     TrayMark: bool = false;
-{    MainMenu: TMainMenu;
-    menuItem: TMenuItem;}
-
     formattedDateTime: string;
 
 
@@ -107,7 +104,7 @@ var
 implementation
 
 uses
-  settings, logging, thread_comport, thread_sql_read, sql, testing, calibration;
+  settings, logging, thread_comport, sql, testing, calibration;
 
 {$R *.dfm}
 
@@ -128,7 +125,7 @@ begin
   Form1.BorderStyle := bsToolWindow;
   Form1.BorderIcons := Form1.BorderIcons - [biMaximize];
 
-  Log.save('i', 'app start');
+  Log.save('i', 'start '+Log.ProgFileName);
 
   //инициализаци€ тре€
   TrayAppRun;
@@ -484,9 +481,8 @@ var
   buttonSelected: Integer;
 begin
   ThreadComPort.Terminate;
-  ThreadSqlRead.Terminate;
 
-  Log.save('i', 'app close');
+  Log.save('i', 'close '+Log.ProgFileName);
 
   Trayicon.Visible := false;
   //закрываем приложение
@@ -521,7 +517,7 @@ var
   hMutex : THandle;
 begin
     // закрытие 2 экземл€ра программы
-    hMutex := CreateMutex(0, true , 'ArmWeightBlooming1');
+    hMutex := CreateMutex(0, true , PWideChar(Log.ProgFileName));
     if GetLastError = ERROR_ALREADY_EXISTS then
      begin
         Application.Title := HeadName+Version;

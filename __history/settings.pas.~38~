@@ -53,18 +53,25 @@ type
     password      : string[50];
   end;
 
+  TSerialSettings = Record
+    baud                  : string[10];
+    data_bits             : string[1];
+    parity                : string[10];
+    stop_bits             : string[1];
+    serial_port_number    : string[3];
+  end;
+
 var
    SettingsApp: TSettings;
    CurrentDir: string;
    HeadName: string = ' АРМ резчика ПУ-4 ';
    DBFile: string = 'data.sdb';
-   LogFile: string = 'app.log';
    SConnect: TZConnection;
    SQuery: TZQuery;
 
    FbSqlSettings: TSqlSettings;
    OraSqlSettings: TSqlSettings;
-   ComPortConfigArray: Array[1..5] of String;
+   SerialPortSettings: TSerialSettings;
 
 //   {$DEFINE DEBUG}
 
@@ -118,7 +125,7 @@ begin
 
       except
         on E : Exception do
-          SaveLog('error'+#9#9+E.ClassName+', с сообщением: '+E.Message);
+          Log.save('e', E.ClassName+', с сообщением: '+E.Message);
       end;
    end
   else
@@ -171,25 +178,25 @@ begin
 
       //comport
       if SQuery.FieldByName('name').AsString = '::ComPort::baud' then
-        ComPortConfigArray[1] := SQuery.FieldByName('value').AsString;
+        SerialPortSettings.baud := SQuery.FieldByName('value').AsString;
       if SQuery.FieldByName('name').AsString = '::ComPort::data_bits' then
-        ComPortConfigArray[2] := SQuery.FieldByName('value').AsString;
+        SerialPortSettings.data_bits := SQuery.FieldByName('value').AsString;
       if SQuery.FieldByName('name').AsString = '::ComPort::parity' then
-        ComPortConfigArray[3] := AnsiLowerCase(SQuery.FieldByName('value').AsString);
+        SerialPortSettings.parity := AnsiLowerCase(SQuery.FieldByName('value').AsString);
       if SQuery.FieldByName('name').AsString = '::ComPort::stop_bits' then
-        ComPortConfigArray[4] := SQuery.FieldByName('value').AsString;
+        SerialPortSettings.stop_bits := SQuery.FieldByName('value').AsString;
       if SQuery.FieldByName('name').AsString = '::ComPort::number' then
-        ComPortConfigArray[5] := SQuery.FieldByName('value').AsString;
+        SerialPortSettings.serial_port_number := SQuery.FieldByName('value').AsString;
 
         SQuery.Next;
      end;
 
  {$IFDEF DEBUG}
-  SaveLog('debug'+#9#9+'ComPortConfigArray[1] -> '+ComPortConfigArray[1]);
-  SaveLog('debug'+#9#9+'ComPortConfigArray[2] -> '+ComPortConfigArray[2]);
-  SaveLog('debug'+#9#9+'ComPortConfigArray[3] -> '+ComPortConfigArray[3]);
-  SaveLog('debug'+#9#9+'ComPortConfigArray[4] -> '+ComPortConfigArray[4]);
-  SaveLog('debug'+#9#9+'ComPortConfigArray[5] -> '+ComPortConfigArray[5]);
+  Log.save('debug'+#9#9+'SerialPortSettings.baud -> '+SerialPortSettings.baud);
+  Log.save('debug'+#9#9+'SerialPortSettings.data_bits -> '+SerialPortSettings.data_bits);
+  Log.save('debug'+#9#9+'SerialPortSettings.parity -> '+SerialPortSettings.parity);
+  Log.save('debug'+#9#9+'SerialPortSettings.stop_bits -> '+SerialPortSettings.stop_bits);
+  Log.save('debug'+#9#9+'SerialPortSettings.serial_port_number -> '+SerialPortSettings.serial_port_number);
  {$ENDIF}
 
 end;
@@ -222,12 +229,14 @@ end;
 initialization
 SettingsApp := TSettings.Create;
 ConfigFirebirdSetting(true);
-ConfigoracleSetting(true);
+ConfigOracleSetting(true);
+ConfigSqliteSetting;
+SqlLocalCreateTable; //create local sqlite table
 
 //При закрытии программы уничтожаться
 finalization
 ConfigFirebirdSetting(false);
-ConfigoracleSetting(false);
+ConfigOracleSetting(false);
 SettingsApp.Destroy;
 
 end.

@@ -10,8 +10,8 @@ uses
 type
   TLog = class
   private
-    LogFileName: AnsiString;
   public
+    ProgFileName: AnsiString;
     function save(_type, _message: AnsiString): boolean;
     constructor Create; overload;
     destructor Destroy; override;
@@ -30,7 +30,7 @@ constructor TLog.Create;
 begin
   inherited Create;
   //טלÿ פאיכא
-  LogFileName := ExtractFileName(ChangeFileExt(ParamStr(0), ''));
+  ProgFileName := ExtractFileName(ChangeFileExt(ParamStr(0), ''));
 end;
 
 
@@ -80,8 +80,8 @@ Type    Level    Description
 
   try
       log_file := FormatDateTime('yyyymmdd', NOW);
-      AssignFile(f, log_file+'_'+LogFileName+'.log');
-      if not FileExists(log_file+'_'+LogFileName+'.log') then
+      AssignFile(f, log_file+'_'+ProgFileName+'.log');
+      if not FileExists(log_file+'_'+ProgFileName+'.log') then
        begin
           Rewrite(f);
           CloseFile(f);

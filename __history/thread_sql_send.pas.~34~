@@ -28,7 +28,7 @@ var
   ThreadSqlSend: TThreadSqlSend;
 
 
-  {$DEFINE DEBUG}
+//  {$DEFINE DEBUG}
 
 
 implementation
@@ -112,7 +112,7 @@ begin
         on E : Exception do
           Log.save('e', E.ClassName+', с сообщением: '+E.Message);
       end;
-      sleep(1000);
+      sleep(5000);
    end;
    CoUninitialize;
 end;
@@ -193,8 +193,7 @@ begin
 
   try
     //была ошибака: EZSQLException, с сообщением: SQL Error: OCI_NO_DATA
-    if not OraConnect.Connected then
-      OraConnect.Reconnect;
+    OraConnect.Reconnect;
 
     OraQuery.Close;
     OraQuery.SQL.Clear;
@@ -224,8 +223,6 @@ begin
         OraQuery.SQL.Add('''yyyy-mm-dd hh24:mi:ss'')');
         OraQuery.SQL.Add('where id_asutp = '+IdIn+'');
         OraQuery.ExecSQL;
-
-        error := false;
   {$IFDEF DEBUG}
     Log.save('d', 'OraQuery update | '+OraQuery.SQL.Text);
   {$ENDIF}

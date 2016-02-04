@@ -11,9 +11,6 @@ type
   TThreadSqlSend = class(TThread)
 
   private
-    OraConnect: TZConnection;
-    OraQuery: TZQuery;
-
     function ConfigOracleSetting(InData: boolean): boolean;
     procedure SqlSend;
     function SqlSaveToOracle(IdIn, WeightIn, TimestampIn: AnsiString): boolean;
@@ -28,7 +25,7 @@ var
   ThreadSqlSend: TThreadSqlSend;
 
 
-  {$DEFINE DEBUG}
+//  {$DEFINE DEBUG}
 
 
 implementation
@@ -112,7 +109,7 @@ begin
         on E : Exception do
           Log.save('e', E.ClassName+', с сообщением: '+E.Message);
       end;
-      sleep(1000);
+      sleep(5000);
    end;
    CoUninitialize;
 end;
@@ -168,7 +165,7 @@ begin
             Log.save('sql'+#9#9+'write'+#9+'weight -> '+Byffer[i,1]);
             Log.save('sql'+#9#9+'write'+#9+'timestamp -> '+Byffer[i,2]);}
 
-            Synchronize(SqlReadTableLocal);//views взвешенные заготовки
+            SqlReadTableLocal;//views взвешенные заготовки
 
             //удаляем старые записи старше 3х дней
             SQuery.Close;
@@ -193,8 +190,7 @@ begin
 
   try
     //была ошибака: EZSQLException, с сообщением: SQL Error: OCI_NO_DATA
-    if not OraConnect.Connected then
-      OraConnect.Reconnect;
+    OraConnect.Reconnect;
 
     OraQuery.Close;
     OraQuery.SQL.Clear;
@@ -224,8 +220,6 @@ begin
         OraQuery.SQL.Add('''yyyy-mm-dd hh24:mi:ss'')');
         OraQuery.SQL.Add('where id_asutp = '+IdIn+'');
         OraQuery.ExecSQL;
-
-        error := false;
   {$IFDEF DEBUG}
     Log.save('d', 'OraQuery update | '+OraQuery.SQL.Text);
   {$ENDIF}

@@ -193,8 +193,7 @@ begin
 
   try
     //была ошибака: EZSQLException, с сообщением: SQL Error: OCI_NO_DATA
-    if not OraConnect.Connected then
-      OraConnect.Reconnect;
+    OraConnect.Reconnect;
 
     OraQuery.Close;
     OraQuery.SQL.Clear;

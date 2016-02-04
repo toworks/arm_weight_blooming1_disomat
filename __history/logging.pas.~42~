@@ -10,8 +10,8 @@ uses
 type
   TLog = class
   private
-    name : string;
   public
+    LogFileName: AnsiString;
     function save(_type, _message: AnsiString): boolean;
     constructor Create; overload;
     destructor Destroy; override;
@@ -24,28 +24,23 @@ var
 
 implementation
 
-uses
-  settings;
-
 
 
 constructor TLog.Create;
 begin
   inherited Create;
-  //текущая дириктория
-  CurrentDir := GetCurrentDir;
-  ConfigSettings(true);
+  //имя файла
+  LogFileName := ExtractFileName(ChangeFileExt(ParamStr(0), ''));
 end;
 
 
 destructor TLog.Destroy;
 begin
-  ConfigSettings(false);
   inherited Destroy;
 end;
 
 
-function SaveLog(_type, _message: AnsiString): boolean;
+function TLog.save(_type, _message: AnsiString): boolean;
 var
    f: TextFile;
    log_file: AnsiString;
@@ -85,8 +80,8 @@ Type    Level    Description
 
   try
       log_file := FormatDateTime('yyyymmdd', NOW);
-      AssignFile(f, CurrentDir+'\'+log_file+'_'+LogFile);
-      if not FileExists(CurrentDir+'\'+log_file+'_'+LogFile) then
+      AssignFile(f, log_file+'_'+LogFileName+'.log');
+      if not FileExists(log_file+'_'+LogFileName+'.log') then
        begin
           Rewrite(f);
           CloseFile(f);
@@ -100,7 +95,7 @@ Type    Level    Description
       CloseFile(f);
   except
     on E : Exception do
-      SaveLog('e', E.ClassName+', с сообщением: '+E.Message);
+      save('e', E.ClassName+', с сообщением: '+E.Message);
   end;
 end;
 

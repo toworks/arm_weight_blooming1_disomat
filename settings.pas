@@ -66,7 +66,6 @@ var
    CurrentDir: string;
    HeadName: string = ' АРМ резчика ПУ-4 ';
    DBFile: string = 'data.sdb';
-   LogFile: string = 'app.log';
    SConnect: TZConnection;
    SQuery: TZQuery;
 
@@ -230,14 +229,12 @@ end;
 initialization
 SettingsApp := TSettings.Create;
 ConfigFirebirdSetting(true);
-ConfigOracleSetting(true);
 ConfigSqliteSetting;
 SqlLocalCreateTable; //create local sqlite table
 
 //При закрытии программы уничтожаться
 finalization
 ConfigFirebirdSetting(false);
-ConfigOracleSetting(false);
 SettingsApp.Destroy;
 
 end.

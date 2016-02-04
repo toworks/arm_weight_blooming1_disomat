@@ -12,25 +12,20 @@ var
     FDataSource: TDataSource;
     SLQuery: TZQuery;
     SLDataSource: TDataSource;
-    OraConnect: TZConnection;
-    OraQuery: TZQuery;
     time_ingot, pkdat, num, num_ingot, num_heat, name, weight_ingot, steel_group,
     smena: string;
     SqlMaxLocal: integer = 0;
     MarkerNextWait: bool = false;
 
-//    {$DEFINE DEBUG}
+    {$DEFINE DEBUG}
 
 
     function ConfigFirebirdSetting(InData: boolean): boolean;
-    function ConfigOracleSetting(InData: boolean): boolean;
     function ConfigSqliteSetting: boolean;
     function SqlNextWeightToRecord: bool;
     function SqlReadTable(InData: string): bool;
     function SqlSaveInBuffer(DataIn: AnsiString): Bool;
-    function SqlSaveToOracle(IdIn, WeightIn, TimestampIn: AnsiString): boolean;
-//    function SqlSaveToOracleOfBuffer: Bool;
-    function SqlReadTableLocal: bool;
+    procedure SqlReadTableLocal;
     function SqlLocalCreateTable: boolean;
 
 implementation
@@ -95,7 +90,7 @@ begin
 end;
 
 
-function ConfigOracleSetting(InData: boolean): boolean;
+{function ConfigOracleSetting(InData: boolean): boolean;
 var
   ConnectString : String;
 begin
@@ -129,7 +124,7 @@ begin
         FreeAndNil(OraConnect);
   end;
 
-end;
+end;}
 
 
 function ConfigSqliteSetting: boolean;
@@ -350,66 +345,6 @@ begin
 end;
 
 
-function SqlSaveToOracle(IdIn, WeightIn, TimestampIn: AnsiString): boolean;
-var
-  error: boolean;
-begin
-  error := false;
-
-  try
-    //была ошибака: EZSQLException, с сообщением: SQL Error: OCI_NO_DATA
-    OraConnect.Reconnect;
-
-    OraQuery.Close;
-    OraQuery.SQL.Clear;
-    OraQuery.SQL.Add('INSERT INTO crop');
-    OraQuery.SQL.Add('(id_asutp, weight_bloom, date_weight_bloom)');
-    OraQuery.SQL.Add('VALUES ('+IdIn+', '+PointReplace(WeightIn)+',');
-    OraQuery.SQL.Add('TO_DATE('''+TimestampIn+''', ''yyyy-mm-dd hh24:mi:ss''))');
-
-    Application.ProcessMessages;//следующая операция не тормозит интерфейс
-    OraQuery.ExecSQL;
-
-  {$IFDEF DEBUG}
-    Log.save('d', 'OraQuery.SQL.Text -> '+OraQuery.SQL.Text);
-  {$ENDIF}
-  except
-    on E : Exception do begin
-      error := true;
-      Result := true;
-      Log.save('e', E.ClassName+', с сообщением: '+E.Message+' | '+OraQuery.SQL.Text);
-    end;
-  end;
-
-  if error then
-  begin
-    try
-        OraQuery.Close;
-        OraQuery.SQL.Clear;
-        OraQuery.SQL.Add('update crop');
-        OraQuery.SQL.Add('set weight_bloom = '+PointReplace(WeightIn)+',');
-        OraQuery.SQL.Add('date_weight_bloom = TO_DATE('''+TimestampIn+''',');
-        OraQuery.SQL.Add('''yyyy-mm-dd hh24:mi:ss'')');
-        OraQuery.SQL.Add('where id_asutp = '+IdIn+'');
-
-        Application.ProcessMessages;//следующая операция не тормозит интерфейс
-        OraQuery.ExecSQL;
-
-//        Result := false;
-  {$IFDEF DEBUG}
-    Log.save('d', 'OraQuery.SQL.Text -> '+OraQuery.SQL.Text);
-  {$ENDIF}
-    except
-      on E : Exception do begin
-        Result := true;
-        Log.save('e', E.ClassName+', с сообщением: '+E.Message);
-      end;
-    end;
-  end;
-
-end;
-
-
 function SqlReadTable(InData: string): bool;
 begin
   try
@@ -434,7 +369,7 @@ begin
 end;
 
 
-function SqlReadTableLocal: bool;
+procedure SqlReadTableLocal;
 begin
   try
       SLQuery.Close;

@@ -7,18 +7,40 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, OoMisc;
 
 
-  function SaveLog(_type, _message: AnsiString): boolean;
+type
+  TLog = class
+  private
+    LogFileName: AnsiString;
+  public
+    function save(_type, _message: AnsiString): boolean;
+    constructor Create; overload;
+    destructor Destroy; override;
+  end;
+
+
+var
+  Log: TLog;
 
 
 implementation
 
-uses
-  settings;
 
 
+constructor TLog.Create;
+begin
+  inherited Create;
+  //имя файла
+  LogFileName := ExtractFileName(ChangeFileExt(ParamStr(0), ''));
+end;
 
-//--| start |--
-function SaveLog(_type, _message: AnsiString): boolean;
+
+destructor TLog.Destroy;
+begin
+  inherited Destroy;
+end;
+
+
+function TLog.save(_type, _message: AnsiString): boolean;
 var
    f: TextFile;
    log_file: AnsiString;
@@ -58,8 +80,8 @@ Type    Level    Description
 
   try
       log_file := FormatDateTime('yyyymmdd', NOW);
-      AssignFile(f, CurrentDir+'\'+log_file+'_'+LogFile);
-      if not FileExists(CurrentDir+'\'+log_file+'_'+LogFile) then
+      AssignFile(f, log_file+'_'+LogFileName+'.log');
+      if not FileExists(log_file+'_'+LogFileName+'.log') then
        begin
           Rewrite(f);
           CloseFile(f);
@@ -73,11 +95,17 @@ Type    Level    Description
       CloseFile(f);
   except
     on E : Exception do
-      SaveLog('e', E.ClassName+', с сообщением: '+E.Message);
+      save('e', E.ClassName+', с сообщением: '+E.Message);
   end;
 end;
 
 
+// При загрузке программы класс будет создаваться
+initialization
+Log := TLog.Create;
 
+//При закрытии программы уничтожаться
+finalization
+Log.Destroy;
 
 end.

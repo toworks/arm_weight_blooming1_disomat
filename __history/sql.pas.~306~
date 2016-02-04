@@ -23,13 +23,11 @@ var
 
 
     function ConfigFirebirdSetting(InData: boolean): boolean;
-    function ConfigOracleSetting(InData: boolean): boolean;
+//    function ConfigOracleSetting(InData: boolean): boolean;
     function ConfigSqliteSetting: boolean;
     function SqlNextWeightToRecord: bool;
     function SqlReadTable(InData: string): bool;
     function SqlSaveInBuffer(DataIn: AnsiString): Bool;
-    function SqlSaveToOracle(IdIn, WeightIn, TimestampIn: AnsiString): Bool;
-    function SqlSaveToOracleOfBuffer: Bool;
     function SqlReadTableLocal: bool;
     function SqlLocalCreateTable: boolean;
 
@@ -37,7 +35,7 @@ implementation
 
 
 uses
-    main, settings, logging, thread_comport, thread_sql;
+    main, settings, logging, thread_comport, thread_sql_read;
 
 
 
@@ -79,11 +77,9 @@ begin
 
         FDataSource := TDataSource.Create(nil);
         FDataSource.DataSet := FQuery;
-
-        Form1.DBGRid1.DataSource := FDataSource;
       except
         on E: Exception do begin
-          SaveLog('error' + #9#9 + E.ClassName + ', с сообщением: ' + E.Message);
+          Log.save('e', E.ClassName+', с сообщением: '+E.Message);
 //          ErrorConnect := true;
         end;
       end;
@@ -97,7 +93,7 @@ begin
 end;
 
 
-function ConfigOracleSetting(InData: boolean): boolean;
+{function ConfigOracleSetting(InData: boolean): boolean;
 var
   ConnectString : String;
 begin
@@ -120,7 +116,7 @@ begin
         OraQuery.Connection := OraConnect;
       except
         on E: Exception do begin
-          SaveLog('error' + #9#9 + E.ClassName + ', с сообщением: ' + E.Message);
+          Log.save('e', E.ClassName+', с сообщением: '+E.Message);
 //          ErrorConnect := true;
         end;
       end;
@@ -131,7 +127,7 @@ begin
         FreeAndNil(OraConnect);
   end;
 
-end;
+end;}
 
 
 function ConfigSqliteSetting: boolean;
@@ -142,10 +138,9 @@ begin
 
       SLDataSource := TDataSource.Create(nil);
       SLDataSource.DataSet := SLQuery;
-      form1.DBGrid2.DataSource := SLDataSource;
   except
       on E : Exception do
-        SaveLog('error'+#9#9+E.ClassName+', с сообщением: '+E.Message);
+        Log.save('e', E.ClassName+', с сообщением: '+E.Message);
   end;
 end;
 
@@ -167,7 +162,7 @@ begin
       SQuery.Open;
   except
     on E : Exception do
-      SaveLog('error'+#9#9+E.ClassName+', с сообщением: '+E.Message);
+      Log.save('e', E.ClassName+', с сообщением: '+E.Message);
   end;
 
   try
@@ -185,47 +180,51 @@ begin
       FQueryNextRecord.SQL.Add('and h.steel_grade=s.steel_grade');
       FQueryNextRecord.SQL.Add('order by i.pkdat asc, i.num asc, i.num_ingot asc');
       Application.ProcessMessages;//следующая операция не тормозит интерфейс
-      FQueryNextRecord.ExecSQL;
+      FQueryNextRecord.Open;
   {$IFDEF DEBUG}
-    SaveLog('debug'+#9#9+'FQueryNextRecord -> '+FQueryNextRecord.SQL.Text);
+    Log.save('d', 'FQueryNextRecord -> '+FQueryNextRecord.SQL.Text);
   {$ENDIF}
   except
     on E : Exception do
-      SaveLog('error'+#9#9+E.ClassName+', с сообщением: '+E.Message);
+      Log.save('e', E.ClassName+', с сообщением: '+E.Message);
   end;
 
   {$IFDEF DEBUG}
-    SaveLog('debug'+#9#9+'pkdat empty? -> '+FQueryNextRecord.FieldByName('pkdat').AsString);
+    Log.save('d', 'pkdat empty? -> '+FQueryNextRecord.FieldByName('pkdat').AsString);
   {$ENDIF}
 
-  // маркер следующей заготовки (ожидание)
-  if FQueryNextRecord.FieldByName('pkdat').AsString = '' then
-  begin
-      SqlMax := 0;
-      form1.l_n_message.Visible := true;
-      form1.l_n_message.Font.Color := $002CB902;//green
-      form1.l_n_message.Caption := ' Ожидание сдедующей заготовки ';
-      MarkerNextWait := true;
+  try
+      // маркер следующей заготовки (ожидание)
+      if FQueryNextRecord.FieldByName('pkdat').AsString = '' then
+      begin
+          SqlMax := 0;
+          form1.l_n_message.Visible := true;
+          form1.l_n_message.Font.Color := $002CB902;//green
+          form1.l_n_message.Caption := ' Ожидание сдедующей заготовки ';
+          MarkerNextWait := true;
 
-      form1.l_weight_ingot.Visible := false;
-      form1.l_grade.Visible := false;
-      form1.l_heat.Visible := false;
-      form1.l_datetime.Visible := false;
-      form1.l_number_ingot.Visible := false;
-      FreeAndNil(FQueryNextRecord);//утечка памяти
-      exit;
-  end
-  else
-  begin
-      form1.l_n_message.Visible := false;
-      MarkerNextWait := false;
-      form1.l_weight_ingot.Visible := true;
-      form1.l_grade.Visible := true;
-      form1.l_heat.Visible := true;
-      form1.l_datetime.Visible := true;
-      form1.l_number_ingot.Visible := true;
+          form1.l_weight_ingot.Visible := false;
+          form1.l_grade.Visible := false;
+          form1.l_heat.Visible := false;
+          form1.l_datetime.Visible := false;
+          form1.l_number_ingot.Visible := false;
+          FreeAndNil(FQueryNextRecord);//утечка памяти
+          exit;
+      end
+      else
+      begin
+          form1.l_n_message.Visible := false;
+          MarkerNextWait := false;
+          form1.l_weight_ingot.Visible := true;
+          form1.l_grade.Visible := true;
+          form1.l_heat.Visible := true;
+          form1.l_datetime.Visible := true;
+          form1.l_number_ingot.Visible := true;
+      end;
+  except
+    on E : Exception do
+      Log.save('e', E.ClassName+', с сообщением: '+E.Message);
   end;
-
 
   try
       while not FQueryNextRecord.Eof do
@@ -256,7 +255,7 @@ begin
       end;
   except
     on E : Exception do
-      SaveLog('error'+#9#9+E.ClassName+', с сообщением: '+E.Message);
+      Log.save('e', E.ClassName+', с сообщением: '+E.Message);
   end;
 
   FreeAndNil(FQueryNextRecord);
@@ -288,9 +287,9 @@ begin
     num_ingot_correct := num_ingot;
 
   {$IFDEF DEBUG}
-    SaveLog('debug'+#9#9+'pkdat_correct -> '+pkdat_correct);
-    SaveLog('debug'+#9#9+'num_correct -> '+num_correct);
-    SaveLog('debug'+#9#9+'num_ingot_correct -> '+num_ingot_correct);
+    Log.save('d', 'pkdat_correct -> '+pkdat_correct);
+    Log.save('d', 'num_correct -> '+num_correct);
+    Log.save('d', 'num_ingot_correct -> '+num_ingot_correct);
   {$ENDIF}
 
 { id_asutp состоит из полей pkdat+num+num_ingot, где в АСУТП pkdat состоит
@@ -309,183 +308,43 @@ begin
       SQuery.ExecSQL;
   except
     on E : Exception do
-      SaveLog('error'+#9#9+E.ClassName+', с сообщением: '+E.Message);
+      Log.save('e', E.ClassName+', с сообщением: '+E.Message+SQuery.SQL.Text);
   end;
 
   no_save := true;//разрешаем отправку подтверждения в контроллер
 
-  SQuery.Close;
-  SQuery.SQL.Clear;
-  SQuery.SQL.Add('SELECT pkdat, num, num_ingot, id_asutp,');
-  SQuery.SQL.Add('datetime(timestamp, ''unixepoch'', ''localtime'') as timestamp, weight FROM weight');
-  SQuery.SQL.Add('where id_asutp='+pkdat_correct+num_correct+num_ingot_correct+'');
-  SQuery.Open;
-
+  try
+      SQuery.Close;
+      SQuery.SQL.Clear;
+      SQuery.SQL.Add('SELECT pkdat, num, num_ingot, id_asutp,');
+      SQuery.SQL.Add('datetime(timestamp, ''unixepoch'', ''localtime'') as timestamp, weight FROM weight');
+      SQuery.SQL.Add('where id_asutp='+pkdat_correct+num_correct+num_ingot_correct+'');
+      SQuery.Open;
+  except
+    on E : Exception do
+      Log.save('e', E.ClassName+', с сообщением: '+E.Message+SQuery.SQL.Text);
+  end;
   //save to log file
-  {SaveLog('sql'+#9#9+'write'+#9+'id_asutp -> '+SQuery.FieldByName('id_asutp').AsString);
-  SaveLog('sql'+#9#9+'write'+#9+'weight -> '+SQuery.FieldByName('weight').AsString);}
+  {Log.save('sql'+#9#9+'write'+#9+'id_asutp -> '+SQuery.FieldByName('id_asutp').AsString);
+  Log.save('sql'+#9#9+'write'+#9+'weight -> '+SQuery.FieldByName('weight').AsString);}
 
   //сообщение оператору
   ShowTrayMessage('Заготовка', '№: '+num_ingot+#9+'вес: '+SQuery.FieldByName('weight').AsString, 1);
 
   {$IFDEF DEBUG}
-    SaveLog('debug'+#9#9+'pkdat_correct -> '+SQuery.FieldByName('id_asutp').AsString);
+    Log.save('d', 'pkdat_correct -> '+SQuery.FieldByName('id_asutp').AsString);
   {$ENDIF}
+
 
   try
       SqlReadTableLocal;//views взвешенные заготовки
   except
     on E : Exception do
-      SaveLog('error'+#9#9+E.ClassName+', с сообщением: '+E.Message);
+      Log.save('e', E.ClassName+', с сообщением: '+E.Message);
   end;
-{---------------
-  try
-    SqlSaveToOracle(SQuery.FieldByName('id_asutp').AsString, SQuery.FieldByName('weight').AsString
-                    , SQuery.FieldByName('timestamp').AsString);
-
-    SQuery.Close;
-    SQuery.SQL.Clear;
-    SQuery.SQL.Add('UPDATE weight SET transferred=1');
-    SQuery.SQL.Add('where id_asutp='+pkdat_correct+num_correct+num_ingot_correct+'');
-    SQuery.ExecSQL;
-  except
-      on E : Exception do
-        SaveLog('error'+#9#9+E.ClassName+', с сообщением: '+E.Message);
-  end;
-
-  //удаляем записи старше 6 месяцев 2629743(один месяц)*6
-  try
-      SQuery.Close;
-      SQuery.SQL.Clear;
-      SQuery.SQL.Add('DELETE FROM weight');
-      SQuery.SQL.Add('where timestamp<(strftime(''%s'',''now'')-(2629743*6))');
-      SQuery.ExecSQL;
-   except
-    on E : Exception do
-      SaveLog('error'+#9#9+E.ClassName+', с сообщением: '+E.Message);
-  end;
----------------}
-  //шлем признак записи
-  SendAttribute;
 
   //следующая запись (слиток) от записаной
   NextWeightToRecord;
-
-  //записываем, что не записано до этого
-  SqlSaveToOracleOfBuffer;
-end;
-
-
-function SqlSaveToOracleOfBuffer: Bool;
-var
-  i: integer;
-  Byffer: array of array of AnsiString;
-begin
-  SQuery.Close;
-  SQuery.SQL.Clear;
-  SQuery.SQL.Add('SELECT id_asutp, weight,');
-  SQuery.SQL.Add('datetime(timestamp, ''unixepoch'', ''localtime'' ) as timestamp');
-  SQuery.SQL.Add('FROM weight');
-  SQuery.SQL.Add('where transferred=0');
-  SQuery.SQL.Add('order by id asc limit 10'); //порциями по 10 шт
-  SQuery.Open;
-
-  i := 0;
-  while not SQuery.Eof do
-   begin
-      if i = Length(Byffer) then SetLength(Byffer, i+1, 3);
-      Byffer[i,0] := SQuery.FieldByName('id_asutp').AsString;
-      Byffer[i,1] := SQuery.FieldByName('weight').AsString;
-      Byffer[i,2] := SQuery.FieldByName('timestamp').AsString;      
-      inc(i);
-      SQuery.Next;
-   end;
-
-  for i := Low(Byffer) to High(Byffer) do
-   begin
-    {$IFDEF DEBUG}
-      SaveLog('debug'+#9#9+'id_asutp -> '+Byffer[i,0]);
-      SaveLog('debug'+#9#9+'weight -> '+Byffer[i,1]);
-      SaveLog('debug'+#9#9+'timestamp -> '+Byffer[i,2]);
-    {$ENDIF}
-      try
-        SqlSaveToOracle(Byffer[i,0], Byffer[i,1], Byffer[i,2]);
-
-        SQuery.Close;
-        SQuery.SQL.Clear;
-        SQuery.SQL.Add('UPDATE weight SET transferred=1');
-        SQuery.SQL.Add('where id_asutp='+Byffer[i,0]+'');
-        SQuery.ExecSQL;
-        //save to log file
-        {SaveLog('sql'+#9#9+'write'+#9+'id_asutp -> '+Byffer[i,0]);
-        SaveLog('sql'+#9#9+'write'+#9+'weight -> '+Byffer[i,1]);
-        SaveLog('sql'+#9#9+'write'+#9+'timestamp -> '+Byffer[i,2]);}
-      except
-        on E : Exception do
-          SaveLog('error'+#9#9+E.ClassName+', с сообщением: '+E.Message);
-      end;
-   end;
-end;
-
-
-function SqlSaveToOracle(IdIn, WeightIn, TimestampIn: AnsiString): Bool;
-begin
-  try
-    OraQuery.Close;
-    OraQuery.SQL.Clear;
-    OraQuery.SQL.Add('INSERT INTO crop');
-    OraQuery.SQL.Add('(id_asutp, weight_bloom, date_weight_bloom)');
-    OraQuery.SQL.Add('VALUES ('+IdIn+', '+PointReplace(WeightIn)+',');
-    OraQuery.SQL.Add('TO_DATE('''+TimestampIn+''', ''yyyy-mm-dd hh24:mi:ss''))');
-
-{    Module1.OraQuery1.SQL.Add('begin');
-    Module1.OraQuery1.SQL.Add('INSERT INTO crop');
-    Module1.OraQuery1.SQL.Add('(id_asutp, weight_bloom, date_weight_bloom)');
-    Module1.OraQuery1.SQL.Add('VALUES ('+IdIn+', '+PointReplace(WeightIn)+',');
-    Module1.OraQuery1.SQL.Add('TO_DATE('''+TimestampIn+''', ''yyyy-mm-dd hh24:mi:ss''));');
-    Module1.OraQuery1.SQL.Add('exception');
-    Module1.OraQuery1.SQL.Add('when dup_val_on_index then');
-    Module1.OraQuery1.SQL.Add('update crop');
-    Module1.OraQuery1.SQL.Add('set weight_bloom = '+PointReplace(WeightIn)+',');
-    Module1.OraQuery1.SQL.Add('date_weight_bloom = TO_DATE('''+TimestampIn+''', ''yyyy-mm-dd hh24:mi:ss'')');
-    Module1.OraQuery1.SQL.Add('where id_asutp = '+IdIn+';');
-    Module1.OraQuery1.SQL.Add('end;');}
-
-{    Module1.OraQuery1.SQL.Add('MERGE INTO crop USING dual ON');
-    Module1.OraQuery1.SQL.Add('(id_asutp = '+IdIn+')');
-    Module1.OraQuery1.SQL.Add('WHEN MATCHED THEN UPDATE');
-    Module1.OraQuery1.SQL.Add('SET weight_bloom = '+PointReplace(WeightIn)+',');
-    Module1.OraQuery1.SQL.Add('date_weight_bloom = TO_DATE('''+TimestampIn+''', ''yyyy-mm-dd hh24:mi:ss'')');
-    Module1.OraQuery1.SQL.Add('WHEN NOT MATCHED THEN INSERT');
-    Module1.OraQuery1.SQL.Add('(id_asutp, weight_bloom, date_weight_bloom)');
-    Module1.OraQuery1.SQL.Add('VALUES ('+IdIn+', '+PointReplace(WeightIn)+',');
-    Module1.OraQuery1.SQL.Add('TO_DATE('''+TimestampIn+''', ''yyyy-mm-dd hh24:mi:ss''))');}
-
-    Application.ProcessMessages;//следующая операция не тормозит интерфейс
-    OraQuery.ExecSQL;
-
-  {$IFDEF DEBUG}
-    SaveLog('debug'+#9#9+'OraQuery.SQL.Text -> '+OraQuery.SQL.Text);
-  {$ENDIF}
-  except
-    on E : Exception do begin
-      OraQuery.Close;
-      OraQuery.SQL.Clear;
-      OraQuery.SQL.Add('update crop');
-      OraQuery.SQL.Add('set weight_bloom = '+PointReplace(WeightIn)+',');
-      OraQuery.SQL.Add('date_weight_bloom = TO_DATE('''+TimestampIn+''',');
-      OraQuery.SQL.Add('''yyyy-mm-dd hh24:mi:ss'')');
-      OraQuery.SQL.Add('where id_asutp = '+IdIn+'');
-
-    Application.ProcessMessages;//следующая операция не тормозит интерфейс
-    OraQuery.ExecSQL;
-
-  {$IFDEF DEBUG}
-    SaveLog('debug'+#9#9+'OraQuery.SQL.Text -> '+OraQuery.SQL.Text);
-  {$ENDIF}
-    end;
-  end;
-
 end;
 
 
@@ -502,11 +361,11 @@ begin
       FQuery.SQL.Add('and h.steel_grade=s.steel_grade');
       FQuery.SQL.Add('and i.pkdat in ('+InData+')');
       FQuery.SQL.Add('order by i.pkdat desc, i.num desc, i.num_ingot desc');
-//      Application.ProcessMessages;//следующая операция не тормозит интерфейс
+//      Application.ProcessMessages;// нельзя ставить иначе пропадают данныеи из dbgrid1
       FQuery.Open;
   except
     on E : Exception do
-      SaveLog('error'+#9#9+E.ClassName+', с сообщением: '+E.Message);
+      Log.save('e', E.ClassName+', с сообщением: '+E.Message);
   end;
   //исправляем отображение даты в DBGrid -> pFIBDataSet1
   TDateTimeField(FQuery.FieldByName('time_ingot')).DisplayFormat:='hh:nn:ss';
@@ -516,23 +375,23 @@ end;
 function SqlReadTableLocal: bool;
 begin
   try
-      SQuery.Close;
-      SQuery.SQL.Clear;
-      SQuery.SQL.Add('SELECT substr(pkdat,7,1) as shift, num_ingot,');
-      SQuery.SQL.Add('datetime(timestamp, ''unixepoch'', ''localtime'' ) as timestamp,');
-      SQuery.SQL.Add('heat, weight,');
-      SQuery.SQL.Add('case when transferred = 1 then ''передан'' else ''не передан'' end as transferred');
-      SQuery.SQL.Add('FROM weight');
-      SQuery.SQL.Add('order by timestamp desc limit 100');
-      SQuery.Open;
+      SLQuery.Close;
+      SLQuery.SQL.Clear;
+      SLQuery.SQL.Add('SELECT substr(pkdat,7,1) as shift, num_ingot,');
+      SLQuery.SQL.Add('datetime(timestamp, ''unixepoch'', ''localtime'' ) as timestamp,');
+      SLQuery.SQL.Add('heat, weight,');
+      SLQuery.SQL.Add('case when transferred = 1 then ''передан'' else ''не передан'' end as transferred');
+      SLQuery.SQL.Add('FROM weight');
+      SLQuery.SQL.Add('order by timestamp desc limit 100');
+      SLQuery.Open;
 
       //исправляем отображение даты в DBGrid -> 20 characters
-      TStringField(SQuery.FieldByName('shift')).DisplayWidth := 3;
-      TStringField(SQuery.FieldByName('timestamp')).DisplayWidth := 20;
-      TStringField(SQuery.FieldByName('transferred')).DisplayWidth := 20;
+      TStringField(SLQuery.FieldByName('shift')).DisplayWidth := 3;
+      TStringField(SLQuery.FieldByName('timestamp')).DisplayWidth := 20;
+      TStringField(SLQuery.FieldByName('transferred')).DisplayWidth := 20;
   except
     on E : Exception do
-      SaveLog('error'+#9#9+E.ClassName+', с сообщением: '+E.Message);
+      Log.save('e', E.ClassName+', с сообщением: '+E.Message);
   end;
 end;
 
@@ -547,18 +406,18 @@ begin
   2 нуля), num_ingot (2х значное нужно добавлять перед числом 1 ноль)) номер слитка.
 }
   try
-      SQuery.Close;
-      SQuery.SQL.Clear;
-      SQuery.SQL.Add('CREATE TABLE IF NOT EXISTS weight');
-      SQuery.SQL.Add('(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE');
-      SQuery.SQL.Add(', pkdat NUMERIC(7) NOT NULL, num NUMERIC(3) NOT NULL');
-      SQuery.SQL.Add(', num_ingot NUMERIC(2) NOT NULL');
-      SQuery.SQL.Add(', id_asutp NUMERIC(12) NOT NULL');
-      SQuery.SQL.Add(', heat VARCHAR(16) NOT NULL');
-      SQuery.SQL.Add(', timestamp INTEGER(12) NOT NULL');
-      SQuery.SQL.Add(', weight NUMERIC(16,4)');
-      SQuery.SQL.Add(', transferred NUMERIC(1,1) DEFAULT(0))');
-      SQuery.ExecSQL;
+      SLQuery.Close;
+      SLQuery.SQL.Clear;
+      SLQuery.SQL.Add('CREATE TABLE IF NOT EXISTS weight');
+      SLQuery.SQL.Add('(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE');
+      SLQuery.SQL.Add(', pkdat NUMERIC(7) NOT NULL, num NUMERIC(3) NOT NULL');
+      SLQuery.SQL.Add(', num_ingot NUMERIC(2) NOT NULL');
+      SLQuery.SQL.Add(', id_asutp NUMERIC(12) NOT NULL');
+      SLQuery.SQL.Add(', heat VARCHAR(16) NOT NULL');
+      SLQuery.SQL.Add(', timestamp INTEGER(12) NOT NULL');
+      SLQuery.SQL.Add(', weight NUMERIC(16,4)');
+      SLQuery.SQL.Add(', transferred NUMERIC(1,1) DEFAULT(0))');
+      SLQuery.ExecSQL;
 
       sindex := 'CREATE INDEX IF NOT EXISTS idx_weight_asc ON weight (' +
                 'id        ASC, ' +
@@ -567,10 +426,10 @@ begin
                 'pkdat     ASC, ' +
                 'num_ingot ASC)';
 
-      SQuery.Close;
-      SQuery.SQL.Clear;
-      SQuery.SQL.Text := sindex;
-      SQuery.ExecSQL;
+      SLQuery.Close;
+      SLQuery.SQL.Clear;
+      SLQuery.SQL.Text := sindex;
+      SLQuery.ExecSQL;
 
       sindex := 'CREATE INDEX IF NOT EXISTS idx_weight_desc ON weight (' +
                 'id        DESC, ' +
@@ -579,13 +438,13 @@ begin
                 'pkdat     DESC, ' +
                 'num_ingot DESC)';
 
-      SQuery.Close;
-      SQuery.SQL.Clear;
-      SQuery.SQL.Text := sindex;
-      SQuery.ExecSQL;
+      SLQuery.Close;
+      SLQuery.SQL.Clear;
+      SLQuery.SQL.Text := sindex;
+      SLQuery.ExecSQL;
   except
     on E : Exception do
-      SaveLog('error'+#9#9+E.ClassName+', с сообщением: '+E.Message);
+      Log.save('e', E.ClassName+', с сообщением: '+E.Message);
   end;
 end;
 

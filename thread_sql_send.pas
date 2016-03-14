@@ -4,17 +4,32 @@ unit thread_sql_send;
 interface
 
 uses
-  SysUtils, Classes, ActiveX, ZDataset;
+  SysUtils, Classes, Data.DB, ActiveX, ZConnection, ZDataset, ZDbcIntfs,
+  logging;
 
 type
   //Здесь необходимо описать класс TThreadSql:
   TThreadSqlSend = class(TThread)
 
   private
+    Log = TLog;
+    OraConnect: TZConnection;
+    OraQuery: TZQuery;
+
+    function ConfigOracleSetting(InData: boolean): boolean;
+    function ConfigSqliteSetting: boolean;
     procedure SqlSend;
+    function SqlSaveToOracle(IdIn, WeightIn, TimestampIn: AnsiString): boolean;
+    procedure SqlReadTableLocal;
+    function GetMaxLocalCount: boolean;
+
   protected
     procedure Execute; override;
   public
+//    SLQuery: TZQuery;
+//    SLDataSource: TDataSource;
+    SqlMaxLocal: Int64;
+
     Constructor Create; overload;
     Destructor Destroy; override;
   end;
@@ -23,13 +38,13 @@ var
   ThreadSqlSend: TThreadSqlSend;
 
 
-//  {$DEFINE DEBUG}
+  {$DEFINE DEBUG}
 
 
 implementation
 
 uses
-  main, logging, settings, thread_comport, sql;
+  settings, sql, main;
 
 
 
@@ -41,6 +56,14 @@ begin
   ThreadSqlSend := TThreadSqlSend.Create(True);
   ThreadSqlSend.Priority := tpNormal;
   ThreadSqlSend.FreeOnTerminate := True;
+
+  Log := TLog.Create;
+
+  SqlMaxLocal := 0;
+
+  ConfigOracleSetting(true);
+  ConfigSqliteSetting;
+
   ThreadSqlSend.Start;
 end;
 
@@ -48,9 +71,62 @@ end;
 destructor TThreadSqlSend.Destroy;
 begin
   if ThreadSqlSend <> nil then begin
+    ConfigOracleSetting(false);
     ThreadSqlSend.Terminate;
   end;
   inherited Destroy;
+end;
+
+
+function TThreadSqlSend.ConfigSqliteSetting: boolean;
+begin
+  try
+      SLQuery := TZQuery.Create(nil);
+      SLQuery.Connection := SConnect;
+
+      SLDataSource := TDataSource.Create(nil);
+      SLDataSource.DataSet := SLQuery;
+
+  except
+      on E : Exception do
+        Log.save('e', E.ClassName+'1, с сообщением: '+E.Message);
+  end;
+end;
+
+
+function TThreadSqlSend.ConfigOracleSetting(InData: boolean): boolean;
+var
+  ConnectString : String;
+begin
+  if InData then
+  begin
+      try
+        OraConnect := TZConnection.Create(nil);
+        OraQuery := TZQuery.Create(nil);
+        ConnectString:='(DESCRIPTION = (ADDRESS_LIST = (ADDRESS = (PROTOCOL = TCP)(HOST = '
+                +OraSqlSettings.ip+')(PORT = '+'1521'
+                +'))) (CONNECT_DATA = (SERVICE_NAME = '+
+                OraSqlSettings.db_name+')))';
+        OraConnect.Database := ConnectString;
+        OraConnect.LibraryLocation := '.\oci.dll';// отказался от полных путей не читает
+        OraConnect.Protocol := 'oracle';
+        OraConnect.User := OraSqlSettings.user;
+        OraConnect.Password := OraSqlSettings.password;
+        OraConnect.ClientCodepage := 'CL8MSWIN1251';
+        OraConnect.Connect;
+        OraQuery.Connection := OraConnect;
+      except
+        on E: Exception do begin
+          Log.save('e', E.ClassName+'2, с сообщением: '+E.Message);
+        end;
+      end;
+  end
+  else
+  begin
+        FreeAndNil(OraQuery);
+        FreeAndNil(OraConnect);
+  end;
+
 end;
 
 
@@ -60,12 +136,15 @@ begin
   while True do
    begin
       try
-          Synchronize(SqlSend);
+//          if assigned(OraConnect) then begin
+          SqlSend;
+          GetMaxLocalCount;
       except
         on E : Exception do
-          Log.save('e', E.ClassName+', с сообщением: '+E.Message);
+          Log.save('e', E.ClassName+'3, с сообщением: '+E.Message);
       end;
-      sleep(500);
+
+      sleep(1000);
    end;
    CoUninitialize;
 end;
@@ -73,29 +152,37 @@ end;
 
 procedure TThreadSqlSend.SqlSend;
 var
+  _SQuery: TZQuery;
   i: integer;
   Byffer: array of array of AnsiString;
   send_error: boolean;
 begin
-
-  SQuery.Close;
-  SQuery.SQL.Clear;
-  SQuery.SQL.Add('SELECT id_asutp, weight,');
-  SQuery.SQL.Add('datetime(timestamp, ''unixepoch'', ''localtime'' ) as timestamp');
-  SQuery.SQL.Add('FROM weight');
-  SQuery.SQL.Add('where transferred=0');
-  SQuery.SQL.Add('order by id asc limit 10'); //порциями по 10 шт
-  SQuery.Open;
+  try
+      _SQuery := TZQuery.Create(nil);
+      _SQuery.Connection := SConnect;
+      _SQuery.Close;
+      _SQuery.SQL.Clear;
+      _SQuery.SQL.Add('SELECT id_asutp, weight,');
+      _SQuery.SQL.Add('datetime(timestamp, ''unixepoch'', ''localtime'' ) as timestamp');
+      _SQuery.SQL.Add('FROM weight');
+      _SQuery.SQL.Add('where transferred=0');
+      _SQuery.SQL.Add('order by id asc limit 10'); //порциями по 10 шт
+      _SQuery.Open;
+  except
+    on E : Exception do
+      Log.save('e', E.ClassName+'4, с сообщением: '+E.Message);
+  end;
 
   i := 0;
-  while not SQuery.Eof do
+
+  while not _SQuery.Eof do
    begin
       if i = Length(Byffer) then SetLength(Byffer, i+1, 3);
-      Byffer[i,0] := SQuery.FieldByName('id_asutp').AsString;
-      Byffer[i,1] := SQuery.FieldByName('weight').AsString;
-      Byffer[i,2] := SQuery.FieldByName('timestamp').AsString;
+      Byffer[i,0] := _SQuery.FieldByName('id_asutp').AsString;
+      Byffer[i,1] := _SQuery.FieldByName('weight').AsString;
+      Byffer[i,2] := _SQuery.FieldByName('timestamp').AsString;
       inc(i);
-      SQuery.Next;
+      _SQuery.Next;
    end;
 
   for i := Low(Byffer) to High(Byffer) do
@@ -111,43 +198,198 @@ begin
     Log.save('d', 'send_error | '+booltostr(send_error));
   {$ENDIF}
         if not send_error then begin
-            SQuery.Close;
-            SQuery.SQL.Clear;
-            SQuery.SQL.Add('UPDATE weight SET transferred=1');
-            SQuery.SQL.Add('where id_asutp='+Byffer[i,0]+'');
-            SQuery.ExecSQL;
+            _SQuery.Close;
+            _SQuery.SQL.Clear;
+            _SQuery.SQL.Add('UPDATE weight SET transferred=1');
+            _SQuery.SQL.Add('where id_asutp='+Byffer[i,0]+'');
+            _SQuery.ExecSQL;
             //save to log file
             {Log.save('sql'+#9#9+'write'+#9+'id_asutp -> '+Byffer[i,0]);
             Log.save('sql'+#9#9+'write'+#9+'weight -> '+Byffer[i,1]);
             Log.save('sql'+#9#9+'write'+#9+'timestamp -> '+Byffer[i,2]);}
 
-            SqlReadTableLocal;//views взвешенные заготовки
+{            cs.Enter;
+              Synchronize(SqlReadTableLocal);//views взвешенные заготовки
+            cs.Leave;}
 
             //удаляем старые записи старше 3х дней
-            SQuery.Close;
-            SQuery.SQL.Clear;
-            SQuery.SQL.Add('delete from weight');
-            SQuery.SQL.Add('where timestamp < strftime(''%s'', ''now'') - (86400*3)');
-            SQuery.ExecSQL;
+            _SQuery.Close;
+            _SQuery.SQL.Clear;
+            _SQuery.SQL.Add('delete from weight');
+            _SQuery.SQL.Add('where timestamp < strftime(''%s'', ''now'') - (86400*3)');
+            _SQuery.ExecSQL;
         end;
       except
         on E : Exception do
-          Log.save('e', E.ClassName+', с сообщением: '+E.Message);
+          Log.save('e', E.ClassName+'5, с сообщением: '+E.Message);
       end;
+      FreeAndNil(_SQuery);
    end;
 end;
 
 
+function TThreadSqlSend.SqlSaveToOracle(IdIn, WeightIn, TimestampIn: AnsiString): boolean;
+var
+  error: boolean;
+begin
+  error := false;
+//exit;
+if not assigned(OraConnect) then
+  Log.save('d', 'not assigned OraConnect')
+else
+  Log.save('de','assigned OraConnect');
+
+  try
+    //была ошибака: EZSQLException, с сообщением: SQL Error: OCI_NO_DATA
+    if not OraConnect.Connected then
+      OraConnect.Reconnect;
+
+    OraQuery.Close;
+    OraQuery.SQL.Clear;
+    OraQuery.SQL.Add('INSERT INTO crop');
+    OraQuery.SQL.Add('(id_asutp, weight_bloom, date_weight_bloom)');
+    OraQuery.SQL.Add('VALUES ('+IdIn+', '+PointReplace(WeightIn)+',');
+    OraQuery.SQL.Add('TO_DATE('''+TimestampIn+''', ''yyyy-mm-dd hh24:mi:ss''))');
+    OraQuery.ExecSQL;
+  {$IFDEF DEBUG}
+    Log.save('d', 'OraQuery insert | '+OraQuery.SQL.Text);
+  {$ENDIF}
+  except
+    on E : Exception do begin
+      error := true;
+      Log.save('e', E.ClassName+'6, с сообщением: '+E.Message+' | '+OraQuery.SQL.Text);
+    end;
+  end;
+
+  if error then
+  begin
+    try
+        OraQuery.Close;
+        OraQuery.SQL.Clear;
+        OraQuery.SQL.Add('update crop');
+        OraQuery.SQL.Add('set weight_bloom = '+PointReplace(WeightIn)+',');
+        OraQuery.SQL.Add('date_weight_bloom = TO_DATE('''+TimestampIn+''',');
+        OraQuery.SQL.Add('''yyyy-mm-dd hh24:mi:ss'')');
+        OraQuery.SQL.Add('where id_asutp = '+IdIn+'');
+        OraQuery.ExecSQL;
+
+        error := false;
+  {$IFDEF DEBUG}
+    Log.save('d', 'OraQuery update | '+OraQuery.SQL.Text);
+  {$ENDIF}
+    except
+      on E : Exception do begin
+//        error := true;
+        Log.save('e', E.ClassName+'7, с сообщением: '+E.Message+' | '+OraQuery.SQL.Text);
+      end;
+    end;
+  end;
+
+  Result := error;
+
+end;
+
+
+procedure TThreadSqlSend.SqlReadTableLocal;
+begin
+  try
+      main.cs.Enter;
+
+      SLQuery.Close;
+      SLQuery.SQL.Clear;
+      SLQuery.SQL.Add('SELECT substr(pkdat,7,1) as shift, num_ingot,');
+      SLQuery.SQL.Add('datetime(timestamp, ''unixepoch'', ''localtime'' ) as timestamp,');
+      SLQuery.SQL.Add('heat, weight,');
+      SLQuery.SQL.Add('case when transferred = 1 then ''передан'' else ''не передан'' end as transferred');
+      SLQuery.SQL.Add('FROM weight');
+      SLQuery.SQL.Add('order by timestamp desc limit 100');
+      SLQuery.Open;
+
+{  while not _SLQuery.Eof do
+   begin
+      Log.save('e', 'shift | '+_SLQuery.FieldByName('shift').AsString);
+      Log.save('e', 'weight | '+_SLQuery.FieldByName('weight').AsString);
+      Log.save('e', 'heat | '+_SLQuery.FieldByName('heat').AsString);
+      _SLQuery.Next;
+   end;}
+
+ //     if assigned(Form1.DBGrid2) then begin
+//        Form1.DBGrid2.DataSource := SLDataSource;
+//        Synchronize(Form1.DBGrid2.Refresh);//views взвешенные заготовки
+ //     end;
+
+      //исправляем отображение даты в DBGrid -> 20 characters
+      TStringField(SLQuery.FieldByName('shift')).DisplayWidth := 3;
+      TStringField(SLQuery.FieldByName('timestamp')).DisplayWidth := 20;
+      TStringField(SLQuery.FieldByName('transferred')).DisplayWidth := 20;
+
+      main.cs.Leave;
+  except
+    on E : Exception do
+      Log.save('e', E.ClassName+'8, с сообщением: '+E.Message);
+  end;
+end;
+
+
+function TThreadSqlSend.GetMaxLocalCount: boolean;
+var
+  SQueryCount: TZQuery;
+  timestamp: int64;
+begin
+//-- локальные данные
+  try
+      SQueryCount := TZQuery.Create(nil);
+      SQueryCount.Connection := Settings.SConnect;
+
+      if SqlMaxLocal = 0 then
+      begin
+          SQueryCount.Close;
+          SQueryCount.SQL.Clear;
+          SQueryCount.SQL.Add('select * from sqlite_master');
+          SQueryCount.SQL.Add('where type = ''table'' and tbl_name = ''weight''');
+          SQueryCount.Open;
+
+          if SQueryCount.FieldByName('tbl_name').IsNull then
+          begin
+            FreeAndNil(SQueryCount);
+            exit;
+          end;
+      end;
+
+      SQueryCount.Close;
+      SQueryCount.SQL.Clear;
+      SQueryCount.SQL.Add('SELECT max(timestamp) as timestamp');
+      SQueryCount.SQL.Add('FROM weight');
+      SQueryCount.Open;
+
+      if not SQueryCount.FieldByName('timestamp').IsNull then begin
+        timestamp := SQueryCount.FieldByName('timestamp').AsLargeInt;
+
+        if SqlMaxLocal >= timestamp then
+          exit;
+
+        SqlMaxLocal := timestamp;
+
+        if assigned(SLQuery) then
+          SqlReadTableLocal;//views взвешенные заготовки
+      end
+  except
+    on E : Exception do
+      Log.save('e', E.ClassName+'9, с сообщением: '+E.Message);
+  end;
+  FreeAndNil(SQueryCount);
+  //-- локальные данные
+end;
 
 
 // При загрузке программы класс будет создаваться
 initialization
-ThreadSqlSend := TThreadSqlSend.Create;
+//ThreadSqlSend := TThreadSqlSend.Create;
 
 
 // При закрытии программы уничтожаться
 finalization
-ThreadSqlSend.Destroy;
+//ThreadSqlSend.Destroy;
 
 
 end.

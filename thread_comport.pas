@@ -4,20 +4,23 @@ unit thread_comport;
 interface
 
 uses
-  SysUtils, Classes, Windows, ActiveX, synaser;
+  SysUtils, Classes, ActiveX, synaser, SyncObjs, logging;
 
 type
   //Здесь необходимо описать класс TThreadComPort:
   TThreadComPort = class(TThread)
 
   private
-    procedure ReadToMessage;
+    Log: TLog.Create;
+    count: integer;
 
-    var
-      count: integer;
+    procedure ReadToMessage;
   protected
     procedure Execute; override;
   public
+
+    no_save: boolean;
+
     Constructor Create; overload;
     Destructor Destroy; override;
 
@@ -30,7 +33,7 @@ type
 
 var
   ThreadComPort: TThreadComPort;
-  no_save: bool = false;
+//    function SendAttribute: boolean;
 
 
 //  {$DEFINE DEBUG}
@@ -39,7 +42,7 @@ var
 implementation
 
 uses
-  main, logging, settings, sql, testing, calibration;
+  settings, main, sql, testing, calibration;
 
 
 
@@ -53,13 +56,16 @@ begin
   ThreadComPort.FreeOnTerminate := True;
   ThreadComPort.Start;
 
+  Log := TLog.Create;
+
+  no_save := false;
   count := 10;
 end;
 
 
 destructor TThreadComPort.Destroy;
 begin
-  if ThreadComPort <> nil then begin
+  if TThreadComPort <> nil then begin
     ThreadComPort.Terminate;
   end;
   inherited Destroy;
@@ -70,8 +76,14 @@ procedure TThreadComPort.Execute;
 begin
   CoInitialize(nil);
   while True do
-   begin
-      Synchronize(ReadToMessage);
+  begin
+      try
+          ReadToMessage;
+      except
+        on E : Exception do
+          Log.save('e', E.ClassName+', с сообщением: '+E.Message);
+      end;
+
       sleep(1000);
    end;
    CoUninitialize;
@@ -84,7 +96,7 @@ var
 begin
     //status работы с контроллером
     if count > 10 then begin
-      Status;
+      Synchronize(Status);
       count := 0;
     end
     else
@@ -174,6 +186,7 @@ var
     msg: AnsiString;
 begin
   try
+    main.cs.Enter;
     //передаем ЭОД вход1-4 переменные 1|0|0|0
     msg := SendReadToSerial(#2'00#EK#1#0#0#0#'#16#3+hash_bcc('00#EK#1#0#0#0#'#16#3));
     ReceiveData(msg);
@@ -181,6 +194,7 @@ begin
     on E : Exception do
       Log.save('e', E.ClassName+', с сообщением: '+E.Message);
   end;
+    main.cs.Leave;
 end;
 
 
@@ -208,12 +222,12 @@ end;
 
 // При загрузке программы класс будет создаваться
 initialization
-ThreadComPort := TThreadComPort.Create;
+//ThreadComPort := TThreadComPort.Create;
 
 
 // При закрытии программы уничтожаться
 finalization
-ThreadComPort.Destroy;
+//ThreadComPort.Destroy;
 
 
 end.

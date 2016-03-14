@@ -32,7 +32,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, ShellAPI, StdCtrls, Mask, Menus, Grids, DBGrids, ExtCtrls,
-  CommCtrl, StrUtils, DateUtils, Data.DB;
+  CommCtrl, StrUtils, DateUtils, Data.DB, SyncObjs, logging;
 
 type
   TForm1 = class(TForm)
@@ -72,7 +72,7 @@ type
   private
     { Private declarations }
   public
-    { Public declarations }
+
   end;
 
 
@@ -80,16 +80,13 @@ var
   Form1: TForm1;
     PopupTray: TPopupMenu;
     TrayMark: bool = false;
-{    MainMenu: TMainMenu;
-    menuItem: TMenuItem;}
-
     formattedDateTime: string;
-
+    cs: TCriticalSection;
+    Log: TLog;
 
 //    {$DEFINE DEBUG}
 
 
-    //new
     function ViewSelectedIngot: bool;
     function PointReplace(DataIn: string): string;
 
@@ -101,13 +98,13 @@ var
     function ManipulationWithDate(InDate: string): string;
     function MouseMoved: bool;
     function NextWeightToRecordLocation: bool;
-    function Status: string;
+    procedure Status;
 
 
 implementation
 
 uses
-  settings, logging, thread_comport, thread_sql_read, sql, testing, calibration;
+  settings, sql, thread_sql_read, thread_sql_send, thread_comport, testing, calibration;
 
 {$R *.dfm}
 
@@ -120,15 +117,22 @@ begin
   //проверка 1 экземпл€ра программы
   CheckAppRun;
 
-  Form1.Caption := HeadName+'  build('+GetVersion+')';
+  Log := TLog.Create;
+
+  Log.save('i', 'start '+Log.ProgFileName);
+
+  cs := TCriticalSection.Create;
+  ThreadSqlRead := TThreadSqlRead.Create;
+  ThreadSqlSend := TThreadSqlSend.Create;
+  ThreadComPort := TThreadComPort.Create;
+
+  Form1.Caption := HeadName+'  build('+Settings.GetVersion+')';
   //заголовки к showmessage
   Application.Title := Form1.Caption;
 
   //запрет на изменение формы
   Form1.BorderStyle := bsToolWindow;
   Form1.BorderIcons := Form1.BorderIcons - [biMaximize];
-
-  Log.save('i', 'app start');
 
   //инициализаци€ тре€
   TrayAppRun;
@@ -338,7 +342,7 @@ begin
     R := Rect;
     Dec(R.Bottom, 2);
     //проверка первого старта и отсутствие таблицы weight
-    if SqlMaxLocal <> 0 then
+    if ThreadSqlSend.SqlMaxLocal <> 0 then
     begin
 
         if  gdSelected in State	then //color selected
@@ -350,9 +354,9 @@ begin
             end;
 		    end;
 
-        if (Column.FieldName = 'transferred') then
+        if ( Column.FieldName = 'transferred' ) then
         begin
-          if SLQuery.FieldByName('transferred').AsString = 'не передан' then
+           if ( Column.Field.Text = 'не передан' ) then
            begin
               with DBGrid2.Canvas do
               begin
@@ -424,8 +428,7 @@ begin
 end;
 
 
-
-function Status: string;
+procedure Status;
 var
   status: bool;
 begin
@@ -437,13 +440,13 @@ begin
     status := true;
   end;
 
-  if (not pkdat.IsEmpty) and (not no_save) then
+  if (not pkdat.IsEmpty) and (not ThreadComPort.no_save) then
   begin
     form1.l_status.Caption := 'ожидание данных с весового контроллера';
     status := true;
   end;
 
-  if (not pkdat.IsEmpty) and no_save then
+  if (not pkdat.IsEmpty) and ThreadComPort.no_save then
   begin
     form1.l_status.Caption := 'подтверждение записи веса весовому контроллеру';
     status := true;
@@ -483,10 +486,14 @@ procedure TForm1.TrayPopUpCloseClick(Sender: TObject);
 var
   buttonSelected: Integer;
 begin
-  ThreadComPort.Terminate;
-  ThreadSqlRead.Terminate;
+  if assigned(ThreadComPort) then
+    ThreadComPort.Terminate;
+  if assigned(ThreadSqlRead) then
+    ThreadSqlRead.Terminate;
+  if assigned(ThreadSqlSend) then
+    ThreadSqlSend.Terminate;
 
-  Log.save('i', 'app close');
+  Log.save('i', 'close '+Log.ProgFileName);
 
   Trayicon.Visible := false;
   //закрываем приложение
@@ -521,7 +528,7 @@ var
   hMutex : THandle;
 begin
     // закрытие 2 экземл€ра программы
-    hMutex := CreateMutex(0, true , 'ArmWeightBlooming1');
+    hMutex := CreateMutex(0, true , PWideChar(Log.ProgFileName));
     if GetLastError = ERROR_ALREADY_EXISTS then
      begin
         Application.Title := HeadName+Version;

@@ -32,15 +32,20 @@ interface
 
 uses
   SysUtils, Classes, Windows, ActiveX, ZAbstractDataset, ZDataset,
-  ZAbstractConnection, ZConnection, ZAbstractRODataset, ZStoredProcedure;
+  ZAbstractConnection, ZConnection, ZAbstractRODataset, ZStoredProcedure,
+  logging;
 
 type
   TSettings = class
   private
-    { Private declarations }
+     SQuery: TZQuery;
+     Log: TLog;
   public
     Constructor Create; overload;
     Destructor Destroy; override;
+
+    function ConfigSettings(InData: bool): bool;
+    function ReadConfigSettings: bool;
   end;
 
   TSqlSettings = Record
@@ -66,25 +71,23 @@ var
    CurrentDir: string;
    HeadName: string = ' АРМ резчика ПУ-4 ';
    DBFile: string = 'data.sdb';
-   LogFile: string = 'app.log';
-   SConnect: TZConnection;
-   SQuery: TZQuery;
 
+   SConnect: TZConnection;
    FbSqlSettings: TSqlSettings;
    OraSqlSettings: TSqlSettings;
    SerialPortSettings: TSerialSettings;
 
+   function GetVersion: string;// Версия сборки программы
+
+
 //   {$DEFINE DEBUG}
 
-   function ConfigSettings(InData: bool): bool;
-   function ReadConfigSettings: bool;
-   function GetVersion: string;// Версия сборки программы
 
 
 implementation
 
 uses
-  main, logging, sql;
+  main, sql;
 
 
 
@@ -93,18 +96,22 @@ begin
   inherited Create;
   //текущая дириктория
   CurrentDir := GetCurrentDir;
+  Log := Tlog.Create;
   ConfigSettings(true);
+  ConfigFirebirdSetting(true);
+  SqlLocalCreateTable; //create local sqlite table
 end;
 
 
 destructor TSettings.Destroy;
 begin
+  ConfigFirebirdSetting(false);
   ConfigSettings(false);
   inherited Destroy;
 end;
 
 
-function ConfigSettings(InData: bool): bool;
+function TSettings.ConfigSettings(InData: bool): bool;
 var
   f: File of Word;
 begin
@@ -138,7 +145,7 @@ begin
 end;
 
 
-function ReadConfigSettings: bool;
+function TSettings.ReadConfigSettings: bool;
 var
   i: integer;
 begin
@@ -193,11 +200,11 @@ begin
      end;
 
  {$IFDEF DEBUG}
-  Log.save('debug'+#9#9+'SerialPortSettings.baud -> '+SerialPortSettings.baud);
-  Log.save('debug'+#9#9+'SerialPortSettings.data_bits -> '+SerialPortSettings.data_bits);
-  Log.save('debug'+#9#9+'SerialPortSettings.parity -> '+SerialPortSettings.parity);
-  Log.save('debug'+#9#9+'SerialPortSettings.stop_bits -> '+SerialPortSettings.stop_bits);
-  Log.save('debug'+#9#9+'SerialPortSettings.serial_port_number -> '+SerialPortSettings.serial_port_number);
+  Log.save('d', 'SerialPortSettings.baud -> '+SerialPortSettings.baud);
+  Log.save('d', 'SerialPortSettings.data_bits -> '+SerialPortSettings.data_bits);
+  Log.save('d', 'SerialPortSettings.parity -> '+SerialPortSettings.parity);
+  Log.save('d', 'SerialPortSettings.stop_bits -> '+SerialPortSettings.stop_bits);
+  Log.save('d', 'SerialPortSettings.serial_port_number -> '+SerialPortSettings.serial_port_number);
  {$ENDIF}
 
 end;
@@ -229,15 +236,9 @@ end;
 // При загрузке программы класс будет создаваться
 initialization
 SettingsApp := TSettings.Create;
-ConfigFirebirdSetting(true);
-ConfigOracleSetting(true);
-ConfigSqliteSetting;
-SqlLocalCreateTable; //create local sqlite table
 
 //При закрытии программы уничтожаться
 finalization
-ConfigFirebirdSetting(false);
-ConfigOracleSetting(false);
 SettingsApp.Destroy;
 
 end.

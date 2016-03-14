@@ -3,44 +3,42 @@ unit Logging;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, OoMisc;
+  SysUtils, Variants, Classes, SyncObjs;
 
 
 type
   TLog = class
+
   private
-    LogFileName: AnsiString;
-  public
-    function save(_type, _message: AnsiString): boolean;
-    constructor Create; overload;
+    cs: TCriticalSection;
     destructor Destroy; override;
+  public
+    ProgFileName: AnsiString;
+    constructor Create; overload;
+    procedure save(_type, _message: AnsiString);
   end;
-
-
-var
-  Log: TLog;
 
 
 implementation
 
 
-
 constructor TLog.Create;
 begin
   inherited Create;
+  cs := TCriticalSection.Create;
   //имя файла
-  LogFileName := ExtractFileName(ChangeFileExt(ParamStr(0), ''));
+  ProgFileName := ExtractFileName(ChangeFileExt(ParamStr(0), ''));
 end;
 
 
 destructor TLog.Destroy;
 begin
   inherited Destroy;
+  cs := TCriticalSection.Create;
 end;
 
 
-function TLog.save(_type, _message: AnsiString): boolean;
+procedure TLog.save(_type, _message: AnsiString);
 var
    f: TextFile;
    log_file: AnsiString;
@@ -57,6 +55,8 @@ Type    Level    Description
 't'     TRACE    Designates finer-grained informational events than the DEBUG.
 'w'     WARN     Designates potentially harmful situations.
 }
+  cs.Enter;
+
   _type := trim(AnsiLowerCase(_type));
 
   if ( _type = 'a' ) then
@@ -80,8 +80,8 @@ Type    Level    Description
 
   try
       log_file := FormatDateTime('yyyymmdd', NOW);
-      AssignFile(f, log_file+'_'+LogFileName+'.log');
-      if not FileExists(log_file+'_'+LogFileName+'.log') then
+      AssignFile(f, log_file+'_'+ProgFileName+'.log');
+      if not FileExists(log_file+'_'+ProgFileName+'.log') then
        begin
           Rewrite(f);
           CloseFile(f);
@@ -97,15 +97,18 @@ Type    Level    Description
     on E : Exception do
       save('e', E.ClassName+', с сообщением: '+E.Message);
   end;
+
+  cs.Leave;
 end;
 
 
 // При загрузке программы класс будет создаваться
 initialization
-Log := TLog.Create;
+//Log := TLog.Create;
+
 
 //При закрытии программы уничтожаться
 finalization
-Log.Destroy;
+//Log.Destroy;
 
 end.

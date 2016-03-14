@@ -4,13 +4,15 @@ unit thread_sql_read;
 interface
 
 uses
-  SysUtils, Classes, ActiveX, Forms, ZDataset;
+  SysUtils, Data.DB, Classes, ActiveX, ZDataset, SyncObjs, logging;
 
 type
   //Здесь необходимо описать класс TThreadSql:
   TThreadSqlRead = class(TThread)
 
   private
+    Log: TLog;
+    function SqlReadTable(InData: string): boolean;
     procedure SqlNewRecord;
   protected
     procedure Execute; override;
@@ -31,7 +33,7 @@ var
 implementation
 
 uses
-  main, logging, settings, thread_comport, sql;
+  main, settings, thread_comport, thread_sql_send, sql;
 
 
 
@@ -44,6 +46,8 @@ begin
   ThreadSqlRead.Priority := tpNormal;
   ThreadSqlRead.FreeOnTerminate := True;
   ThreadSqlRead.Start;
+
+  Log := TLog.Create;
 end;
 
 
@@ -67,7 +71,8 @@ begin
         on E : Exception do
           Log.save('e', E.ClassName+', с сообщением: '+E.Message);
       end;
-      sleep(5000);
+
+      sleep(1000);
    end;
    CoUninitialize;
 end;
@@ -76,16 +81,12 @@ end;
 procedure TThreadSqlRead.SqlNewRecord;
 var
   FQueryNewRecord: TZQuery;
-  SQueryCount: TZQuery;
   pkdat_in: string;
   i, timestamp: integer;
   count: int64;
 begin
   FQueryNewRecord := TZQuery.Create(nil);
   FQueryNewRecord.Connection := FConnect;
-
-  SQueryCount := TZQuery.Create(nil);
-  SQueryCount.Connection := SConnect;
 
   // двигаем мышку
   try
@@ -109,7 +110,6 @@ begin
     FQueryNewRecord.SQL.Add('select distinct pkdat from ingots');
     FQueryNewRecord.SQL.Add('group by pkdat');
     FQueryNewRecord.SQL.Add('order by pkdat desc rows 3');
-    Application.ProcessMessages;//следующая операция не тормозит интерфейс
     FQueryNewRecord.Open;
 
     //подготавливаем данные для выборки в dbgrid
@@ -130,7 +130,6 @@ begin
     FQueryNewRecord.SQL.Add('select pkdat||num||num_ingot as c from ingots');
     FQueryNewRecord.SQL.Add('order by pkdat desc, num desc ,num_ingot desc');
     FQueryNewRecord.SQL.Add('rows 1');
-    Application.ProcessMessages;//следующая операция не тормозит интерфейс
     FQueryNewRecord.Open;
 
     count := FQueryNewRecord.FieldByName('c').AsLargeInt;
@@ -161,56 +160,40 @@ begin
   // маркер следующей заготовки
   if MarkerNextWait then
     NextWeightToRecord; //следующая запись (слиток) от записаной
+end;
 
-  //-- локальные данные
+
+function TThreadSqlRead.SqlReadTable(InData: string): boolean;
+begin
   try
-      if SqlMaxLocal = 0 then
-      begin
-          SQueryCount.Close;
-          SQueryCount.SQL.Clear;
-          SQueryCount.SQL.Add('select * from sqlite_master');
-          SQueryCount.SQL.Add('where type = ''table'' and tbl_name = ''weight''');
-          SQueryCount.Open;
-
-          if SQueryCount.FieldByName('tbl_name').IsNull then
-          begin
-            FreeAndNil(SQueryCount);
-            exit;
-          end;
-      end;
-
-      SQueryCount.Close;
-      SQueryCount.SQL.Clear;
-      SQueryCount.SQL.Add('SELECT timestamp');
-      SQueryCount.SQL.Add('FROM weight');
-      SQueryCount.SQL.Add('order by timestamp desc limit 1');
-      SQueryCount.Open;
-
-      timestamp := SQueryCount.FieldByName('timestamp').AsInteger;
-      FreeAndNil(SQueryCount);
-
-      if SqlMaxLocal >= timestamp then
-        exit;
-
-      SqlMaxLocal := timestamp;
-      //views взвешенные заготовки
-      SqlReadTableLocal;
+      FQuery.Close;
+      FQuery.SQL.Clear;
+      FQuery.SQL.Add('select i.pkdat,i.num,i.num_ingot,h.num_heat, s.name,i.weight_ingot, i.time_ingot, s.steel_group, sh.smena');
+      FQuery.SQL.Add('from ingots i, heats h, steels s, shifts sh');
+      FQuery.SQL.Add('where i.pkdat=h.pkdat');
+      FQuery.SQL.Add('and i.pkdat=sh.pkdat');
+      FQuery.SQL.Add('and i.num=h.num');
+      FQuery.SQL.Add('and h.steel_grade=s.steel_grade');
+      FQuery.SQL.Add('and i.pkdat in ('+InData+')');
+      FQuery.SQL.Add('order by i.pkdat desc, i.num desc, i.num_ingot desc');
+      FQuery.Open;
   except
     on E : Exception do
       Log.save('e', E.ClassName+', с сообщением: '+E.Message);
   end;
-  //-- локальные данные
+  //исправляем отображение даты в DBGrid -> pFIBDataSet1
+  TDateTimeField(FQuery.FieldByName('time_ingot')).DisplayFormat:='hh:nn:ss';
 end;
 
 
 // При загрузке программы класс будет создаваться
 initialization
-ThreadSqlRead := TThreadSqlRead.Create;
+//ThreadSqlRead := TThreadSqlRead.Create;
 
 
 // При закрытии программы уничтожаться
 finalization
-ThreadSqlRead.Destroy;
+//ThreadSqlRead.Destroy;
 
 
 end.

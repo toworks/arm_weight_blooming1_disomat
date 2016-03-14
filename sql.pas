@@ -3,8 +3,8 @@ unit sql;
 interface
 
 uses
-   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-   Dialogs, StdCtrls, StrUtils, Data.DB, ZConnection, ZDataset, ZDbcIntfs;
+   SysUtils, ActiveX, Variants, Classes, StrUtils, Data.DB, ZConnection, ZDataset,
+   ZDbcIntfs, SyncObjs;
 
 var
     FConnect: TZConnection;
@@ -12,32 +12,24 @@ var
     FDataSource: TDataSource;
     SLQuery: TZQuery;
     SLDataSource: TDataSource;
-    OraConnect: TZConnection;
-    OraQuery: TZQuery;
     time_ingot, pkdat, num, num_ingot, num_heat, name, weight_ingot, steel_group,
     smena: string;
-    SqlMaxLocal: integer = 0;
-    MarkerNextWait: bool = false;
+    MarkerNextWait: boolean = false;
+
 
 //    {$DEFINE DEBUG}
 
 
     function ConfigFirebirdSetting(InData: boolean): boolean;
-    function ConfigOracleSetting(InData: boolean): boolean;
-    function ConfigSqliteSetting: boolean;
-    function SqlNextWeightToRecord: bool;
-    function SqlReadTable(InData: string): bool;
-    function SqlSaveInBuffer(DataIn: AnsiString): Bool;
-    function SqlSaveToOracle(IdIn, WeightIn, TimestampIn: AnsiString): boolean;
-//    function SqlSaveToOracleOfBuffer: Bool;
-    function SqlReadTableLocal: bool;
+    function SqlNextWeightToRecord: boolean;
+    function SqlSaveInBuffer(DataIn: AnsiString): boolean;
     function SqlLocalCreateTable: boolean;
 
 implementation
 
 
 uses
-    main, settings, logging, thread_comport, thread_sql_read;
+    settings, logging, thread_sql_send, thread_comport, thread_sql_read, main;
 
 
 
@@ -82,7 +74,6 @@ begin
       except
         on E: Exception do begin
           Log.save('e', E.ClassName+', с сообщением: '+E.Message);
-//          ErrorConnect := true;
         end;
       end;
   end
@@ -95,93 +86,43 @@ begin
 end;
 
 
-function ConfigOracleSetting(InData: boolean): boolean;
+function SqlNextWeightToRecord: boolean;
 var
-  ConnectString : String;
-begin
-  if InData then
-  begin
-      try
-        OraConnect := TZConnection.Create(nil);
-        OraQuery := TZQuery.Create(nil);
-        ConnectString:='(DESCRIPTION = (ADDRESS_LIST = (ADDRESS = (PROTOCOL = TCP)(HOST = '
-                +OraSqlSettings.ip+')(PORT = '+'1521'
-                +'))) (CONNECT_DATA = (SERVICE_NAME = '+
-                OraSqlSettings.db_name+')))';
-        OraConnect.Database := ConnectString;
-        OraConnect.LibraryLocation := '.\oci.dll';// отказался от полных путей не читает
-        OraConnect.Protocol := 'oracle';
-        OraConnect.User := OraSqlSettings.user;
-        OraConnect.Password := OraSqlSettings.password;
-        OraConnect.ClientCodepage := 'CL8MSWIN1251';
-        OraConnect.Connect;
-        OraQuery.Connection := OraConnect;
-      except
-        on E: Exception do begin
-          Log.save('e', E.ClassName+', с сообщением: '+E.Message);
-//          ErrorConnect := true;
-        end;
-      end;
-  end
-  else
-  begin
-        FreeAndNil(OraQuery);
-        FreeAndNil(OraConnect);
-  end;
-
-end;
-
-
-function ConfigSqliteSetting: boolean;
-begin
-  try
-      SLQuery := TZQuery.Create(nil);
-      SLQuery.Connection := SConnect;
-
-      SLDataSource := TDataSource.Create(nil);
-      SLDataSource.DataSet := SLQuery;
-  except
-      on E : Exception do
-        Log.save('e', E.ClassName+', с сообщением: '+E.Message);
-  end;
-end;
-
-
-function SqlNextWeightToRecord: bool;
-var
+  _SQuery: TZQuery;
   FQueryNextRecord: TZQuery;
   i: integer;
 begin
-  FQueryNextRecord := TZQuery.Create(nil);
-  FQueryNextRecord.Connection := FConnect;
 
   i:=0;
   try
-      SQuery.Close;
-      SQuery.SQL.Clear;
-      SQuery.SQL.Add('SELECT pkdat, num, num_ingot FROM weight');
-      SQuery.SQL.Add('order by id desc limit 1');
-      SQuery.Open;
+      _SQuery := TZQuery.Create(nil);
+      _SQuery.Connection := SConnect;
+      _SQuery.Close;
+      _SQuery.SQL.Clear;
+      _SQuery.SQL.Add('SELECT pkdat, num, num_ingot FROM weight');
+      _SQuery.SQL.Add('order by id desc limit 1');
+      _SQuery.Open;
   except
     on E : Exception do
       Log.save('e', E.ClassName+', с сообщением: '+E.Message);
   end;
 
   try
+      FQueryNextRecord := TZQuery.Create(nil);
+      FQueryNextRecord.Connection := FConnect;
       FQueryNextRecord.Close;
       FQueryNextRecord.SQL.Clear;
       FQueryNextRecord.SQL.Add('select i.pkdat,i.num,i.num_ingot,h.num_heat, s.name,i.weight_ingot, i.time_ingot, s.steel_group , sh.smena');
       FQueryNextRecord.SQL.Add('from ingots i, heats h, steels s, shifts sh');
-      FQueryNextRecord.SQL.Add('where ((i.pkdat='+ SQuery.FieldByName('pkdat').AsString +'');
-      FQueryNextRecord.SQL.Add('and (i.num='+ SQuery.FieldByName('num').AsString +'');
-      FQueryNextRecord.SQL.Add('and i.num_ingot>'+ SQuery.FieldByName('num_ingot').AsString +'');
-      FQueryNextRecord.SQL.Add('or i.num>'+ SQuery.FieldByName('num').AsString +'))');
-      FQueryNextRecord.SQL.Add('or i.pkdat>'+ SQuery.FieldByName('pkdat').AsString +')');
+      FQueryNextRecord.SQL.Add('where ((i.pkdat='+ _SQuery.FieldByName('pkdat').AsString +'');
+      FQueryNextRecord.SQL.Add('and (i.num='+ _SQuery.FieldByName('num').AsString +'');
+      FQueryNextRecord.SQL.Add('and i.num_ingot>'+ _SQuery.FieldByName('num_ingot').AsString +'');
+      FQueryNextRecord.SQL.Add('or i.num>'+ _SQuery.FieldByName('num').AsString +'))');
+      FQueryNextRecord.SQL.Add('or i.pkdat>'+ _SQuery.FieldByName('pkdat').AsString +')');
       FQueryNextRecord.SQL.Add('and i.pkdat=h.pkdat and i.num=h.num');
       FQueryNextRecord.SQL.Add('and i.pkdat=sh.pkdat');
       FQueryNextRecord.SQL.Add('and h.steel_grade=s.steel_grade');
       FQueryNextRecord.SQL.Add('order by i.pkdat asc, i.num asc, i.num_ingot asc');
-      Application.ProcessMessages;//следующая операция не тормозит интерфейс
       FQueryNextRecord.Open;
   {$IFDEF DEBUG}
     Log.save('d', 'FQueryNextRecord -> '+FQueryNextRecord.SQL.Text);
@@ -260,12 +201,14 @@ begin
       Log.save('e', E.ClassName+', с сообщением: '+E.Message);
   end;
 
+  FreeAndNil(_SQuery);
   FreeAndNil(FQueryNextRecord);
 end;
 
 
-function SqlSaveInBuffer(DataIn: AnsiString): Bool;
+function SqlSaveInBuffer(DataIn: AnsiString): boolean;
 var
+  _SQuery: TZQuery;
   num_correct, num_ingot_correct, pkdat_correct: string;
 begin
 
@@ -300,166 +243,56 @@ begin
   2 нуля), num_ingot (2х значное нужно добавлять перед числом 1 ноль)) номер слитка.
 }
   try
-      SQuery.Close;
-      SQuery.SQL.Clear;
-      SQuery.SQL.Add('INSERT INTO weight');
-      SQuery.SQL.Add('(pkdat, num, num_ingot, id_asutp, heat, timestamp, weight)');
-      SQuery.SQL.Add('VALUES('+pkdat+', '+num+', '+num_ingot+',');
-      SQuery.SQL.Add(''+pkdat_correct+num_correct+num_ingot_correct+',');
-      SQuery.SQL.Add(''+num_heat+', strftime(''%s'',''now''), '+PointReplace(DataIn)+')');
-      SQuery.ExecSQL;
+      _SQuery := TZQuery.Create(nil);
+      _SQuery.Connection := SConnect;
+      _SQuery.Close;
+      _SQuery.SQL.Clear;
+      _SQuery.SQL.Add('INSERT INTO weight');
+      _SQuery.SQL.Add('(pkdat, num, num_ingot, id_asutp, heat, timestamp, weight)');
+      _SQuery.SQL.Add('VALUES('+pkdat+', '+num+', '+num_ingot+',');
+      _SQuery.SQL.Add(''+pkdat_correct+num_correct+num_ingot_correct+',');
+      _SQuery.SQL.Add(''+num_heat+', strftime(''%s'',''now''), '+PointReplace(DataIn)+')');
+      _SQuery.ExecSQL;
   except
     on E : Exception do
-      Log.save('e', E.ClassName+', с сообщением: '+E.Message+SQuery.SQL.Text);
+      Log.save('e', E.ClassName+', с сообщением: '+E.Message+' | '+_SQuery.SQL.Text);
   end;
 
-  no_save := true;//разрешаем отправку подтверждения в контроллер
+  main.cs.Enter;
+  ThreadComPort.no_save := true;//разрешаем отправку подтверждения в контроллер
+  main.cs.Leave;
 
   try
-      SQuery.Close;
-      SQuery.SQL.Clear;
-      SQuery.SQL.Add('SELECT pkdat, num, num_ingot, id_asutp,');
-      SQuery.SQL.Add('datetime(timestamp, ''unixepoch'', ''localtime'') as timestamp, weight FROM weight');
-      SQuery.SQL.Add('where id_asutp='+pkdat_correct+num_correct+num_ingot_correct+'');
-      SQuery.Open;
+      _SQuery.Close;
+      _SQuery.SQL.Clear;
+      _SQuery.SQL.Add('SELECT pkdat, num, num_ingot, id_asutp,');
+      _SQuery.SQL.Add('datetime(timestamp, ''unixepoch'', ''localtime'') as timestamp, weight FROM weight');
+      _SQuery.SQL.Add('where id_asutp='+pkdat_correct+num_correct+num_ingot_correct+'');
+      _SQuery.Open;
   except
     on E : Exception do
-      Log.save('e', E.ClassName+', с сообщением: '+E.Message+SQuery.SQL.Text);
+      Log.save('e', E.ClassName+', с сообщением: '+E.Message+' | '+_SQuery.SQL.Text);
   end;
   //save to log file
   {Log.save('sql'+#9#9+'write'+#9+'id_asutp -> '+SQuery.FieldByName('id_asutp').AsString);
   Log.save('sql'+#9#9+'write'+#9+'weight -> '+SQuery.FieldByName('weight').AsString);}
 
   //сообщение оператору
-  ShowTrayMessage('Заготовка', '№: '+num_ingot+#9+'вес: '+SQuery.FieldByName('weight').AsString, 1);
+  ShowTrayMessage('Заготовка', '№: '+num_ingot+#9+'вес: '+_SQuery.FieldByName('weight').AsString, 1);
 
   {$IFDEF DEBUG}
-    Log.save('d', 'pkdat_correct -> '+SQuery.FieldByName('id_asutp').AsString);
+    Log.save('d', 'pkdat_correct -> '+_SQuery.FieldByName('id_asutp').AsString);
   {$ENDIF}
-
-
-  try
-      SqlReadTableLocal;//views взвешенные заготовки
-  except
-    on E : Exception do
-      Log.save('e', E.ClassName+', с сообщением: '+E.Message);
-  end;
 
   //следующая запись (слиток) от записаной
   NextWeightToRecord;
-end;
-
-
-function SqlSaveToOracle(IdIn, WeightIn, TimestampIn: AnsiString): boolean;
-var
-  error: boolean;
-begin
-  error := false;
-
-  try
-    //была ошибака: EZSQLException, с сообщением: SQL Error: OCI_NO_DATA
-    OraConnect.Reconnect;
-
-    OraQuery.Close;
-    OraQuery.SQL.Clear;
-    OraQuery.SQL.Add('INSERT INTO crop');
-    OraQuery.SQL.Add('(id_asutp, weight_bloom, date_weight_bloom)');
-    OraQuery.SQL.Add('VALUES ('+IdIn+', '+PointReplace(WeightIn)+',');
-    OraQuery.SQL.Add('TO_DATE('''+TimestampIn+''', ''yyyy-mm-dd hh24:mi:ss''))');
-
-    Application.ProcessMessages;//следующая операция не тормозит интерфейс
-    OraQuery.ExecSQL;
-
-  {$IFDEF DEBUG}
-    Log.save('d', 'OraQuery.SQL.Text -> '+OraQuery.SQL.Text);
-  {$ENDIF}
-  except
-    on E : Exception do begin
-      error := true;
-      Result := true;
-      Log.save('e', E.ClassName+', с сообщением: '+E.Message+' | '+OraQuery.SQL.Text);
-    end;
-  end;
-
-  if error then
-  begin
-    try
-        OraQuery.Close;
-        OraQuery.SQL.Clear;
-        OraQuery.SQL.Add('update crop');
-        OraQuery.SQL.Add('set weight_bloom = '+PointReplace(WeightIn)+',');
-        OraQuery.SQL.Add('date_weight_bloom = TO_DATE('''+TimestampIn+''',');
-        OraQuery.SQL.Add('''yyyy-mm-dd hh24:mi:ss'')');
-        OraQuery.SQL.Add('where id_asutp = '+IdIn+'');
-
-        Application.ProcessMessages;//следующая операция не тормозит интерфейс
-        OraQuery.ExecSQL;
-
-//        Result := false;
-  {$IFDEF DEBUG}
-    Log.save('d', 'OraQuery.SQL.Text -> '+OraQuery.SQL.Text);
-  {$ENDIF}
-    except
-      on E : Exception do begin
-        Result := true;
-        Log.save('e', E.ClassName+', с сообщением: '+E.Message);
-      end;
-    end;
-  end;
-
-end;
-
-
-function SqlReadTable(InData: string): bool;
-begin
-  try
-      FQuery.Close;
-      FQuery.SQL.Clear;
-      FQuery.SQL.Add('select i.pkdat,i.num,i.num_ingot,h.num_heat, s.name,i.weight_ingot, i.time_ingot, s.steel_group, sh.smena');
-      FQuery.SQL.Add('from ingots i, heats h, steels s, shifts sh');
-      FQuery.SQL.Add('where i.pkdat=h.pkdat');
-      FQuery.SQL.Add('and i.pkdat=sh.pkdat');
-      FQuery.SQL.Add('and i.num=h.num');
-      FQuery.SQL.Add('and h.steel_grade=s.steel_grade');
-      FQuery.SQL.Add('and i.pkdat in ('+InData+')');
-      FQuery.SQL.Add('order by i.pkdat desc, i.num desc, i.num_ingot desc');
-//      Application.ProcessMessages;// нельзя ставить иначе пропадают данныеи из dbgrid1
-      FQuery.Open;
-  except
-    on E : Exception do
-      Log.save('e', E.ClassName+', с сообщением: '+E.Message);
-  end;
-  //исправляем отображение даты в DBGrid -> pFIBDataSet1
-  TDateTimeField(FQuery.FieldByName('time_ingot')).DisplayFormat:='hh:nn:ss';
-end;
-
-
-function SqlReadTableLocal: bool;
-begin
-  try
-      SLQuery.Close;
-      SLQuery.SQL.Clear;
-      SLQuery.SQL.Add('SELECT substr(pkdat,7,1) as shift, num_ingot,');
-      SLQuery.SQL.Add('datetime(timestamp, ''unixepoch'', ''localtime'' ) as timestamp,');
-      SLQuery.SQL.Add('heat, weight,');
-      SLQuery.SQL.Add('case when transferred = 1 then ''передан'' else ''не передан'' end as transferred');
-      SLQuery.SQL.Add('FROM weight');
-      SLQuery.SQL.Add('order by timestamp desc limit 100');
-      SLQuery.Open;
-
-      //исправляем отображение даты в DBGrid -> 20 characters
-      TStringField(SLQuery.FieldByName('shift')).DisplayWidth := 3;
-      TStringField(SLQuery.FieldByName('timestamp')).DisplayWidth := 20;
-      TStringField(SLQuery.FieldByName('transferred')).DisplayWidth := 20;
-  except
-    on E : Exception do
-      Log.save('e', E.ClassName+', с сообщением: '+E.Message);
-  end;
+  FreeAndNil(_SQuery);
 end;
 
 
 function SqlLocalCreateTable: boolean;
 var
+  _SQuery: TZQuery;
   sindex: string;
 begin
 { id_asutp состоит из полей pkdat+num+num_ingot, где в АСУТП pkdat состоит
@@ -468,18 +301,20 @@ begin
   2 нуля), num_ingot (2х значное нужно добавлять перед числом 1 ноль)) номер слитка.
 }
   try
-      SLQuery.Close;
-      SLQuery.SQL.Clear;
-      SLQuery.SQL.Add('CREATE TABLE IF NOT EXISTS weight');
-      SLQuery.SQL.Add('(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE');
-      SLQuery.SQL.Add(', pkdat NUMERIC(7) NOT NULL, num NUMERIC(3) NOT NULL');
-      SLQuery.SQL.Add(', num_ingot NUMERIC(2) NOT NULL');
-      SLQuery.SQL.Add(', id_asutp NUMERIC(12) NOT NULL');
-      SLQuery.SQL.Add(', heat VARCHAR(16) NOT NULL');
-      SLQuery.SQL.Add(', timestamp INTEGER(12) NOT NULL');
-      SLQuery.SQL.Add(', weight NUMERIC(16,4)');
-      SLQuery.SQL.Add(', transferred NUMERIC(1,1) DEFAULT(0))');
-      SLQuery.ExecSQL;
+      _SQuery := TZQuery.Create(nil);
+      _SQuery.Connection := SConnect;
+      _SQuery.Close;
+      _SQuery.SQL.Clear;
+      _SQuery.SQL.Add('CREATE TABLE IF NOT EXISTS weight');
+      _SQuery.SQL.Add('(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE');
+      _SQuery.SQL.Add(', pkdat NUMERIC(7) NOT NULL, num NUMERIC(3) NOT NULL');
+      _SQuery.SQL.Add(', num_ingot NUMERIC(2) NOT NULL');
+      _SQuery.SQL.Add(', id_asutp NUMERIC(12) NOT NULL');
+      _SQuery.SQL.Add(', heat VARCHAR(16) NOT NULL');
+      _SQuery.SQL.Add(', timestamp INTEGER(12) NOT NULL');
+      _SQuery.SQL.Add(', weight NUMERIC(16,4)');
+      _SQuery.SQL.Add(', transferred NUMERIC(1,1) DEFAULT(0))');
+      _SQuery.ExecSQL;
 
       sindex := 'CREATE INDEX IF NOT EXISTS idx_weight_asc ON weight (' +
                 'id        ASC, ' +
@@ -488,10 +323,10 @@ begin
                 'pkdat     ASC, ' +
                 'num_ingot ASC)';
 
-      SLQuery.Close;
-      SLQuery.SQL.Clear;
-      SLQuery.SQL.Text := sindex;
-      SLQuery.ExecSQL;
+      _SQuery.Close;
+      _SQuery.SQL.Clear;
+      _SQuery.SQL.Text := sindex;
+      _SQuery.ExecSQL;
 
       sindex := 'CREATE INDEX IF NOT EXISTS idx_weight_desc ON weight (' +
                 'id        DESC, ' +
@@ -500,14 +335,16 @@ begin
                 'pkdat     DESC, ' +
                 'num_ingot DESC)';
 
-      SLQuery.Close;
-      SLQuery.SQL.Clear;
-      SLQuery.SQL.Text := sindex;
-      SLQuery.ExecSQL;
+      _SQuery.Close;
+      _SQuery.SQL.Clear;
+      _SQuery.SQL.Text := sindex;
+      _SQuery.ExecSQL;
   except
     on E : Exception do
       Log.save('e', E.ClassName+', с сообщением: '+E.Message);
   end;
+
+  FreeAndNil(_SQuery);
 end;
 
 

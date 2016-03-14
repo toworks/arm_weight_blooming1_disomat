@@ -4,17 +4,16 @@ interface
 
 uses
    Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-   Dialogs, StdCtrls, StrUtils, Data.DB;
+   Dialogs, StdCtrls, StrUtils, Data.DB, SyncObjs;
 
 type
   TTestingForm = class(TForm)
 
   private
-    { Private declarations }
+ //   cs: TCriticalSection;
     b_ForceSendAttribute: TButton;
     procedure b_ForceSendAttributeClick(Sender: TObject);
   public
-    { Public declarations }
     constructor CreateNew(AOwner: TComponent; Dummy: Integer = 0); override;
   end;
 
@@ -35,6 +34,9 @@ uses
 constructor TTestingForm.CreateNew(AOwner: TComponent; Dummy: Integer = 0);
 begin
   inherited CreateNew(AOwner);
+
+//  cs := TCriticalSection.Create;
+
   MemoTesting := TMemo.Create(Self);
   MemoTesting.Ctl3D := False;
   MemoTesting.SetBounds(2, 2, 590, 300);
@@ -93,7 +95,9 @@ end;
 
 procedure TTestingForm.b_ForceSendAttributeClick(Sender: TObject);
 begin
-    ThreadComPort.SendAttribute;
+    main.cs.Enter;
+      ThreadComPort.SendAttribute;
+    main.cs.Leave;
 end;
 
 

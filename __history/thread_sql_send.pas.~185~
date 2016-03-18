@@ -135,7 +135,8 @@ begin
    begin
       try
           SqlSend;
-          SyncSqlMaxLocal;
+          GetMaxLocalCount;
+          Synchronize(SyncSqlMaxLocal);
       except
         on E : Exception do
           Log.save('e', E.ClassName+'3, с сообщением: '+E.Message);
@@ -168,7 +169,7 @@ begin
       _SQuery.Open;
 
       i := 0;
-
+Log.save('e', 'd0----'+#9+_SQuery.FieldByName('id_asutp').AsString);
       while not _SQuery.Eof do
       begin
           if i = Length(Byffer) then SetLength(Byffer, i+1, 3);
@@ -192,7 +193,7 @@ begin
     Log.save('d', 'timestamp | '+Byffer[i,2]);
   {$ENDIF}
       try
-//        send_error := SqlSaveToOracle(Byffer[i,0], Byffer[i,1], Byffer[i,2]);
+        send_error := SqlSaveToOracle(Byffer[i,0], Byffer[i,1], Byffer[i,2]);
   {$IFDEF DEBUG}
     Log.save('d', 'send_error | '+booltostr(send_error));
   {$ENDIF}
@@ -364,10 +365,8 @@ begin
 
         FSqlMaxLocal := timestamp;
 
-        if assigned(SLQuery) then begin
-          Synchronize(SyncSqlMaxLocal);
+        if assigned(SLQuery) then
           Synchronize(SqlReadTableLocal);//views взвешенные заготовки
-        end;
 
       end
   except

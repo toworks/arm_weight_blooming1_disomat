@@ -135,7 +135,8 @@ begin
    begin
       try
           SqlSend;
-          SyncSqlMaxLocal;
+          GetMaxLocalCount;
+          Synchronize(SyncSqlMaxLocal);
       except
         on E : Exception do
           Log.save('e', E.ClassName+'3, с сообщением: '+E.Message);
@@ -168,7 +169,7 @@ begin
       _SQuery.Open;
 
       i := 0;
-
+Log.save('e', 'd0----'+#9+_SQuery.FieldByName('id_asutp').AsString);
       while not _SQuery.Eof do
       begin
           if i = Length(Byffer) then SetLength(Byffer, i+1, 3);
@@ -366,7 +367,7 @@ begin
 
         if assigned(SLQuery) then
           Synchronize(SqlReadTableLocal);//views взвешенные заготовки
-          Log.save('e', 'after sunc | '+inttostr(FSqlMaxLocal));
+
       end
   except
     on E : Exception do

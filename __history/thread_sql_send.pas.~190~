@@ -12,8 +12,8 @@ type
   TThreadSqlSend = class(TThread)
   private
     FThreadSqlSend: TThreadSqlSend;
-    OraConnect: TZConnection;
-    OraQuery: TZQuery;
+//    FOraConnect: TZConnection;
+//    FOraQuery: TZQuery;
     FSqlMaxLocal: Int64;
 
     function ConfigOracleSetting(InData: boolean): boolean;
@@ -33,6 +33,8 @@ type
 
 var
   Log: TLog;
+    FOraConnect: TZConnection;
+    FOraQuery: TZQuery;
 
 //  {$DEFINE DEBUG}
 
@@ -59,6 +61,12 @@ begin
   FSqlMaxLocal := 0;
 
   ConfigOracleSetting(true);
+
+if assigned(FOraConnect) then
+  Log.save('e', 'start assigned(FOraConnect)')
+else
+  Log.save('e', 'startnot assigned(FOraConnect)');
+
   ConfigSqliteSetting;
   FThreadSqlSend.Start;
 end;
@@ -99,20 +107,20 @@ begin
   if InData then
   begin
       try
-        OraConnect := TZConnection.Create(nil);
-        OraQuery := TZQuery.Create(nil);
+        FOraConnect := TZConnection.Create(nil);
+        FOraQuery := TZQuery.Create(nil);
         ConnectString:='(DESCRIPTION = (ADDRESS_LIST = (ADDRESS = (PROTOCOL = TCP)(HOST = '
                 +OraSqlSettings.ip+')(PORT = '+'1521'
                 +'))) (CONNECT_DATA = (SERVICE_NAME = '+
                 OraSqlSettings.db_name+')))';
-        OraConnect.Database := ConnectString;
-        OraConnect.LibraryLocation := '.\oci.dll';// отказался от полных путей не читает
-        OraConnect.Protocol := 'oracle';
-        OraConnect.User := OraSqlSettings.user;
-        OraConnect.Password := OraSqlSettings.password;
-        OraConnect.ClientCodepage := 'CL8MSWIN1251';
-        OraConnect.Connect;
-        OraQuery.Connection := OraConnect;
+        FOraConnect.Database := ConnectString;
+        FOraConnect.LibraryLocation := '.\oci.dll';// отказался от полных путей не читает
+        FOraConnect.Protocol := 'oracle';
+        FOraConnect.User := OraSqlSettings.user;
+        FOraConnect.Password := OraSqlSettings.password;
+        FOraConnect.ClientCodepage := 'CL8MSWIN1251';
+        FOraConnect.Connect;
+        FOraQuery.Connection := FOraConnect;
       except
         on E: Exception do begin
           Log.save('e', E.ClassName+'2, с сообщением: '+E.Message);
@@ -121,8 +129,8 @@ begin
   end
   else
   begin
-        FreeAndNil(OraQuery);
-        FreeAndNil(OraConnect);
+        FreeAndNil(FOraQuery);
+        FreeAndNil(FOraConnect);
   end;
 
 end;
@@ -135,8 +143,8 @@ begin
    begin
       try
           SqlSend;
-          SyncSqlMaxLocal;
-          SyncSqlMaxLocal;
+          GetMaxLocalCount;
+          Synchronize(SyncSqlMaxLocal);
       except
         on E : Exception do
           Log.save('e', E.ClassName+'3, с сообщением: '+E.Message);
@@ -194,6 +202,8 @@ begin
   {$ENDIF}
       try
 //        send_error := SqlSaveToOracle(Byffer[i,0], Byffer[i,1], Byffer[i,2]);
+        if Byffer[i,0] <> '' then
+          send_error := SqlSaveToOracle(Byffer[i,0], Byffer[i,1], Byffer[i,2]);
   {$IFDEF DEBUG}
     Log.save('d', 'send_error | '+booltostr(send_error));
   {$ENDIF}
@@ -234,39 +244,45 @@ var
 begin
   error := false;
 
+if assigned(FOraConnect) then
+  Log.save('e', 'assigned(FOraConnect)')
+else
+  Log.save('e', 'not assigned(FOraConnect)');
+
+
   try
     //была ошибака: EZSQLException, с сообщением: SQL Error: OCI_NO_DATA
-    if not OraConnect.Connected then
-      OraConnect.Reconnect;
+    if not FOraConnect.Connected then
+      FOraConnect.Reconnect;
 
-    OraQuery.Close;
-    OraQuery.SQL.Clear;
-    OraQuery.SQL.Add('INSERT INTO crop');
-    OraQuery.SQL.Add('(id_asutp, weight_bloom, date_weight_bloom)');
-    OraQuery.SQL.Add('VALUES ('+IdIn+', '+PointReplace(WeightIn)+',');
-    OraQuery.SQL.Add('TO_DATE('''+TimestampIn+''', ''yyyy-mm-dd hh24:mi:ss''))');
-    OraQuery.ExecSQL;
-  {$IFDEF DEBUG}
-    Log.save('d', 'OraQuery insert | '+OraQuery.SQL.Text);
-  {$ENDIF}
+    FOraQuery.Close;
+    FOraQuery.SQL.Clear;
+    FOraQuery.SQL.Add('INSERT INTO crop');
+    FOraQuery.SQL.Add('(id_asutp, weight_bloom, date_weight_bloom)');
+    FOraQuery.SQL.Add('VALUES ('+IdIn+', '+PointReplace(WeightIn)+',');
+    FOraQuery.SQL.Add('TO_DATE('''+TimestampIn+''', ''yyyy-mm-dd hh24:mi:ss''))');
+    FOraQuery.ExecSQL;
+//  {$IFDEF DEBUG}
+    Log.save('d', 'OraQuery insert | '+FOraQuery.SQL.Text);
+//  {$ENDIF}
   except
     on E : Exception do begin
       error := true;
-      Log.save('e', E.ClassName+'6, с сообщением: '+E.Message+' | '+OraQuery.SQL.Text);
+      Log.save('e', E.ClassName+'6, с сообщением: '+E.Message+' | '+FOraQuery.SQL.Text);
     end;
   end;
 
   if error then
   begin
     try
-        OraQuery.Close;
-        OraQuery.SQL.Clear;
-        OraQuery.SQL.Add('update crop');
-        OraQuery.SQL.Add('set weight_bloom = '+PointReplace(WeightIn)+',');
-        OraQuery.SQL.Add('date_weight_bloom = TO_DATE('''+TimestampIn+''',');
-        OraQuery.SQL.Add('''yyyy-mm-dd hh24:mi:ss'')');
-        OraQuery.SQL.Add('where id_asutp = '+IdIn+'');
-        OraQuery.ExecSQL;
+        FOraQuery.Close;
+        FOraQuery.SQL.Clear;
+        FOraQuery.SQL.Add('update crop');
+        FOraQuery.SQL.Add('set weight_bloom = '+PointReplace(WeightIn)+',');
+        FOraQuery.SQL.Add('date_weight_bloom = TO_DATE('''+TimestampIn+''',');
+        FOraQuery.SQL.Add('''yyyy-mm-dd hh24:mi:ss'')');
+        FOraQuery.SQL.Add('where id_asutp = '+IdIn+'');
+        FOraQuery.ExecSQL;
 
         error := false;
   {$IFDEF DEBUG}
@@ -275,7 +291,7 @@ begin
     except
       on E : Exception do begin
         error := true;
-        Log.save('e', E.ClassName+'7, с сообщением: '+E.Message+' | '+OraQuery.SQL.Text);
+        Log.save('e', E.ClassName+'7, с сообщением: '+E.Message+' | '+FOraQuery.SQL.Text);
       end;
     end;
   end;

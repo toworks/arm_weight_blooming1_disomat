@@ -10,7 +10,6 @@ type
   TTestingForm = class(TForm)
 
   private
- //   cs: TCriticalSection;
     b_ForceSendAttribute: TButton;
     procedure b_ForceSendAttributeClick(Sender: TObject);
   public
@@ -28,14 +27,12 @@ implementation
 
 
 uses
-    main, settings, logging, thread_comport;
+    main;
 
 
 constructor TTestingForm.CreateNew(AOwner: TComponent; Dummy: Integer = 0);
 begin
   inherited CreateNew(AOwner);
-
-//  cs := TCriticalSection.Create;
 
   MemoTesting := TMemo.Create(Self);
   MemoTesting.Ctl3D := False;
@@ -95,9 +92,7 @@ end;
 
 procedure TTestingForm.b_ForceSendAttributeClick(Sender: TObject);
 begin
-    main.cs.Enter;
-      ThreadComPort.SendAttribute;
-    main.cs.Leave;
+  ThreadComPort.SendAttribute;
 end;
 
 

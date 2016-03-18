@@ -140,7 +140,7 @@ begin
       // маркер следующей заготовки (ожидание)
       if FQueryNextRecord.FieldByName('pkdat').AsString = '' then
       begin
-          SqlMax := 0;
+          form1.SqlMax := 0;
           form1.l_n_message.Visible := true;
           form1.l_n_message.Font.Color := $002CB902;//green
           form1.l_n_message.Caption := ' Ожидание сдедующей заготовки ';
@@ -151,6 +151,7 @@ begin
           form1.l_heat.Visible := false;
           form1.l_datetime.Visible := false;
           form1.l_number_ingot.Visible := false;
+          FreeAndNil(_SQuery);
           FreeAndNil(FQueryNextRecord);//утечка памяти
           exit;
       end
@@ -258,9 +259,8 @@ begin
       Log.save('e', E.ClassName+', с сообщением: '+E.Message+' | '+_SQuery.SQL.Text);
   end;
 
-  main.cs.Enter;
-  ThreadComPort.no_save := true;//разрешаем отправку подтверждения в контроллер
-  main.cs.Leave;
+  //ThreadComPort.no_save := true;//разрешаем отправку подтверждения в контроллер
+  form1.no_save := true;//разрешаем отправку подтверждения в контроллер
 
   try
       _SQuery.Close;

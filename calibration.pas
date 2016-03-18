@@ -58,6 +58,7 @@ procedure CreateCalibrationForm(Sender: TObject);
 var
   i: integer;
 begin
+//  CalibrationForm := TCalibrationForm.CreateNew(nil);
   CalibrationForm := TCalibrationForm.CreateNew(nil);
   try
     CalibrationForm.Height := 360;

@@ -33,8 +33,8 @@ end;
 
 destructor TLog.Destroy;
 begin
+  cs.Destroy;
   inherited Destroy;
-  cs := TCriticalSection.Create;
 end;
 
 
@@ -57,48 +57,50 @@ Type    Level    Description
 }
   cs.Enter;
 
-  _type := trim(AnsiLowerCase(_type));
-
-  if ( _type = 'a' ) then
-        level := 'ALL'
-  else if ( _type = 'd' ) then
-        level := 'DEBUG'
-  else if (_type = 'e' ) then
-        level := 'ERROR'
-  else if ( _type = 'f' ) then
-        level := 'FATAL'
-  else if ( _type = 'i' ) then
-        level := 'INFO'
-  else if ( _type = 'o' ) then
-        level := 'OFF'
-  else if ( _type = 't' ) then
-        level := 'TRACE'
-  else if ( _type = 'w' ) then
-        level := 'WARN'
-  else
-        level := 'INFO';
-
   try
-      log_file := FormatDateTime('yyyymmdd', NOW);
-      AssignFile(f, log_file+'_'+ProgFileName+'.log');
-      if not FileExists(log_file+'_'+ProgFileName+'.log') then
-       begin
-          Rewrite(f);
+      _type := trim(AnsiLowerCase(_type));
+
+      if ( _type = 'a' ) then
+            level := 'ALL'
+      else if ( _type = 'd' ) then
+            level := 'DEBUG'
+      else if (_type = 'e' ) then
+            level := 'ERROR'
+      else if ( _type = 'f' ) then
+            level := 'FATAL'
+      else if ( _type = 'i' ) then
+            level := 'INFO'
+      else if ( _type = 'o' ) then
+            level := 'OFF'
+      else if ( _type = 't' ) then
+            level := 'TRACE'
+      else if ( _type = 'w' ) then
+            level := 'WARN'
+      else
+            level := 'INFO';
+
+      try
+          log_file := FormatDateTime('yyyymmdd', NOW);
+          AssignFile(f, log_file+'_'+ProgFileName+'.log');
+          if not FileExists(log_file+'_'+ProgFileName+'.log') then
+           begin
+              Rewrite(f);
+              CloseFile(f);
+           end;
+
+          Append(f);
+
+          Writeln(f, FormatDateTime('yyyy-mm-dd hh:mm:ss.zzz', NOW)+#9+level+#9+_message);
+
+          Flush(f);
           CloseFile(f);
-       end;
-
-      Append(f);
-
-      Writeln(f, FormatDateTime('yyyy-mm-dd hh:mm:ss.zzz', NOW)+#9+level+#9+_message);
-
-      Flush(f);
-      CloseFile(f);
-  except
-    on E : Exception do
-      save('e', E.ClassName+', с сообщением: '+E.Message);
+      except
+        on E : Exception do
+          save('e', E.ClassName+', с сообщением: '+E.Message);
+      end;
+  finally
+      cs.Leave;
   end;
-
-  cs.Leave;
 end;
 
 

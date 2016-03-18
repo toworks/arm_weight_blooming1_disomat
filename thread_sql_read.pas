@@ -9,22 +9,25 @@ uses
 type
   //Здесь необходимо описать класс TThreadSql:
   TThreadSqlRead = class(TThread)
-
   private
-    Log: TLog;
-    function SqlReadTable(InData: string): boolean;
+    FThreadSqlRead: TThreadSqlRead;
+    FSqlMax: int64;
+    Fpkdat_in: string;
+
+    procedure SyncSqlReadTable;
     procedure SqlNewRecord;
   protected
     procedure Execute; override;
   public
-    Constructor Create; overload;
+    Constructor Create(_Log: TLog); overload;
     Destructor Destroy; override;
+    procedure SyncSqlMax;
   end;
 
 var
-  ThreadSqlRead: TThreadSqlRead;
-  SqlMax: int64 = 0;
+//  SqlMax: int64 = 0;
   FutureDate: TDateTime;
+  Log: TLog;
 
 
 //  {$DEFINE DEBUG}
@@ -38,23 +41,26 @@ uses
 
 
 
-constructor TThreadSqlRead.Create;
+constructor TThreadSqlRead.Create(_Log: TLog);
 begin
-  inherited;
-  // создаем поток True - создание остановка, False - создание старт
-  ThreadSqlRead := TThreadSqlRead.Create(True);
-  ThreadSqlRead.Priority := tpNormal;
-  ThreadSqlRead.FreeOnTerminate := True;
-  ThreadSqlRead.Start;
+  inherited Create(True);
 
-  Log := TLog.Create;
+  Log := _Log;
+
+  FSqlMax := 0;
+
+  // создаем поток True - создание остановка, False - создание старт
+  FThreadSqlRead := TThreadSqlRead.Create(True);
+  FThreadSqlRead.Priority := tpNormal;
+  FThreadSqlRead.FreeOnTerminate := True;
+  FThreadSqlRead.Start;
 end;
 
 
 destructor TThreadSqlRead.Destroy;
 begin
-  if ThreadSqlRead <> nil then begin
-    ThreadSqlRead.Terminate;
+  if FThreadSqlRead <> nil then begin
+    FThreadSqlRead.Terminate;
   end;
   inherited Destroy;
 end;
@@ -66,7 +72,8 @@ begin
   while True do
    begin
       try
-          Synchronize(SqlNewRecord);
+          Synchronize(SyncSqlMax);
+          SqlNewRecord;
       except
         on E : Exception do
           Log.save('e', E.ClassName+', с сообщением: '+E.Message);
@@ -81,7 +88,6 @@ end;
 procedure TThreadSqlRead.SqlNewRecord;
 var
   FQueryNewRecord: TZQuery;
-  pkdat_in: string;
   i, timestamp: integer;
   count: int64;
 begin
@@ -117,9 +123,9 @@ begin
     while not FQueryNewRecord.Eof do
     begin
       if i = 0 then
-        pkdat_in := ''''+FQueryNewRecord.FieldByName('pkdat').AsString+''''
+        Fpkdat_in := ''''+FQueryNewRecord.FieldByName('pkdat').AsString+''''
       else
-        pkdat_in := pkdat_in+','+''''+FQueryNewRecord.FieldByName('pkdat').AsString+'''';
+        Fpkdat_in := Fpkdat_in+','+''''+FQueryNewRecord.FieldByName('pkdat').AsString+'''';
       inc(i);
       FQueryNewRecord.Next;
     end;
@@ -136,15 +142,15 @@ begin
 
     FreeAndNil(FQueryNewRecord);
 
-    if (SqlMax < count) then
+    if (FSqlMax < count) then
     begin
-        SqlMax := count;
+        FSqlMax := count;
         //обновление отображение записанных данных ViewDbWeight;
-        SqlReadTable(pkdat_in);
+        Synchronize(SyncSqlReadTable);
 
         //dbgrid текущая выбраная заготовка
-        if not pkdat.IsEmpty then
-          NextWeightToRecordLocation;
+        if not Fpkdat_in.IsEmpty then
+          Synchronize(NextWeightToRecordLocation);
 
   {$IFDEF DEBUG}
     Log.save('d', 'count -> '+inttostr(count));
@@ -163,7 +169,7 @@ begin
 end;
 
 
-function TThreadSqlRead.SqlReadTable(InData: string): boolean;
+procedure TThreadSqlRead.SyncSqlReadTable;
 begin
   try
       FQuery.Close;
@@ -174,7 +180,7 @@ begin
       FQuery.SQL.Add('and i.pkdat=sh.pkdat');
       FQuery.SQL.Add('and i.num=h.num');
       FQuery.SQL.Add('and h.steel_grade=s.steel_grade');
-      FQuery.SQL.Add('and i.pkdat in ('+InData+')');
+      FQuery.SQL.Add('and i.pkdat in ('+Fpkdat_in+')');
       FQuery.SQL.Add('order by i.pkdat desc, i.num desc, i.num_ingot desc');
       FQuery.Open;
   except
@@ -184,6 +190,15 @@ begin
   //исправляем отображение даты в DBGrid -> pFIBDataSet1
   TDateTimeField(FQuery.FieldByName('time_ingot')).DisplayFormat:='hh:nn:ss';
 end;
+
+
+procedure TThreadSqlRead.SyncSqlMax;
+begin
+  Form1.SqlMax := FSqlMax;
+end;
+
+
+
 
 
 // При загрузке программы класс будет создаваться

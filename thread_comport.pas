@@ -4,24 +4,25 @@ unit thread_comport;
 interface
 
 uses
-  SysUtils, Classes, ActiveX, synaser, SyncObjs, logging;
+  SysUtils, Classes, ActiveX, synaser, SyncObjs, logging, Messages;
 
 type
   //Здесь необходимо описать класс TThreadComPort:
   TThreadComPort = class(TThread)
 
   private
-    Log: TLog.Create;
-    count: integer;
+    Fcount: integer;
+    Fno_save: boolean;
+    FThreadComPort: TThreadComPort;
+    FMessageData: AnsiString;
 
     procedure ReadToMessage;
+    procedure SyncMemoTesting;
+    procedure SyncStatus;
   protected
     procedure Execute; override;
   public
-
-    no_save: boolean;
-
-    Constructor Create; overload;
+    Constructor Create(_Log: TLog); overload;
     Destructor Destroy; override;
 
     function CPortParity(InData: String): Char;
@@ -32,7 +33,8 @@ type
   end;
 
 var
-  ThreadComPort: TThreadComPort;
+
+  Log: TLog;
 //    function SendAttribute: boolean;
 
 
@@ -47,26 +49,26 @@ uses
 
 
 
-constructor TThreadComPort.Create;
+constructor TThreadComPort.Create(_Log: TLog);
 begin
-  inherited;
+  inherited Create(True);
+
+  Log := _Log;
   // создаем поток True - создание остановка, False - создание старт
-  ThreadComPort := TThreadComPort.Create(True);
-  ThreadComPort.Priority := tpNormal;
-  ThreadComPort.FreeOnTerminate := True;
-  ThreadComPort.Start;
+  FThreadComPort := TThreadComPort.Create(True);
+  FThreadComPort.Priority := tpNormal;
+  FThreadComPort.FreeOnTerminate := True;
+  FThreadComPort.Start;
 
-  Log := TLog.Create;
-
-  no_save := false;
-  count := 10;
+  Fno_save := false;
+  Fcount := 10;
 end;
 
 
 destructor TThreadComPort.Destroy;
 begin
-  if TThreadComPort <> nil then begin
-    ThreadComPort.Terminate;
+  if FThreadComPort <> nil then begin
+    FThreadComPort.Terminate;
   end;
   inherited Destroy;
 end;
@@ -81,7 +83,7 @@ begin
           ReadToMessage;
       except
         on E : Exception do
-          Log.save('e', E.ClassName+', с сообщением: '+E.Message);
+          Log.save('e', E.ClassName+#9'com m1, с сообщением: '+E.Message);
       end;
 
       sleep(1000);
@@ -95,12 +97,13 @@ var
   serial_port: TBlockserial;
 begin
     //status работы с контроллером
-    if count > 10 then begin
+    if Fcount > 10 then begin
+      Synchronize(SyncStatus);
       Synchronize(Status);
-      count := 0;
+      Fcount := 0;
     end
     else
-      inc(count);
+      inc(Fcount);
 
     try
         serial_port := TBlockserial.Create;
@@ -130,7 +133,7 @@ begin
 
   ReceiveData(msg);
 
-  if no_save then
+  if Fno_save then
     SendAttribute;
 
   {$IFDEF DEBUG}
@@ -153,11 +156,11 @@ function TThreadComPort.ReceiveData(Data: AnsiString): string;
 begin
   if (copy(Data, 2, 6) = '00#EK#') and (copy(Data, 8, 1) = '0') then
   begin
-      no_save := false;//запрещаем отправку подтверждения в контроллер -> сброс в SqlSaveInBuffer
+      Fno_save := false;//запрещаем отправку подтверждения в контроллер -> сброс в SqlSaveInBuffer
   end;
 //{ test }  if (copy(Data, 2, 6) = '00#TK#') and (copy(Data, 26, 1) = '1') and (no_save = false) then
   if ( copy(Data, 2, 6) = '00#TK#' ) and (copy(Data, 28, 1) = '1')
-      and (no_save = false) then
+      and (Fno_save = false) then
   begin
       if ( trim(copy(Data, 40, 6)) <> '' ) then begin //не пропускать пустых значений
           if pkdat <> '' then
@@ -172,8 +175,11 @@ begin
   end;
 
   //тестирование
-  if assigned(MemoTesting) then
-    MemoTestingAdd('receive Com'+SerialPortSettings.serial_port_number+' | '+Data);
+  if assigned(MemoTesting) then begin
+    //MemoTestingAdd('receive Com'+SerialPortSettings.serial_port_number+' | '+Data));
+    FMessageData := Data;
+    Synchronize(SyncMemoTesting);
+  end;
 
   //калибровка
   if assigned(CalibrationForm) then
@@ -186,15 +192,13 @@ var
     msg: AnsiString;
 begin
   try
-    main.cs.Enter;
     //передаем ЭОД вход1-4 переменные 1|0|0|0
     msg := SendReadToSerial(#2'00#EK#1#0#0#0#'#16#3+hash_bcc('00#EK#1#0#0#0#'#16#3));
     ReceiveData(msg);
   except
     on E : Exception do
-      Log.save('e', E.ClassName+', с сообщением: '+E.Message);
+      Log.save('e', E.ClassName+#9'com m2, с сообщением: '+E.Message);
   end;
-    main.cs.Leave;
 end;
 
 
@@ -218,6 +222,20 @@ begin
   if InData = 'space' then
      result := 'S';
 end;
+
+
+procedure TThreadComPort.SyncMemoTesting;
+begin
+  MemoTestingAdd('receive Com'+SerialPortSettings.serial_port_number+' | '+FMessageData)
+end;
+
+
+procedure TThreadComPort.SyncStatus;
+begin
+  form1.no_save := Fno_save;
+end;
+
+
 
 
 // При загрузке программы класс будет создаваться

@@ -32,7 +32,8 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, ShellAPI, StdCtrls, Mask, Menus, Grids, DBGrids, ExtCtrls,
-  CommCtrl, StrUtils, DateUtils, Data.DB, SyncObjs, logging;
+  CommCtrl, StrUtils, DateUtils, Data.DB, SyncObjs, logging, sql, thread_sql_read,
+  thread_sql_send, thread_comport;
 
 type
   TForm1 = class(TForm)
@@ -57,6 +58,7 @@ type
     TrayIcon: TTrayIcon;
     l_n_message: TLabel;
     l_status: TLabel;
+    Button1: TButton;
     procedure FormCreate(Sender: TObject);
     procedure TrayIconClick(Sender: TObject);
     procedure TrayPopUpCloseClick(Sender: TObject);
@@ -68,11 +70,14 @@ type
     procedure DBGrid1DblClick(Sender: TObject);
     function CreateMenu: bool;
     procedure ActionMenuItemClick(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
 
   private
-    { Private declarations }
-  public
 
+  public
+    SqlMaxLocal: Int64;
+    SqlMax: Int64;
+    no_save: boolean;
   end;
 
 
@@ -81,9 +86,10 @@ var
     PopupTray: TPopupMenu;
     TrayMark: bool = false;
     formattedDateTime: string;
-    cs: TCriticalSection;
     Log: TLog;
-
+    ThreadSqlRead: TThreadSqlRead;
+    ThreadSqlSend: TThreadSqlSend;
+    ThreadComPort: TThreadComPort;
 //    {$DEFINE DEBUG}
 
 
@@ -104,7 +110,8 @@ var
 implementation
 
 uses
-  settings, sql, thread_sql_read, thread_sql_send, thread_comport, testing, calibration;
+  settings, {sql, thread_sql_read, thread_sql_send, thread_comport,} testing, calibration;
+
 
 {$R *.dfm}
 
@@ -114,17 +121,19 @@ uses
 
 procedure TForm1.FormCreate(Sender: TObject);
 begin
+  Log := TLog.Create;
+
   //проверка 1 экземпляра программы
   CheckAppRun;
 
-  Log := TLog.Create;
-
   Log.save('i', 'start '+Log.ProgFileName);
 
-  cs := TCriticalSection.Create;
-  ThreadSqlRead := TThreadSqlRead.Create;
-  ThreadSqlSend := TThreadSqlSend.Create;
-  ThreadComPort := TThreadComPort.Create;
+//  ThreadSqlRead := TThreadSqlRead.Create;
+//  ThreadSqlSend := TThreadSqlSend.Create;
+//  ThreadComPort := TThreadComPort.Create;
+  ThreadSqlRead := TThreadSqlRead.Create(Log);
+  ThreadSqlSend := TThreadSqlSend.Create(Log);
+  ThreadComPort := TThreadComPort.Create(Log);
 
   Form1.Caption := HeadName+'  build('+Settings.GetVersion+')';
   //заголовки к showmessage
@@ -244,7 +253,7 @@ begin
 end;
 
 
-function NextWeightToRecordLocation: bool;
+procedure NextWeightToRecordLocation: bool;
 var
   KeyValues : Variant;
 begin
@@ -342,7 +351,7 @@ begin
     R := Rect;
     Dec(R.Bottom, 2);
     //проверка первого старта и отсутствие таблицы weight
-    if ThreadSqlSend.SqlMaxLocal <> 0 then
+    if SqlMaxLocal <> 0 then
     begin
 
         if  gdSelected in State	then //color selected
@@ -413,6 +422,37 @@ begin
 end;
 
 
+procedure Status;
+var
+  status: bool;
+begin
+  if pkdat.IsEmpty then
+  begin
+    //сообщение оператору
+    ShowTrayMessage('Оператор', 'Для работы выбери взвешиваемую заготовку', 2);
+    form1.l_status.Caption := 'выбор заготовки оператором';
+    status := true;
+  end;
+
+  if (not pkdat.IsEmpty) and (not form1.no_save) then
+  begin
+    form1.l_status.Caption := 'ожидание данных с весового контроллера';
+    status := true;
+  end;
+
+  if (not pkdat.IsEmpty) and form1.no_save then
+  begin
+    form1.l_status.Caption := 'подтверждение записи веса весовому контроллеру';
+    status := true;
+  end;
+
+  if status then
+    form1.l_status.Visible := true
+  else
+    form1.l_status.Visible := false;
+end;
+
+
 function MouseMoved: bool;
 var
   MousePoint: TPoint;
@@ -426,43 +466,6 @@ begin
   {Переместим курсор мыши}
   Mouse_Event(MOUSEEVENTF_ABSOLUTE or MOUSEEVENTF_MOVE, MousePoint.x+20, MousePoint.y+20, 0, 0);
 end;
-
-
-procedure Status;
-var
-  status: bool;
-begin
-  if pkdat.IsEmpty then
-  begin
-    //сообщение оператору
-    ShowTrayMessage('Оператор', 'Для работы выбери взвешиваемую заготовку', 2);
-    form1.l_status.Caption := 'выбор заготовки оператором';
-    status := true;
-  end;
-
-  if (not pkdat.IsEmpty) and (not ThreadComPort.no_save) then
-  begin
-    form1.l_status.Caption := 'ожидание данных с весового контроллера';
-    status := true;
-  end;
-
-  if (not pkdat.IsEmpty) and ThreadComPort.no_save then
-  begin
-    form1.l_status.Caption := 'подтверждение записи веса весовому контроллеру';
-    status := true;
-  end;
-
-  if status then
-    form1.l_status.Visible := true
-  else
-    form1.l_status.Visible := false;
-
-
-end;
-
-
-
-
 
 
 function TrayAppRun: bool;
@@ -542,6 +545,12 @@ begin
 
 end;
 
+
+procedure TForm1.Button1Click(Sender: TObject);
+begin
+//    button1.Caption := inttostr(ThreadSqlSend.GetSqlMaxLocal);
+    button1.Caption := inttostr(SqlMaxLocal);
+end;
 
 function TForm1.CreateMenu: bool;
 var

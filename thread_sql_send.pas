@@ -10,11 +10,11 @@ uses
 type
   //Здесь необходимо описать класс TThreadSql:
   TThreadSqlSend = class(TThread)
-
   private
-    Log = TLog;
+    FThreadSqlSend: TThreadSqlSend;
     OraConnect: TZConnection;
     OraQuery: TZQuery;
+    FSqlMaxLocal: Int64;
 
     function ConfigOracleSetting(InData: boolean): boolean;
     function ConfigSqliteSetting: boolean;
@@ -26,19 +26,15 @@ type
   protected
     procedure Execute; override;
   public
-//    SLQuery: TZQuery;
-//    SLDataSource: TDataSource;
-    SqlMaxLocal: Int64;
-
-    Constructor Create; overload;
+    Constructor Create(_Log: TLog); overload;
     Destructor Destroy; override;
+    procedure SyncSqlMaxLocal;
   end;
 
 var
-  ThreadSqlSend: TThreadSqlSend;
+  Log: TLog;
 
-
-  {$DEFINE DEBUG}
+//  {$DEFINE DEBUG}
 
 
 implementation
@@ -49,35 +45,36 @@ uses
 
 
 
-constructor TThreadSqlSend.Create;
+//constructor TThreadSqlSend.Create;
+constructor TThreadSqlSend.Create(_Log: TLog);
 begin
-  inherited;
+  inherited Create(True);
+  Log := _Log;
+
   // создаем поток True - создание остановка, False - создание старт
-  ThreadSqlSend := TThreadSqlSend.Create(True);
-  ThreadSqlSend.Priority := tpNormal;
-  ThreadSqlSend.FreeOnTerminate := True;
+  FThreadSqlSend := TThreadSqlSend.Create(True);
+  FThreadSqlSend.Priority := tpNormal;
+  FThreadSqlSend.FreeOnTerminate := True;
 
-  Log := TLog.Create;
-
-  SqlMaxLocal := 0;
+  FSqlMaxLocal := 0;
 
   ConfigOracleSetting(true);
   ConfigSqliteSetting;
-
-  ThreadSqlSend.Start;
+  FThreadSqlSend.Start;
 end;
 
 
 destructor TThreadSqlSend.Destroy;
 begin
-  if ThreadSqlSend <> nil then begin
+  if FThreadSqlSend <> nil then begin
     ConfigOracleSetting(false);
-    ThreadSqlSend.Terminate;
+    FThreadSqlSend.Terminate;
   end;
   inherited Destroy;
 end;
 
 
+//-- start main
 function TThreadSqlSend.ConfigSqliteSetting: boolean;
 begin
   try
@@ -92,6 +89,7 @@ begin
         Log.save('e', E.ClassName+'1, с сообщением: '+E.Message);
   end;
 end;
+//-- end main
 
 
 function TThreadSqlSend.ConfigOracleSetting(InData: boolean): boolean;
@@ -136,9 +134,9 @@ begin
   while True do
    begin
       try
-//          if assigned(OraConnect) then begin
           SqlSend;
           GetMaxLocalCount;
+          Synchronize(SyncSqlMaxLocal);
       except
         on E : Exception do
           Log.save('e', E.ClassName+'3, с сообщением: '+E.Message);
@@ -157,6 +155,7 @@ var
   Byffer: array of array of AnsiString;
   send_error: boolean;
 begin
+
   try
       _SQuery := TZQuery.Create(nil);
       _SQuery.Connection := SConnect;
@@ -168,32 +167,33 @@ begin
       _SQuery.SQL.Add('where transferred=0');
       _SQuery.SQL.Add('order by id asc limit 10'); //порциями по 10 шт
       _SQuery.Open;
+
+      i := 0;
+Log.save('e', 'd0----'+#9+_SQuery.FieldByName('id_asutp').AsString);
+      while not _SQuery.Eof do
+      begin
+          if i = Length(Byffer) then SetLength(Byffer, i+1, 3);
+          Byffer[i,0] := _SQuery.FieldByName('id_asutp').AsString;
+          Byffer[i,1] := _SQuery.FieldByName('weight').AsString;
+          Byffer[i,2] := _SQuery.FieldByName('timestamp').AsString;
+          inc(i);
+          _SQuery.Next;
+      end;
+
   except
     on E : Exception do
       Log.save('e', E.ClassName+'4, с сообщением: '+E.Message);
   end;
 
-  i := 0;
-
-  while not _SQuery.Eof do
-   begin
-      if i = Length(Byffer) then SetLength(Byffer, i+1, 3);
-      Byffer[i,0] := _SQuery.FieldByName('id_asutp').AsString;
-      Byffer[i,1] := _SQuery.FieldByName('weight').AsString;
-      Byffer[i,2] := _SQuery.FieldByName('timestamp').AsString;
-      inc(i);
-      _SQuery.Next;
-   end;
-
   for i := Low(Byffer) to High(Byffer) do
-   begin
+  begin
   {$IFDEF DEBUG}
     Log.save('d', 'id_asutp | '+Byffer[i,0]);
     Log.save('d', 'weight | '+Byffer[i,1]);
     Log.save('d', 'timestamp | '+Byffer[i,2]);
   {$ENDIF}
       try
-        send_error := SqlSaveToOracle(Byffer[i,0], Byffer[i,1], Byffer[i,2]);
+//        send_error := SqlSaveToOracle(Byffer[i,0], Byffer[i,1], Byffer[i,2]);
   {$IFDEF DEBUG}
     Log.save('d', 'send_error | '+booltostr(send_error));
   {$ENDIF}
@@ -203,7 +203,7 @@ begin
             _SQuery.SQL.Add('UPDATE weight SET transferred=1');
             _SQuery.SQL.Add('where id_asutp='+Byffer[i,0]+'');
             _SQuery.ExecSQL;
-            //save to log file
+            //save to Log file
             {Log.save('sql'+#9#9+'write'+#9+'id_asutp -> '+Byffer[i,0]);
             Log.save('sql'+#9#9+'write'+#9+'weight -> '+Byffer[i,1]);
             Log.save('sql'+#9#9+'write'+#9+'timestamp -> '+Byffer[i,2]);}
@@ -223,8 +223,8 @@ begin
         on E : Exception do
           Log.save('e', E.ClassName+'5, с сообщением: '+E.Message);
       end;
-      FreeAndNil(_SQuery);
-   end;
+  end;
+  FreeAndNil(_SQuery);
 end;
 
 
@@ -233,11 +233,6 @@ var
   error: boolean;
 begin
   error := false;
-//exit;
-if not assigned(OraConnect) then
-  Log.save('d', 'not assigned OraConnect')
-else
-  Log.save('de','assigned OraConnect');
 
   try
     //была ошибака: EZSQLException, с сообщением: SQL Error: OCI_NO_DATA
@@ -279,7 +274,7 @@ else
   {$ENDIF}
     except
       on E : Exception do begin
-//        error := true;
+        error := true;
         Log.save('e', E.ClassName+'7, с сообщением: '+E.Message+' | '+OraQuery.SQL.Text);
       end;
     end;
@@ -290,11 +285,10 @@ else
 end;
 
 
+//-- start main
 procedure TThreadSqlSend.SqlReadTableLocal;
 begin
   try
-      main.cs.Enter;
-
       SLQuery.Close;
       SLQuery.SQL.Clear;
       SLQuery.SQL.Add('SELECT substr(pkdat,7,1) as shift, num_ingot,');
@@ -322,13 +316,12 @@ begin
       TStringField(SLQuery.FieldByName('shift')).DisplayWidth := 3;
       TStringField(SLQuery.FieldByName('timestamp')).DisplayWidth := 20;
       TStringField(SLQuery.FieldByName('transferred')).DisplayWidth := 20;
-
-      main.cs.Leave;
   except
     on E : Exception do
       Log.save('e', E.ClassName+'8, с сообщением: '+E.Message);
   end;
 end;
+//-- end main
 
 
 function TThreadSqlSend.GetMaxLocalCount: boolean;
@@ -341,7 +334,7 @@ begin
       SQueryCount := TZQuery.Create(nil);
       SQueryCount.Connection := Settings.SConnect;
 
-      if SqlMaxLocal = 0 then
+      if FSqlMaxLocal = 0 then
       begin
           SQueryCount.Close;
           SQueryCount.SQL.Clear;
@@ -365,21 +358,31 @@ begin
       if not SQueryCount.FieldByName('timestamp').IsNull then begin
         timestamp := SQueryCount.FieldByName('timestamp').AsLargeInt;
 
-        if SqlMaxLocal >= timestamp then
+        FreeAndNil(SQueryCount);
+
+        if FSqlMaxLocal >= timestamp then
           exit;
 
-        SqlMaxLocal := timestamp;
+        FSqlMaxLocal := timestamp;
 
         if assigned(SLQuery) then
-          SqlReadTableLocal;//views взвешенные заготовки
+          Synchronize(SqlReadTableLocal);//views взвешенные заготовки
+
       end
   except
     on E : Exception do
       Log.save('e', E.ClassName+'9, с сообщением: '+E.Message);
   end;
-  FreeAndNil(SQueryCount);
   //-- локальные данные
 end;
+
+
+procedure TThreadSqlSend.SyncSqlMaxLocal;
+begin
+  Form1.SqlMaxLocal := FSqlMaxLocal;
+end;
+
+
 
 
 // При загрузке программы класс будет создаваться

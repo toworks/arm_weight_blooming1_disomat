@@ -27,7 +27,7 @@ implementation
 
 
 uses
-    main;
+    settings, main;
 
 
 constructor TTestingForm.CreateNew(AOwner: TComponent; Dummy: Integer = 0);

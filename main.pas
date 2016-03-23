@@ -32,7 +32,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, ShellAPI, StdCtrls, Mask, Menus, Grids, DBGrids, ExtCtrls,
-  CommCtrl, StrUtils, DateUtils, Data.DB, SyncObjs, logging, sql, thread_sql_read,
+  CommCtrl, StrUtils, DateUtils, Data.DB, SyncObjs, sql, thread_sql_read,
   thread_sql_send, thread_comport;
 
 type
@@ -86,7 +86,7 @@ var
     PopupTray: TPopupMenu;
     TrayMark: bool = false;
     formattedDateTime: string;
-    Log: TLog;
+
     ThreadSqlRead: TThreadSqlRead;
     ThreadSqlSend: TThreadSqlSend;
     ThreadComPort: TThreadComPort;
@@ -99,11 +99,11 @@ var
     function TrayAppRun: bool;
     function CheckAppRun: bool;
     function ViewClear: bool;
-    function NextWeightToRecord: bool;
+    procedure NextWeightToRecord;
     function ShowTrayMessage(InTitle, InMessage: string; InFlag: integer): bool;
     function ManipulationWithDate(InDate: string): string;
     function MouseMoved: bool;
-    function NextWeightToRecordLocation: bool;
+    procedure NextWeightToRecordLocation;
     procedure Status;
 
 
@@ -121,8 +121,6 @@ uses
 
 procedure TForm1.FormCreate(Sender: TObject);
 begin
-  Log := TLog.Create;
-
   //проверка 1 экземпл€ра программы
   CheckAppRun;
 
@@ -156,11 +154,10 @@ begin
 end;
 
 
-function NextWeightToRecord: bool;
+procedure NextWeightToRecord;
 var
   KeyValues : Variant;
 begin
-
   try
       //отключаем управление
       form1.DBGrid1.DataSource.DataSet.DisableControls;
@@ -171,89 +168,10 @@ begin
       //включаем управление
       form1.DBGrid1.DataSource.DataSet.EnableControls;
   end;
-
-{ // код дл€ работы с dbgrid вместо sql
-  SQuery.Close;
-  SQuery.SQL.Clear;
-  SQuery.SQL.Add('SELECT pkdat, num, num_ingot FROM weight');
-  SQuery.SQL.Add('order by id desc limit 1');
-  SQuery.Open;
-
-  //отключаем управление
-  form1.DBGrid1.DataSource.DataSet.DisableControls;
-  try
-      //переменные по которым будет производитьс€ поиск
-      KeyValues := VarArrayOf([SQuery.FieldByName('pkdat').AsString,
-                               SQuery.FieldByName('num').AsString,
-                               SQuery.FieldByName('num_ingot').AsString]);
-      //поиск по ключивым пол€м
-      form1.DBGrid1.DataSource.DataSet.Locate('pkdat;num;num_ingot', KeyValues, []);
-  finally
-      //перемещение вверх
-      form1.DBGrid1.DataSource.DataSet.MoveBy(-1);
-      //включаем управление
-      form1.DBGrid1.DataSource.DataSet.EnableControls;
-  end;
-
-  //перемещение вверх
-//  form1.DBGrid1.DataSource.DataSet.MoveBy(-1);
-
-{}
-  // маркер следующей заготовки (ожидание)
-{  if (form1.DBGrid1.DataSource.DataSet.FieldByName('pkdat').AsString =
-     SQuery.FieldByName('pkdat').AsString) and
-     (form1.DBGrid1.DataSource.DataSet.FieldByName('num').AsString =
-     SQuery.FieldByName('num').AsString) and
-     (form1.DBGrid1.DataSource.DataSet.FieldByName('num_ingot').AsString =
-     SQuery.FieldByName('num_ingot').AsString)
-  then
-  begin
-      SqlMax := 0;
-      form1.l_n_message.Visible := true;
-      form1.l_n_message.Font.Color := $002CB902;//green
-      form1.l_n_message.Caption := ' ќжидание сдедующей заготовки ';
-      MarkerNextWait := true;
-
-      form1.l_weight_ingot.Visible := false;
-      form1.l_grade.Visible := false;
-      form1.l_heat.Visible := false;
-      form1.l_datetime.Visible := false;
-      form1.l_number_ingot.Visible := false;
-      exit;
-  end
-  else
-  begin
-      form1.l_n_message.Visible := false;
-      MarkerNextWait := false;
-      form1.l_weight_ingot.Visible := true;
-      form1.l_grade.Visible := true;
-      form1.l_heat.Visible := true;
-      form1.l_datetime.Visible := true;
-      form1.l_number_ingot.Visible := true;
-  end;
-{}
-
-{  pkdat := Form1.DBGrid1.DataSource.DataSet.FieldByName('pkdat').AsString;
-  num := Form1.DBGrid1.DataSource.DataSet.FieldByName('num').AsString;
-  num_ingot  := Form1.DBGrid1.DataSource.DataSet.FieldByName('num_ingot').AsString;
-  time_ingot := Form1.DBGrid1.DataSource.DataSet.FieldByName('time_ingot').AsString;
-  num_heat := Form1.DBGrid1.DataSource.DataSet.FieldByName('num_heat').AsString;
-  name := Form1.DBGrid1.DataSource.DataSet.FieldByName('name').AsString;
-  weight_ingot := Form1.DBGrid1.DataSource.DataSet.FieldByName('weight_ingot').AsString;
-  smena := Form1.DBGrid1.DataSource.DataSet.FieldByName('smena').AsString;
-
-  Form1.l_number_ingot.Caption := num_ingot;
-  Form1.l_datetime.Caption := time_ingot;
-  Form1.l_heat.Caption := num_heat;
-  Form1.l_grade.Caption := name;
-  Form1.l_weight_ingot.Caption := weight_ingot;
-
-  //-- test
-  Form1.l_next_id.Caption:=pkdat+'|'+num+'|'+num_ingot;}
 end;
 
 
-procedure NextWeightToRecordLocation: bool;
+procedure NextWeightToRecordLocation;
 var
   KeyValues : Variant;
 begin

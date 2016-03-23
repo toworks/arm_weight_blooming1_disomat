@@ -4,7 +4,7 @@ unit thread_comport;
 interface
 
 uses
-  SysUtils, Classes, ActiveX, synaser, SyncObjs, logging, Messages;
+  SysUtils, Classes, ActiveX, synaser, SyncObjs, logging, Messages, ZDataset;
 
 type
   //«десь необходимо описать класс TThreadComPort:
@@ -16,26 +16,27 @@ type
     FThreadComPort: TThreadComPort;
     FMessageData: AnsiString;
 
+    function CPortParity(InData: String): Char;
+    function SendReadToSerial(InData: AnsiString): AnsiString;
+    function hash_bcc(InChar: string): Char;
+    function ReceiveData(Data: AnsiString): string;
+
     procedure ReadToMessage;
     procedure SyncMemoTesting;
     procedure SyncStatus;
+    procedure SyncCalibration;
+    function SqlSaveInBuffer(DataIn: AnsiString): boolean;
   protected
     procedure Execute; override;
   public
     Constructor Create(_Log: TLog); overload;
     Destructor Destroy; override;
-
-    function CPortParity(InData: String): Char;
-    function SendReadToSerial(InData: AnsiString): AnsiString;
     function SendAttribute: boolean;
-    function hash_bcc(InChar: string): Char;
-    function ReceiveData(Data: AnsiString): string;
   end;
 
 var
-
   Log: TLog;
-//    function SendAttribute: boolean;
+
 
 
 //  {$DEFINE DEBUG}
@@ -83,7 +84,7 @@ begin
           ReadToMessage;
       except
         on E : Exception do
-          Log.save('e', E.ClassName+#9'com m1, с сообщением: '+E.Message);
+          Log.save('e', E.ClassName+' serial execute, с сообщением: '+E.Message);
       end;
 
       sleep(1000);
@@ -117,7 +118,7 @@ begin
                               strtoint(SerialPortSettings.stop_bits),false,false);
           serial_port.SendString(InData);
           sleep(200);
-          Result := serial_port.RecvBufferStr(serial_port.WaitingData, 200);
+          FMessageData := serial_port.RecvBufferStr(serial_port.WaitingData, 200);
        end;
     finally
           FreeAndNil(serial_port);
@@ -126,12 +127,20 @@ end;
 
 
 procedure TThreadComPort.ReadToMessage;
-var
-    msg: AnsiString;
 begin
-  msg := SendReadToSerial(#2'00#TK#'#16#3+hash_bcc('00#TK#'#16#3));
+  try
+      SendReadToSerial(#2'00#TK#'#16#3+hash_bcc('00#TK#'#16#3));
+  except
+    on E : Exception do
+      Log.save('e', E.ClassName+' serial send/read, с сообщением: '+E.Message);
+  end;
 
-  ReceiveData(msg);
+  try
+      ReceiveData(FMessageData);
+  except
+    on E : Exception do
+      Log.save('e', E.ClassName+' serial send/read, с сообщением: '+E.Message);
+  end;
 
   if Fno_save then
     SendAttribute;
@@ -154,6 +163,9 @@ end;
 
 function TThreadComPort.ReceiveData(Data: AnsiString): string;
 begin
+
+  FMessageData := Data;
+
   if (copy(Data, 2, 6) = '00#EK#') and (copy(Data, 8, 1) = '0') then
   begin
       Fno_save := false;//запрещаем отправку подтверждени€ в контроллер -> сброс в SqlSaveInBuffer
@@ -175,15 +187,13 @@ begin
   end;
 
   //тестирование
-  if assigned(MemoTesting) then begin
+  if assigned(MemoTesting) then
     //MemoTestingAdd('receive Com'+SerialPortSettings.serial_port_number+' | '+Data));
-    FMessageData := Data;
     Synchronize(SyncMemoTesting);
-  end;
 
   //калибровка
   if assigned(CalibrationForm) then
-    CalibrationForm.l_calibration.caption := trim(copy(Data, 40, 6));
+    Synchronize(SyncCalibration);
 end;
 
 
@@ -233,6 +243,95 @@ end;
 procedure TThreadComPort.SyncStatus;
 begin
   form1.no_save := Fno_save;
+end;
+
+
+procedure TThreadComPort.SyncCalibration;
+begin
+      CalibrationForm.l_calibration.caption := trim(copy(FMessageData, 40, 6));
+end;
+
+
+function TThreadComPort.SqlSaveInBuffer(DataIn: AnsiString): boolean;
+var
+  _SQuery: TZQuery;
+  num_correct, num_ingot_correct, pkdat_correct: string;
+begin
+
+  // маркер следующей заготовки (ожидание)
+  if MarkerNextWait then
+    exit;
+
+  pkdat_correct := ManipulationWithDate(pkdat);
+  num_correct := '';
+  num_ingot_correct := num_correct;
+
+  if Length(num) = 1 then
+    num_correct := '00'+num;
+  if Length(num) = 2 then
+    num_correct := '0'+num;
+  if Length(num) = 3 then
+    num_correct := num;
+  if Length(num_ingot) = 1 then
+    num_ingot_correct := '0'+num_ingot;
+  if Length(num_ingot) = 2 then
+    num_ingot_correct := num_ingot;
+
+  {$IFDEF DEBUG}
+    Log.save('d', 'pkdat_correct -> '+pkdat_correct);
+    Log.save('d', 'num_correct -> '+num_correct);
+    Log.save('d', 'num_ingot_correct -> '+num_ingot_correct);
+  {$ENDIF}
+
+{ id_asutp состоит из полей pkdat+num+num_ingot, где в ј—”“ѕ pkdat состоит
+  год мес€ц день,num номер, num_ingot номер слитка.
+  в IT pkdat состоит день мес€ц год,num номер (3х значное нужно добавл€ть перед числом
+  2 нул€), num_ingot (2х значное нужно добавл€ть перед числом 1 ноль)) номер слитка.
+}
+  try
+      _SQuery := TZQuery.Create(nil);
+      _SQuery.Connection := SettingsApp.SConnect;
+      _SQuery.Close;
+      _SQuery.SQL.Clear;
+      _SQuery.SQL.Add('INSERT INTO weight');
+      _SQuery.SQL.Add('(pkdat, num, num_ingot, id_asutp, heat, timestamp, weight)');
+      _SQuery.SQL.Add('VALUES('+pkdat+', '+num+', '+num_ingot+',');
+      _SQuery.SQL.Add(''+pkdat_correct+num_correct+num_ingot_correct+',');
+      _SQuery.SQL.Add(''+num_heat+', strftime(''%s'',''now''), '+PointReplace(DataIn)+')');
+      _SQuery.ExecSQL;
+  except
+    on E : Exception do
+      Log.save('e', E.ClassName+' sql 5, с сообщением: '+E.Message+' | '+_SQuery.SQL.Text);
+  end;
+
+  //ThreadComPort.no_save := true;//разрешаем отправку подтверждени€ в контроллер
+  form1.no_save := true;//разрешаем отправку подтверждени€ в контроллер
+
+  try
+      _SQuery.Close;
+      _SQuery.SQL.Clear;
+      _SQuery.SQL.Add('SELECT pkdat, num, num_ingot, id_asutp,');
+      _SQuery.SQL.Add('datetime(timestamp, ''unixepoch'', ''localtime'') as timestamp, weight FROM weight');
+      _SQuery.SQL.Add('where id_asutp='+pkdat_correct+num_correct+num_ingot_correct+'');
+      _SQuery.Open;
+  except
+    on E : Exception do
+      Log.save('e', E.ClassName+' sql 6, с сообщением: '+E.Message+' | '+_SQuery.SQL.Text);
+  end;
+  //save to log file
+  {Log.save('sql'+#9#9+'write'+#9+'id_asutp -> '+SQuery.FieldByName('id_asutp').AsString);
+  Log.save('sql'+#9#9+'write'+#9+'weight -> '+SQuery.FieldByName('weight').AsString);}
+
+  //сообщение оператору
+  ShowTrayMessage('«аготовка', 'є: '+num_ingot+#9+'вес: '+_SQuery.FieldByName('weight').AsString, 1);
+
+  {$IFDEF DEBUG}
+    Log.save('d', 'pkdat_correct -> '+_SQuery.FieldByName('id_asutp').AsString);
+  {$ENDIF}
+
+  //следующа€ запись (слиток) от записаной
+  Synchronize(NextWeightToRecord);
+  FreeAndNil(_SQuery);
 end;
 
 

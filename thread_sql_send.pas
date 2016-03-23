@@ -62,11 +62,6 @@ begin
 
   ConfigOracleSetting(true);
 
-if assigned(FOraConnect) then
-  Log.save('e', 'start assigned(FOraConnect)')
-else
-  Log.save('e', 'startnot assigned(FOraConnect)');
-
   ConfigSqliteSetting;
   FThreadSqlSend.Start;
 end;
@@ -87,7 +82,7 @@ function TThreadSqlSend.ConfigSqliteSetting: boolean;
 begin
   try
       SLQuery := TZQuery.Create(nil);
-      SLQuery.Connection := SConnect;
+      SLQuery.Connection := SettingsApp.SConnect;
 
       SLDataSource := TDataSource.Create(nil);
       SLDataSource.DataSet := SLQuery;
@@ -166,7 +161,12 @@ begin
 
   try
       _SQuery := TZQuery.Create(nil);
-      _SQuery.Connection := SConnect;
+  if assigned(_SQuery) then
+    log.save('d', 'assigned(_SQuery)')
+  else
+    log.save('d', 'not assigned(_SQuery)');
+
+      _SQuery.Connection := SettingsApp.SConnect;
       _SQuery.Close;
       _SQuery.SQL.Clear;
       _SQuery.SQL.Add('SELECT id_asutp, weight,');
@@ -175,9 +175,13 @@ begin
       _SQuery.SQL.Add('where transferred=0');
       _SQuery.SQL.Add('order by id asc limit 10'); //порциями по 10 шт
       _SQuery.Open;
+   except
+    on E : Exception do
+      Log.save('e', E.ClassName+' sql send select, с сообщением: '+E.Message);
+  end;
 
       i := 0;
-
+   try
       while not _SQuery.Eof do
       begin
           if i = Length(Byffer) then SetLength(Byffer, i+1, 3);
@@ -190,7 +194,7 @@ begin
 
   except
     on E : Exception do
-      Log.save('e', E.ClassName+'4, с сообщением: '+E.Message);
+      Log.save('e', E.ClassName+' sql send buffer, с сообщением: '+E.Message);
   end;
 
   for i := Low(Byffer) to High(Byffer) do
@@ -204,9 +208,9 @@ begin
 //        send_error := SqlSaveToOracle(Byffer[i,0], Byffer[i,1], Byffer[i,2]);
         if Byffer[i,0] <> '' then
           send_error := SqlSaveToOracle(Byffer[i,0], Byffer[i,1], Byffer[i,2]);
-  {$IFDEF DEBUG}
+//  {$IFDEF DEBUG}
     Log.save('d', 'send_error | '+booltostr(send_error));
-  {$ENDIF}
+//  {$ENDIF}
         if not send_error then begin
             _SQuery.Close;
             _SQuery.SQL.Clear;
@@ -231,7 +235,7 @@ begin
         end;
       except
         on E : Exception do
-          Log.save('e', E.ClassName+'5, с сообщением: '+E.Message);
+          Log.save('e', E.ClassName+' sql send update, с сообщением: '+E.Message);
       end;
   end;
   FreeAndNil(_SQuery);
@@ -243,12 +247,6 @@ var
   error: boolean;
 begin
   error := false;
-
-if assigned(FOraConnect) then
-  Log.save('e', 'assigned(FOraConnect)')
-else
-  Log.save('e', 'not assigned(FOraConnect)');
-
 
   try
     //была ошибака: EZSQLException, с сообщением: SQL Error: OCI_NO_DATA
@@ -262,9 +260,9 @@ else
     FOraQuery.SQL.Add('VALUES ('+IdIn+', '+PointReplace(WeightIn)+',');
     FOraQuery.SQL.Add('TO_DATE('''+TimestampIn+''', ''yyyy-mm-dd hh24:mi:ss''))');
     FOraQuery.ExecSQL;
-//  {$IFDEF DEBUG}
+  {$IFDEF DEBUG}
     Log.save('d', 'OraQuery insert | '+FOraQuery.SQL.Text);
-//  {$ENDIF}
+  {$ENDIF}
   except
     on E : Exception do begin
       error := true;
@@ -348,7 +346,7 @@ begin
 //-- локальные данные
   try
       SQueryCount := TZQuery.Create(nil);
-      SQueryCount.Connection := Settings.SConnect;
+      SQueryCount.Connection := SettingsApp.SConnect;
 
       if FSqlMaxLocal = 0 then
       begin
@@ -370,7 +368,12 @@ begin
       SQueryCount.SQL.Add('SELECT max(timestamp) as timestamp');
       SQueryCount.SQL.Add('FROM weight');
       SQueryCount.Open;
+  except
+    on E : Exception do
+      Log.save('e', E.ClassName+' sql max local count, с сообщением: '+E.Message);
+  end;
 
+  try
       if not SQueryCount.FieldByName('timestamp').IsNull then begin
         timestamp := SQueryCount.FieldByName('timestamp').AsLargeInt;
 
@@ -383,11 +386,10 @@ begin
 
         if assigned(SLQuery) then
           Synchronize(SqlReadTableLocal);//views взвешенные заготовки
-
       end
   except
     on E : Exception do
-      Log.save('e', E.ClassName+'9, с сообщением: '+E.Message);
+      Log.save('e', E.ClassName+' sql max local synchronize, с сообщением: '+E.Message);
   end;
   //-- локальные данные
 end;

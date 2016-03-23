@@ -22,8 +22,7 @@ var
 
     function ConfigFirebirdSetting(InData: boolean): boolean;
     function SqlNextWeightToRecord: boolean;
-    function SqlSaveInBuffer(DataIn: AnsiString): boolean;
-    function SqlLocalCreateTable: boolean;
+
 
 implementation
 
@@ -96,15 +95,17 @@ begin
   i:=0;
   try
       _SQuery := TZQuery.Create(nil);
-      _SQuery.Connection := SConnect;
+      _SQuery.Connection := SettingsApp.Sconnect; //SConnect;
       _SQuery.Close;
       _SQuery.SQL.Clear;
       _SQuery.SQL.Add('SELECT pkdat, num, num_ingot FROM weight');
       _SQuery.SQL.Add('order by id desc limit 1');
       _SQuery.Open;
   except
-    on E : Exception do
-      Log.save('e', E.ClassName+', с сообщением: '+E.Message);
+    on E : Exception do begin
+      Log.save('e', E.ClassName+' sql 1, с сообщением: '+E.Message);
+      exit;
+    end;
   end;
 
   try
@@ -129,7 +130,7 @@ begin
   {$ENDIF}
   except
     on E : Exception do
-      Log.save('e', E.ClassName+', с сообщением: '+E.Message);
+      Log.save('e', E.ClassName+' sql 2, с сообщением: '+E.Message);
   end;
 
   {$IFDEF DEBUG}
@@ -167,7 +168,7 @@ begin
       end;
   except
     on E : Exception do
-      Log.save('e', E.ClassName+', с сообщением: '+E.Message);
+      Log.save('e', E.ClassName+' sql 3, с сообщением: '+E.Message);
   end;
 
   try
@@ -199,7 +200,7 @@ begin
       end;
   except
     on E : Exception do
-      Log.save('e', E.ClassName+', с сообщением: '+E.Message);
+      Log.save('e', E.ClassName+' sql 4, с сообщением: '+E.Message);
   end;
 
   FreeAndNil(_SQuery);
@@ -207,145 +208,7 @@ begin
 end;
 
 
-function SqlSaveInBuffer(DataIn: AnsiString): boolean;
-var
-  _SQuery: TZQuery;
-  num_correct, num_ingot_correct, pkdat_correct: string;
-begin
 
-  // маркер следующей заготовки (ожидание)
-  if MarkerNextWait then
-    exit;
-
-  pkdat_correct := ManipulationWithDate(pkdat);
-  num_correct := '';
-  num_ingot_correct := num_correct;
-
-  if Length(num) = 1 then
-    num_correct := '00'+num;
-  if Length(num) = 2 then
-    num_correct := '0'+num;
-  if Length(num) = 3 then
-    num_correct := num;
-  if Length(num_ingot) = 1 then
-    num_ingot_correct := '0'+num_ingot;
-  if Length(num_ingot) = 2 then
-    num_ingot_correct := num_ingot;
-
-  {$IFDEF DEBUG}
-    Log.save('d', 'pkdat_correct -> '+pkdat_correct);
-    Log.save('d', 'num_correct -> '+num_correct);
-    Log.save('d', 'num_ingot_correct -> '+num_ingot_correct);
-  {$ENDIF}
-
-{ id_asutp состоит из полей pkdat+num+num_ingot, где в АСУТП pkdat состоит
-  год месяц день,num номер, num_ingot номер слитка.
-  в IT pkdat состоит день месяц год,num номер (3х значное нужно добавлять перед числом
-  2 нуля), num_ingot (2х значное нужно добавлять перед числом 1 ноль)) номер слитка.
-}
-  try
-      _SQuery := TZQuery.Create(nil);
-      _SQuery.Connection := SConnect;
-      _SQuery.Close;
-      _SQuery.SQL.Clear;
-      _SQuery.SQL.Add('INSERT INTO weight');
-      _SQuery.SQL.Add('(pkdat, num, num_ingot, id_asutp, heat, timestamp, weight)');
-      _SQuery.SQL.Add('VALUES('+pkdat+', '+num+', '+num_ingot+',');
-      _SQuery.SQL.Add(''+pkdat_correct+num_correct+num_ingot_correct+',');
-      _SQuery.SQL.Add(''+num_heat+', strftime(''%s'',''now''), '+PointReplace(DataIn)+')');
-      _SQuery.ExecSQL;
-  except
-    on E : Exception do
-      Log.save('e', E.ClassName+', с сообщением: '+E.Message+' | '+_SQuery.SQL.Text);
-  end;
-
-  //ThreadComPort.no_save := true;//разрешаем отправку подтверждения в контроллер
-  form1.no_save := true;//разрешаем отправку подтверждения в контроллер
-
-  try
-      _SQuery.Close;
-      _SQuery.SQL.Clear;
-      _SQuery.SQL.Add('SELECT pkdat, num, num_ingot, id_asutp,');
-      _SQuery.SQL.Add('datetime(timestamp, ''unixepoch'', ''localtime'') as timestamp, weight FROM weight');
-      _SQuery.SQL.Add('where id_asutp='+pkdat_correct+num_correct+num_ingot_correct+'');
-      _SQuery.Open;
-  except
-    on E : Exception do
-      Log.save('e', E.ClassName+', с сообщением: '+E.Message+' | '+_SQuery.SQL.Text);
-  end;
-  //save to log file
-  {Log.save('sql'+#9#9+'write'+#9+'id_asutp -> '+SQuery.FieldByName('id_asutp').AsString);
-  Log.save('sql'+#9#9+'write'+#9+'weight -> '+SQuery.FieldByName('weight').AsString);}
-
-  //сообщение оператору
-  ShowTrayMessage('Заготовка', '№: '+num_ingot+#9+'вес: '+_SQuery.FieldByName('weight').AsString, 1);
-
-  {$IFDEF DEBUG}
-    Log.save('d', 'pkdat_correct -> '+_SQuery.FieldByName('id_asutp').AsString);
-  {$ENDIF}
-
-  //следующая запись (слиток) от записаной
-  NextWeightToRecord;
-  FreeAndNil(_SQuery);
-end;
-
-
-function SqlLocalCreateTable: boolean;
-var
-  _SQuery: TZQuery;
-  sindex: string;
-begin
-{ id_asutp состоит из полей pkdat+num+num_ingot, где в АСУТП pkdat состоит
-  год месяц день,num номер, num_ingot номер слитка.
-  в IT pkdat состоит день месяц год,num номер (3х значное нужно добавлять перед числом
-  2 нуля), num_ingot (2х значное нужно добавлять перед числом 1 ноль)) номер слитка.
-}
-  try
-      _SQuery := TZQuery.Create(nil);
-      _SQuery.Connection := SConnect;
-      _SQuery.Close;
-      _SQuery.SQL.Clear;
-      _SQuery.SQL.Add('CREATE TABLE IF NOT EXISTS weight');
-      _SQuery.SQL.Add('(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE');
-      _SQuery.SQL.Add(', pkdat NUMERIC(7) NOT NULL, num NUMERIC(3) NOT NULL');
-      _SQuery.SQL.Add(', num_ingot NUMERIC(2) NOT NULL');
-      _SQuery.SQL.Add(', id_asutp NUMERIC(12) NOT NULL');
-      _SQuery.SQL.Add(', heat VARCHAR(16) NOT NULL');
-      _SQuery.SQL.Add(', timestamp INTEGER(12) NOT NULL');
-      _SQuery.SQL.Add(', weight NUMERIC(16,4)');
-      _SQuery.SQL.Add(', transferred NUMERIC(1,1) DEFAULT(0))');
-      _SQuery.ExecSQL;
-
-      sindex := 'CREATE INDEX IF NOT EXISTS idx_weight_asc ON weight (' +
-                'id        ASC, ' +
-                'id_asutp  ASC, ' +
-                'num       ASC, ' +
-                'pkdat     ASC, ' +
-                'num_ingot ASC)';
-
-      _SQuery.Close;
-      _SQuery.SQL.Clear;
-      _SQuery.SQL.Text := sindex;
-      _SQuery.ExecSQL;
-
-      sindex := 'CREATE INDEX IF NOT EXISTS idx_weight_desc ON weight (' +
-                'id        DESC, ' +
-                'id_asutp  DESC, ' +
-                'num       DESC, ' +
-                'pkdat     DESC, ' +
-                'num_ingot DESC)';
-
-      _SQuery.Close;
-      _SQuery.SQL.Clear;
-      _SQuery.SQL.Text := sindex;
-      _SQuery.ExecSQL;
-  except
-    on E : Exception do
-      Log.save('e', E.ClassName+', с сообщением: '+E.Message);
-  end;
-
-  FreeAndNil(_SQuery);
-end;
 
 
 

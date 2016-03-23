@@ -165,7 +165,7 @@ begin
 
   // маркер следующей заготовки
   if MarkerNextWait then
-    NextWeightToRecord; //следующая запись (слиток) от записаной
+    Synchronize(NextWeightToRecord); //следующая запись (слиток) от записаной
 end;
 
 
@@ -196,7 +196,6 @@ procedure TThreadSqlRead.SyncSqlMax;
 begin
   Form1.SqlMax := FSqlMax;
 end;
-
 
 
 

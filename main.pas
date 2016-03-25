@@ -32,7 +32,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, ShellAPI, StdCtrls, Mask, Menus, Grids, DBGrids, ExtCtrls,
-  CommCtrl, StrUtils, DateUtils, Data.DB, SyncObjs, sql, thread_sql_read,
+  CommCtrl, StrUtils, DateUtils, Data.DB, SyncObjs, logging, sql, thread_sql_read,
   thread_sql_send, thread_comport;
 
 type
@@ -90,6 +90,12 @@ var
     ThreadSqlRead: TThreadSqlRead;
     ThreadSqlSend: TThreadSqlSend;
     ThreadComPort: TThreadComPort;
+    MainSqlite: TSqlite;
+    SLDataSource: TDataSource;
+    MainFSql: TFsql;
+    FDataSource: TDataSource;
+
+
 //    {$DEFINE DEBUG}
 
 
@@ -105,7 +111,7 @@ var
     function MouseMoved: bool;
     procedure NextWeightToRecordLocation;
     procedure Status;
-
+    procedure SqlReadTableLocal;
 
 implementation
 
@@ -126,6 +132,18 @@ begin
 
   Log.save('i', 'start '+Log.ProgFileName);
 
+  MainSqlite := TSqlite.Create(Log);
+  //отображение в dbgrid
+  SLDataSource := TDataSource.Create(nil);
+  SLDataSource.DataSet := MainSqlite.SQuery;
+  DBGrid2.DataSource := SLDataSource;
+
+  MainFSql := TFsql.Create(Log);
+ //отображение в dbgrid
+  FDataSource := TDataSource.Create(nil);
+  FDataSource.DataSet := MainFSql.FQuery;
+  DBGrid1.DataSource := FDataSource;
+
 //  ThreadSqlRead := TThreadSqlRead.Create;
 //  ThreadSqlSend := TThreadSqlSend.Create;
 //  ThreadComPort := TThreadComPort.Create;
@@ -133,7 +151,8 @@ begin
   ThreadSqlSend := TThreadSqlSend.Create(Log);
   ThreadComPort := TThreadComPort.Create(Log);
 
-  Form1.Caption := HeadName+'  build('+Settings.GetVersion+')';
+
+  Form1.Caption := SettingsApp.HeadName+'  build('+SettingsApp.GetVersion+')';
   //заголовки к showmessage
   Application.Title := Form1.Caption;
 
@@ -148,7 +167,7 @@ begin
 
   //отображение в dbgrid
   DBGRid1.DataSource := FDataSource;
-  DBGrid2.DataSource := SLDataSource;
+//  DBGrid2.DataSource := SLDataSource;
 
   CreateMenu;
 end;
@@ -242,6 +261,31 @@ begin
         //включаем управление
         form1.DBGrid1.DataSource.DataSet.EnableControls;
     end;
+  end;
+end;
+
+
+procedure SqlReadTableLocal;
+begin
+  Log.save('e', 'SqlReadTableLocal');
+  try
+      MainSqlite.SQuery.Close;
+      MainSqlite.SQuery.SQL.Clear;
+      MainSqlite.SQuery.SQL.Add('SELECT substr(pkdat,7,1) as shift, num_ingot,');
+      MainSqlite.SQuery.SQL.Add('datetime(timestamp, ''unixepoch'', ''localtime'' ) as timestamp,');
+      MainSqlite.SQuery.SQL.Add('heat, weight,');
+      MainSqlite.SQuery.SQL.Add('case when transferred = 1 then ''передан'' else ''не передан'' end as transferred');
+      MainSqlite.SQuery.SQL.Add('FROM weight');
+      MainSqlite.SQuery.SQL.Add('order by timestamp desc limit 100');
+      MainSqlite.SQuery.Open;
+
+      //исправляем отображение даты в DBGrid -> 20 characters
+      TStringField(MainSqlite.SQuery.FieldByName('shift')).DisplayWidth := 3;
+      TStringField(MainSqlite.SQuery.FieldByName('timestamp')).DisplayWidth := 20;
+      TStringField(MainSqlite.SQuery.FieldByName('transferred')).DisplayWidth := 20;
+  except
+    on E : Exception do
+      Log.save('e', E.ClassName+' sql read table local, с сообщением: '+E.Message);
   end;
 end;
 
@@ -389,7 +433,7 @@ end;
 function TrayAppRun: bool;
 begin
     PopupTray := TPopupMenu.Create(nil);
-    Form1.Trayicon.Hint := HeadName;
+    Form1.Trayicon.Hint := SettingsApp.HeadName;
     Form1.Trayicon.PopupMenu := PopupTray;
     PopupTray.Items.Add(NewItem('выход', 0, False, True, Form1.TrayPopUpCloseClick, 0, 'close'));
     Form1.Trayicon.Visible := True;
@@ -407,18 +451,30 @@ procedure TForm1.TrayPopUpCloseClick(Sender: TObject);
 var
   buttonSelected: Integer;
 begin
-  if assigned(ThreadComPort) then
-    ThreadComPort.Terminate;
-  if assigned(ThreadSqlRead) then
-    ThreadSqlRead.Terminate;
-  if assigned(ThreadSqlSend) then
-    ThreadSqlSend.Terminate;
+  try
+      Log.save('i', 'close '+Log.ProgFileName);
 
-  Log.save('i', 'close '+Log.ProgFileName);
+      if assigned(ThreadComPort) then
+        ThreadComPort.Terminate;
+      if assigned(ThreadSqlRead) then
+        ThreadSqlRead.Terminate;
+      if assigned(ThreadSqlSend) then
+        ThreadSqlSend.Terminate;
 
-  Trayicon.Visible := false;
-  //закрываем приложение
-  TerminateProcess(GetCurrentProcess, 0);
+      if assigned(MainSqlite) then
+        MainSqlite.Destroy;
+      if assigned(SLDataSource) then
+        SLDataSource.Destroy;
+      if assigned(MainFSql) then
+        MainFSql.Destroy;
+      if assigned(FDataSource) then
+        FDataSource.Destroy;
+
+      Trayicon.Visible := false;
+  finally
+      //закрываем приложение
+      TerminateProcess(GetCurrentProcess, 0);
+  end;
 end;
 
 
@@ -452,7 +508,7 @@ begin
     hMutex := CreateMutex(0, true , PWideChar(Log.ProgFileName));
     if GetLastError = ERROR_ALREADY_EXISTS then
      begin
-        Application.Title := HeadName+Version;
+        Application.Title := SettingsApp.HeadName+Version;
         //прячим форму и выводим сообщение
         Application.ShowMainForm:=false;
         showmessage('Экземпляр программы уже запущен');
@@ -466,7 +522,6 @@ end;
 
 procedure TForm1.Button1Click(Sender: TObject);
 begin
-//    button1.Caption := inttostr(ThreadSqlSend.GetSqlMaxLocal);
     button1.Caption := inttostr(SqlMaxLocal);
 end;
 

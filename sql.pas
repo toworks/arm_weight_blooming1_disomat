@@ -4,14 +4,9 @@ interface
 
 uses
    SysUtils, ActiveX, Variants, Classes, StrUtils, Data.DB, ZConnection, ZDataset,
-   ZDbcIntfs, SyncObjs;
+   ZDbcIntfs, SyncObjs, logging;
 
 var
-    FConnect: TZConnection;
-    FQuery: TZQuery;
-    FDataSource: TDataSource;
-    SLQuery: TZQuery;
-    SLDataSource: TDataSource;
     time_ingot, pkdat, num, num_ingot, num_heat, name, weight_ingot, steel_group,
     smena: string;
     MarkerNextWait: boolean = false;
@@ -20,39 +15,123 @@ var
 //    {$DEFINE DEBUG}
 
 
-    function ConfigFirebirdSetting(InData: boolean): boolean;
+//    function ConfigFirebirdSetting(InData: boolean): boolean;
     function SqlNextWeightToRecord: boolean;
+
+
+
+type
+  TSqlite = class
+  private
+    FSQuery: TZQuery;
+    FSConnect: TZConnection;
+    Log: TLog;
+    function ConfigSettings(InData: boolean): boolean;
+  public
+    Constructor Create(_Log: TLog); overload;
+    Destructor Destroy; override;
+    property SConnect: TZConnection read FSConnect write FSConnect;
+    property SQuery: TZQuery read FSQuery write FSQuery;
+  end;
+
+
+type
+  TFsql = class
+  private
+    FFQuery: TZQuery;
+    FFConnect: TZConnection;
+    Log: TLog;
+    function ConfigSettings(InData: boolean): boolean;
+  public
+    Constructor Create(_Log: TLog); overload;
+    Destructor Destroy; override;
+    property FConnect: TZConnection read FFConnect write FFConnect;
+    property FQuery: TZQuery read FFQuery write FFQuery;
+  end;
 
 
 implementation
 
 
 uses
-    settings, logging, thread_sql_send, thread_comport, thread_sql_read, main;
+    settings, main;
 
 
 
+constructor TSqlite.Create(_Log: TLog);
+begin
+  inherited Create;
+  Log := _Log;
+  ConfigSettings(true);
+end;
 
 
-function ConfigFirebirdSetting(InData: boolean): boolean;
+destructor TSqlite.Destroy;
+begin
+  ConfigSettings(false);
+  inherited Destroy;
+end;
+
+
+function TSqlite.ConfigSettings(InData: boolean): boolean;
+begin
+  if InData then
+   begin
+      try
+        SConnect := TZConnection.Create(nil);
+        SQuery := TZQuery.Create(nil);
+        SConnect.Database := '.\'+SettingsApp.DBFile;
+        SConnect.LibraryLocation := '.\sqlite3.dll';
+        SConnect.Protocol := 'sqlite-3';
+        SConnect.Connect;
+        SQuery.Connection := SConnect;
+      except
+        on E : Exception do
+          Log.save('e', E.ClassName+' sqlite config settings, с сообщением: '+E.Message);
+      end;
+   end
+  else
+   begin
+      SQuery.Destroy;
+      SConnect.Destroy;
+   end;
+end;
+
+
+constructor TFsql.Create(_Log: TLog);
+begin
+  inherited Create;
+  Log := _Log;
+  ConfigSettings(true);
+end;
+
+
+destructor TFsql.Destroy;
+begin
+  ConfigSettings(false);
+  inherited Destroy;
+end;
+
+
+function TFsql.ConfigSettings(InData: boolean): boolean;
 begin
   if InData then
   begin
       try
-        FConnect := TZConnection.Create(nil);
-        FQuery := TZQuery.Create(nil);
-        FConnect.LibraryLocation := '.\fbclient.dll';// отказался от полных путей не читает
-        FConnect.Protocol := 'firebird-2.5';
-        FConnect.Database := FbSqlSettings.db_name;
-        FConnect.HostName := FbSqlSettings.ip;
-        FConnect.User := FbSqlSettings.user;
-        FConnect.Password := FbSqlSettings.password;
-        FConnect.ReadOnly := True;
-        FConnect.LoginPrompt := false;
-        FConnect.Port := 3050;
-        FConnect.AutoCommit := False;
-        FConnect.TransactIsolationLevel := tiReadCommitted;
-        with FConnect.Properties do
+        FFConnect := TZConnection.Create(nil);
+        FFQuery := TZQuery.Create(nil);
+        FFConnect.LibraryLocation := '.\fbclient.dll';// отказался от полных путей не читает
+        FFConnect.Protocol := 'firebird-2.5';
+        FFConnect.Database := FbSqlSettings.db_name;
+        FFConnect.HostName := FbSqlSettings.ip;
+        FFConnect.User := FbSqlSettings.user;
+        FFConnect.Password := FbSqlSettings.password;
+        FFConnect.ReadOnly := True;
+        FFConnect.LoginPrompt := false;
+        FFConnect.Port := 3050;
+        FFConnect.AutoCommit := False;
+        FFConnect.TransactIsolationLevel := tiReadCommitted;
+        with FFConnect.Properties do
         begin
              Add('Dialect=3');
              Add('isc_tpb_read_committed');
@@ -65,11 +144,8 @@ begin
 //             Add('codepage=win1251');
 //             Add('client_encoding=UTF8');
         end;
-        FConnect.Connect;
-        FQuery.Connection := FConnect;
-
-        FDataSource := TDataSource.Create(nil);
-        FDataSource.DataSet := FQuery;
+        FFConnect.Connect;
+        FFQuery.Connection := FFConnect;
       except
         on E: Exception do begin
           Log.save('e', E.ClassName+', с сообщением: '+E.Message);
@@ -78,68 +154,73 @@ begin
   end
   else
   begin
-        FreeAndNil(FQuery);
-        FreeAndNil(FConnect);
+        FreeAndNil(FFQuery);
+        FreeAndNil(FFConnect);
   end;
-
 end;
 
 
 function SqlNextWeightToRecord: boolean;
 var
-  _SQuery: TZQuery;
-  FQueryNextRecord: TZQuery;
+  _SSql: TZQuery;
+  _FSql: TFsql;
   i: integer;
 begin
 
-  i:=0;
   try
-      _SQuery := TZQuery.Create(nil);
-      _SQuery.Connection := SettingsApp.Sconnect; //SConnect;
-      _SQuery.Close;
-      _SQuery.SQL.Clear;
-      _SQuery.SQL.Add('SELECT pkdat, num, num_ingot FROM weight');
-      _SQuery.SQL.Add('order by id desc limit 1');
-      _SQuery.Open;
+      _FSql := TFsql.Create(Log);
+  except
+    on E : Exception do
+      Log.save('e', E.ClassName+' sql create _FSql, с сообщением: '+E.Message);
+  end;
+
+  i:=0;
+
+  try
+      _SSql := TZQuery.Create(nil);
+      _SSql.Connection := MainSqlite.SConnect;
+      _SSql.Close;
+      _SSql.SQL.Clear;
+      _SSql.SQL.Add('SELECT pkdat, num, num_ingot FROM weight');
+      _SSql.SQL.Add('order by id desc limit 1');
+      _SSql.Open;
   except
     on E : Exception do begin
-      Log.save('e', E.ClassName+' sql 1, с сообщением: '+E.Message);
+      Log.save('e', E.ClassName+' sql next weight to record, с сообщением: '+E.Message);
       exit;
     end;
   end;
 
   try
-      FQueryNextRecord := TZQuery.Create(nil);
-      FQueryNextRecord.Connection := FConnect;
-      FQueryNextRecord.Close;
-      FQueryNextRecord.SQL.Clear;
-      FQueryNextRecord.SQL.Add('select i.pkdat,i.num,i.num_ingot,h.num_heat, s.name,i.weight_ingot, i.time_ingot, s.steel_group , sh.smena');
-      FQueryNextRecord.SQL.Add('from ingots i, heats h, steels s, shifts sh');
-      FQueryNextRecord.SQL.Add('where ((i.pkdat='+ _SQuery.FieldByName('pkdat').AsString +'');
-      FQueryNextRecord.SQL.Add('and (i.num='+ _SQuery.FieldByName('num').AsString +'');
-      FQueryNextRecord.SQL.Add('and i.num_ingot>'+ _SQuery.FieldByName('num_ingot').AsString +'');
-      FQueryNextRecord.SQL.Add('or i.num>'+ _SQuery.FieldByName('num').AsString +'))');
-      FQueryNextRecord.SQL.Add('or i.pkdat>'+ _SQuery.FieldByName('pkdat').AsString +')');
-      FQueryNextRecord.SQL.Add('and i.pkdat=h.pkdat and i.num=h.num');
-      FQueryNextRecord.SQL.Add('and i.pkdat=sh.pkdat');
-      FQueryNextRecord.SQL.Add('and h.steel_grade=s.steel_grade');
-      FQueryNextRecord.SQL.Add('order by i.pkdat asc, i.num asc, i.num_ingot asc');
-      FQueryNextRecord.Open;
+      _FSql.FQuery.Close;
+      _FSql.FQuery.SQL.Clear;
+      _FSql.FQuery.SQL.Add('select i.pkdat,i.num,i.num_ingot,h.num_heat, s.name,i.weight_ingot, i.time_ingot, s.steel_group , sh.smena');
+      _FSql.FQuery.SQL.Add('from ingots i, heats h, steels s, shifts sh');
+      _FSql.FQuery.SQL.Add('where ((i.pkdat='+ _SSql.FieldByName('pkdat').AsString +'');
+      _FSql.FQuery.SQL.Add('and (i.num='+ _SSql.FieldByName('num').AsString +'');
+      _FSql.FQuery.SQL.Add('and i.num_ingot>'+ _SSql.FieldByName('num_ingot').AsString +'');
+      _FSql.FQuery.SQL.Add('or i.num>'+ _SSql.FieldByName('num').AsString +'))');
+      _FSql.FQuery.SQL.Add('or i.pkdat>'+ _SSql.FieldByName('pkdat').AsString +')');
+      _FSql.FQuery.SQL.Add('and i.pkdat=h.pkdat and i.num=h.num');
+      _FSql.FQuery.SQL.Add('and i.pkdat=sh.pkdat');
+      _FSql.FQuery.SQL.Add('and h.steel_grade=s.steel_grade');
+      _FSql.FQuery.SQL.Add('order by i.pkdat asc, i.num asc, i.num_ingot asc');
+      _FSql.FQuery.Open;
   {$IFDEF DEBUG}
-    Log.save('d', 'FQueryNextRecord -> '+FQueryNextRecord.SQL.Text);
+    Log.save('d', 'FQueryNextRecord -> '+_FSql.FQuery.SQL.Text);
   {$ENDIF}
   except
     on E : Exception do
-      Log.save('e', E.ClassName+' sql 2, с сообщением: '+E.Message);
+      Log.save('e', E.ClassName+' sql read next weight to record, с сообщением: '+E.Message);
   end;
 
   {$IFDEF DEBUG}
-    Log.save('d', 'pkdat empty? -> '+FQueryNextRecord.FieldByName('pkdat').AsString);
+    Log.save('d', 'pkdat empty? -> '+_FSql.FQuery.FieldByName('pkdat').AsString);
   {$ENDIF}
 
   try
       // маркер следующей заготовки (ожидание)
-      if FQueryNextRecord.FieldByName('pkdat').AsString = '' then
+      if _FSql.FQuery.FieldByName('pkdat').AsString = '' then
       begin
           form1.SqlMax := 0;
           form1.l_n_message.Visible := true;
@@ -152,8 +233,7 @@ begin
           form1.l_heat.Visible := false;
           form1.l_datetime.Visible := false;
           form1.l_number_ingot.Visible := false;
-          FreeAndNil(_SQuery);
-          FreeAndNil(FQueryNextRecord);//утечка памяти
+          FreeAndNil(_FSql);
           exit;
       end
       else
@@ -172,19 +252,19 @@ begin
   end;
 
   try
-      while not FQueryNextRecord.Eof do
+      while not MainFSql.FQuery.Eof do
       begin
           if i = 1 then
             break;
 
-          pkdat := FQueryNextRecord.FieldByName('pkdat').AsString;
-          num := FQueryNextRecord.FieldByName('num').AsString;
-          num_ingot := FQueryNextRecord.FieldByName('num_ingot').AsString;
-          time_ingot := timetostr(FQueryNextRecord.FieldByName('time_ingot').AsDateTime);
-          num_heat := FQueryNextRecord.FieldByName('num_heat').AsString;
-          name := FQueryNextRecord.FieldByName('name').AsString;
-          weight_ingot := FQueryNextRecord.FieldByName('weight_ingot').AsString;
-          smena := FQueryNextRecord.FieldByName('smena').AsString;
+          pkdat := _FSql.FQuery.FieldByName('pkdat').AsString;
+          num := _FSql.FQuery.FieldByName('num').AsString;
+          num_ingot := _FSql.FQuery.FieldByName('num_ingot').AsString;
+          time_ingot := timetostr(_FSql.FQuery.FieldByName('time_ingot').AsDateTime);
+          num_heat := _FSql.FQuery.FieldByName('num_heat').AsString;
+          name := _FSql.FQuery.FieldByName('name').AsString;
+          weight_ingot := _FSql.FQuery.FieldByName('weight_ingot').AsString;
+          smena := _FSql.FQuery.FieldByName('smena').AsString;
 
           Form1.l_number_ingot.Caption := num_ingot;
           Form1.l_datetime.Caption := time_ingot;
@@ -196,15 +276,13 @@ begin
           Form1.l_next_id.Caption:=pkdat+'|'+num+'|'+num_ingot;
 
           inc(i);
-          FQueryNextRecord.Next;
+          _FSql.FQuery.Next;
       end;
   except
     on E : Exception do
       Log.save('e', E.ClassName+' sql 4, с сообщением: '+E.Message);
   end;
-
-  FreeAndNil(_SQuery);
-  FreeAndNil(FQueryNextRecord);
+  FreeAndNil(_FSql);
 end;
 
 

@@ -33,22 +33,28 @@ interface
 uses
   SysUtils, Classes, Windows, ActiveX, ZAbstractDataset, ZDataset,
   ZAbstractConnection, ZConnection, ZAbstractRODataset, ZStoredProcedure,
-  logging;
+  logging, sql;
 
 type
   TSettings = class
+
   private
-    FSQuery: TZQuery;
-    FSConnect: TZConnection;
-    function ConfigSettings(InData: bool): bool;
+    FCurrentDir: string;
+    Fsqlite: TSqlite;
+
     function SqlLocalCreateTable: boolean;
+    function ReadConfigSettings: boolean;
+    function FGetVersion: string;// Версия сборки программы
+    function FHeadName: string;
+    function FDBFile: string;
   public
     Constructor Create; overload;
     Destructor Destroy; override;
 
-    function ReadConfigSettings: bool;
-
-    property SConnect: TZConnection read FSConnect write FSConnect;
+    property HeadName: string read FHeadName;
+    property DBFile: string read FDBFile;
+    property CurrentDir: string read FCurrentDir;
+    property GetVersion: string read FGetVersion;
   end;
 
   TSqlSettings = Record
@@ -72,16 +78,10 @@ type
 var
    Log: TLog;
    SettingsApp: TSettings;
-   CurrentDir: string;
-   HeadName: string = ' АРМ резчика ПУ-4 ';
-   DBFile: string = 'data.sdb';
 
-//   SConnect: TZConnection;
    FbSqlSettings: TSqlSettings;
    OraSqlSettings: TSqlSettings;
    SerialPortSettings: TSerialSettings;
-
-   function GetVersion: string;// Версия сборки программы
 
 
 //   {$DEFINE DEBUG}
@@ -91,114 +91,104 @@ var
 implementation
 
 uses
-  main, sql;
-
+  main;
 
 
 constructor TSettings.Create;
 begin
   inherited Create;
-  //текущая дириктория
-  CurrentDir := GetCurrentDir;
 
-  ConfigSettings(true);
+  //текущая дириктория
+  FCurrentDir := GetCurrentDir;
+
+  Fsqlite := TSqlite.Create(Log);
+
   ReadConfigSettings;
-  ConfigFirebirdSetting(true);
+//  ConfigFirebirdSetting(true);
   SqlLocalCreateTable; //create local sqlite table
 end;
 
 
 destructor TSettings.Destroy;
 begin
-  ConfigFirebirdSetting(false);
-  ConfigSettings(false);
+//  ConfigFirebirdSetting(false);
   inherited Destroy;
 end;
 
 
-function TSettings.ConfigSettings(InData: bool): bool;
+function TSettings.FHeadName: string;
 var
-  f: File of Word;
+  HeadName: string;
 begin
-
-  if InData then
-   begin
-
-      FSConnect := TZConnection.Create(nil);
-      FSQuery := TZQuery.Create(nil);
-
-      try
-        FSConnect.Database := CurrentDir+'\'+DBFile;
-        FSConnect.LibraryLocation := CurrentDir+'\sqlite3.dll';
-        FSConnect.Protocol := 'sqlite-3';
-        FSConnect.Connect;
-        FSQuery.Connection := FSConnect;
-      except
-        on E : Exception do
-          Log.save('e', E.ClassName+' sqlite config settings, с сообщением: '+E.Message);
-      end;
-   end
-  else
-   begin
-      FSQuery.Destroy;
-      FSConnect.Destroy;
-   end;
-
+  HeadName := ' АРМ резчика ПУ-4 ';
+  result := HeadName;
 end;
 
 
-function TSettings.ReadConfigSettings: bool;
+function TSettings.FDBFile: string;
+var
+  DBFile: string;
+begin
+  DBFile := 'data.sdb';
+  result := DBFile;
+end;
+
+
+function TSettings.ReadConfigSettings: boolean;
 var
   i: integer;
 begin
+    try
+        Fsqlite.SQuery.Close;
+        Fsqlite.SQuery.SQL.Clear;
+        Fsqlite.SQuery.SQL.Add('SELECT * FROM settings');
+        Fsqlite.SQuery.Open;
+    except
+      on E : Exception do
+        Log.save('e', E.ClassName+' read settings, с сообщением: '+E.Message);
+    end;
 
-    FSQuery.Close;
-    FSQuery.SQL.Clear;
-    FSQuery.SQL.Add('SELECT * FROM settings');
-    FSQuery.Open;
-
-
-    while not FSQuery.Eof do
+    while not Fsqlite.SQuery.Eof do
      begin
       //fbsql
-      if FSQuery.FieldByName('name').AsString = '::FbSql::ip' then
-        FbSqlSettings.ip := FSQuery.FieldByName('value').AsString;
-      if FSQuery.FieldByName('name').AsString = '::FbSql::db_name' then
-        FbSqlSettings.db_name := FSQuery.FieldByName('value').AsString;
-      if FSQuery.FieldByName('name').AsString = '::FbSql::library' then
-        FbSqlSettings.lib := FSQuery.FieldByName('value').AsString;
-      if FSQuery.FieldByName('name').AsString = '::FbSql::dialect' then
-        FbSqlSettings.dialect := FSQuery.FieldByName('value').AsString;
-      if FSQuery.FieldByName('name').AsString = '::FbSql::user' then
-        FbSqlSettings.user := FSQuery.FieldByName('value').AsString;
-      if FSQuery.FieldByName('name').AsString = '::FbSql::password' then
-        FbSqlSettings.password := FSQuery.FieldByName('value').AsString;
+      if Fsqlite.SQuery.FieldByName('name').AsString = '::FbSql::ip' then
+        FbSqlSettings.ip := Fsqlite.SQuery.FieldByName('value').AsString;
+      if Fsqlite.SQuery.FieldByName('name').AsString = '::FbSql::db_name' then
+        FbSqlSettings.db_name := Fsqlite.SQuery.FieldByName('value').AsString;
+      if Fsqlite.SQuery.FieldByName('name').AsString = '::FbSql::library' then
+        FbSqlSettings.lib := Fsqlite.SQuery.FieldByName('value').AsString;
+      if Fsqlite.SQuery.FieldByName('name').AsString = '::FbSql::dialect' then
+        FbSqlSettings.dialect := Fsqlite.SQuery.FieldByName('value').AsString;
+      if Fsqlite.SQuery.FieldByName('name').AsString = '::FbSql::user' then
+        FbSqlSettings.user := Fsqlite.SQuery.FieldByName('value').AsString;
+      if Fsqlite.SQuery.FieldByName('name').AsString = '::FbSql::password' then
+        FbSqlSettings.password := Fsqlite.SQuery.FieldByName('value').AsString;
 
       //orasql
-      if FSQuery.FieldByName('name').AsString = '::OraSql::ip' then
-        OraSqlSettings.ip := FSQuery.FieldByName('value').AsString;
-      if FSQuery.FieldByName('name').AsString = '::OraSql::port' then
-        OraSqlSettings.port := FSQuery.FieldByName('value').AsString;
-      if FSQuery.FieldByName('name').AsString = '::OraSql::db_name' then
-        OraSqlSettings.db_name := FSQuery.FieldByName('value').AsString;
-      if FSQuery.FieldByName('name').AsString = '::OraSql::user' then
-        OraSqlSettings.user := FSQuery.FieldByName('value').AsString;
-      if FSQuery.FieldByName('name').AsString = '::OraSql::password' then
-        OraSqlSettings.password := FSQuery.FieldByName('value').AsString;
+      if Fsqlite.SQuery.FieldByName('name').AsString = '::OraSql::ip' then
+        OraSqlSettings.ip := Fsqlite.SQuery.FieldByName('value').AsString;
+      if Fsqlite.SQuery.FieldByName('name').AsString = '::OraSql::port' then
+        OraSqlSettings.port := Fsqlite.SQuery.FieldByName('value').AsString;
+      if Fsqlite.SQuery.FieldByName('name').AsString = '::OraSql::db_name' then
+        OraSqlSettings.db_name := Fsqlite.SQuery.FieldByName('value').AsString;
+      if Fsqlite.SQuery.FieldByName('name').AsString = '::OraSql::user' then
+        OraSqlSettings.user := Fsqlite.SQuery.FieldByName('value').AsString;
+      if Fsqlite.SQuery.FieldByName('name').AsString = '::OraSql::password' then
+        OraSqlSettings.password := Fsqlite.SQuery.FieldByName('value').AsString;
 
       //comport
-      if FSQuery.FieldByName('name').AsString = '::ComPort::baud' then
-        SerialPortSettings.baud := FSQuery.FieldByName('value').AsString;
-      if FSQuery.FieldByName('name').AsString = '::ComPort::data_bits' then
-        SerialPortSettings.data_bits := FSQuery.FieldByName('value').AsString;
-      if FSQuery.FieldByName('name').AsString = '::ComPort::parity' then
-        SerialPortSettings.parity := AnsiLowerCase(FSQuery.FieldByName('value').AsString);
-      if FSQuery.FieldByName('name').AsString = '::ComPort::stop_bits' then
-        SerialPortSettings.stop_bits := FSQuery.FieldByName('value').AsString;
-      if FSQuery.FieldByName('name').AsString = '::ComPort::number' then
-        SerialPortSettings.serial_port_number := FSQuery.FieldByName('value').AsString;
+      if Fsqlite.SQuery.FieldByName('name').AsString = '::ComPort::baud' then
+        SerialPortSettings.baud := Fsqlite.SQuery.FieldByName('value').AsString;
+      if Fsqlite.SQuery.FieldByName('name').AsString = '::ComPort::data_bits' then
+        SerialPortSettings.data_bits := Fsqlite.SQuery.FieldByName('value').AsString;
+      if Fsqlite.SQuery.FieldByName('name').AsString = '::ComPort::parity' then
+        SerialPortSettings.parity := AnsiLowerCase(Fsqlite.SQuery.FieldByName('value').AsString);
+      if Fsqlite.SQuery.FieldByName('name').AsString = '::ComPort::stop_bits' then
+        SerialPortSettings.stop_bits := Fsqlite.SQuery.FieldByName('value').AsString;
+      if Fsqlite.SQuery.FieldByName('name').AsString = '::ComPort::number' then
+        SerialPortSettings.serial_port_number := Fsqlite.SQuery.FieldByName('value').AsString;
 
-        FSQuery.Next;
+        Fsqlite.SQuery.Next;
      end;
 
  {$IFDEF DEBUG}
@@ -212,7 +202,7 @@ begin
 end;
 
 
-function GetVersion: string;
+function TSettings.FGetVersion: string;
 type
   TVerInfo=packed record
     Nevazhno: array[0..47] of byte; // ненужные нам 48 байт
@@ -237,7 +227,6 @@ end;
 
 function TSettings.SqlLocalCreateTable: boolean;
 var
-  _SQuery: TZQuery;
   sindex: string;
 begin
 { id_asutp состоит из полей pkdat+num+num_ingot, где в АСУТП pkdat состоит
@@ -246,20 +235,18 @@ begin
   2 нуля), num_ingot (2х значное нужно добавлять перед числом 1 ноль)) номер слитка.
 }
   try
-      _SQuery := TZQuery.Create(nil);
-      _SQuery.Connection := FSConnect;
-      _SQuery.Close;
-      _SQuery.SQL.Clear;
-      _SQuery.SQL.Add('CREATE TABLE IF NOT EXISTS weight');
-      _SQuery.SQL.Add('(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE');
-      _SQuery.SQL.Add(', pkdat NUMERIC(7) NOT NULL, num NUMERIC(3) NOT NULL');
-      _SQuery.SQL.Add(', num_ingot NUMERIC(2) NOT NULL');
-      _SQuery.SQL.Add(', id_asutp NUMERIC(12) NOT NULL');
-      _SQuery.SQL.Add(', heat VARCHAR(16) NOT NULL');
-      _SQuery.SQL.Add(', timestamp INTEGER(12) NOT NULL');
-      _SQuery.SQL.Add(', weight NUMERIC(16,4)');
-      _SQuery.SQL.Add(', transferred NUMERIC(1,1) DEFAULT(0))');
-      _SQuery.ExecSQL;
+      Fsqlite.SQuery.Close;
+      Fsqlite.SQuery.SQL.Clear;
+      Fsqlite.SQuery.SQL.Add('CREATE TABLE IF NOT EXISTS weight');
+      Fsqlite.SQuery.SQL.Add('(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE');
+      Fsqlite.SQuery.SQL.Add(', pkdat NUMERIC(7) NOT NULL, num NUMERIC(3) NOT NULL');
+      Fsqlite.SQuery.SQL.Add(', num_ingot NUMERIC(2) NOT NULL');
+      Fsqlite.SQuery.SQL.Add(', id_asutp NUMERIC(12) NOT NULL');
+      Fsqlite.SQuery.SQL.Add(', heat VARCHAR(16) NOT NULL');
+      Fsqlite.SQuery.SQL.Add(', timestamp INTEGER(12) NOT NULL');
+      Fsqlite.SQuery.SQL.Add(', weight NUMERIC(16,4)');
+      Fsqlite.SQuery.SQL.Add(', transferred NUMERIC(1,1) DEFAULT(0))');
+      Fsqlite.SQuery.ExecSQL;
 
       sindex := 'CREATE INDEX IF NOT EXISTS idx_weight_asc ON weight (' +
                 'id        ASC, ' +
@@ -268,10 +255,10 @@ begin
                 'pkdat     ASC, ' +
                 'num_ingot ASC)';
 
-      _SQuery.Close;
-      _SQuery.SQL.Clear;
-      _SQuery.SQL.Text := sindex;
-      _SQuery.ExecSQL;
+      Fsqlite.SQuery.Close;
+      Fsqlite.SQuery.SQL.Clear;
+      Fsqlite.SQuery.SQL.Text := sindex;
+      Fsqlite.SQuery.ExecSQL;
 
       sindex := 'CREATE INDEX IF NOT EXISTS idx_weight_desc ON weight (' +
                 'id        DESC, ' +
@@ -280,16 +267,14 @@ begin
                 'pkdat     DESC, ' +
                 'num_ingot DESC)';
 
-      _SQuery.Close;
-      _SQuery.SQL.Clear;
-      _SQuery.SQL.Text := sindex;
-      _SQuery.ExecSQL;
+      Fsqlite.SQuery.Close;
+      Fsqlite.SQuery.SQL.Clear;
+      Fsqlite.SQuery.SQL.Text := sindex;
+      Fsqlite.SQuery.ExecSQL;
   except
     on E : Exception do
       Log.save('e', E.ClassName+' create table, с сообщением: '+E.Message);
   end;
-
-  FreeAndNil(_SQuery);
 end;
 
 

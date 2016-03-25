@@ -4,7 +4,7 @@ unit thread_comport;
 interface
 
 uses
-  SysUtils, Classes, ActiveX, synaser, SyncObjs, logging, Messages, ZDataset;
+  SysUtils, Classes, ActiveX, synaser, SyncObjs, logging, Messages, ZDataset, sql;
 
 type
   //«десь необходимо описать класс TThreadComPort:
@@ -35,7 +35,8 @@ type
   end;
 
 var
-  Log: TLog;
+  lLog: TLog;
+  TCsqlite: TSqlite;
 
 
 
@@ -45,7 +46,7 @@ var
 implementation
 
 uses
-  settings, main, sql, testing, calibration;
+  settings, main, testing, calibration;
 
 
 
@@ -54,7 +55,8 @@ constructor TThreadComPort.Create(_Log: TLog);
 begin
   inherited Create(True);
 
-  Log := _Log;
+  lLog := _Log;
+  TCsqlite := TSqlite.Create(lLog);
   // создаем поток True - создание остановка, False - создание старт
   FThreadComPort := TThreadComPort.Create(True);
   FThreadComPort.Priority := tpNormal;
@@ -84,7 +86,7 @@ begin
           ReadToMessage;
       except
         on E : Exception do
-          Log.save('e', E.ClassName+' serial execute, с сообщением: '+E.Message);
+          lLog.save('e', E.ClassName+' serial execute, с сообщением: '+E.Message);
       end;
 
       sleep(1000);
@@ -132,21 +134,21 @@ begin
       SendReadToSerial(#2'00#TK#'#16#3+hash_bcc('00#TK#'#16#3));
   except
     on E : Exception do
-      Log.save('e', E.ClassName+' serial send/read, с сообщением: '+E.Message);
+      lLog.save('e', E.ClassName+' serial send/read, с сообщением: '+E.Message);
   end;
 
   try
       ReceiveData(FMessageData);
   except
     on E : Exception do
-      Log.save('e', E.ClassName+' serial send/read, с сообщением: '+E.Message);
+      lLog.save('e', E.ClassName+' serial send/read, с сообщением: '+E.Message);
   end;
 
   if Fno_save then
     SendAttribute;
 
   {$IFDEF DEBUG}
-    Log.save('d', 'no_save | '+booltostr(no_save));
+    lLog.save('d', 'no_save | '+booltostr(Fno_save));
   {$ENDIF}
 end;
 
@@ -179,7 +181,7 @@ begin
     //{ test }      SqlSaveInBuffer(trim(copy(Data, 60, 6)))
             SqlSaveInBuffer(trim(copy(Data, 40, 6)))
           else
-            Log.save('w', 'заготовка не выбрана'+#9+'weight -> '+trim(copy(Data, 40, 6)));
+            lLog.save('w', 'заготовка не выбрана'+#9+'weight -> '+trim(copy(Data, 40, 6)));
         //copy(Data, 2, 6);          //ответ по весу
         //copy(Data, 28, 1);         //признак
         //trim(copy(Data, 40, 6));   //вес только цела€ часть
@@ -207,7 +209,7 @@ begin
     ReceiveData(msg);
   except
     on E : Exception do
-      Log.save('e', E.ClassName+#9'com m2, с сообщением: '+E.Message);
+      lLog.save('e', E.ClassName+#9'com m2, с сообщением: '+E.Message);
   end;
 end;
 
@@ -254,7 +256,6 @@ end;
 
 function TThreadComPort.SqlSaveInBuffer(DataIn: AnsiString): boolean;
 var
-  _SQuery: TZQuery;
   num_correct, num_ingot_correct, pkdat_correct: string;
 begin
 
@@ -278,9 +279,9 @@ begin
     num_ingot_correct := num_ingot;
 
   {$IFDEF DEBUG}
-    Log.save('d', 'pkdat_correct -> '+pkdat_correct);
-    Log.save('d', 'num_correct -> '+num_correct);
-    Log.save('d', 'num_ingot_correct -> '+num_ingot_correct);
+    lLog.save('d', 'pkdat_correct -> '+pkdat_correct);
+    lLog.save('d', 'num_correct -> '+num_correct);
+    lLog.save('d', 'num_ingot_correct -> '+num_ingot_correct);
   {$ENDIF}
 
 { id_asutp состоит из полей pkdat+num+num_ingot, где в ј—”“ѕ pkdat состоит
@@ -289,49 +290,46 @@ begin
   2 нул€), num_ingot (2х значное нужно добавл€ть перед числом 1 ноль)) номер слитка.
 }
   try
-      _SQuery := TZQuery.Create(nil);
-      _SQuery.Connection := SettingsApp.SConnect;
-      _SQuery.Close;
-      _SQuery.SQL.Clear;
-      _SQuery.SQL.Add('INSERT INTO weight');
-      _SQuery.SQL.Add('(pkdat, num, num_ingot, id_asutp, heat, timestamp, weight)');
-      _SQuery.SQL.Add('VALUES('+pkdat+', '+num+', '+num_ingot+',');
-      _SQuery.SQL.Add(''+pkdat_correct+num_correct+num_ingot_correct+',');
-      _SQuery.SQL.Add(''+num_heat+', strftime(''%s'',''now''), '+PointReplace(DataIn)+')');
-      _SQuery.ExecSQL;
+      TCsqlite.SQuery.Close;
+      TCsqlite.SQuery.SQL.Clear;
+      TCsqlite.SQuery.SQL.Add('INSERT INTO weight');
+      TCsqlite.SQuery.SQL.Add('(pkdat, num, num_ingot, id_asutp, heat, timestamp, weight)');
+      TCsqlite.SQuery.SQL.Add('VALUES('+pkdat+', '+num+', '+num_ingot+',');
+      TCsqlite.SQuery.SQL.Add(''+pkdat_correct+num_correct+num_ingot_correct+',');
+      TCsqlite.SQuery.SQL.Add(''+num_heat+', strftime(''%s'',''now''), '+PointReplace(DataIn)+')');
+      TCsqlite.SQuery.ExecSQL;
   except
     on E : Exception do
-      Log.save('e', E.ClassName+' sql 5, с сообщением: '+E.Message+' | '+_SQuery.SQL.Text);
+      lLog.save('e', E.ClassName+' sql save in buffer, с сообщением: '+E.Message+' | '+TCsqlite.SQuery.SQL.Text);
   end;
 
   //ThreadComPort.no_save := true;//разрешаем отправку подтверждени€ в контроллер
   form1.no_save := true;//разрешаем отправку подтверждени€ в контроллер
 
   try
-      _SQuery.Close;
-      _SQuery.SQL.Clear;
-      _SQuery.SQL.Add('SELECT pkdat, num, num_ingot, id_asutp,');
-      _SQuery.SQL.Add('datetime(timestamp, ''unixepoch'', ''localtime'') as timestamp, weight FROM weight');
-      _SQuery.SQL.Add('where id_asutp='+pkdat_correct+num_correct+num_ingot_correct+'');
-      _SQuery.Open;
+      TCsqlite.SQuery.Close;
+      TCsqlite.SQuery.SQL.Clear;
+      TCsqlite.SQuery.SQL.Add('SELECT pkdat, num, num_ingot, id_asutp,');
+      TCsqlite.SQuery.SQL.Add('datetime(timestamp, ''unixepoch'', ''localtime'') as timestamp, weight FROM weight');
+      TCsqlite.SQuery.SQL.Add('where id_asutp='+pkdat_correct+num_correct+num_ingot_correct+'');
+      TCsqlite.SQuery.Open;
   except
     on E : Exception do
-      Log.save('e', E.ClassName+' sql 6, с сообщением: '+E.Message+' | '+_SQuery.SQL.Text);
+      lLog.save('e', E.ClassName+' sql select in buffer, с сообщением: '+E.Message+' | '+TCsqlite.SQuery.SQL.Text);
   end;
   //save to log file
-  {Log.save('sql'+#9#9+'write'+#9+'id_asutp -> '+SQuery.FieldByName('id_asutp').AsString);
-  Log.save('sql'+#9#9+'write'+#9+'weight -> '+SQuery.FieldByName('weight').AsString);}
+  {lLog.save('sql'+#9#9+'write'+#9+'id_asutp -> '+SQuery.FieldByName('id_asutp').AsString);
+  lLog.save('sql'+#9#9+'write'+#9+'weight -> '+SQuery.FieldByName('weight').AsString);}
 
   //сообщение оператору
-  ShowTrayMessage('«аготовка', 'є: '+num_ingot+#9+'вес: '+_SQuery.FieldByName('weight').AsString, 1);
+  ShowTrayMessage('«аготовка', 'є: '+num_ingot+#9+'вес: '+TCsqlite.SQuery.FieldByName('weight').AsString, 1);
 
   {$IFDEF DEBUG}
-    Log.save('d', 'pkdat_correct -> '+_SQuery.FieldByName('id_asutp').AsString);
+    lLog.save('d', 'pkdat_correct -> '+ TCsqlite.SQuery.FieldByName('id_asutp').AsString);
   {$ENDIF}
 
   //следующа€ запись (слиток) от записаной
   Synchronize(NextWeightToRecord);
-  FreeAndNil(_SQuery);
 end;
 
 

@@ -27,6 +27,7 @@ type
     FSConnect: TZConnection;
     Log: TLog;
     function ConfigSettings(InData: boolean): boolean;
+    function SqlJournalMode: boolean;
   public
     Constructor Create(_Log: TLog); overload;
     Destructor Destroy; override;
@@ -85,6 +86,7 @@ begin
         SConnect.Protocol := 'sqlite-3';
         SConnect.Connect;
         SQuery.Connection := SConnect;
+        SqlJournalMode;
       except
         on E : Exception do
           Log.save('e', E.ClassName+' sqlite config settings, с сообщением: '+E.Message);
@@ -95,6 +97,33 @@ begin
       SQuery.Destroy;
       SConnect.Destroy;
    end;
+end;
+
+
+function TSqlite.SqlJournalMode: boolean;
+begin
+  try
+      SQuery.Close;
+      SQuery.SQL.Clear;
+      SQuery.SQL.Add('PRAGMA journal_mode');
+      SQuery.Open;
+  except
+    on E: Exception do
+      Log.save('e', E.ClassName + ' sql get journal_mode, с сообщением: ' + E.Message);
+  end;
+
+  if SQuery.FieldByName('journal_mode').AsString <> 'wal' then
+  begin
+    try
+      SQuery.Close;
+      SQuery.SQL.Clear;
+      SQuery.SQL.Add('PRAGMA journal_mode = wal');
+      SQuery.ExecSQL;
+    except
+      on E: Exception do
+        Log.save('e', E.ClassName + ' sql set journal_mode wal, с сообщением: ' + E.Message);
+    end;
+  end;
 end;
 
 

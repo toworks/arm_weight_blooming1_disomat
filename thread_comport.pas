@@ -141,7 +141,7 @@ begin
       ReceiveData(FMessageData);
   except
     on E : Exception do
-      lLog.save('e', E.ClassName+' serial send/read, с сообщением: '+E.Message);
+      lLog.save('e', E.ClassName+' serial recive, с сообщением: '+E.Message);
   end;
 
   if Fno_save then

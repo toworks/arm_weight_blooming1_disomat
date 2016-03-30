@@ -11,10 +11,10 @@ type
 
   private
     cs: TCriticalSection;
-    destructor Destroy; override;
   public
     ProgFileName: AnsiString;
     constructor Create; overload;
+    destructor Destroy; override;
     procedure save(_type, _message: AnsiString);
   end;
 

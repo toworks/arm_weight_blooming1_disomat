@@ -83,13 +83,14 @@ begin
   while True do
   begin
       try
+          Synchronize(SyncStatus);
           ReadToMessage;
       except
         on E : Exception do
           lLog.save('e', E.ClassName+' serial execute, с сообщением: '+E.Message);
       end;
 
-      sleep(1000);
+//      sleep(1000);
    end;
    CoUninitialize;
 end;
@@ -100,13 +101,12 @@ var
   serial_port: TBlockserial;
 begin
     //status работы с контроллером
-    if Fcount > 10 then begin
-      Synchronize(SyncStatus);
+//    if Fcount > 5 then begin
       Synchronize(Status);
-      Fcount := 0;
-    end
-    else
-      inc(Fcount);
+//      Fcount := 0;
+//    end
+//    else
+//      inc(Fcount);
 
     try
         serial_port := TBlockserial.Create;
@@ -165,9 +165,6 @@ end;
 
 function TThreadComPort.ReceiveData(Data: AnsiString): string;
 begin
-
-  FMessageData := Data;
-
   if (copy(Data, 2, 6) = '00#EK#') and (copy(Data, 8, 1) = '0') then
   begin
       Fno_save := false;//запрещаем отправку подтверждения в контроллер -> сброс в SqlSaveInBuffer
@@ -190,7 +187,6 @@ begin
 
   //тестирование
   if assigned(MemoTesting) then
-    //MemoTestingAdd('receive Com'+SerialPortSettings.serial_port_number+' | '+Data));
     Synchronize(SyncMemoTesting);
 
   //калибровка
@@ -200,16 +196,14 @@ end;
 
 
 function TThreadComPort.SendAttribute: boolean;
-var
-    msg: AnsiString;
 begin
   try
     //передаем ЭОД вход1-4 переменные 1|0|0|0
-    msg := SendReadToSerial(#2'00#EK#1#0#0#0#'#16#3+hash_bcc('00#EK#1#0#0#0#'#16#3));
-    ReceiveData(msg);
+    SendReadToSerial(#2'00#EK#1#0#0#0#'#16#3+hash_bcc('00#EK#1#0#0#0#'#16#3));
+    ReceiveData(FMessageData);
   except
     on E : Exception do
-      lLog.save('e', E.ClassName+#9'com m2, с сообщением: '+E.Message);
+      lLog.save('e', E.ClassName+#9' com send attribute, с сообщением: '+E.Message);
   end;
 end;
 
@@ -304,7 +298,9 @@ begin
   end;
 
   //ThreadComPort.no_save := true;//разрешаем отправку подтверждения в контроллер
-  form1.no_save := true;//разрешаем отправку подтверждения в контроллер
+  //form1.no_save := true;//разрешаем отправку подтверждения в контроллер
+  Fno_save := true;//разрешаем отправку подтверждения в контроллер
+  //Synchronize(SyncStatus);
 
   try
       TCsqlite.SQuery.Close;
@@ -331,8 +327,6 @@ begin
   //следующая запись (слиток) от записаной
   Synchronize(NextWeightToRecord);
 end;
-
-
 
 
 // При загрузке программы класс будет создаваться

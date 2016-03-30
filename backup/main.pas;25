@@ -1,0 +1,62 @@
+unit main;
+
+{$mode objfpc}{$H+}
+
+interface
+
+uses
+  Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, DBGrids,
+  ExtCtrls, StdCtrls;
+
+type
+
+  { TForm1 }
+
+  TForm1 = class(TForm)
+    DBGrid1: TDBGrid;
+    DBGrid2: TDBGrid;
+    gb_data_pu1: TGroupBox;
+    gb_data_pu2: TGroupBox;
+    gb_weighed_ingot_in_sql: TGroupBox;
+    l_datetime: TLabel;
+    l_weight_ingot: TLabel;
+    l_heat: TLabel;
+    l_grade: TLabel;
+    l_n_weight_ingot: TLabel;
+    l_n_heat: TLabel;
+    l_n_grade: TLabel;
+    l_n_number_ingot: TLabel;
+    l_number_ingot: TLabel;
+    l_n_datetime: TLabel;
+    procedure FormCloseQuery(Sender: TObject; var CanClose: boolean);
+    procedure FormCreate(Sender: TObject);
+  private
+    { private declarations }
+  public
+    { public declarations }
+  end;
+
+var
+  Form1: TForm1;
+
+implementation
+
+uses
+  settings;
+
+{$R *.lfm}
+
+{ TForm1 }
+
+procedure TForm1.FormCloseQuery(Sender: TObject; var CanClose: boolean);
+begin
+
+end;
+
+procedure TForm1.FormCreate(Sender: TObject);
+begin
+
+end;
+
+end.
+

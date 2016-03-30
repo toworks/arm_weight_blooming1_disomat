@@ -13,15 +13,10 @@ type
   private
     FThreadSqlSend: TThreadSqlSend;
     FSqlMaxLocal: Int64;
-//    TSSsqlite: TSqlite;
-
-//    Log: TLog;
 
     function ConfigOracleSetting(InData: boolean): boolean;
-//    function ConfigSqliteSetting: boolean;
     procedure SqlSend;
     function SqlSaveToOracle(IdIn, WeightIn, TimestampIn: AnsiString): boolean;
-//    procedure SqlReadTableLocal;
     function GetMaxLocalCount: boolean;
 
   protected
@@ -188,9 +183,9 @@ begin
 //        send_error := SqlSaveToOracle(Byffer[i,0], Byffer[i,1], Byffer[i,2]);
         if Byffer[i,0] <> '' then
           send_error := SqlSaveToOracle(Byffer[i,0], Byffer[i,1], Byffer[i,2]);
-//  {$IFDEF DEBUG}
+  {$IFDEF DEBUG}
     lLog.save('d', 'send_error | '+booltostr(send_error));
-//  {$ENDIF}
+  {$ENDIF}
         if not send_error then begin
             TSSsqlite.SQuery.Close;
             TSSsqlite.SQuery.SQL.Clear;
@@ -201,10 +196,6 @@ begin
             {Log.save('sql'+#9#9+'write'+#9+'id_asutp -> '+Byffer[i,0]);
             Log.save('sql'+#9#9+'write'+#9+'weight -> '+Byffer[i,1]);
             Log.save('sql'+#9#9+'write'+#9+'timestamp -> '+Byffer[i,2]);}
-
-{            cs.Enter;
-              Synchronize(SqlReadTableLocal);//views взвешенные заготовки
-            cs.Leave;}
 
             //удаляем старые записи старше 3х дней
             TSSsqlite.SQuery.Close;
@@ -229,8 +220,9 @@ begin
 
   try
     //была ошибака: EZSQLException, с сообщением: SQL Error: OCI_NO_DATA
-    if not FOraConnect.Connected then
-      FOraConnect.Reconnect;
+//    if not FOraConnect.Connected then
+      lLog.save('e', 'ServerVersion | '+inttostr(FOraConnect.ServerVersion));
+//      FOraConnect.Reconnect;
 
     FOraQuery.Close;
     FOraQuery.SQL.Clear;
@@ -245,7 +237,7 @@ begin
   except
     on E : Exception do begin
       error := true;
-      lLog.save('e', E.ClassName+'6, с сообщением: '+E.Message+' | '+FOraQuery.SQL.Text);
+      lLog.save('e', E.ClassName+' sql save to oracle, с сообщением: '+E.Message+' | '+FOraQuery.SQL.Text);
     end;
   end;
 

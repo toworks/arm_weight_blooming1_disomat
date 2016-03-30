@@ -97,7 +97,7 @@ begin
       if NOW > FutureDate then
       begin
         FutureDate := Now + 4 / (24 * 60); //+4 minutes
-        MouseMoved;//views взвешенные заготовки
+        MouseMoved;//двигаем мышку
       end;
   {$IFDEF DEBUG}
     lLog.save('d', 'NOW -> '+datetimetostr(now));

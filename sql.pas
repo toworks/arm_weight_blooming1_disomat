@@ -3,7 +3,7 @@ unit sql;
 interface
 
 uses
-   SysUtils, ActiveX, Variants, Classes, StrUtils, Data.DB, ZConnection, ZDataset,
+   SysUtils, ActiveX, Variants, Classes, StrUtils, DB, ZConnection, ZDataset,
    ZDbcIntfs, SyncObjs, logging;
 
 var
@@ -302,7 +302,7 @@ begin
           Form1.l_weight_ingot.Caption := weight_ingot;
 
           //-- test
-          Form1.l_next_id.Caption:=pkdat+'|'+num+'|'+num_ingot;
+          Form1.l_next_id.Caption := pkdat+'|'+num+'|'+num_ingot;
 
           inc(i);
           _FSql.FQuery.Next;

@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <PathDelim Value="\"/>
+    <Version Value="9"/>
+    <BuildModes Active="Default"/>
+    <Units Count="5">
+      <Unit0>
+        <Filename Value="ArmWeightBlooming1.lpr"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit0>
+      <Unit1>
+        <Filename Value="main.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="Form1"/>
+        <ResourceBaseClass Value="Form"/>
+        <IsVisibleTab Value="True"/>
+        <TopLine Value="74"/>
+        <CursorPos X="30" Y="92"/>
+        <UsageCount Value="20"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
+      </Unit1>
+      <Unit2>
+        <Filename Value="logging.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="Logging"/>
+        <EditorIndex Value="3"/>
+        <CursorPos Y="17"/>
+        <UsageCount Value="20"/>
+        <Loaded Value="True"/>
+      </Unit2>
+      <Unit3>
+        <Filename Value="settings.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="108"/>
+        <CursorPos Y="127"/>
+        <UsageCount Value="20"/>
+        <Loaded Value="True"/>
+      </Unit3>
+      <Unit4>
+        <Filename Value="sql.pas"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="191"/>
+        <CursorPos X="27" Y="210"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit4>
+    </Units>
+    <JumpHistory Count="24" HistoryIndex="23">
+      <Position1>
+        <Filename Value="main.pas"/>
+      </Position1>
+      <Position2>
+        <Filename Value="main.pas"/>
+        <Caret Line="50" Column="3" TopLine="12"/>
+      </Position2>
+      <Position3>
+        <Filename Value="settings.pas"/>
+      </Position3>
+      <Position4>
+        <Filename Value="sql.pas"/>
+      </Position4>
+      <Position5>
+        <Filename Value="logging.pas"/>
+      </Position5>
+      <Position6>
+        <Filename Value="logging.pas"/>
+        <Caret Line="14" Column="16"/>
+      </Position6>
+      <Position7>
+        <Filename Value="sql.pas"/>
+        <Caret Line="6" Column="52"/>
+      </Position7>
+      <Position8>
+        <Filename Value="settings.pas"/>
+        <Caret Line="34" Column="40" TopLine="15"/>
+      </Position8>
+      <Position9>
+        <Filename Value="settings.pas"/>
+        <Caret Line="121" Column="3" TopLine="102"/>
+      </Position9>
+      <Position10>
+        <Filename Value="settings.pas"/>
+        <Caret Line="130" Column="3" TopLine="111"/>
+      </Position10>
+      <Position11>
+        <Filename Value="settings.pas"/>
+        <Caret Line="121" Column="3" TopLine="102"/>
+      </Position11>
+      <Position12>
+        <Filename Value="settings.pas"/>
+        <Caret Line="130" Column="3" TopLine="111"/>
+      </Position12>
+      <Position13>
+        <Filename Value="settings.pas"/>
+        <Caret Line="121" Column="3" TopLine="102"/>
+      </Position13>
+      <Position14>
+        <Filename Value="settings.pas"/>
+        <Caret Line="120" TopLine="102"/>
+      </Position14>
+      <Position15>
+        <Filename Value="settings.pas"/>
+        <Caret Line="122" Column="47" TopLine="90"/>
+      </Position15>
+      <Position16>
+        <Filename Value="settings.pas"/>
+        <Caret Line="120" TopLine="102"/>
+      </Position16>
+      <Position17>
+        <Filename Value="sql.pas"/>
+        <Caret Line="6" Column="52"/>
+      </Position17>
+      <Position18>
+        <Filename Value="main.pas"/>
+        <Caret Line="45" Column="14" TopLine="21"/>
+      </Position18>
+      <Position19>
+        <Filename Value="main.pas"/>
+        <Caret Line="54" Column="14" TopLine="24"/>
+      </Position19>
+      <Position20>
+        <Filename Value="main.pas"/>
+        <Caret Line="34" Column="50" TopLine="13"/>
+      </Position20>
+      <Position21>
+        <Filename Value="main.pas"/>
+        <Caret Line="33" Column="33" TopLine="14"/>
+      </Position21>
+      <Position22>
+        <Filename Value="main.pas"/>
+        <Caret Line="71" Column="36" TopLine="52"/>
+      </Position22>
+      <Position23>
+        <Filename Value="main.pas"/>
+        <Caret Line="9" Column="28"/>
+      </Position23>
+      <Position24>
+        <Filename Value="main.pas"/>
+        <Caret Line="86" Column="26" TopLine="67"/>
+      </Position24>
+    </JumpHistory>
+  </ProjectSession>
+</CONFIG>

@@ -4,14 +4,14 @@ interface
 
 uses
    Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-   Dialogs, StdCtrls, StrUtils, Data.DB, SyncObjs;
+   Dialogs, StdCtrls, StrUtils, DB, SyncObjs;
 
 type
   TTestingForm = class(TForm)
-
   private
     b_ForceSendAttribute: TButton;
     procedure b_ForceSendAttributeClick(Sender: TObject);
+  protected
   public
     constructor CreateNew(AOwner: TComponent; Dummy: Integer = 0); override;
   end;
@@ -35,14 +35,13 @@ begin
   inherited CreateNew(AOwner);
 
   MemoTesting := TMemo.Create(Self);
-  MemoTesting.Ctl3D := False;
   MemoTesting.SetBounds(2, 2, 590, 300);
   MemoTesting.Parent := Self;
 
   b_ForceSendAttribute := TButton.Create(Self);
   b_ForceSendAttribute.SetBounds(2, 310, 130, 20);
   b_ForceSendAttribute.Caption := 'Послать признак';
-  b_ForceSendAttribute.OnClick := b_ForceSendAttributeClick;
+  b_ForceSendAttribute.OnClick := @b_ForceSendAttributeClick;
   b_ForceSendAttribute.Parent := Self;
 end;
 
@@ -92,7 +91,7 @@ end;
 
 procedure TTestingForm.b_ForceSendAttributeClick(Sender: TObject);
 begin
-  ThreadComPort.SendAttribute;
+//  ThreadComPort.SendAttribute;
 end;
 
 

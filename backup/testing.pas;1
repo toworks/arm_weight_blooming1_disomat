@@ -40,7 +40,7 @@ begin
 
   b_ForceSendAttribute := TButton.Create(Self);
   b_ForceSendAttribute.SetBounds(2, 310, 130, 20);
-  b_ForceSendAttribute.Caption := 'Послать признак';
+  b_ForceSendAttribute.Caption := 'weq Послать признак';
   b_ForceSendAttribute.OnClick := @b_ForceSendAttributeClick;
   b_ForceSendAttribute.Parent := Self;
 end;
@@ -91,7 +91,7 @@ end;
 
 procedure TTestingForm.b_ForceSendAttributeClick(Sender: TObject);
 begin
-  ThreadComPort.SendAttribute;
+//  ThreadComPort.SendAttribute;
 end;
 
 

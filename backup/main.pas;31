@@ -6,7 +6,8 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, DBGrids,
-  ExtCtrls, StdCtrls;
+  ExtCtrls, StdCtrls, Menus, db, {$ifdef windows} Windows, {$endif}
+  logging, sql, thread_sql_read{, thread_sql_send, thread_comport}, Grids;
 
 type
 
@@ -14,8 +15,10 @@ type
 
   TForm1 = class(TForm)
     DBGrid1: TDBGrid;
+    DBGrid2: TDBGrid;
     gb_data_pu1: TGroupBox;
     gb_data_pu2: TGroupBox;
+    gb_weighed_ingot_in_sql: TGroupBox;
     l_datetime: TLabel;
     l_weight_ingot: TLabel;
     l_heat: TLabel;
@@ -26,18 +29,332 @@ type
     l_n_number_ingot: TLabel;
     l_number_ingot: TLabel;
     l_n_datetime: TLabel;
+    procedure DBGrid1DblClick(Sender: TObject);
+    procedure DBGrid1DrawColumnCell(Sender: TObject; const Rect: TRect;
+      DataCol: Integer; Column: TColumn; State: TGridDrawState);
+    procedure DBGrid1PrepareCanvas(sender: TObject; DataCol: Integer;
+      Column: TColumn; AState: TGridDrawState);
+    procedure FormCloseQuery(Sender: TObject; var CanClose: boolean);
+    procedure FormCreate(Sender: TObject);
+    function CreateMenu: boolean;
+    procedure ActionMenuItemClick(Sender: TObject);
   private
-    { private declarations }
+    procedure DBgrid1Create(Sender: TObject);
   public
     { public declarations }
   end;
 
 var
   Form1: TForm1;
+  ThreadSqlRead: TThreadSqlRead;
+//  ThreadSqlSend: TThreadSqlSend;
+//  ThreadComPort: TThreadComPort;
+  MainSqlite: TSqlite;
+  SDataSource: TDataSource;
+  MainFSql: TFsql;
+  FDataSource: TDataSource;
+
+//    {$DEFINE DEBUG}
+
+  function ViewSelectedIngot: bool;
+  procedure NextWeightToRecordLocation;
+
 
 implementation
 
+uses
+  settings, testing, calibration;
+
 {$R *.lfm}
+
+{ TForm1 }
+
+procedure TForm1.FormCloseQuery(Sender: TObject; var CanClose: boolean);
+begin
+  try
+      Log.save('i', 'close '+Log.ProgFileName);
+
+{      if assigned(ThreadComPort) then
+        ThreadComPort.Terminate;
+      if assigned(ThreadSqlRead) then
+        ThreadSqlRead.Terminate;
+      if assigned(ThreadSqlSend) then
+        ThreadSqlSend.Terminate;
+
+      if assigned(MainSqlite) then
+        MainSqlite.Destroy;
+      if assigned(SDataSource) then
+        SDataSource.Destroy;
+      if assigned(MainFSql) then
+        MainFSql.Destroy;
+      if assigned(FDataSource) then
+        FDataSource.Destroy;}
+  finally
+    // закрываем приложение
+    {$ifdef unix}
+      FpKill(FpGetpid, 9);
+    {$endif}
+    {$ifdef windows}
+      TerminateProcess(GetCurrentProcess, 0);
+    {$endif}
+  end;
+end;
+
+
+procedure TForm1.DBGrid1DrawColumnCell(Sender: TObject; const Rect: TRect;
+  DataCol: Integer; Column: TColumn; State: TGridDrawState);
+var
+  R: TRect;
+begin
+{      if Column.FieldName = 'smena' then
+       begin
+          (Sender As TDBGrid).Canvas.FillRect(Rect); //не смазывает при прокрутке
+          (Sender As TDBGrid).Canvas.TextRect(R, R.Left + 2, R.Top + 2,
+                                  Column.FieldName);
+       end
+      else begin
+          TDBGrid(Sender).Canvas.FillRect(Rect); //не смазывает при прокрутке
+          TDBGrid(Sender).DefaultDrawColumnCell(Rect, DataCol, Column, State);
+      end;
+
+      if Column.FieldName = 'step' then
+       begin
+          (Sender As TDBGrid).Canvas.FillRect(Rect); //не смазывает при прокрутке
+          with (Sender As TDBGrid).Canvas do
+          begin
+            Font.Color := clRed;
+            if (Column.FieldName = 'low') or (Column.FieldName = 'high') then
+              font.Style:= [fsBold];
+            (Sender as TDBGrid).Canvas.TextRect(Rect, Rect.Left + 2,
+                                  Rect.Top + 2, Column.Field.AsWideString);
+          end
+       end
+      else
+       begin
+          (Sender As TDBGrid).Canvas.FillRect(Rect); //не смазывает при прокрутке
+          with (Sender As TDBGrid).Canvas do
+          begin
+            Font.Color := clGreen;
+            if (Column.FieldName = 'low') or (Column.FieldName = 'high') then
+              font.Style:= [fsBold];
+            (Sender as TDBGrid).Canvas.TextRect(Rect, Rect.Left + 2,
+                                 Rect.Top + 2, Column.Field.AsWideString);
+          end
+      end;
+//  end
+//  else
+//    (Sender As TDBGrid).DefaultDrawColumnCell(Rect, DataCol, Column, State);}
+end;
+
+
+procedure TForm1.DBGrid1DblClick(Sender: TObject);
+begin
+  // маркер следующей заготовки
+  if not MarkerNextWait then begin
+    try
+        //отключаем управление
+        form1.DBGrid1.DataSource.DataSet.DisableControls;
+        if MessageDlg('Выбрать заготовку для взвешивания?', mtCustom, mbYesNo, 0) = mrYes then
+          ViewSelectedIngot;
+    finally
+        //включаем управление
+        form1.DBGrid1.DataSource.DataSet.EnableControls;
+    end;
+  end;
+end;
+
+
+procedure TForm1.DBGrid1PrepareCanvas(sender: TObject; DataCol: Integer;
+  Column: TColumn; AState: TGridDrawState);
+var
+   i: integer;
+   TitleWidth: integer;
+   TextWidth: integer;
+begin
+    with (Sender As TDBGrid) do begin
+      for i:=0 to Columns.Count-1 do begin
+          TitleWidth := Canvas.TextWidth(Columns.Items[i].Title.Caption);
+          TextWidth := Canvas.TextWidth(Columns.Items[i].Field.ToString);
+  {        if (TitleWidth < Columns.Items[i].Width) and not _resize then begin
+             Columns.Items[i].Width := TextWidth;
+             Columns.Items[i].Alignment := taCenter;
+             Columns.Items[i].Alignment := taLeftJustify;
+          end;}
+          if (TextWidth < Columns.Items[i].Width) then begin
+             Columns.Items[i].Width := TitleWidth+25;
+             Columns.Items[i].Alignment := taCenter;//taLeftJustify;
+             Columns.Items[i].Title.Alignment := taCenter;//taLeftJustify;
+          end;
+      end;
+    end;
+
+      begin
+        with (Sender As TDBGrid) do
+        begin
+          if (Column.FieldName = 'num_ingot') then begin
+                Canvas.Brush.Color := $006868FD; //Red
+                Canvas.Font.Color := clBlack;
+                Canvas.font.Style := [fsBold];
+          end;
+          if (Column.FieldName = 'high') then begin
+                Canvas.Brush.Color := $0002E813; //Green;
+                Canvas.Font.Color := clBlack;
+                Canvas.font.Style := [fsBold];
+          end;
+        end;
+      end;
+//      _resize := true;
+end;
+
+
+procedure TForm1.FormCreate(Sender: TObject);
+begin
+  Log.save('i', 'start '+Log.ProgFileName);
+
+  MainSqlite := TSqlite.Create(Log);
+  //отображение в dbgrid
+  SDataSource := TDataSource.Create(nil);
+  SDataSource.DataSet := MainSqlite.SQuery;
+  DBGrid2.DataSource := SDataSource;
+
+  MainFSql := TFsql.Create(Log);
+  //отображение в dbgrid
+  FDataSource := TDataSource.Create(nil);
+  DBgrid1Create(self);
+  FDataSource.DataSet := MainFSql.FQuery;
+  DBGrid1.DataSource := FDataSource;
+
+  ThreadSqlRead := TThreadSqlRead.Create(Log);
+//  ThreadSqlSend := TThreadSqlSend.Create(Log);
+//  ThreadComPort := TThreadComPort.Create(Log);
+
+  Form1.Caption := SettingsApp.HeadName+'  build('+SettingsApp.GetVersion+')';
+  //заголовки к showmessage
+  Application.Title := Form1.Caption;
+
+  //запрет на изменение формы
+  BorderStyle := bsToolWindow;
+  BorderIcons := BorderIcons - [biMaximize];
+
+  CreateMenu;
+end;
+
+
+function TForm1.CreateMenu: boolean;
+var
+    MainMenu: TMainMenu;
+    itemMenu, itemTesting, itemCalibration, itemExit: TMenuItem;
+begin
+  MainMenu := TMainMenu.Create(form1);
+  itemMenu := TMenuItem.Create(MainMenu);
+
+  itemMenu.Caption := 'Меню';
+  itemMenu.Name:='main';
+  MainMenu.Items.Add(itemMenu);
+
+  itemTesting := TMenuItem.Create(itemMenu);
+  itemTesting.Caption := 'Тестирование';
+  itemTesting.Name := 'testing';
+  itemTesting.OnClick:= @ActionMenuItemClick;
+  itemMenu.Insert(0, itemTesting);
+
+  itemCalibration := TMenuItem.Create(itemMenu);
+  itemCalibration.Caption := 'Калибровка';
+  itemCalibration.Name := 'calibration';
+  itemCalibration.OnClick:= @ActionMenuItemClick;
+  itemMenu.Insert(1, itemCalibration);
+
+  itemExit := TMenuItem.Create(itemMenu);
+  itemExit.Caption := 'Выход';
+  itemExit.Name := 'exit';
+  itemExit.OnClick:= @ActionMenuItemClick;
+  itemMenu.Insert(2, itemExit);
+end;
+
+
+procedure TForm1.ActionMenuItemClick(Sender: TObject);
+begin
+  if TMenuItem(Sender).Name = 'testing' then begin
+    CreateTestingForm(self);
+  end;
+
+  if TMenuItem(Sender).Name = 'calibration' then begin
+    CreateCalibrationForm(self);
+  end;
+
+  if TMenuItem(Sender).Name = 'exit' then begin
+     Form1.Close;
+  end;
+end;
+
+
+procedure TForm1.DBgrid1Create(Sender: TObject);
+var
+   i: integer;
+begin
+  DBGrid1.Columns.Clear;
+  DBGrid1.Columns.Add.FieldName := 'smena';
+  DBGrid1.Columns.Add.FieldName := 'num_ingot';
+  DBGrid1.Columns.Add.FieldName := 'time_ingot';
+  DBGrid1.Columns.Add.FieldName := 'num_heat';
+  DBGrid1.Columns.Add.FieldName := 'name';
+  DBGrid1.Columns.Add.FieldName := 'weight_ingot';
+  DBGrid1.Columns.Add.FieldName := 'steel_group';
+
+  DBGrid1.Columns.Items[0].Title.Caption := 'Смена';
+  DBGrid1.Columns.Items[1].Title.Caption := '№ Слитка';
+  DBGrid1.Columns.Items[2].Title.Caption := 'Время';
+  DBGrid1.Columns.Items[3].Title.Caption := '№ Плавки';
+  DBGrid1.Columns.Items[4].Title.Caption := 'Марка стали';
+  DBGrid1.Columns.Items[5].Title.Caption := 'Масса слитка ПУ-1 (т)';
+  DBGrid1.Columns.Items[6].Title.Caption := 'steel_group';
+
+//  for i := 0 to DBGrid1.columns.Count - 1 do begin
+//      DBGrid1.Columns.Items[i].Title.Alignment := taCenter;
+//      DBGrid1.Columns.Items[i].MaxSize:=150;
+//  end;
+
+//  DBGrid1.Columns.Items[0].MaxSize:=10;
+  DBGrid1.Columns.Items[6].Visible := false;
+
+end;
+
+
+function ViewSelectedIngot: bool;
+begin
+  Form1.l_number_ingot.Caption := Form1.DBGrid1.DataSource.DataSet.FieldByName('NUM_INGOT').AsString;
+  Form1.l_datetime.Caption := Form1.DBGrid1.DataSource.DataSet.FieldByName('TIME_INGOT').AsString;
+  Form1.l_heat.Caption := Form1.DBGrid1.DataSource.DataSet.FieldByName('NUM_HEAT').AsString;
+  Form1.l_grade.Caption := Form1.DBGrid1.DataSource.DataSet.FieldByName('NAME').AsString;
+  Form1.l_weight_ingot.Caption := Form1.DBGrid1.DataSource.DataSet.FieldByName('WEIGHT_INGOT').AsString;
+  pkdat := Form1.DBGrid1.DataSource.DataSet.FieldByName('PKDAT').AsString;
+  num := Form1.DBGrid1.DataSource.DataSet.FieldByName('NUM').AsString;
+  num_ingot := Form1.DBGrid1.DataSource.DataSet.FieldByName('NUM_INGOT').AsString;
+  num_heat := Form1.DBGrid1.DataSource.DataSet.FieldByName('NUM_HEAT').AsString;
+  smena := Form1.DBGrid1.DataSource.DataSet.FieldByName('SMENA').AsString;
+end;
+
+
+procedure NextWeightToRecordLocation;
+var
+  KeyValues : Variant;
+begin
+  try
+      //отключаем управление
+      form1.DBGrid1.DataSource.DataSet.DisableControls;
+      //переменные по которым будет производиться поиск
+      KeyValues := VarArrayOf([pkdat,num,num_ingot]);
+      //поиск по ключивым полям
+      form1.DBGrid1.DataSource.DataSet.Locate('pkdat;num;num_ingot', KeyValues, []);
+  finally
+      //включаем управление
+      form1.DBGrid1.DataSource.DataSet.EnableControls;
+  end;
+  //-- test
+  //Form1.l_next_id.Caption:=pkdat+'|'+num+'|'+num_ingot;
+end;
+
+
 
 end.
 

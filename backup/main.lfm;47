@@ -1,29 +1,290 @@
 object Form1: TForm1
-  Left = 686
-  Height = 500
-  Top = 258
-  Width = 650
+  Left = 759
+  Height = 502
+  Top = 328
+  Width = 643
+  BorderStyle = bsSingle
   Caption = 'Form1'
-  ClientHeight = 500
-  ClientWidth = 650
+  ClientHeight = 0
+  ClientWidth = 0
+  KeyPreview = True
+  OnCloseQuery = FormCloseQuery
+  OnCreate = FormCreate
+  Position = poDesktopCenter
   LCLVersion = '1.6.0.4'
-  object GroupBox1: TGroupBox
+  object gb_data_pu1: TGroupBox
     Left = 8
-    Height = 184
-    Top = 16
-    Width = 636
-    Caption = 'GroupBox1'
-    ClientHeight = 164
-    ClientWidth = 632
+    Height = 173
+    Top = 3
+    Width = 628
+    Caption = ' Данные с ПУ-1 '
+    ClientHeight = 148
+    ClientWidth = 624
+    Font.CharSet = RUSSIAN_CHARSET
+    Font.Height = -16
+    Font.Name = 'Arial Narrow'
+    Font.Pitch = fpVariable
+    Font.Quality = fqDraft
+    Font.Style = [fsBold]
+    ParentFont = False
     TabOrder = 0
     object DBGrid1: TDBGrid
       Left = 5
-      Height = 160
+      Height = 141
       Top = 0
-      Width = 622
+      Width = 614
+      Anchors = [akTop, akLeft, akRight, akBottom]
       Color = clWindow
       Columns = <>
+      Options = [dgTitles, dgIndicator, dgColumnResize, dgColumnMove, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit]
+      ReadOnly = True
       TabOrder = 0
+      TitleFont.CharSet = RUSSIAN_CHARSET
+      TitleFont.Color = clWindowText
+      TitleFont.Height = -11
+      TitleFont.Name = 'MS Sans Serif'
+      TitleFont.Pitch = fpVariable
+      TitleFont.Quality = fqDraft
+      TitleFont.Style = [fsBold]
+      OnDrawColumnCell = DBGrid1DrawColumnCell
+      OnPrepareCanvas = DBGrid1PrepareCanvas
+    end
+  end
+  object gb_data_pu2: TGroupBox
+    Left = 8
+    Height = 83
+    Top = 178
+    Width = 628
+    Caption = ' Взвешиваемый слиток '
+    ClientHeight = 58
+    ClientWidth = 624
+    Font.CharSet = RUSSIAN_CHARSET
+    Font.Height = -16
+    Font.Name = 'Arial Narrow'
+    Font.Pitch = fpVariable
+    Font.Quality = fqDraft
+    Font.Style = [fsBold]
+    ParentFont = False
+    TabOrder = 1
+    object l_n_number_ingot: TLabel
+      Left = 0
+      Height = 23
+      Top = 0
+      Width = 90
+      Alignment = taCenter
+      AutoSize = False
+      Caption = '№ Слитка'
+      Font.CharSet = RUSSIAN_CHARSET
+      Font.Height = -19
+      Font.Name = 'Arial Narrow'
+      Font.Pitch = fpVariable
+      Font.Quality = fqDraft
+      Font.Style = [fsBold]
+      Layout = tlCenter
+      ParentColor = False
+      ParentFont = False
+    end
+    object l_number_ingot: TLabel
+      Left = 0
+      Height = 23
+      Top = 32
+      Width = 90
+      Alignment = taCenter
+      AutoSize = False
+      Caption = '№ Слитка'
+      Font.CharSet = RUSSIAN_CHARSET
+      Font.Color = 16287756
+      Font.Height = -19
+      Font.Name = 'Arial Narrow'
+      Font.Pitch = fpVariable
+      Font.Quality = fqDraft
+      Font.Style = [fsBold]
+      Layout = tlCenter
+      ParentColor = False
+      ParentFont = False
+    end
+    object l_n_datetime: TLabel
+      Left = 97
+      Height = 23
+      Top = 0
+      Width = 90
+      Alignment = taCenter
+      AutoSize = False
+      Caption = 'Время'
+      Font.CharSet = RUSSIAN_CHARSET
+      Font.Height = -19
+      Font.Name = 'Arial Narrow'
+      Font.Pitch = fpVariable
+      Font.Quality = fqDraft
+      Font.Style = [fsBold]
+      Layout = tlCenter
+      ParentColor = False
+      ParentFont = False
+    end
+    object l_datetime: TLabel
+      Left = 97
+      Height = 23
+      Top = 32
+      Width = 90
+      Alignment = taCenter
+      AutoSize = False
+      Caption = 'Время'
+      Font.CharSet = RUSSIAN_CHARSET
+      Font.Color = 16287756
+      Font.Height = -19
+      Font.Name = 'Arial Narrow'
+      Font.Pitch = fpVariable
+      Font.Quality = fqDraft
+      Font.Style = [fsBold]
+      Layout = tlCenter
+      ParentColor = False
+      ParentFont = False
+    end
+    object l_n_heat: TLabel
+      Left = 193
+      Height = 23
+      Top = 0
+      Width = 120
+      Alignment = taCenter
+      AutoSize = False
+      Caption = '№ Плавки'
+      Font.CharSet = RUSSIAN_CHARSET
+      Font.Height = -19
+      Font.Name = 'Arial Narrow'
+      Font.Pitch = fpVariable
+      Font.Quality = fqDraft
+      Font.Style = [fsBold]
+      Layout = tlCenter
+      ParentColor = False
+      ParentFont = False
+    end
+    object l_heat: TLabel
+      Left = 193
+      Height = 23
+      Top = 32
+      Width = 120
+      Alignment = taCenter
+      AutoSize = False
+      Caption = '№ Плавки'
+      Font.CharSet = RUSSIAN_CHARSET
+      Font.Color = 16287756
+      Font.Height = -19
+      Font.Name = 'Arial Narrow'
+      Font.Pitch = fpVariable
+      Font.Quality = fqDraft
+      Font.Style = [fsBold]
+      Layout = tlCenter
+      ParentColor = False
+      ParentFont = False
+    end
+    object l_n_grade: TLabel
+      Left = 321
+      Height = 23
+      Top = 0
+      Width = 120
+      Alignment = taCenter
+      AutoSize = False
+      Caption = 'Марка стали'
+      Font.CharSet = RUSSIAN_CHARSET
+      Font.Height = -19
+      Font.Name = 'Arial Narrow'
+      Font.Pitch = fpVariable
+      Font.Quality = fqDraft
+      Font.Style = [fsBold]
+      Layout = tlCenter
+      ParentColor = False
+      ParentFont = False
+    end
+    object l_grade: TLabel
+      Left = 321
+      Height = 23
+      Top = 32
+      Width = 120
+      Alignment = taCenter
+      AutoSize = False
+      Caption = 'Марка стали'
+      Font.CharSet = RUSSIAN_CHARSET
+      Font.Color = 16287756
+      Font.Height = -19
+      Font.Name = 'Arial Narrow'
+      Font.Pitch = fpVariable
+      Font.Quality = fqDraft
+      Font.Style = [fsBold]
+      Layout = tlCenter
+      ParentColor = False
+      ParentFont = False
+    end
+    object l_weight_ingot: TLabel
+      Left = 451
+      Height = 23
+      Top = 32
+      Width = 170
+      Alignment = taCenter
+      AutoSize = False
+      Caption = 'Масса слитка ПУ-1(т)'
+      Font.CharSet = RUSSIAN_CHARSET
+      Font.Color = 16287756
+      Font.Height = -19
+      Font.Name = 'Arial Narrow'
+      Font.Pitch = fpVariable
+      Font.Quality = fqDraft
+      Font.Style = [fsBold]
+      Layout = tlCenter
+      ParentColor = False
+      ParentFont = False
+    end
+    object l_n_weight_ingot: TLabel
+      Left = 451
+      Height = 23
+      Top = 0
+      Width = 170
+      Alignment = taCenter
+      AutoSize = False
+      Caption = 'Масса слитка ПУ-1(т)'
+      Font.CharSet = RUSSIAN_CHARSET
+      Font.Height = -19
+      Font.Name = 'Arial Narrow'
+      Font.Pitch = fpVariable
+      Font.Quality = fqDraft
+      Font.Style = [fsBold]
+      Layout = tlCenter
+      ParentColor = False
+      ParentFont = False
+    end
+  end
+  object gb_weighed_ingot_in_sql: TGroupBox
+    Left = 8
+    Height = 176
+    Top = 264
+    Width = 628
+    Caption = ' Взвешенные слитки '
+    ClientHeight = 151
+    ClientWidth = 624
+    Font.CharSet = RUSSIAN_CHARSET
+    Font.Height = -16
+    Font.Name = 'Arial Narrow'
+    Font.Pitch = fpVariable
+    Font.Quality = fqDraft
+    Font.Style = [fsBold]
+    ParentFont = False
+    TabOrder = 2
+    object DBGrid2: TDBGrid
+      Left = 5
+      Height = 144
+      Top = 0
+      Width = 614
+      Anchors = [akTop, akLeft, akRight, akBottom]
+      Color = clWindow
+      Columns = <>
+      Options = [dgTitles, dgIndicator, dgColumnResize, dgColumnMove, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit]
+      TabOrder = 0
+      TitleFont.CharSet = RUSSIAN_CHARSET
+      TitleFont.Color = clWindowText
+      TitleFont.Height = -11
+      TitleFont.Name = 'MS Sans Serif'
+      TitleFont.Pitch = fpVariable
+      TitleFont.Quality = fqDraft
+      TitleFont.Style = [fsBold]
     end
   end
 end

@@ -40,7 +40,7 @@ begin
 
   b_ForceSendAttribute := TButton.Create(Self);
   b_ForceSendAttribute.SetBounds(2, 310, 130, 20);
-  b_ForceSendAttribute.Caption := 'Послать признак';
+  b_ForceSendAttribute.Caption := 'РџРѕСЃР»Р°С‚СЊ РїСЂРёР·РЅР°Рє';
   b_ForceSendAttribute.OnClick := @b_ForceSendAttributeClick;
   b_ForceSendAttribute.Parent := Self;
 end;
@@ -54,10 +54,10 @@ begin
   try
     TestingForm.Height := 360;
     TestingForm.Width := 600;
-    //запрет на изменение формы
+    //Р·Р°РїСЂРµС‚ РЅР° РёР·РјРµРЅРµРЅРёРµ С„РѕСЂРјС‹
     TestingForm.BorderStyle := bsToolWindow;
     TestingForm.BorderIcons := TestingForm.BorderIcons - [biMaximize];
-    TestingForm.Caption := ' тестирование';
+    TestingForm.Caption := ' С‚РµСЃС‚РёСЂРѕРІР°РЅРёРµ';
     TestingForm.Icon := Form1.Icon;
     TestingForm.Position := poMainFormCenter;
     TestingForm.ShowModal;
@@ -84,7 +84,7 @@ begin
 
   except
     on E : Exception do
-      Log.save('e', E.ClassName+', с сообщением: '+E.Message);
+      Log.save('e', E.ClassName+', СЃ СЃРѕРѕР±С‰РµРЅРёРµРј: '+E.Message);
   end;
 end;
 

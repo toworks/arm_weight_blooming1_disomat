@@ -44,7 +44,7 @@ type
 
     function SqlLocalCreateTable: boolean;
     function ReadConfigSettings: boolean;
-    function FGetVersion: string;// Версия сборки программы
+    function FGetVersion: string;// Р’РµСЂСЃРёСЏ СЃР±РѕСЂРєРё РїСЂРѕРіСЂР°РјРјС‹
     function FHeadName: string;
     function FDBFile: string;
   public
@@ -98,7 +98,7 @@ constructor TSettings.Create;
 begin
   inherited Create;
 
-  //текущая дириктория
+  //С‚РµРєСѓС‰Р°СЏ РґРёСЂРёРєС‚РѕСЂРёСЏ
   FCurrentDir := GetCurrentDir;
 
   Fsqlite := TSqlite.Create(Log);
@@ -118,7 +118,7 @@ end;
 
 function TSettings.FHeadName: string;
 begin
-  result := ' АРМ резчика ПУ-4 ';
+  result := ' РђР Рњ СЂРµР·С‡РёРєР° РџРЈ-4 ';
 end;
 
 
@@ -139,7 +139,7 @@ begin
         Fsqlite.SQuery.Open;
     except
       on E : Exception do
-        Log.save('e', E.ClassName+' read settings, с сообщением: '+E.Message);
+        Log.save('e', E.ClassName+' read settings, СЃ СЃРѕРѕР±С‰РµРЅРёРµРј: '+E.Message);
     end;
 
     while not Fsqlite.SQuery.Eof do
@@ -199,8 +199,8 @@ end;
 function TSettings.FGetVersion: string;
 type
   TVerInfo=packed record
-    Nevazhno: array[0..47] of byte; // ненужные нам 48 байт
-    Minor, Major, Build, Release: word; // а тут версия
+    Nevazhno: array[0..47] of byte; // РЅРµРЅСѓР¶РЅС‹Рµ РЅР°Рј 48 Р±Р°Р№С‚
+    Minor, Major, Build, Release: word; // Р° С‚СѓС‚ РІРµСЂСЃРёСЏ
   end;
 var
   s: TResourceStream;
@@ -208,9 +208,9 @@ var
 begin
   result := '';
   try
-    s := TResourceStream.Create(HInstance, '#1', RT_VERSION); // достаём ресурс
+    s := TResourceStream.Create(HInstance, '#1', RT_VERSION); // РґРѕСЃС‚Р°С‘Рј СЂРµСЃСѓСЂСЃ
     if s.Size > 0 then begin
-      s.Read(v,SizeOf(v)); // читаем нужные нам байты
+      s.Read(v,SizeOf(v)); // С‡РёС‚Р°РµРј РЅСѓР¶РЅС‹Рµ РЅР°Рј Р±Р°Р№С‚С‹
       result := Format('%d%d%d%d', [v.Major, v.Minor, v.Release, v.Build]);
    end;
   finally
@@ -223,10 +223,10 @@ function TSettings.SqlLocalCreateTable: boolean;
 var
   sindex: string;
 begin
-{ id_asutp состоит из полей pkdat+num+num_ingot, где в АСУТП pkdat состоит
-  год месяц день,num номер, num_ingot номер слитка.
-  в IT pkdat состоит день месяц год,num номер (3х значное нужно добавлять перед числом
-  2 нуля), num_ingot (2х значное нужно добавлять перед числом 1 ноль)) номер слитка.
+{ id_asutp СЃРѕСЃС‚РѕРёС‚ РёР· РїРѕР»РµР№ pkdat+num+num_ingot, РіРґРµ РІ РђРЎРЈРўРџ pkdat СЃРѕСЃС‚РѕРёС‚
+  РіРѕРґ РјРµСЃСЏС† РґРµРЅСЊ,num РЅРѕРјРµСЂ, num_ingot РЅРѕРјРµСЂ СЃР»РёС‚РєР°.
+  РІ IT pkdat СЃРѕСЃС‚РѕРёС‚ РґРµРЅСЊ РјРµСЃСЏС† РіРѕРґ,num РЅРѕРјРµСЂ (3С… Р·РЅР°С‡РЅРѕРµ РЅСѓР¶РЅРѕ РґРѕР±Р°РІР»СЏС‚СЊ РїРµСЂРµРґ С‡РёСЃР»РѕРј
+  2 РЅСѓР»СЏ), num_ingot (2С… Р·РЅР°С‡РЅРѕРµ РЅСѓР¶РЅРѕ РґРѕР±Р°РІР»СЏС‚СЊ РїРµСЂРµРґ С‡РёСЃР»РѕРј 1 РЅРѕР»СЊ)) РЅРѕРјРµСЂ СЃР»РёС‚РєР°.
 }
   try
       Fsqlite.SQuery.Close;
@@ -267,19 +267,19 @@ begin
       Fsqlite.SQuery.ExecSQL;
   except
     on E : Exception do
-      Log.save('e', E.ClassName+' create table, с сообщением: '+E.Message);
+      Log.save('e', E.ClassName+' create table, СЃ СЃРѕРѕР±С‰РµРЅРёРµРј: '+E.Message);
   end;
 end;
 
 
 
 
-// При загрузке программы класс будет создаваться
+// РџСЂРё Р·Р°РіСЂСѓР·РєРµ РїСЂРѕРіСЂР°РјРјС‹ РєР»Р°СЃСЃ Р±СѓРґРµС‚ СЃРѕР·РґР°РІР°С‚СЊСЃСЏ
 initialization
 Log := Tlog.Create;
 SettingsApp := TSettings.Create;
 
-//При закрытии программы уничтожаться
+//РџСЂРё Р·Р°РєСЂС‹С‚РёРё РїСЂРѕРіСЂР°РјРјС‹ СѓРЅРёС‡С‚РѕР¶Р°С‚СЊСЃСЏ
 finalization
 SettingsApp.Destroy;
 

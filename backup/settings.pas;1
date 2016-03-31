@@ -84,7 +84,7 @@ var
    SerialPortSettings: TSerialSettings;
 
 
-//   {$DEFINE DEBUG}
+   {$DEFINE DEBUG}
 
 
 
@@ -123,11 +123,8 @@ end;
 
 
 function TSettings.FDBFile: string;
-var
-  DBFile: string;
 begin
-  DBFile := 'data.sdb';
-  result := DBFile;
+  result := 'data.sdb';
 end;
 
 

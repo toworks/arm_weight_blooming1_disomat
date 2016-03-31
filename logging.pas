@@ -26,7 +26,7 @@ constructor TLog.Create;
 begin
   inherited Create;
   cs := TCriticalSection.Create;
-  //имя файла
+  //РёРјСЏ С„Р°Р№Р»Р°
   ProgFileName := ExtractFileName(ChangeFileExt(ParamStr(0), ''));
 end;
 
@@ -96,7 +96,7 @@ Type    Level    Description
           CloseFile(f);
       except
         on E : Exception do
-          save('e', E.ClassName+', с сообщением: '+E.Message);
+          save('e', E.ClassName+', СЃ СЃРѕРѕР±С‰РµРЅРёРµРј: '+E.Message);
       end;
   finally
       cs.Leave;
@@ -104,12 +104,12 @@ Type    Level    Description
 end;
 
 
-// При загрузке программы класс будет создаваться
+// РџСЂРё Р·Р°РіСЂСѓР·РєРµ РїСЂРѕРіСЂР°РјРјС‹ РєР»Р°СЃСЃ Р±СѓРґРµС‚ СЃРѕР·РґР°РІР°С‚СЊСЃСЏ
 initialization
 //Log := TLog.Create;
 
 
-//При закрытии программы уничтожаться
+//РџСЂРё Р·Р°РєСЂС‹С‚РёРё РїСЂРѕРіСЂР°РјРјС‹ СѓРЅРёС‡С‚РѕР¶Р°С‚СЊСЃСЏ
 finalization
 //Log.Destroy;
 

@@ -49,7 +49,7 @@ begin
       end;
    except
      on E: Exception do
-       Log.save('e', E.ClassName + ', с сообщением: ' + E.Message);
+       Log.save('e', E.ClassName + ', СЃ СЃРѕРѕР±С‰РµРЅРёРµРј: ' + E.Message);
    end;
 end;
 
@@ -63,10 +63,10 @@ begin
   try
     CalibrationForm.Height := 360;
     CalibrationForm.Width := 600;
-    //запрет на изменение формы
+    //Р·Р°РїСЂРµС‚ РЅР° РёР·РјРµРЅРµРЅРёРµ С„РѕСЂРјС‹
     CalibrationForm.BorderStyle := bsToolWindow;
     CalibrationForm.BorderIcons := CalibrationForm.BorderIcons - [biMaximize];
-    CalibrationForm.Caption := ' калибровка';
+    CalibrationForm.Caption := ' РєР°Р»РёР±СЂРѕРІРєР°';
     CalibrationForm.Icon := Form1.Icon;
     CalibrationForm.Position := poMainFormCenter;
     CalibrationForm.ShowModal;

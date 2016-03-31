@@ -4,19 +4,19 @@ unit thread_sql_read;
 interface
 
 uses
-  SysUtils, Data.DB, Classes, ActiveX, ZDataset, SyncObjs, logging, sql;
+  SysUtils, DB, Classes, ActiveX, ZDataset, Variants, logging, sql;
 
 type
-  //Здесь необходимо описать класс TThreadSql:
+  //Р—РґРµСЃСЊ РЅРµРѕР±С…РѕРґРёРјРѕ РѕРїРёСЃР°С‚СЊ РєР»Р°СЃСЃ TThreadSql:
   TThreadSqlRead = class(TThread)
   private
     FThreadSqlRead: TThreadSqlRead;
     FSqlMax: int64;
     Fpkdat_in: string;
-//    Fsql: TFsql;
 
     procedure SyncSqlReadTable;
     procedure SqlNewRecord;
+    procedure NextWeightToRecordLocation;
   protected
     procedure Execute; override;
   public
@@ -26,7 +26,6 @@ type
   end;
 
 var
-//  SqlMax: int64 = 0;
   FutureDate: TDateTime;
   lLog: TLog;
   Fsql: TFsql;
@@ -51,7 +50,7 @@ begin
   Fsql := TFsql.Create(lLog);
   FSqlMax := 0;
 
-  // создаем поток True - создание остановка, False - создание старт
+  // СЃРѕР·РґР°РµРј РїРѕС‚РѕРє True - СЃРѕР·РґР°РЅРёРµ РѕСЃС‚Р°РЅРѕРІРєР°, False - СЃРѕР·РґР°РЅРёРµ СЃС‚Р°СЂС‚
   FThreadSqlRead := TThreadSqlRead.Create(True);
   FThreadSqlRead.Priority := tpNormal;
   FThreadSqlRead.FreeOnTerminate := True;
@@ -74,11 +73,11 @@ begin
   while True do
    begin
       try
-          Synchronize(SyncSqlMax);
+          Synchronize(@SyncSqlMax);
           SqlNewRecord;
       except
         on E : Exception do
-          lLog.save('e', E.ClassName+', с сообщением: '+E.Message);
+          lLog.save('e', E.ClassName+', СЃ СЃРѕРѕР±С‰РµРЅРёРµРј: '+E.Message);
       end;
 
       sleep(1000);
@@ -92,12 +91,12 @@ var
   i, timestamp: integer;
   count: int64;
 begin
-  // двигаем мышку
+  // РґРІРёРіР°РµРј РјС‹С€РєСѓ
   try
       if NOW > FutureDate then
       begin
         FutureDate := Now + 4 / (24 * 60); //+4 minutes
-        MouseMoved;//двигаем мышку
+//        MouseMoved;//РґРІРёРіР°РµРј РјС‹С€РєСѓ
       end;
   {$IFDEF DEBUG}
     lLog.save('d', 'NOW -> '+datetimetostr(now));
@@ -105,7 +104,7 @@ begin
   {$ENDIF}
   except
     on E : Exception do
-      lLog.save('e', E.ClassName+', с сообщением: '+E.Message);
+      lLog.save('e', E.ClassName+', СЃ СЃРѕРѕР±С‰РµРЅРёРµРј: '+E.Message);
   end;
 
   try
@@ -116,7 +115,7 @@ begin
     Fsql.FQuery.SQL.Add('order by pkdat desc rows 3');
     Fsql.FQuery.Open;
 
-    //подготавливаем данные для выборки в dbgrid
+    //РїРѕРґРіРѕС‚Р°РІР»РёРІР°РµРј РґР°РЅРЅС‹Рµ РґР»СЏ РІС‹Р±РѕСЂРєРё РІ dbgrid
     i:=0;
     while not Fsql.FQuery.Eof do
     begin
@@ -141,12 +140,12 @@ begin
     if (FSqlMax < count) then
     begin
         FSqlMax := count;
-        //обновление отображение записанных данных ViewDbWeight;
-        Synchronize(SyncSqlReadTable);
+        //РѕР±РЅРѕРІР»РµРЅРёРµ РѕС‚РѕР±СЂР°Р¶РµРЅРёРµ Р·Р°РїРёСЃР°РЅРЅС‹С… РґР°РЅРЅС‹С… ViewDbWeight;
+        Synchronize(@SyncSqlReadTable);
 
-        //dbgrid текущая выбраная заготовка
-        if not Fpkdat_in.IsEmpty then
-          Synchronize(NextWeightToRecordLocation);
+        //dbgrid С‚РµРєСѓС‰Р°СЏ РІС‹Р±СЂР°РЅР°СЏ Р·Р°РіРѕС‚РѕРІРєР°
+        if Fpkdat_in <> '' then
+          Synchronize(@NextWeightToRecordLocation);
 
   {$IFDEF DEBUG}
     lLog.save('d', 'count -> '+inttostr(count));
@@ -156,12 +155,12 @@ begin
      end;
   except
     on E : Exception do
-      lLog.save('e', E.ClassName+', с сообщением: '+E.Message);
+      lLog.save('e', E.ClassName+', СЃ СЃРѕРѕР±С‰РµРЅРёРµРј: '+E.Message);
   end;
 
-  // маркер следующей заготовки
+  // РјР°СЂРєРµСЂ СЃР»РµРґСѓСЋС‰РµР№ Р·Р°РіРѕС‚РѕРІРєРё
   if MarkerNextWait then
-    Synchronize(NextWeightToRecord); //следующая запись (слиток) от записаной
+//    Synchronize(@NextWeightToRecord); //СЃР»РµРґСѓСЋС‰Р°СЏ Р·Р°РїРёСЃСЊ (СЃР»РёС‚РѕРє) РѕС‚ Р·Р°РїРёСЃР°РЅРѕР№
 end;
 
 
@@ -181,27 +180,45 @@ begin
       MainFSql.FQuery.Open;
   except
     on E : Exception do
-      lLog.save('e', E.ClassName+', с сообщением: '+E.Message);
+      lLog.save('e', E.ClassName+', СЃ СЃРѕРѕР±С‰РµРЅРёРµРј: '+E.Message);
   end;
-  //исправляем отображение даты в DBGrid -> pFIBDataSet1
+  //РёСЃРїСЂР°РІР»СЏРµРј РѕС‚РѕР±СЂР°Р¶РµРЅРёРµ РґР°С‚С‹ РІ DBGrid -> pFIBDataSet1
   TDateTimeField(MainFSql.FQuery.FieldByName('time_ingot')).DisplayFormat:='hh:nn:ss';
 end;
 
 
 procedure TThreadSqlRead.SyncSqlMax;
 begin
-  Form1.SqlMax := FSqlMax;
+//  Form1.SqlMax := FSqlMax;
 end;
 
 
+procedure TThreadSqlRead.NextWeightToRecordLocation;
+var
+  KeyValues : Variant;
+begin
+  try
+      //РѕС‚РєР»СЋС‡Р°РµРј СѓРїСЂР°РІР»РµРЅРёРµ
+      form1.DBGrid1.DataSource.DataSet.DisableControls;
+      //РїРµСЂРµРјРµРЅРЅС‹Рµ РїРѕ РєРѕС‚РѕСЂС‹Рј Р±СѓРґРµС‚ РїСЂРѕРёР·РІРѕРґРёС‚СЊСЃСЏ РїРѕРёСЃРє
+      KeyValues := VarArrayOf([pkdat,num,num_ingot]);
+      //РїРѕРёСЃРє РїРѕ РєР»СЋС‡РёРІС‹Рј РїРѕР»СЏРј
+      form1.DBGrid1.DataSource.DataSet.Locate('pkdat;num;num_ingot', KeyValues, []);
+  finally
+      //РІРєР»СЋС‡Р°РµРј СѓРїСЂР°РІР»РµРЅРёРµ
+      form1.DBGrid1.DataSource.DataSet.EnableControls;
+  end;
+  //-- test
+  //Form1.l_next_id.Caption:=pkdat+'|'+num+'|'+num_ingot;
+end;
 
 
-// При загрузке программы класс будет создаваться
+// РџСЂРё Р·Р°РіСЂСѓР·РєРµ РїСЂРѕРіСЂР°РјРјС‹ РєР»Р°СЃСЃ Р±СѓРґРµС‚ СЃРѕР·РґР°РІР°С‚СЊСЃСЏ
 initialization
 //ThreadSqlRead := TThreadSqlRead.Create;
 
 
-// При закрытии программы уничтожаться
+// РџСЂРё Р·Р°РєСЂС‹С‚РёРё РїСЂРѕРіСЂР°РјРјС‹ СѓРЅРёС‡С‚РѕР¶Р°С‚СЊСЃСЏ
 finalization
 //ThreadSqlRead.Destroy;
 

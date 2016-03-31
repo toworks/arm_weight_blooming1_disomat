@@ -4,11 +4,11 @@ unit thread_sql_send;
 interface
 
 uses
-  SysUtils, Classes, Data.DB, ActiveX, ZConnection, ZDataset, ZDbcIntfs,
+  SysUtils, Classes, DB, ActiveX, ZConnection, ZDataset, ZDbcIntfs,
   logging, sql;
 
 type
-  //Здесь необходимо описать класс TThreadSql:
+  //Р—РґРµСЃСЊ РЅРµРѕР±С…РѕРґРёРјРѕ РѕРїРёСЃР°С‚СЊ РєР»Р°СЃСЃ TThreadSql:
   TThreadSqlSend = class(TThread)
   private
     FThreadSqlSend: TThreadSqlSend;
@@ -52,7 +52,7 @@ begin
 
   lLog := _Log;
   TSSsqlite := TSqlite.Create(lLog);
-  // создаем поток True - создание остановка, False - создание старт
+  // СЃРѕР·РґР°РµРј РїРѕС‚РѕРє True - СЃРѕР·РґР°РЅРёРµ РѕСЃС‚Р°РЅРѕРІРєР°, False - СЃРѕР·РґР°РЅРёРµ СЃС‚Р°СЂС‚
   FThreadSqlSend := TThreadSqlSend.Create(True);
   FThreadSqlSend.Priority := tpNormal;
   FThreadSqlSend.FreeOnTerminate := True;
@@ -92,7 +92,7 @@ begin
                 +'))) (CONNECT_DATA = (SERVICE_NAME = '+
                 OraSqlSettings.db_name+')))';
         FOraConnect.Database := ConnectString;
-        FOraConnect.LibraryLocation := '.\oci.dll';// отказался от полных путей не читает
+        FOraConnect.LibraryLocation := '.\oci.dll';// РѕС‚РєР°Р·Р°Р»СЃСЏ РѕС‚ РїРѕР»РЅС‹С… РїСѓС‚РµР№ РЅРµ С‡РёС‚Р°РµС‚
         FOraConnect.Protocol := 'oracle';
         FOraConnect.User := OraSqlSettings.user;
         FOraConnect.Password := OraSqlSettings.password;
@@ -101,7 +101,7 @@ begin
         FOraQuery.Connection := FOraConnect;
       except
         on E: Exception do begin
-          lLog.save('e', E.ClassName+', с сообщением: '+E.Message);
+          lLog.save('e', E.ClassName+', СЃ СЃРѕРѕР±С‰РµРЅРёРµРј: '+E.Message);
         end;
       end;
   end
@@ -122,10 +122,10 @@ begin
       try
           SqlSend;
           GetMaxLocalCount;
-          Synchronize(SyncSqlMaxLocal);
+//          Synchronize(SyncSqlMaxLocal);
       except
         on E : Exception do
-          lLog.save('e', E.ClassName+'3, с сообщением: '+E.Message);
+          lLog.save('e', E.ClassName+'3, СЃ СЃРѕРѕР±С‰РµРЅРёРµРј: '+E.Message);
       end;
 
       sleep(1000);
@@ -148,11 +148,11 @@ begin
       TSSsqlite.SQuery.SQL.Add('datetime(timestamp, ''unixepoch'', ''localtime'' ) as timestamp');
       TSSsqlite.SQuery.SQL.Add('FROM weight');
       TSSsqlite.SQuery.SQL.Add('where transferred=0');
-      TSSsqlite.SQuery.SQL.Add('order by id asc limit 10'); //порциями по 10 шт
+      TSSsqlite.SQuery.SQL.Add('order by id asc limit 10'); //РїРѕСЂС†РёСЏРјРё РїРѕ 10 С€С‚
       TSSsqlite.SQuery.Open;
    except
     on E : Exception do
-      lLog.save('e', E.ClassName+' sql send select, с сообщением: '+E.Message);
+      lLog.save('e', E.ClassName+' sql send select, СЃ СЃРѕРѕР±С‰РµРЅРёРµРј: '+E.Message);
   end;
 
       i := 0;
@@ -169,7 +169,7 @@ begin
 
   except
     on E : Exception do
-      lLog.save('e', E.ClassName+' sql send buffer, с сообщением: '+E.Message);
+      lLog.save('e', E.ClassName+' sql send buffer, СЃ СЃРѕРѕР±С‰РµРЅРёРµРј: '+E.Message);
   end;
 
   for i := Low(Byffer) to High(Byffer) do
@@ -197,7 +197,7 @@ begin
             Log.save('sql'+#9#9+'write'+#9+'weight -> '+Byffer[i,1]);
             Log.save('sql'+#9#9+'write'+#9+'timestamp -> '+Byffer[i,2]);}
 
-            //удаляем старые записи старше 3х дней
+            //СѓРґР°Р»СЏРµРј СЃС‚Р°СЂС‹Рµ Р·Р°РїРёСЃРё СЃС‚Р°СЂС€Рµ 3С… РґРЅРµР№
             TSSsqlite.SQuery.Close;
             TSSsqlite.SQuery.SQL.Clear;
             TSSsqlite.SQuery.SQL.Add('delete from weight');
@@ -206,7 +206,7 @@ begin
         end;
       except
         on E : Exception do
-          lLog.save('e', E.ClassName+' sql send update, с сообщением: '+E.Message);
+          lLog.save('e', E.ClassName+' sql send update, СЃ СЃРѕРѕР±С‰РµРЅРёРµРј: '+E.Message);
       end;
   end;
 end;
@@ -219,7 +219,7 @@ begin
   error := false;
 
   try
-    //была ошибака: EZSQLException, с сообщением: SQL Error: OCI_NO_DATA
+    //Р±С‹Р»Р° РѕС€РёР±Р°РєР°: EZSQLException, СЃ СЃРѕРѕР±С‰РµРЅРёРµРј: SQL Error: OCI_NO_DATA
 //    if not FOraConnect.Connected then
       lLog.save('e', 'ServerVersion | '+inttostr(FOraConnect.ServerVersion));
 //      FOraConnect.Reconnect;
@@ -228,7 +228,7 @@ begin
     FOraQuery.SQL.Clear;
     FOraQuery.SQL.Add('INSERT INTO crop');
     FOraQuery.SQL.Add('(id_asutp, weight_bloom, date_weight_bloom)');
-    FOraQuery.SQL.Add('VALUES ('+IdIn+', '+PointReplace(WeightIn)+',');
+//    FOraQuery.SQL.Add('VALUES ('+IdIn+', '+PointReplace(WeightIn)+',');
     FOraQuery.SQL.Add('TO_DATE('''+TimestampIn+''', ''yyyy-mm-dd hh24:mi:ss''))');
     FOraQuery.ExecSQL;
   {$IFDEF DEBUG}
@@ -237,7 +237,7 @@ begin
   except
     on E : Exception do begin
       error := true;
-      lLog.save('e', E.ClassName+' sql save to oracle, с сообщением: '+E.Message+' | '+FOraQuery.SQL.Text);
+      lLog.save('e', E.ClassName+' sql save to oracle, СЃ СЃРѕРѕР±С‰РµРЅРёРµРј: '+E.Message+' | '+FOraQuery.SQL.Text);
     end;
   end;
 
@@ -247,7 +247,7 @@ begin
         FOraQuery.Close;
         FOraQuery.SQL.Clear;
         FOraQuery.SQL.Add('update crop');
-        FOraQuery.SQL.Add('set weight_bloom = '+PointReplace(WeightIn)+',');
+//        FOraQuery.SQL.Add('set weight_bloom = '+PointReplace(WeightIn)+',');
         FOraQuery.SQL.Add('date_weight_bloom = TO_DATE('''+TimestampIn+''',');
         FOraQuery.SQL.Add('''yyyy-mm-dd hh24:mi:ss'')');
         FOraQuery.SQL.Add('where id_asutp = '+IdIn+'');
@@ -260,7 +260,7 @@ begin
     except
       on E : Exception do begin
         error := true;
-        lLog.save('e', E.ClassName+'7, с сообщением: '+E.Message+' | '+FOraQuery.SQL.Text);
+        lLog.save('e', E.ClassName+'7, СЃ СЃРѕРѕР±С‰РµРЅРёРµРј: '+E.Message+' | '+FOraQuery.SQL.Text);
       end;
     end;
   end;
@@ -279,7 +279,7 @@ begin
       SLQuery.SQL.Add('SELECT substr(pkdat,7,1) as shift, num_ingot,');
       SLQuery.SQL.Add('datetime(timestamp, ''unixepoch'', ''localtime'' ) as timestamp,');
       SLQuery.SQL.Add('heat, weight,');
-      SLQuery.SQL.Add('case when transferred = 1 then ''передан'' else ''не передан'' end as transferred');
+      SLQuery.SQL.Add('case when transferred = 1 then ''РїРµСЂРµРґР°РЅ'' else ''РЅРµ РїРµСЂРµРґР°РЅ'' end as transferred');
       SLQuery.SQL.Add('FROM weight');
       SLQuery.SQL.Add('order by timestamp desc limit 100');
       SLQuery.Open;
@@ -294,16 +294,16 @@ begin
 
  //     if assigned(Form1.DBGrid2) then begin
 //        Form1.DBGrid2.DataSource := SLDataSource;
-//        Synchronize(Form1.DBGrid2.Refresh);//views взвешенные заготовки
+//        Synchronize(Form1.DBGrid2.Refresh);//views РІР·РІРµС€РµРЅРЅС‹Рµ Р·Р°РіРѕС‚РѕРІРєРё
  //     end;
 
-      //исправляем отображение даты в DBGrid -> 20 characters
+      //РёСЃРїСЂР°РІР»СЏРµРј РѕС‚РѕР±СЂР°Р¶РµРЅРёРµ РґР°С‚С‹ РІ DBGrid -> 20 characters
 {      TStringField(SLQuery.FieldByName('shift')).DisplayWidth := 3;
       TStringField(SLQuery.FieldByName('timestamp')).DisplayWidth := 20;
       TStringField(SLQuery.FieldByName('transferred')).DisplayWidth := 20;
   except
     on E : Exception do
-      Log.save('e', E.ClassName+'8, с сообщением: '+E.Message);
+      Log.save('e', E.ClassName+'8, СЃ СЃРѕРѕР±С‰РµРЅРёРµРј: '+E.Message);
   end;
 end;}
 //-- end main
@@ -313,7 +313,7 @@ function TThreadSqlSend.GetMaxLocalCount: boolean;
 var
   timestamp: int64;
 begin
-//-- локальные данные
+//-- Р»РѕРєР°Р»СЊРЅС‹Рµ РґР°РЅРЅС‹Рµ
   try
       if FSqlMaxLocal = 0 then
       begin
@@ -336,7 +336,7 @@ begin
       TSSsqlite.SQuery.Open;
   except
     on E : Exception do
-      lLog.save('e', E.ClassName+' sql max local count, с сообщением: '+E.Message);
+      lLog.save('e', E.ClassName+' sql max local count, СЃ СЃРѕРѕР±С‰РµРЅРёРµРј: '+E.Message);
   end;
 
   try
@@ -349,13 +349,13 @@ begin
         FSqlMaxLocal := timestamp;
 
         if assigned(MainSqlite.SQuery) then
-          Synchronize(SqlReadTableLocal);//views взвешенные заготовки
+          Synchronize(SqlReadTableLocal);//views РІР·РІРµС€РµРЅРЅС‹Рµ Р·Р°РіРѕС‚РѕРІРєРё
       end
   except
     on E : Exception do
-      lLog.save('e', E.ClassName+' sql max local synchronize, с сообщением: '+E.Message);
+      lLog.save('e', E.ClassName+' sql max local synchronize, СЃ СЃРѕРѕР±С‰РµРЅРёРµРј: '+E.Message);
   end;
-  //-- локальные данные
+  //-- Р»РѕРєР°Р»СЊРЅС‹Рµ РґР°РЅРЅС‹Рµ
 end;
 
 
@@ -367,12 +367,12 @@ end;
 
 
 
-// При загрузке программы класс будет создаваться
+// РџСЂРё Р·Р°РіСЂСѓР·РєРµ РїСЂРѕРіСЂР°РјРјС‹ РєР»Р°СЃСЃ Р±СѓРґРµС‚ СЃРѕР·РґР°РІР°С‚СЊСЃСЏ
 initialization
 //ThreadSqlSend := TThreadSqlSend.Create;
 
 
-// При закрытии программы уничтожаться
+// РџСЂРё Р·Р°РєСЂС‹С‚РёРё РїСЂРѕРіСЂР°РјРјС‹ СѓРЅРёС‡С‚РѕР¶Р°С‚СЊСЃСЏ
 finalization
 //ThreadSqlSend.Destroy;
 

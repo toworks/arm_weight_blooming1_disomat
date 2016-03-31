@@ -1,20 +1,24 @@
 object Form1: TForm1
-  Left = 759
-  Height = 489
-  Top = 328
-  Width = 646
+  Left = 722
+  Height = 502
+  Top = 312
+  Width = 643
+  BorderStyle = bsSingle
   Caption = 'Form1'
-  ClientHeight = 489
-  ClientWidth = 646
+  ClientHeight = 502
+  ClientWidth = 643
+  KeyPreview = True
+  OnCloseQuery = FormCloseQuery
+  OnCreate = FormCreate
   Position = poDesktopCenter
   LCLVersion = '1.6.0.4'
   object gb_data_pu1: TGroupBox
     Left = 8
-    Height = 192
-    Top = 8
+    Height = 173
+    Top = 3
     Width = 628
     Caption = ' Данные с ПУ-1 '
-    ClientHeight = 167
+    ClientHeight = 148
     ClientWidth = 624
     Font.CharSet = RUSSIAN_CHARSET
     Font.Height = -16
@@ -26,27 +30,34 @@ object Form1: TForm1
     TabOrder = 0
     object DBGrid1: TDBGrid
       Left = 5
-      Height = 160
+      Height = 141
       Top = 0
       Width = 614
+      Anchors = [akTop, akLeft, akRight, akBottom]
       Color = clWindow
       Columns = <>
+      Options = [dgTitles, dgIndicator, dgColumnResize, dgColumnMove, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit]
+      ReadOnly = True
       TabOrder = 0
       TitleFont.CharSet = RUSSIAN_CHARSET
-      TitleFont.Height = -16
-      TitleFont.Name = 'Arial Narrow'
+      TitleFont.Color = clWindowText
+      TitleFont.Height = -11
+      TitleFont.Name = 'MS Sans Serif'
       TitleFont.Pitch = fpVariable
       TitleFont.Quality = fqDraft
       TitleFont.Style = [fsBold]
+      OnDrawColumnCell = DBGrid1DrawColumnCell
+      OnDblClick = DBGrid1DblClick
+      OnPrepareCanvas = DBGrid1PrepareCanvas
     end
   end
   object gb_data_pu2: TGroupBox
     Left = 8
-    Height = 88
-    Top = 200
+    Height = 83
+    Top = 178
     Width = 628
     Caption = ' Взвешиваемый слиток '
-    ClientHeight = 63
+    ClientHeight = 58
     ClientWidth = 624
     Font.CharSet = RUSSIAN_CHARSET
     Font.Height = -16
@@ -240,6 +251,41 @@ object Form1: TForm1
       Layout = tlCenter
       ParentColor = False
       ParentFont = False
+    end
+  end
+  object gb_weighed_ingot_in_sql: TGroupBox
+    Left = 8
+    Height = 176
+    Top = 264
+    Width = 628
+    Caption = ' Взвешенные слитки '
+    ClientHeight = 151
+    ClientWidth = 624
+    Font.CharSet = RUSSIAN_CHARSET
+    Font.Height = -16
+    Font.Name = 'Arial Narrow'
+    Font.Pitch = fpVariable
+    Font.Quality = fqDraft
+    Font.Style = [fsBold]
+    ParentFont = False
+    TabOrder = 2
+    object DBGrid2: TDBGrid
+      Left = 5
+      Height = 144
+      Top = 0
+      Width = 614
+      Anchors = [akTop, akLeft, akRight, akBottom]
+      Color = clWindow
+      Columns = <>
+      Options = [dgTitles, dgIndicator, dgColumnResize, dgColumnMove, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit]
+      TabOrder = 0
+      TitleFont.CharSet = RUSSIAN_CHARSET
+      TitleFont.Color = clWindowText
+      TitleFont.Height = -11
+      TitleFont.Name = 'MS Sans Serif'
+      TitleFont.Pitch = fpVariable
+      TitleFont.Quality = fqDraft
+      TitleFont.Style = [fsBold]
     end
   end
 end

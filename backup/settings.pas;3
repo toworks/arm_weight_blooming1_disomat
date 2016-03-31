@@ -118,8 +118,7 @@ end;
 
 function TSettings.FHeadName: string;
 begin
-  HeadName := ' АРМ резчика ПУ-4 ';
-  result := HeadName;
+  result := ' АРМ резчика ПУ-4 ';
 end;
 
 

@@ -117,20 +117,14 @@ end;
 
 
 function TSettings.FHeadName: string;
-var
-  HeadName: string;
 begin
-  HeadName := ' АРМ резчика ПУ-4 ';
-  result := HeadName;
+  result := ' АРМ резчика ПУ-4 ';
 end;
 
 
 function TSettings.FDBFile: string;
-var
-  DBFile: string;
 begin
-  DBFile := 'data.sdb';
-  result := DBFile;
+  result := 'data.sdb';
 end;
 
 

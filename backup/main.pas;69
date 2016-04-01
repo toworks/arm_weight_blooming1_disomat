@@ -95,21 +95,6 @@ begin
 end;
 
 
-function TForm1.CreateMenu: boolean;
-begin
-
-end;
-
-procedure TForm1.ActionMenuItemClick(Sender: TObject);
-begin
-
-end;
-
-procedure TForm1.DBgrid1Create(Sender: TObject);
-begin
-
-end;
-
 procedure TForm1.DBGrid1DrawColumnCell(Sender: TObject; const Rect: TRect;
   DataCol: Integer; Column: TColumn; State: TGridDrawState);
 var
@@ -156,7 +141,7 @@ begin
 end;
 
 
-{procedure TForm1.DBGrid1PrepareCanvas(sender: TObject; DataCol: Integer;
+procedure TForm1.DBGrid1PrepareCanvas(sender: TObject; DataCol: Integer;
   Column: TColumn; AState: TGridDrawState);
 var
    i: integer;
@@ -173,9 +158,9 @@ begin
              Columns.Items[i].Alignment := taLeftJustify;
           end;}
           if (TextWidth < Columns.Items[i].Width) then begin
-             Columns.Items[i].Width := TextWidth;
-             Columns.Items[i].Alignment := taLeftJustify;
-             Columns.Items[i].Title.Alignment := taLeftJustify;
+             Columns.Items[i].Width := TitleWidth+5;
+             Columns.Items[i].Alignment := taCenter;//taLeftJustify;
+             Columns.Items[i].Title.Alignment := taCenter;//taLeftJustify;
           end;
       end;
     end;
@@ -197,7 +182,7 @@ begin
         end;
       end;}
 //      _resize := true;
-//end;}
+end;
 
 
 procedure TForm1.FormCreate(Sender: TObject);
@@ -302,12 +287,12 @@ begin
   DBGrid1.Columns.Items[5].Title.Caption := 'Масса слитка ПУ-1 (т)';
   DBGrid1.Columns.Items[6].Title.Caption := 'steel_group';
 
-  for i := 0 to DBGrid1.columns.Count - 1 do begin
-      DBGrid1.Columns.Items[i].Title.Alignment := taCenter;
-      DBGrid1.Columns.Items[i].MaxSize:=10;
-  end;
+//  for i := 0 to DBGrid1.columns.Count - 1 do begin
+//      DBGrid1.Columns.Items[i].Title.Alignment := taCenter;
+//      DBGrid1.Columns.Items[i].MaxSize:=150;
+//  end;
 
-  DBGrid1.Columns.Items[0].MaxSize:=10;
+//  DBGrid1.Columns.Items[0].MaxSize:=10;
   DBGrid1.Columns.Items[6].Visible := false;
 
 end;

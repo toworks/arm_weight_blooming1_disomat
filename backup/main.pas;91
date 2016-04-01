@@ -31,6 +31,8 @@ type
     l_n_datetime: TLabel;
     procedure DBGrid1DrawColumnCell(Sender: TObject; const Rect: TRect;
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
+    procedure DBGrid1PrepareCanvas(sender: TObject; DataCol: Integer;
+      Column: TColumn; AState: TGridDrawState);
     procedure FormCloseQuery(Sender: TObject; var CanClose: boolean);
     procedure FormCreate(Sender: TObject);
     function CreateMenu: boolean;
@@ -92,14 +94,31 @@ begin
   end;
 end;
 
+procedure TForm1.FormCreate(Sender: TObject);
+begin
+
+end;
+
+function TForm1.CreateMenu: boolean;
+begin
+
+end;
+
+procedure TForm1.ActionMenuItemClick(Sender: TObject);
+begin
+
+end;
+
+procedure TForm1.DBgrid1Create(Sender: TObject);
+begin
+
+end;
+
 procedure TForm1.DBGrid1DrawColumnCell(Sender: TObject; const Rect: TRect;
   DataCol: Integer; Column: TColumn; State: TGridDrawState);
 var
   R: TRect;
 begin
-  begin
-      R := Rect;
-      Dec(R.Bottom, 2);
 
 
       if Column.FieldName = 'heat_to_work' then
@@ -140,6 +159,50 @@ begin
   end
 //  else
 //    (Sender As TDBGrid).DefaultDrawColumnCell(Rect, DataCol, Column, State);
+end;
+
+procedure TForm1.DBGrid1PrepareCanvas(sender: TObject; DataCol: Integer;
+  Column: TColumn; AState: TGridDrawState);
+  var
+    i: integer;
+    TitleWidth: integer;
+    TextWidth: integer;
+  begin
+    with (Sender As TDBGrid) do begin
+      for i:=0 to Columns.Count-1 do begin
+          TitleWidth := Canvas.TextWidth(Columns.Items[i].Title.Caption);
+          TextWidth := Canvas.TextWidth(Columns.Items[i].Field.ToString);
+  {        if (TitleWidth < Columns.Items[i].Width) and not _resize then begin
+             Columns.Items[i].Width := TextWidth;
+             Columns.Items[i].Alignment := taCenter;
+             Columns.Items[i].Alignment := taLeftJustify;
+          end;}
+          if (TextWidth < Columns.Items[i].Width) and not _resize then begin
+             Columns.Items[i].Width := TextWidth;
+             Columns.Items[i].Alignment := taLeftJustify;
+             Columns.Items[i].Title.Alignment := taLeftJustify;
+          end;
+      end;
+    end;
+
+  {  if  MSQuery.FieldByName('step').AsString = 'Красный' then
+      begin
+        with (Sender As TDBGrid) do
+        begin
+          if (Column.FieldName = 'low') then begin
+                Canvas.Brush.Color := $006868FD; //Red
+                Canvas.Font.Color := clBlack;
+                Canvas.font.Style := [fsBold];
+          end;
+          if (Column.FieldName = 'high') then begin
+                Canvas.Brush.Color := $0002E813; //Green;
+                Canvas.Font.Color := clBlack;
+                Canvas.font.Style := [fsBold];
+          end;
+        end;
+      end;}
+      _resize := true;
+  end;
 end;
 
 procedure TForm1.FormCreate(Sender: TObject);

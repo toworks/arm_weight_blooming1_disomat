@@ -7,7 +7,8 @@ interface
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, DBGrids,
   ExtCtrls, StdCtrls, Menus, db, {$ifdef windows} Windows, {$endif}
-  logging, sql, thread_sql_read, {thread_sql_send, thread_comport}, Grids;
+  logging, sql, thread_sql_read{, thread_sql_send, thread_comport},
+  Grids;
 
 type
 
@@ -29,6 +30,7 @@ type
     l_n_number_ingot: TLabel;
     l_number_ingot: TLabel;
     l_n_datetime: TLabel;
+    procedure DBGrid1DblClick(Sender: TObject);
     procedure DBGrid1DrawColumnCell(Sender: TObject; const Rect: TRect;
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
     procedure DBGrid1PrepareCanvas(sender: TObject; DataCol: Integer;
@@ -52,6 +54,10 @@ var
   SDataSource: TDataSource;
   MainFSql: TFsql;
   FDataSource: TDataSource;
+
+//    {$DEFINE DEBUG}
+
+  function ViewSelectedIngot: bool;
 
 
 implementation
@@ -138,6 +144,23 @@ begin
 //  end
 //  else
 //    (Sender As TDBGrid).DefaultDrawColumnCell(Rect, DataCol, Column, State);}
+end;
+
+
+procedure TForm1.DBGrid1DblClick(Sender: TObject);
+begin
+  // маркер следующей заготовки
+  if not MarkerNextWait then begin
+    try
+        //отключаем управление
+        form1.DBGrid1.DataSource.DataSet.DisableControls;
+        if MessageDlg('Выбрать заготовку для взвешивания?', mtCustom, mbYesNo, 0) = mrYes then
+          ViewSelectedIngot;
+    finally
+        //включаем управление
+        form1.DBGrid1.DataSource.DataSet.EnableControls;
+    end;
+  end;
 end;
 
 
@@ -295,6 +318,24 @@ begin
   DBGrid1.Columns.Items[6].Visible := false;
 
 end;
+
+
+function ViewSelectedIngot: bool;
+begin
+  Form1.l_number_ingot.Caption := Form1.DBGrid1.DataSource.DataSet.FieldByName('NUM_INGOT').AsString;
+  Form1.l_datetime.Caption := Form1.DBGrid1.DataSource.DataSet.FieldByName('TIME_INGOT').AsString;
+  Form1.l_heat.Caption := Form1.DBGrid1.DataSource.DataSet.FieldByName('NUM_HEAT').AsString;
+  Form1.l_grade.Caption := Form1.DBGrid1.DataSource.DataSet.FieldByName('NAME').AsString;
+  Form1.l_weight_ingot.Caption := Form1.DBGrid1.DataSource.DataSet.FieldByName('WEIGHT_INGOT').AsString;
+  pkdat := Form1.DBGrid1.DataSource.DataSet.FieldByName('PKDAT').AsString;
+  num := Form1.DBGrid1.DataSource.DataSet.FieldByName('NUM').AsString;
+  num_ingot := Form1.DBGrid1.DataSource.DataSet.FieldByName('NUM_INGOT').AsString;
+  num_heat := Form1.DBGrid1.DataSource.DataSet.FieldByName('NUM_HEAT').AsString;
+  smena := Form1.DBGrid1.DataSource.DataSet.FieldByName('SMENA').AsString;
+end;
+
+
+
 
 
 end.

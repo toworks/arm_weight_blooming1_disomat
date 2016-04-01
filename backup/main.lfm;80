@@ -47,6 +47,7 @@ object Form1: TForm1
       TitleFont.Quality = fqDraft
       TitleFont.Style = [fsBold]
       OnDrawColumnCell = DBGrid1DrawColumnCell
+      OnPrepareCanvas = DBGrid1PrepareCanvas
     end
   end
   object gb_data_pu2: TGroupBox

@@ -149,7 +149,7 @@ var
    TextWidth: integer;
 begin
     with (Sender As TDBGrid) do begin
-      for i:=0 to Columns.Count-1 do begin
+      for i:=0 to Columns.Count do begin
           TitleWidth := Canvas.TextWidth(Columns.Items[i].Title.Caption);
           TextWidth := Canvas.TextWidth(Columns.Items[i].Field.ToString);
   {        if (TitleWidth < Columns.Items[i].Width) and not _resize then begin
@@ -158,9 +158,9 @@ begin
              Columns.Items[i].Alignment := taLeftJustify;
           end;}
           if (TextWidth < Columns.Items[i].Width) then begin
-             Columns.Items[i].Width := TextWidth;
-             Columns.Items[i].Alignment := taLeftJustify;
-             Columns.Items[i].Title.Alignment := taLeftJustify;
+             Columns.Items[i].Width := TitleWidth+25;
+             Columns.Items[i].Alignment := taCenter;//taLeftJustify;
+             Columns.Items[i].Title.Alignment := taCenter;//taLeftJustify;
           end;
       end;
     end;
@@ -287,12 +287,12 @@ begin
   DBGrid1.Columns.Items[5].Title.Caption := 'Масса слитка ПУ-1 (т)';
   DBGrid1.Columns.Items[6].Title.Caption := 'steel_group';
 
-  for i := 0 to DBGrid1.columns.Count - 1 do begin
-      DBGrid1.Columns.Items[i].Title.Alignment := taCenter;
-      DBGrid1.Columns.Items[i].MaxSize:=10;
-  end;
+//  for i := 0 to DBGrid1.columns.Count - 1 do begin
+//      DBGrid1.Columns.Items[i].Title.Alignment := taCenter;
+//      DBGrid1.Columns.Items[i].MaxSize:=150;
+//  end;
 
-  DBGrid1.Columns.Items[0].MaxSize:=10;
+//  DBGrid1.Columns.Items[0].MaxSize:=10;
   DBGrid1.Columns.Items[6].Visible := false;
 
 end;

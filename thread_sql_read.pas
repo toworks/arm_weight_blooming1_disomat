@@ -7,7 +7,6 @@ uses
   SysUtils, DB, Classes, ActiveX, ZDataset, Variants, logging, sql;
 
 type
-  //Здесь необходимо описать класс TThreadSql:
   TThreadSqlRead = class(TThread)
   private
     FThreadSqlRead: TThreadSqlRead;
@@ -16,7 +15,8 @@ type
 
     procedure SyncSqlReadTable;
     procedure SqlNewRecord;
-    procedure NextWeightToRecordLocation;
+    procedure SyncNextWeightToRecord;
+    procedure SyncNextWeightToRecordLocation;
   protected
     procedure Execute; override;
   public
@@ -72,6 +72,7 @@ begin
   CoInitialize(nil);
   while True do
    begin
+
       try
           Synchronize(@SyncSqlMax);
           SqlNewRecord;
@@ -145,7 +146,7 @@ begin
 
         //dbgrid текущая выбраная заготовка
         if Fpkdat_in <> '' then
-          Synchronize(@NextWeightToRecordLocation);
+          Synchronize(@SyncNextWeightToRecordLocation);
 
   {$IFDEF DEBUG}
     lLog.save('d', 'count -> '+inttostr(count));
@@ -159,7 +160,7 @@ begin
   end;
 
   // маркер следующей заготовки
-  if MarkerNextWait then
+//  if MarkerNextWait then
 //    Synchronize(@NextWeightToRecord); //следующая запись (слиток) от записаной
 end;
 
@@ -187,13 +188,24 @@ begin
 end;
 
 
-procedure TThreadSqlRead.SyncSqlMax;
+procedure TThreadSqlRead.SyncNextWeightToRecord;
+var
+  KeyValues : Variant;
 begin
-//  Form1.SqlMax := FSqlMax;
+  try
+      //отключаем управление
+      form1.DBGrid1.DataSource.DataSet.DisableControls;
+      SqlNextWeightToRecord;
+      //dbgrid текущая выбраная заготовка
+      Synchronize(@SyncNextWeightToRecordLocation);
+  finally
+      //включаем управление
+      form1.DBGrid1.DataSource.DataSet.EnableControls;
+  end;
 end;
 
 
-procedure TThreadSqlRead.NextWeightToRecordLocation;
+procedure TThreadSqlRead.SyncNextWeightToRecordLocation;
 var
   KeyValues : Variant;
 begin
@@ -211,6 +223,14 @@ begin
   //-- test
   //Form1.l_next_id.Caption:=pkdat+'|'+num+'|'+num_ingot;
 end;
+
+
+procedure TThreadSqlRead.SyncSqlMax;
+begin
+//  Form1.SqlMax := FSqlMax;
+end;
+
+
 
 
 // При загрузке программы класс будет создаваться

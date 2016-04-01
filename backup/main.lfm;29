@@ -1,12 +1,12 @@
 object Form1: TForm1
-  Left = 722
+  Left = 667
   Height = 502
-  Top = 312
+  Top = 239
   Width = 643
   BorderStyle = bsSingle
   Caption = 'Form1'
-  ClientHeight = 502
-  ClientWidth = 643
+  ClientHeight = 0
+  ClientWidth = 0
   KeyPreview = True
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
@@ -36,7 +36,13 @@ object Form1: TForm1
       Anchors = [akTop, akLeft, akRight, akBottom]
       Color = clWindow
       Columns = <>
+      Font.CharSet = RUSSIAN_CHARSET
+      Font.Height = -16
+      Font.Name = 'Arial Narrow'
+      Font.Pitch = fpVariable
+      Font.Quality = fqDraft
       Options = [dgTitles, dgIndicator, dgColumnResize, dgColumnMove, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit]
+      ParentFont = False
       ReadOnly = True
       TabOrder = 0
       TitleFont.CharSet = RUSSIAN_CHARSET

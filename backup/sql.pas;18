@@ -3,7 +3,7 @@ unit sql;
 interface
 
 uses
-   SysUtils, ActiveX, Variants, Classes, StrUtils, Data.DB, ZConnection, ZDataset,
+   SysUtils, ActiveX, Variants, Classes, StrUtils, DB, ZConnection, ZDataset,
    ZDbcIntfs, SyncObjs, logging;
 
 var
@@ -251,10 +251,10 @@ begin
       // маркер следующей заготовки (ожидание)
       if _FSql.FQuery.FieldByName('pkdat').AsString = '' then
       begin
-          form1.SqlMax := 0;
-          form1.l_n_message.Visible := true;
-          form1.l_n_message.Font.Color := $002CB902;//green
-          form1.l_n_message.Caption := ' ќжидание сдедующей заготовки ';
+//          form1.SqlMax := 0;
+//          form1.l_n_message.Visible := true;
+//          form1.l_n_message.Font.Color := $002CB902;//green
+//          form1.l_n_message.Caption := ' ќжидание сдедующей заготовки ';
           MarkerNextWait := true;
 
           form1.l_weight_ingot.Visible := false;

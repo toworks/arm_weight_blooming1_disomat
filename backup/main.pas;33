@@ -7,7 +7,8 @@ interface
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, DBGrids,
   ExtCtrls, StdCtrls, Menus, db, {$ifdef windows} Windows, {$endif}
-  logging, sql, thread_sql_read{, thread_sql_send, thread_comport}, Grids;
+  logging, sql, thread_sql_read{, thread_sql_send, thread_comport},
+  Grids;
 
 type
 
@@ -56,7 +57,9 @@ var
 
 //    {$DEFINE DEBUG}
 
-  function ViewSelectedIngot: bool;
+  function ViewSelectedIngot: boolean;
+  function PointReplace(DataIn: string): string;
+  function ViewClear: boolean;
 
 
 implementation
@@ -105,44 +108,15 @@ procedure TForm1.DBGrid1DrawColumnCell(Sender: TObject; const Rect: TRect;
 var
   R: TRect;
 begin
-{      if Column.FieldName = 'smena' then
-       begin
-          (Sender As TDBGrid).Canvas.FillRect(Rect); //не смазывает при прокрутке
-          (Sender As TDBGrid).Canvas.TextRect(R, R.Left + 2, R.Top + 2,
-                                  Column.FieldName);
-       end
-      else begin
-          TDBGrid(Sender).Canvas.FillRect(Rect); //не смазывает при прокрутке
-          TDBGrid(Sender).DefaultDrawColumnCell(Rect, DataCol, Column, State);
-      end;
-
-      if Column.FieldName = 'step' then
-       begin
-          (Sender As TDBGrid).Canvas.FillRect(Rect); //не смазывает при прокрутке
-          with (Sender As TDBGrid).Canvas do
-          begin
-            Font.Color := clRed;
-            if (Column.FieldName = 'low') or (Column.FieldName = 'high') then
-              font.Style:= [fsBold];
-            (Sender as TDBGrid).Canvas.TextRect(Rect, Rect.Left + 2,
-                                  Rect.Top + 2, Column.Field.AsWideString);
-          end
-       end
-      else
-       begin
-          (Sender As TDBGrid).Canvas.FillRect(Rect); //не смазывает при прокрутке
-          with (Sender As TDBGrid).Canvas do
-          begin
-            Font.Color := clGreen;
-            if (Column.FieldName = 'low') or (Column.FieldName = 'high') then
-              font.Style:= [fsBold];
-            (Sender as TDBGrid).Canvas.TextRect(Rect, Rect.Left + 2,
-                                 Rect.Top + 2, Column.Field.AsWideString);
-          end
-      end;
-//  end
-//  else
-//    (Sender As TDBGrid).DefaultDrawColumnCell(Rect, DataCol, Column, State);}
+  if  gdSelected in State	then //color selected
+  begin
+    with DBGrid1.Canvas do
+    begin
+      (Sender as TDBGrid).Canvas.Brush.Color:= $002CB902;//green
+      	    (Sender as TDBGrid).Canvas.Font.Color := clHighLightText;
+    end;
+  end;
+  DefaultDrawColumnCell(Rect, DataCol, Column, State);
 end;
 
 
@@ -235,6 +209,8 @@ begin
   BorderStyle := bsToolWindow;
   BorderIcons := BorderIcons - [biMaximize];
 
+  ViewClear;
+
   CreateMenu;
 end;
 
@@ -319,7 +295,7 @@ begin
 end;
 
 
-function ViewSelectedIngot: bool;
+function ViewSelectedIngot: boolean;
 begin
   Form1.l_number_ingot.Caption := Form1.DBGrid1.DataSource.DataSet.FieldByName('NUM_INGOT').AsString;
   Form1.l_datetime.Caption := Form1.DBGrid1.DataSource.DataSet.FieldByName('TIME_INGOT').AsString;
@@ -334,24 +310,28 @@ begin
 end;
 
 
-procedure NextWeightToRecordLocation;
-var
-  KeyValues : Variant;
+function PointReplace(DataIn: string): string;
 begin
-  try
-      //отключаем управление
-      form1.DBGrid1.DataSource.DataSet.DisableControls;
-      //переменные по которым будет производиться поиск
-      KeyValues := VarArrayOf([pkdat,num,num_ingot]);
-      //поиск по ключивым полям
-      form1.DBGrid1.DataSource.DataSet.Locate('pkdat;num;num_ingot', KeyValues, []);
-  finally
-      //включаем управление
-      form1.DBGrid1.DataSource.DataSet.EnableControls;
-  end;
-  //-- test
-  Form1.l_next_id.Caption:=pkdat+'|'+num+'|'+num_ingot;
+      result:=StringReplace(Datain,',','.', [rfReplaceAll]);
 end;
+
+
+function ViewClear: boolean;
+var
+  i: integer;
+begin
+
+  for i:=0 to form1.ComponentCount - 1 do
+   begin
+    if (form1.Components[i] is Tlabel) then
+      begin
+        if copy(form1.Components[i].Name,1,4) <> 'l_n_' then
+          Tlabel(Form1.FindComponent(form1.Components[i].Name)).Caption := '';
+      end;
+   end;
+
+end;
+
 
 
 

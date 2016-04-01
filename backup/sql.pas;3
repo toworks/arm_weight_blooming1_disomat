@@ -167,6 +167,7 @@ begin
              Add('isc_tpb_concurrency');              // Needed for multiuser environments
              Add('isc_tpb_nowait');                   // Needed for multiuser environments
              Add('timeout=3');
+             Add('codepage=win1251');
 //             Add('codepage=NONE');
 //             Add('controls_cp=CP_UTF8');
 //             Add('AutoEncodeStrings=ON');

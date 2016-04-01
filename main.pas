@@ -6,9 +6,8 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, DBGrids,
-  ExtCtrls, StdCtrls, Menus, db, {$ifdef windows} Windows, {$endif}
-  logging, sql, thread_sql_read{, thread_sql_send, thread_comport},
-  Grids;
+  ExtCtrls, StdCtrls, Menus, db, {$ifdef windows} Windows, {$endif} Grids,
+  logging, sql, thread_sql_read{, thread_sql_send}, thread_comport;
 
 type
 
@@ -49,7 +48,7 @@ var
   Form1: TForm1;
   ThreadSqlRead: TThreadSqlRead;
 //  ThreadSqlSend: TThreadSqlSend;
-//  ThreadComPort: TThreadComPort;
+  ThreadComPort: TThreadComPort;
   MainSqlite: TSqlite;
   SDataSource: TDataSource;
   MainFSql: TFsql;
@@ -179,7 +178,7 @@ begin
 
   ThreadSqlRead := TThreadSqlRead.Create(Log);
 //  ThreadSqlSend := TThreadSqlSend.Create(Log);
-//  ThreadComPort := TThreadComPort.Create(Log);
+  ThreadComPort := TThreadComPort.Create(Log);
 
   Form1.Caption := SettingsApp.HeadName+'  build('+SettingsApp.GetVersion+')';
   //заголовки к showmessage

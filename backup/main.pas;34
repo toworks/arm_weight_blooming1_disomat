@@ -7,7 +7,8 @@ interface
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, DBGrids,
   ExtCtrls, StdCtrls, Menus, db, {$ifdef windows} Windows, {$endif}
-  logging, sql, thread_sql_read{, thread_sql_send, thread_comport}, Grids;
+  logging, sql, thread_sql_read{, thread_sql_send, thread_comport},
+  Grids;
 
 type
 
@@ -56,7 +57,9 @@ var
 
 //    {$DEFINE DEBUG}
 
-  function ViewSelectedIngot: bool;
+  function ViewSelectedIngot: boolean;
+  function PointReplace(DataIn: string): string;
+  function ViewClear: boolean;
 
 
 implementation
@@ -235,6 +238,8 @@ begin
   BorderStyle := bsToolWindow;
   BorderIcons := BorderIcons - [biMaximize];
 
+  ViewClear;
+
   CreateMenu;
 end;
 
@@ -319,7 +324,7 @@ begin
 end;
 
 
-function ViewSelectedIngot: bool;
+function ViewSelectedIngot: boolean;
 begin
   Form1.l_number_ingot.Caption := Form1.DBGrid1.DataSource.DataSet.FieldByName('NUM_INGOT').AsString;
   Form1.l_datetime.Caption := Form1.DBGrid1.DataSource.DataSet.FieldByName('TIME_INGOT').AsString;
@@ -332,6 +337,30 @@ begin
   num_heat := Form1.DBGrid1.DataSource.DataSet.FieldByName('NUM_HEAT').AsString;
   smena := Form1.DBGrid1.DataSource.DataSet.FieldByName('SMENA').AsString;
 end;
+
+
+function PointReplace(DataIn: string): string;
+begin
+      result:=StringReplace(Datain,',','.', [rfReplaceAll]);
+end;
+
+
+function ViewClear: boolean;
+var
+  i: integer;
+begin
+
+  for i:=0 to form1.ComponentCount - 1 do
+   begin
+    if (form1.Components[i] is Tlabel) then
+      begin
+        if copy(form1.Components[i].Name,1,4) <> 'l_n_' then
+          Tlabel(Form1.FindComponent(form1.Components[i].Name)).Caption := '';
+      end;
+   end;
+
+end;
+
 
 
 

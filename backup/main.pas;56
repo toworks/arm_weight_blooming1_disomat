@@ -7,7 +7,7 @@ interface
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, DBGrids,
   ExtCtrls, StdCtrls, Menus, db, {$ifdef windows} Windows, {$endif}
-  logging, sql, thread_sql_read{, thread_sql_send, thread_comport}, Grids;
+  logging, sql, thread_sql_read, thread_sql_send{, thread_comport}, Grids;
 
 type
 
@@ -46,8 +46,8 @@ type
 var
   Form1: TForm1;
   ThreadSqlRead: TThreadSqlRead;
-{  ThreadSqlSend: TThreadSqlSend;
-  ThreadComPort: TThreadComPort;}
+  ThreadSqlSend: TThreadSqlSend;
+{  ThreadComPort: TThreadComPort;}
   MainSqlite: TSqlite;
   SDataSource: TDataSource;
   MainFSql: TFsql;
@@ -100,7 +100,7 @@ procedure TForm1.DBGrid1DrawColumnCell(Sender: TObject; const Rect: TRect;
 var
   R: TRect;
 begin
-      if Column.FieldName = 'heat_to_work' then
+{      if Column.FieldName = 'smena' then
        begin
           (Sender As TDBGrid).Canvas.FillRect(Rect); //не смазывает при прокрутке
           (Sender As TDBGrid).Canvas.TextRect(R, R.Left + 2, R.Top + 2,
@@ -137,7 +137,7 @@ begin
       end;
 //  end
 //  else
-//    (Sender As TDBGrid).DefaultDrawColumnCell(Rect, DataCol, Column, State);
+//    (Sender As TDBGrid).DefaultDrawColumnCell(Rect, DataCol, Column, State);}
 end;
 
 
@@ -158,18 +158,17 @@ begin
              Columns.Items[i].Alignment := taLeftJustify;
           end;}
           if (TextWidth < Columns.Items[i].Width) then begin
-             Columns.Items[i].Width := TitleWidth+30;
+             Columns.Items[i].Width := TitleWidth+25;
              Columns.Items[i].Alignment := taCenter;//taLeftJustify;
              Columns.Items[i].Title.Alignment := taCenter;//taLeftJustify;
           end;
       end;
     end;
 
-  {  if  MSQuery.FieldByName('step').AsString = 'Красный' then
       begin
         with (Sender As TDBGrid) do
         begin
-          if (Column.FieldName = 'low') then begin
+          if (Column.FieldName = 'num_ingot') then begin
                 Canvas.Brush.Color := $006868FD; //Red
                 Canvas.Font.Color := clBlack;
                 Canvas.font.Style := [fsBold];
@@ -180,7 +179,7 @@ begin
                 Canvas.font.Style := [fsBold];
           end;
         end;
-      end;}
+      end;
 //      _resize := true;
 end;
 

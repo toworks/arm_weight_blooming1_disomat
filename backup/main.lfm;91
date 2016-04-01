@@ -14,11 +14,11 @@ object Form1: TForm1
   LCLVersion = '1.6.0.4'
   object gb_data_pu1: TGroupBox
     Left = 8
-    Height = 192
+    Height = 173
     Top = 3
     Width = 628
     Caption = ' Данные с ПУ-1 '
-    ClientHeight = 167
+    ClientHeight = 148
     ClientWidth = 624
     Font.CharSet = RUSSIAN_CHARSET
     Font.Height = -16
@@ -30,7 +30,7 @@ object Form1: TForm1
     TabOrder = 0
     object DBGrid1: TDBGrid
       Left = 5
-      Height = 160
+      Height = 141
       Top = 0
       Width = 614
       Anchors = [akTop, akLeft, akRight, akBottom]
@@ -47,15 +47,16 @@ object Form1: TForm1
       TitleFont.Quality = fqDraft
       TitleFont.Style = [fsBold]
       OnDrawColumnCell = DBGrid1DrawColumnCell
+      OnPrepareCanvas = DBGrid1PrepareCanvas
     end
   end
   object gb_data_pu2: TGroupBox
     Left = 8
-    Height = 88
-    Top = 195
+    Height = 83
+    Top = 178
     Width = 628
     Caption = ' Взвешиваемый слиток '
-    ClientHeight = 63
+    ClientHeight = 58
     ClientWidth = 624
     Font.CharSet = RUSSIAN_CHARSET
     Font.Height = -16
@@ -253,11 +254,11 @@ object Form1: TForm1
   end
   object gb_weighed_ingot_in_sql: TGroupBox
     Left = 8
-    Height = 192
-    Top = 284
+    Height = 176
+    Top = 264
     Width = 628
     Caption = ' Взвешенные слитки '
-    ClientHeight = 167
+    ClientHeight = 151
     ClientWidth = 624
     Font.CharSet = RUSSIAN_CHARSET
     Font.Height = -16
@@ -269,7 +270,7 @@ object Form1: TForm1
     TabOrder = 2
     object DBGrid2: TDBGrid
       Left = 5
-      Height = 160
+      Height = 144
       Top = 0
       Width = 614
       Anchors = [akTop, akLeft, akRight, akBottom]

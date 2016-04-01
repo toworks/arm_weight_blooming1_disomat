@@ -100,18 +100,20 @@ begin
   begin
       R := Rect;
       Dec(R.Bottom, 2);
-      if Column.Field = MSQuery.FieldByName('heat_to_work') then
+
+
+      if Column.FieldName = 'heat_to_work' then
        begin
           (Sender As TDBGrid).Canvas.FillRect(Rect); //не смазывает при прокрутке
           (Sender As TDBGrid).Canvas.TextRect(R, R.Left + 2, R.Top + 2,
-                                  MSQuery.FieldByName('heat_to_work').AsString);
+                                  Column.FieldName);
        end
       else begin
           TDBGrid(Sender).Canvas.FillRect(Rect); //не смазывает при прокрутке
           TDBGrid(Sender).DefaultDrawColumnCell(Rect, DataCol, Column, State);
       end;
 
-      if MSQuery.FieldByName('step').AsString = 'Красный' then
+      if Column.FieldName = 'step' then
        begin
           (Sender As TDBGrid).Canvas.FillRect(Rect); //не смазывает при прокрутке
           with (Sender As TDBGrid).Canvas do
@@ -136,8 +138,8 @@ begin
           end
       end;
   end
-  else
-    (Sender As TDBGrid).DefaultDrawColumnCell(Rect, DataCol, Column, State);
+//  else
+//    (Sender As TDBGrid).DefaultDrawColumnCell(Rect, DataCol, Column, State);
 end;
 
 procedure TForm1.FormCreate(Sender: TObject);

@@ -103,22 +103,6 @@ begin
 end;
 
 
-procedure TForm1.DBGrid1DrawColumnCell(Sender: TObject; const Rect: TRect;
-  DataCol: Integer; Column: TColumn; State: TGridDrawState);
-var
-  R: TRect;
-begin
-  if  gdSelected in State	then //color selected
-  begin
-    with DBGrid1.Canvas do
-    begin
-      (Sender as TDBGrid).Canvas.Brush.Color:= $002CB902;//green
-      	    (Sender as TDBGrid).Canvas.Font.Color := clHighLightText;
-    end;
-  end;
-  Dbgrid1.DefaultDrawColumnCell(Rect, DataCol, Column, State);
-end;
-
 
 procedure TForm1.DBGrid1DblClick(Sender: TObject);
 begin
@@ -134,6 +118,24 @@ begin
         form1.DBGrid1.DataSource.DataSet.EnableControls;
     end;
   end;
+end;
+
+
+procedure TForm1.DBGrid1DrawColumnCell(Sender: TObject; const Rect: TRect;
+  DataCol: Integer; Column: TColumn; State: TGridDrawState);
+var
+  R: TRect;
+begin
+  if  gdSelected in State then //color selected
+  begin
+    with DBGrid1.Canvas do
+    begin
+      (Sender as TDBGrid).Canvas.Brush.Color:= $002CB902;//green
+      	    (Sender as TDBGrid).Canvas.Font.Color := clHighLightText;
+    end;
+  end;
+  DBGrid1.Canvas.FillRect(Rect);
+  Dbgrid1.DefaultDrawColumnCell(Rect, DataCol, Column, State);
 end;
 
 
@@ -153,11 +155,11 @@ begin
              Columns.Items[i].Alignment := taCenter;
              Columns.Items[i].Alignment := taLeftJustify;
           end;}
-          if (TextWidth < Columns.Items[i].Width) then begin
+//          if (TextWidth < Columns.Items[i].Width) then begin
              Columns.Items[i].Width := TitleWidth+25;
              Columns.Items[i].Alignment := taCenter;//taLeftJustify;
              Columns.Items[i].Title.Alignment := taCenter;//taLeftJustify;
-          end;
+//          end;
       end;
     end;
 
@@ -284,14 +286,7 @@ begin
   DBGrid1.Columns.Items[5].Title.Caption := 'Масса слитка ПУ-1 (т)';
   DBGrid1.Columns.Items[6].Title.Caption := 'steel_group';
 
-//  for i := 0 to DBGrid1.columns.Count - 1 do begin
-//      DBGrid1.Columns.Items[i].Title.Alignment := taCenter;
-//      DBGrid1.Columns.Items[i].MaxSize:=150;
-//  end;
-
-//  DBGrid1.Columns.Items[0].MaxSize:=10;
   DBGrid1.Columns.Items[6].Visible := false;
-
 end;
 
 

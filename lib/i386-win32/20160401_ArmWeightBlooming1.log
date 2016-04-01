@@ -1,0 +1,2285 @@
+2016-04-01 07:53:26.556	DEBUG	ReceiveData | 
+2016-04-01 07:53:26.556	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:26.757	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     3,427#      0,000#
+2016-04-01 07:53:26.758	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:26.758	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:53:26.958	DEBUG	ReceiveData | 
+2016-04-01 07:53:26.958	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:27.158	DEBUG	ReceiveData | 
+2016-04-01 07:53:27.158	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:27.358	DEBUG	ReceiveData | 
+2016-04-01 07:53:27.358	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:27.558	DEBUG	ReceiveData | 
+2016-04-01 07:53:27.558	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:27.758	DEBUG	ReceiveData | 
+2016-04-01 07:53:27.758	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:27.958	DEBUG	ReceiveData | 
+2016-04-01 07:53:27.958	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:28.159	DEBUG	ReceiveData | 
+2016-04-01 07:53:28.160	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:28.360	DEBUG	ReceiveData | 
+2016-04-01 07:53:28.360	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:28.560	DEBUG	ReceiveData | 
+2016-04-01 07:53:28.560	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:28.760	DEBUG	ReceiveData | 
+2016-04-01 07:53:28.760	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:28.960	DEBUG	ReceiveData | 
+2016-04-01 07:53:28.960	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:29.160	DEBUG	ReceiveData | 
+2016-04-01 07:53:29.160	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:29.360	DEBUG	ReceiveData | 
+2016-04-01 07:53:29.360	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:29.560	DEBUG	ReceiveData | 
+2016-04-01 07:53:29.560	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:29.760	DEBUG	ReceiveData | 
+2016-04-01 07:53:29.760	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:29.960	DEBUG	ReceiveData | 
+2016-04-01 07:53:29.960	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:30.160	DEBUG	ReceiveData | 
+2016-04-01 07:53:30.160	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:30.360	DEBUG	ReceiveData | 
+2016-04-01 07:53:30.360	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:30.560	DEBUG	ReceiveData | 
+2016-04-01 07:53:30.560	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:30.760	DEBUG	ReceiveData | 
+2016-04-01 07:53:30.760	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:30.960	DEBUG	ReceiveData | 
+2016-04-01 07:53:30.960	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:31.160	DEBUG	ReceiveData | 
+2016-04-01 07:53:31.160	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:31.360	DEBUG	ReceiveData | 
+2016-04-01 07:53:31.360	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:31.560	DEBUG	ReceiveData | 
+2016-04-01 07:53:31.560	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:31.760	DEBUG	ReceiveData | 
+2016-04-01 07:53:31.760	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:31.960	DEBUG	ReceiveData | 
+2016-04-01 07:53:31.960	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:32.160	DEBUG	ReceiveData | 
+2016-04-01 07:53:32.160	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:32.360	DEBUG	ReceiveData | 
+2016-04-01 07:53:32.360	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:32.399	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error reading data from the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:53:32.579	DEBUG	ReceiveData | 
+2016-04-01 07:53:32.579	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:32.779	DEBUG	ReceiveData | 
+2016-04-01 07:53:32.779	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:32.980	DEBUG	ReceiveData | 
+2016-04-01 07:53:32.980	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:33.180	DEBUG	ReceiveData | 
+2016-04-01 07:53:33.180	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:33.440	DEBUG	ReceiveData | 
+2016-04-01 07:53:33.440	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:33.441	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:53:33.640	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     0,535#      0,000#
+2016-04-01 07:53:33.640	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:33.640	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:53:33.865	DEBUG	ReceiveData | 
+2016-04-01 07:53:33.865	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:34.066	DEBUG	ReceiveData | 
+2016-04-01 07:53:34.066	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:34.266	DEBUG	ReceiveData | 
+2016-04-01 07:53:34.266	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:34.442	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:53:34.466	DEBUG	ReceiveData | 
+2016-04-01 07:53:34.466	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:34.666	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     5,748#      0,000#
+2016-04-01 07:53:34.667	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:34.667	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:53:34.867	DEBUG	ReceiveData | 
+2016-04-01 07:53:34.867	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:35.069	DEBUG	ReceiveData | 
+2016-04-01 07:53:35.072	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:35.273	DEBUG	ReceiveData | 
+2016-04-01 07:53:35.273	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:35.442	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:53:35.473	DEBUG	ReceiveData | 
+2016-04-01 07:53:35.473	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:35.684	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     3,614#      0,000#
+2016-04-01 07:53:35.685	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:35.685	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:53:35.885	DEBUG	ReceiveData | 
+2016-04-01 07:53:35.885	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:36.087	DEBUG	ReceiveData | 
+2016-04-01 07:53:36.088	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:36.288	DEBUG	ReceiveData | 
+2016-04-01 07:53:36.288	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:36.444	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:53:36.488	DEBUG	ReceiveData | 
+2016-04-01 07:53:36.488	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:36.695	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0
+2016-04-01 07:53:36.695	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:36.895	DEBUG	ReceiveData | 0#     2,469#      0,000#
+2016-04-01 07:53:36.895	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:37.153	DEBUG	ReceiveData | 
+2016-04-01 07:53:37.153	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:37.354	DEBUG	ReceiveData | 
+2016-04-01 07:53:37.354	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:37.444	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:53:37.554	DEBUG	ReceiveData | 
+2016-04-01 07:53:37.554	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:37.754	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     1,541#      0,000#
+2016-04-01 07:53:37.754	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:37.754	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:53:37.954	DEBUG	ReceiveData | 
+2016-04-01 07:53:37.954	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:38.154	DEBUG	ReceiveData | 
+2016-04-01 07:53:38.154	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:38.354	DEBUG	ReceiveData | 
+2016-04-01 07:53:38.354	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:38.446	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:53:38.554	DEBUG	ReceiveData | 
+2016-04-01 07:53:38.554	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:38.754	DEBUG	ReceiveData | 00#TK#
+2016-04-01 07:53:38.755	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:38.955	DEBUG	ReceiveData | #0#0#0#0#0#0#0#0#0#1#0#0#0#     7,938#      0,000#
+2016-04-01 07:53:38.955	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:39.155	DEBUG	ReceiveData | 
+2016-04-01 07:53:39.155	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:39.355	DEBUG	ReceiveData | 
+2016-04-01 07:53:39.355	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:39.446	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:53:39.557	DEBUG	ReceiveData | 
+2016-04-01 07:53:39.558	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:39.759	DEBUG	ReceiveData | 
+2016-04-01 07:53:39.759	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:39.959	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     8,472#      0,000#
+2016-04-01 07:53:39.959	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:39.959	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:53:40.159	DEBUG	ReceiveData | 
+2016-04-01 07:53:40.159	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:40.359	DEBUG	ReceiveData | 
+2016-04-01 07:53:40.359	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:40.447	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:53:40.559	DEBUG	ReceiveData | 
+2016-04-01 07:53:40.559	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:40.759	DEBUG	ReceiveData | 
+2016-04-01 07:53:40.759	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:40.959	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     6,845#      0,000#
+2016-04-01 07:53:40.959	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:40.959	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:53:41.159	DEBUG	ReceiveData | 
+2016-04-01 07:53:41.159	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:41.359	DEBUG	ReceiveData | 
+2016-04-01 07:53:41.359	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:41.448	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:53:41.559	DEBUG	ReceiveData | 
+2016-04-01 07:53:41.559	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:41.759	DEBUG	ReceiveData | 
+2016-04-01 07:53:41.864	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:42.064	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     0,511#      0,000#
+2016-04-01 07:53:42.064	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:42.064	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:53:42.264	DEBUG	ReceiveData | 
+2016-04-01 07:53:42.269	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:42.449	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:53:42.470	DEBUG	ReceiveData | 
+2016-04-01 07:53:42.470	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:42.672	DEBUG	ReceiveData | 
+2016-04-01 07:53:42.672	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:42.872	DEBUG	ReceiveData | 
+2016-04-01 07:53:42.872	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:43.072	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     1,261#      0,000#
+2016-04-01 07:53:43.072	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:43.073	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:53:43.276	DEBUG	ReceiveData | 
+2016-04-01 07:53:43.276	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:43.451	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:53:43.476	DEBUG	ReceiveData | 
+2016-04-01 07:53:43.476	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:43.676	DEBUG	ReceiveData | 
+2016-04-01 07:53:43.676	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:43.876	DEBUG	ReceiveData | 
+2016-04-01 07:53:43.876	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:44.105	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     3,311#      0,000#
+2016-04-01 07:53:44.106	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:44.106	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:53:44.306	DEBUG	ReceiveData | 
+2016-04-01 07:53:44.306	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:44.453	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:53:44.506	DEBUG	ReceiveData | 
+2016-04-01 07:53:44.506	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:44.706	DEBUG	ReceiveData | 
+2016-04-01 07:53:44.706	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:44.907	DEBUG	ReceiveData | 
+2016-04-01 07:53:44.907	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:45.107	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     4,157#      0,000#
+2016-04-01 07:53:45.107	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:45.108	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:53:45.308	DEBUG	ReceiveData | 
+2016-04-01 07:53:45.308	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:45.453	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:53:45.508	DEBUG	ReceiveData | 
+2016-04-01 07:53:45.508	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:45.708	DEBUG	ReceiveData | 
+2016-04-01 07:53:45.709	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:45.909	DEBUG	ReceiveData | 
+2016-04-01 07:53:45.909	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:46.109	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     2,516#      0,000#
+2016-04-01 07:53:46.109	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:46.109	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:53:46.309	DEBUG	ReceiveData | 
+2016-04-01 07:53:46.309	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:46.454	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:53:46.509	DEBUG	ReceiveData | 
+2016-04-01 07:53:46.509	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:46.709	DEBUG	ReceiveData | 
+2016-04-01 07:53:46.709	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:46.909	DEBUG	ReceiveData | 
+2016-04-01 07:53:46.909	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:47.109	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     0,141#      0,000#
+2016-04-01 07:53:47.109	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:47.109	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:53:47.309	DEBUG	ReceiveData | 
+2016-04-01 07:53:47.309	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:47.455	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:53:47.509	DEBUG	ReceiveData | 
+2016-04-01 07:53:47.509	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:47.709	DEBUG	ReceiveData | 
+2016-04-01 07:53:47.709	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:47.909	DEBUG	ReceiveData | 
+2016-04-01 07:53:47.909	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:48.109	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#
+2016-04-01 07:53:48.109	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:48.309	DEBUG	ReceiveData | 0#0#0#0#1#0#0#0#     4,523#      0,000#
+2016-04-01 07:53:48.309	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:48.456	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:53:48.509	DEBUG	ReceiveData | 
+2016-04-01 07:53:48.509	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:48.709	DEBUG	ReceiveData | 
+2016-04-01 07:53:48.709	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:48.909	DEBUG	ReceiveData | 
+2016-04-01 07:53:48.909	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:49.109	DEBUG	ReceiveData | 
+2016-04-01 07:53:49.109	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:49.310	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     4,797#      0,000#
+2016-04-01 07:53:49.310	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:49.310	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:53:49.458	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:53:49.510	DEBUG	ReceiveData | 
+2016-04-01 07:53:49.510	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:49.710	DEBUG	ReceiveData | 
+2016-04-01 07:53:49.710	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:49.911	DEBUG	ReceiveData | 
+2016-04-01 07:53:49.911	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:50.111	DEBUG	ReceiveData | 
+2016-04-01 07:53:50.111	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:50.311	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     1,977#      0,000#
+2016-04-01 07:53:50.311	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:50.311	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:53:50.458	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:53:50.511	DEBUG	ReceiveData | 
+2016-04-01 07:53:50.511	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:50.711	DEBUG	ReceiveData | 
+2016-04-01 07:53:50.711	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:50.911	DEBUG	ReceiveData | 
+2016-04-01 07:53:50.911	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:51.111	DEBUG	ReceiveData | 
+2016-04-01 07:53:51.111	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:51.311	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     7,153#      0,000#
+2016-04-01 07:53:51.311	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:51.311	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:53:51.460	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:53:51.511	DEBUG	ReceiveData | 
+2016-04-01 07:53:51.511	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:51.711	DEBUG	ReceiveData | 
+2016-04-01 07:53:51.711	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:51.911	DEBUG	ReceiveData | 
+2016-04-01 07:53:51.911	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:52.111	DEBUG	ReceiveData | 
+2016-04-01 07:53:52.111	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:52.311	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     0,314#      0,000#
+2016-04-01 07:53:52.311	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:52.311	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:53:52.460	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:53:52.511	DEBUG	ReceiveData | 
+2016-04-01 07:53:52.511	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:52.711	DEBUG	ReceiveData | 
+2016-04-01 07:53:52.711	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:52.911	DEBUG	ReceiveData | 
+2016-04-01 07:53:52.911	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:53.111	DEBUG	ReceiveData | 
+2016-04-01 07:53:53.111	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:53.311	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0
+2016-04-01 07:53:53.311	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:53.461	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:53:53.511	DEBUG	ReceiveData | #0#     4,307#      0,000#
+2016-04-01 07:53:53.511	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:53.711	DEBUG	ReceiveData | 
+2016-04-01 07:53:53.711	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:53.911	DEBUG	ReceiveData | 
+2016-04-01 07:53:53.911	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:54.111	DEBUG	ReceiveData | 
+2016-04-01 07:53:54.111	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:54.311	DEBUG	ReceiveData | 
+2016-04-01 07:53:54.311	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:54.463	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:53:54.511	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     4,641#      0,000#
+2016-04-01 07:53:54.511	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:54.511	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:53:54.711	DEBUG	ReceiveData | 
+2016-04-01 07:53:54.711	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:54.911	DEBUG	ReceiveData | 
+2016-04-01 07:53:54.911	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:55.111	DEBUG	ReceiveData | 
+2016-04-01 07:53:55.111	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:55.311	DEBUG	ReceiveData | 
+2016-04-01 07:53:55.311	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:55.464	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:53:55.511	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     8,157#      0,000#
+2016-04-01 07:53:55.511	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:55.511	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:53:55.711	DEBUG	ReceiveData | 
+2016-04-01 07:53:55.711	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:55.911	DEBUG	ReceiveData | 
+2016-04-01 07:53:55.911	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:56.110	DEBUG	ReceiveData | 
+2016-04-01 07:53:56.110	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:56.310	DEBUG	ReceiveData | 
+2016-04-01 07:53:56.310	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:56.463	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:53:56.510	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     8,907#      0,000#
+2016-04-01 07:53:56.510	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:56.510	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:53:56.710	DEBUG	ReceiveData | 
+2016-04-01 07:53:56.710	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:56.910	DEBUG	ReceiveData | 
+2016-04-01 07:53:56.910	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:57.110	DEBUG	ReceiveData | 
+2016-04-01 07:53:57.110	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:57.310	DEBUG	ReceiveData | 
+2016-04-01 07:53:57.310	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:57.465	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:53:57.510	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     3,341#      0,000#
+2016-04-01 07:53:57.510	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:57.510	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:53:57.710	DEBUG	ReceiveData | 
+2016-04-01 07:53:57.710	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:57.910	DEBUG	ReceiveData | 
+2016-04-01 07:53:57.910	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:58.110	DEBUG	ReceiveData | 
+2016-04-01 07:53:58.110	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:58.310	DEBUG	ReceiveData | 
+2016-04-01 07:53:58.310	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:58.466	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:53:58.510	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     7,34
+2016-04-01 07:53:58.510	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:58.510	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:53:58.711	DEBUG	ReceiveData | #      0,000#
+2016-04-01 07:53:58.711	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:58.911	DEBUG	ReceiveData | 
+2016-04-01 07:53:58.911	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:59.111	DEBUG	ReceiveData | 
+2016-04-01 07:53:59.111	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:59.311	DEBUG	ReceiveData | 
+2016-04-01 07:53:59.311	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:59.467	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:53:59.511	DEBUG	ReceiveData | 
+2016-04-01 07:53:59.511	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:59.711	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     8,523#      0,000#
+2016-04-01 07:53:59.711	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:53:59.711	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:53:59.912	DEBUG	ReceiveData | 
+2016-04-01 07:53:59.912	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:00.112	DEBUG	ReceiveData | 
+2016-04-01 07:54:00.112	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:00.312	DEBUG	ReceiveData | 
+2016-04-01 07:54:00.312	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:00.467	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:54:00.512	DEBUG	ReceiveData | 
+2016-04-01 07:54:00.512	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:00.712	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     6,224#      0,000#
+2016-04-01 07:54:00.712	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:00.712	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:54:00.912	DEBUG	ReceiveData | 
+2016-04-01 07:54:00.912	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:01.112	DEBUG	ReceiveData | 
+2016-04-01 07:54:01.112	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:01.312	DEBUG	ReceiveData | 
+2016-04-01 07:54:01.312	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:01.469	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:54:01.512	DEBUG	ReceiveData | 
+2016-04-01 07:54:01.512	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:01.712	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     0,997#      0,000#
+2016-04-01 07:54:01.712	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:01.712	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:54:01.913	DEBUG	ReceiveData | 
+2016-04-01 07:54:01.913	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:02.113	DEBUG	ReceiveData | 
+2016-04-01 07:54:02.113	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:02.313	DEBUG	ReceiveData | 
+2016-04-01 07:54:02.313	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:02.470	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:54:02.513	DEBUG	ReceiveData | 
+2016-04-01 07:54:02.513	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:02.713	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     2,087#      0,000#
+2016-04-01 07:54:02.713	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:02.713	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:54:02.914	DEBUG	ReceiveData | 
+2016-04-01 07:54:02.914	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:03.114	DEBUG	ReceiveData | 
+2016-04-01 07:54:03.114	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:03.314	DEBUG	ReceiveData | 
+2016-04-01 07:54:03.314	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:03.470	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:54:03.514	DEBUG	ReceiveData | 
+2016-04-01 07:54:03.514	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:03.714	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     7,682#      0,000
+2016-04-01 07:54:03.714	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:03.714	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:54:03.914	DEBUG	ReceiveData | #
+2016-04-01 07:54:03.914	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:04.114	DEBUG	ReceiveData | 
+2016-04-01 07:54:04.114	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:04.314	DEBUG	ReceiveData | 
+2016-04-01 07:54:04.314	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:04.472	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:54:04.514	DEBUG	ReceiveData | 
+2016-04-01 07:54:04.514	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:04.714	DEBUG	ReceiveData | 
+2016-04-01 07:54:04.714	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:04.914	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     1,961#      0,000#
+2016-04-01 07:54:04.914	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:05.114	DEBUG	ReceiveData | 
+2016-04-01 07:54:05.114	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:05.314	DEBUG	ReceiveData | 
+2016-04-01 07:54:05.314	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:05.473	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:54:05.514	DEBUG	ReceiveData | 
+2016-04-01 07:54:05.514	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:05.714	DEBUG	ReceiveData | 
+2016-04-01 07:54:05.714	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:05.914	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     5,473#      0,000#
+2016-04-01 07:54:05.914	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:05.914	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:54:06.113	DEBUG	ReceiveData | 
+2016-04-01 07:54:06.113	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:06.313	DEBUG	ReceiveData | 
+2016-04-01 07:54:06.313	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:06.473	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:54:06.513	DEBUG	ReceiveData | 
+2016-04-01 07:54:06.513	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:06.713	DEBUG	ReceiveData | 
+2016-04-01 07:54:06.713	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:06.913	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     8,915#      0,000#
+2016-04-01 07:54:06.913	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:06.913	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:54:07.114	DEBUG	ReceiveData | 
+2016-04-01 07:54:07.114	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:07.315	DEBUG	ReceiveData | 
+2016-04-01 07:54:07.315	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:07.475	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:54:07.515	DEBUG	ReceiveData | 
+2016-04-01 07:54:07.516	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:07.717	DEBUG	ReceiveData | 
+2016-04-01 07:54:07.717	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:07.917	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     1,684#      0,000#
+2016-04-01 07:54:07.917	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:07.917	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:54:08.117	DEBUG	ReceiveData | 
+2016-04-01 07:54:08.117	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:08.317	DEBUG	ReceiveData | 
+2016-04-01 07:54:08.317	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:08.476	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:54:08.517	DEBUG	ReceiveData | 
+2016-04-01 07:54:08.517	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:08.718	DEBUG	ReceiveData | 
+2016-04-01 07:54:08.718	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:08.918	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     2,005#      0,000#
+2016-04-01 07:54:08.918	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:08.918	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:54:09.119	DEBUG	ReceiveData | 
+2016-04-01 07:54:09.119	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:09.319	DEBUG	ReceiveData | 
+2016-04-01 07:54:09.319	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:09.477	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:54:09.519	DEBUG	ReceiveData | 
+2016-04-01 07:54:09.519	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:09.719	DEBUG	ReceiveData | 
+2016-04-01 07:54:09.719	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:09.919	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#
+2016-04-01 07:54:09.919	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:10.119	DEBUG	ReceiveData | 0#1#0#0#0#     1,194#      0,000#
+2016-04-01 07:54:10.119	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:10.319	DEBUG	ReceiveData | 
+2016-04-01 07:54:10.319	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:10.477	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:54:10.519	DEBUG	ReceiveData | 
+2016-04-01 07:54:10.519	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:10.719	DEBUG	ReceiveData | 
+2016-04-01 07:54:10.719	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:10.919	DEBUG	ReceiveData | 
+2016-04-01 07:54:10.919	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:11.119	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     6,297#      0,000#
+2016-04-01 07:54:11.119	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:11.119	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:54:11.319	DEBUG	ReceiveData | 
+2016-04-01 07:54:11.319	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:11.495	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:54:11.519	DEBUG	ReceiveData | 
+2016-04-01 07:54:11.519	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:11.719	DEBUG	ReceiveData | 
+2016-04-01 07:54:11.719	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:11.919	DEBUG	ReceiveData | 
+2016-04-01 07:54:11.919	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:12.119	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     0,080#      0,000#
+2016-04-01 07:54:12.119	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:12.120	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:54:12.320	DEBUG	ReceiveData | 
+2016-04-01 07:54:12.320	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:12.617	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:54:12.617	DEBUG	ReceiveData | 
+2016-04-01 07:54:12.617	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:12.818	DEBUG	ReceiveData | 
+2016-04-01 07:54:12.818	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:13.018	DEBUG	ReceiveData | 0
+2016-04-01 07:54:13.018	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:13.218	DEBUG	ReceiveData | 0#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     4,502#      0,000#
+2016-04-01 07:54:13.218	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:13.418	DEBUG	ReceiveData | 
+2016-04-01 07:54:13.418	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:13.618	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:54:13.618	DEBUG	ReceiveData | 
+2016-04-01 07:54:13.618	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:13.818	DEBUG	ReceiveData | 
+2016-04-01 07:54:13.818	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:14.018	DEBUG	ReceiveData | 
+2016-04-01 07:54:14.018	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:14.218	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     7,602#      0,000#
+2016-04-01 07:54:14.218	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:14.219	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:54:14.419	DEBUG	ReceiveData | 
+2016-04-01 07:54:14.419	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:14.619	DEBUG	ReceiveData | 
+2016-04-01 07:54:14.619	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:14.619	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:54:14.819	DEBUG	ReceiveData | 
+2016-04-01 07:54:14.819	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:15.019	DEBUG	ReceiveData | 
+2016-04-01 07:54:15.019	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:15.219	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     5,990#      0,000#
+2016-04-01 07:54:15.219	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:15.219	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:54:15.419	DEBUG	ReceiveData | 
+2016-04-01 07:54:15.419	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:15.619	DEBUG	ReceiveData | 
+2016-04-01 07:54:15.620	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:15.621	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:54:15.820	DEBUG	ReceiveData | 
+2016-04-01 07:54:15.820	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:16.019	DEBUG	ReceiveData | 
+2016-04-01 07:54:16.019	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:16.219	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     5,696#      0,000#
+2016-04-01 07:54:16.219	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:16.219	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:54:16.419	DEBUG	ReceiveData | 
+2016-04-01 07:54:16.419	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:16.619	DEBUG	ReceiveData | 
+2016-04-01 07:54:16.619	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:16.621	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:54:16.819	DEBUG	ReceiveData | 
+2016-04-01 07:54:16.819	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:17.019	DEBUG	ReceiveData | 
+2016-04-01 07:54:17.019	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:17.220	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     2,898#      0,000#
+2016-04-01 07:54:17.220	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:17.221	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:54:17.421	DEBUG	ReceiveData | 
+2016-04-01 07:54:17.421	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:17.621	DEBUG	ReceiveData | 
+2016-04-01 07:54:17.621	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:17.622	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:54:17.821	DEBUG	ReceiveData | 
+2016-04-01 07:54:17.821	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:18.021	DEBUG	ReceiveData | 
+2016-04-01 07:54:18.021	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:18.221	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0
+2016-04-01 07:54:18.221	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:18.421	DEBUG	ReceiveData | #0#0#0#1#0#0#0#     5,449#      0,000#
+2016-04-01 07:54:18.421	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:18.621	DEBUG	ReceiveData | 
+2016-04-01 07:54:18.621	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:18.624	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:54:18.821	DEBUG	ReceiveData | 
+2016-04-01 07:54:18.821	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:19.022	DEBUG	ReceiveData | 
+2016-04-01 07:54:19.022	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:19.222	DEBUG	ReceiveData | 
+2016-04-01 07:54:19.222	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:19.422	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     3,265#      0,000#
+2016-04-01 07:54:19.422	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:19.957	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:54:19.958	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:54:20.158	DEBUG	ReceiveData | 
+2016-04-01 07:54:20.158	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:20.358	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     4,886#      0,000#
+2016-04-01 07:54:20.358	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:20.359	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:54:20.559	DEBUG	ReceiveData | 
+2016-04-01 07:54:20.559	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:20.759	DEBUG	ReceiveData | 
+2016-04-01 07:54:20.759	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:20.958	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:54:20.959	DEBUG	ReceiveData | 
+2016-04-01 07:54:20.959	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:21.159	DEBUG	ReceiveData | 
+2016-04-01 07:54:21.159	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:21.359	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     6,503#      0
+2016-04-01 07:54:21.359	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:21.360	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:54:21.560	DEBUG	ReceiveData | 000#
+2016-04-01 07:54:21.560	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:21.761	DEBUG	ReceiveData | 
+2016-04-01 07:54:21.761	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:21.959	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:54:21.961	DEBUG	ReceiveData | 
+2016-04-01 07:54:21.961	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:22.162	DEBUG	ReceiveData | 
+2016-04-01 07:54:22.162	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:22.362	DEBUG	ReceiveData | 
+2016-04-01 07:54:22.362	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:22.562	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     2,220#      0,000#
+2016-04-01 07:54:22.562	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:22.562	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:54:22.762	DEBUG	ReceiveData | 
+2016-04-01 07:54:22.762	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:22.960	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:54:22.962	DEBUG	ReceiveData | 
+2016-04-01 07:54:22.962	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:23.162	DEBUG	ReceiveData | 
+2016-04-01 07:54:23.162	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:23.362	DEBUG	ReceiveData | 
+2016-04-01 07:54:23.362	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:23.562	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     0,182#      0,000#
+2016-04-01 07:54:23.562	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:23.563	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:54:23.763	DEBUG	ReceiveData | 
+2016-04-01 07:54:23.763	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:23.961	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:54:23.963	DEBUG	ReceiveData | 
+2016-04-01 07:54:23.963	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:24.163	DEBUG	ReceiveData | 
+2016-04-01 07:54:24.163	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:24.363	DEBUG	ReceiveData | 
+2016-04-01 07:54:24.363	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:24.563	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     7,150#      0,000#
+2016-04-01 07:54:24.563	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:24.563	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:54:24.763	DEBUG	ReceiveData | 
+2016-04-01 07:54:24.763	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:24.963	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:54:24.963	DEBUG	ReceiveData | 
+2016-04-01 07:54:24.964	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:25.164	DEBUG	ReceiveData | 
+2016-04-01 07:54:25.164	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:25.364	DEBUG	ReceiveData | 
+2016-04-01 07:54:25.364	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:25.564	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     5,682#      0,000#
+2016-04-01 07:54:25.564	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:25.564	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:54:25.764	DEBUG	ReceiveData | 
+2016-04-01 07:54:25.764	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:25.963	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:54:25.964	DEBUG	ReceiveData | 
+2016-04-01 07:54:25.964	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:26.164	DEBUG	ReceiveData | 
+2016-04-01 07:54:26.164	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:26.365	DEBUG	ReceiveData | 
+2016-04-01 07:54:26.365	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:26.565	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     3,202#      0,000#
+2016-04-01 07:54:26.565	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:26.565	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:54:26.765	DEBUG	ReceiveData | 
+2016-04-01 07:54:26.765	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:26.964	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:54:26.965	DEBUG	ReceiveData | 
+2016-04-01 07:54:26.965	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:27.165	DEBUG	ReceiveData | 
+2016-04-01 07:54:27.165	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:27.366	DEBUG	ReceiveData | 
+2016-04-01 07:54:27.366	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:27.567	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0
+2016-04-01 07:54:27.567	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:27.767	DEBUG	ReceiveData | #0#0#1#0#0#0#     5,473#      0,000#
+2016-04-01 07:54:27.767	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:27.965	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:54:27.967	DEBUG	ReceiveData | 
+2016-04-01 07:54:27.967	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:28.167	DEBUG	ReceiveData | 
+2016-04-01 07:54:28.167	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:28.367	DEBUG	ReceiveData | 
+2016-04-01 07:54:28.367	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:28.567	DEBUG	ReceiveData | 
+2016-04-01 07:54:28.567	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:28.767	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     2,943#      0,000#
+2016-04-01 07:54:28.767	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:28.768	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:54:28.965	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:54:28.968	DEBUG	ReceiveData | 
+2016-04-01 07:54:28.968	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:29.168	DEBUG	ReceiveData | 
+2016-04-01 07:54:29.168	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:29.368	DEBUG	ReceiveData | 
+2016-04-01 07:54:29.368	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:29.568	DEBUG	ReceiveData | 
+2016-04-01 07:54:29.568	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:29.768	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     3,525#      0,000#
+2016-04-01 07:54:29.768	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:29.768	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:54:29.967	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:54:29.969	DEBUG	ReceiveData | 
+2016-04-01 07:54:29.969	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:30.169	DEBUG	ReceiveData | 
+2016-04-01 07:54:30.169	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:30.369	DEBUG	ReceiveData | 
+2016-04-01 07:54:30.369	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:30.569	DEBUG	ReceiveData | 
+2016-04-01 07:54:30.569	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:30.769	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     3,767#      0,000#
+2016-04-01 07:54:30.769	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:30.769	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:54:30.967	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:54:30.971	DEBUG	ReceiveData | 
+2016-04-01 07:54:30.972	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:31.172	DEBUG	ReceiveData | 
+2016-04-01 07:54:31.172	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:31.372	DEBUG	ReceiveData | 
+2016-04-01 07:54:31.372	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:31.572	DEBUG	ReceiveData | 
+2016-04-01 07:54:31.572	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:31.772	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     1,942#      0,000#
+2016-04-01 07:54:31.772	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:31.772	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:54:31.969	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:54:31.973	DEBUG	ReceiveData | 
+2016-04-01 07:54:31.973	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:32.173	DEBUG	ReceiveData | 
+2016-04-01 07:54:32.173	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:32.373	DEBUG	ReceiveData | 
+2016-04-01 07:54:32.373	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:32.573	DEBUG	ReceiveData | 
+2016-04-01 07:54:32.573	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:32.773	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#
+2016-04-01 07:54:32.773	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:32.969	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:54:32.973	DEBUG	ReceiveData | 0#1#0#0#0#     2,633#      0,000#
+2016-04-01 07:54:32.973	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:33.173	DEBUG	ReceiveData | 
+2016-04-01 07:54:33.173	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:33.373	DEBUG	ReceiveData | 
+2016-04-01 07:54:33.373	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:33.573	DEBUG	ReceiveData | 
+2016-04-01 07:54:33.573	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:33.773	DEBUG	ReceiveData | 
+2016-04-01 07:54:33.773	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:33.971	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:54:33.973	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     3,619#      0,000#
+2016-04-01 07:54:33.973	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:33.974	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:54:34.174	DEBUG	ReceiveData | 
+2016-04-01 07:54:34.174	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:34.374	DEBUG	ReceiveData | 
+2016-04-01 07:54:34.374	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:34.575	DEBUG	ReceiveData | 
+2016-04-01 07:54:34.576	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:34.776	DEBUG	ReceiveData | 
+2016-04-01 07:54:34.776	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:34.971	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:54:34.976	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     4,917#      0,000#
+2016-04-01 07:54:34.976	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:34.976	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:54:35.177	DEBUG	ReceiveData | 
+2016-04-01 07:54:35.177	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:35.377	DEBUG	ReceiveData | 
+2016-04-01 07:54:35.377	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:35.577	DEBUG	ReceiveData | 
+2016-04-01 07:54:35.577	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:35.778	DEBUG	ReceiveData | 
+2016-04-01 07:54:35.778	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:35.971	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:54:35.977	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     7,865#      0,000#
+2016-04-01 07:54:35.977	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:35.977	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:54:36.177	DEBUG	ReceiveData | 
+2016-04-01 07:54:36.177	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:36.377	DEBUG	ReceiveData | 
+2016-04-01 07:54:36.377	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:36.577	DEBUG	ReceiveData | 
+2016-04-01 07:54:36.577	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:36.777	DEBUG	ReceiveData | 
+2016-04-01 07:54:36.777	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:36.973	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:54:36.977	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     8,613#      0,000#
+2016-04-01 07:54:36.977	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:36.977	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:54:37.177	DEBUG	ReceiveData | 
+2016-04-01 07:54:37.177	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:37.377	DEBUG	ReceiveData | 
+2016-04-01 07:54:37.377	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:37.577	DEBUG	ReceiveData | 
+2016-04-01 07:54:37.577	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:37.777	DEBUG	ReceiveData | 
+2016-04-01 07:54:37.777	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:37.973	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:54:37.977	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#    
+2016-04-01 07:54:37.977	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:38.177	DEBUG	ReceiveData |  6,543#      0,000#
+2016-04-01 07:54:38.177	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:38.377	DEBUG	ReceiveData | 
+2016-04-01 07:54:38.377	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:38.577	DEBUG	ReceiveData | 
+2016-04-01 07:54:38.577	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:38.777	DEBUG	ReceiveData | 
+2016-04-01 07:54:38.777	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:38.974	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:54:38.977	DEBUG	ReceiveData | 
+2016-04-01 07:54:38.977	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:39.177	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     4,669#      0,000#
+2016-04-01 07:54:39.177	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:39.177	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:54:39.377	DEBUG	ReceiveData | 
+2016-04-01 07:54:39.377	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:39.577	DEBUG	ReceiveData | 
+2016-04-01 07:54:39.577	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:39.777	DEBUG	ReceiveData | 
+2016-04-01 07:54:39.777	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:39.976	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:54:39.977	DEBUG	ReceiveData | 
+2016-04-01 07:54:39.978	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:40.178	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     4,804#      0,000#
+2016-04-01 07:54:40.178	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:40.179	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:54:40.379	DEBUG	ReceiveData | 
+2016-04-01 07:54:40.379	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:40.579	DEBUG	ReceiveData | 
+2016-04-01 07:54:40.579	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:40.779	DEBUG	ReceiveData | 
+2016-04-01 07:54:40.779	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:40.977	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:54:40.980	DEBUG	ReceiveData | 
+2016-04-01 07:54:40.980	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:41.180	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     0,963#      0,000#
+2016-04-01 07:54:41.180	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:41.181	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:54:41.381	DEBUG	ReceiveData | 
+2016-04-01 07:54:41.381	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:41.581	DEBUG	ReceiveData | 
+2016-04-01 07:54:41.581	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:41.781	DEBUG	ReceiveData | 
+2016-04-01 07:54:41.781	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:41.978	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:54:41.981	DEBUG	ReceiveData | 
+2016-04-01 07:54:41.981	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:42.181	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     6,580#      0,000#
+2016-04-01 07:54:42.181	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:42.182	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:54:42.382	DEBUG	ReceiveData | 
+2016-04-01 07:54:42.382	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:42.582	DEBUG	ReceiveData | 
+2016-04-01 07:54:42.582	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:42.782	DEBUG	ReceiveData | 
+2016-04-01 07:54:42.782	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:42.978	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:54:42.982	DEBUG	ReceiveData | 
+2016-04-01 07:54:42.982	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:43.182	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     0,897#      0,000#
+2016-04-01 07:54:43.182	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:43.183	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:54:43.383	DEBUG	ReceiveData | 
+2016-04-01 07:54:43.383	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:43.583	DEBUG	ReceiveData | 
+2016-04-01 07:54:43.583	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:43.783	DEBUG	ReceiveData | 
+2016-04-01 07:54:43.783	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:43.980	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:54:43.983	DEBUG	ReceiveData | 
+2016-04-01 07:54:43.983	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:44.183	DEBUG	ReceiveData | 0
+2016-04-01 07:54:44.183	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:44.383	DEBUG	ReceiveData | 0#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     8,297#      0,000#
+2016-04-01 07:54:44.383	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:44.583	DEBUG	ReceiveData | 
+2016-04-01 07:54:44.583	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:44.783	DEBUG	ReceiveData | 
+2016-04-01 07:54:44.783	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:44.980	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:54:44.983	DEBUG	ReceiveData | 
+2016-04-01 07:54:44.983	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:45.183	DEBUG	ReceiveData | 
+2016-04-01 07:54:45.183	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:45.383	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     5,001#      0,000#
+2016-04-01 07:54:45.383	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:45.383	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:54:45.583	DEBUG	ReceiveData | 
+2016-04-01 07:54:45.583	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:45.783	DEBUG	ReceiveData | 
+2016-04-01 07:54:45.783	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:45.981	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:54:45.982	DEBUG	ReceiveData | 
+2016-04-01 07:54:45.982	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:46.182	DEBUG	ReceiveData | 
+2016-04-01 07:54:46.182	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:46.382	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     4,197#      0,000#
+2016-04-01 07:54:46.382	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:46.382	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:54:46.582	DEBUG	ReceiveData | 
+2016-04-01 07:54:46.582	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:46.782	DEBUG	ReceiveData | 
+2016-04-01 07:54:46.782	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:46.981	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:54:46.982	DEBUG	ReceiveData | 
+2016-04-01 07:54:46.982	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:47.182	DEBUG	ReceiveData | 
+2016-04-01 07:54:47.182	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:47.382	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     4,057#      0,000#
+2016-04-01 07:54:47.382	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:47.382	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:54:47.582	DEBUG	ReceiveData | 
+2016-04-01 07:54:47.582	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:47.782	DEBUG	ReceiveData | 
+2016-04-01 07:54:47.782	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:47.982	DEBUG	ReceiveData | 
+2016-04-01 07:54:47.982	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:47.982	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:54:48.182	DEBUG	ReceiveData | 
+2016-04-01 07:54:48.182	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:48.382	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     7,715#      0,000#
+2016-04-01 07:54:48.382	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:48.382	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:54:48.582	DEBUG	ReceiveData | 
+2016-04-01 07:54:48.582	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:48.782	DEBUG	ReceiveData | 
+2016-04-01 07:54:48.782	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:48.982	DEBUG	ReceiveData | 
+2016-04-01 07:54:48.982	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:48.982	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:54:49.182	DEBUG	ReceiveData | 
+2016-04-01 07:54:49.182	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:49.382	DEBUG	ReceiveData | 00#TK#0#0#0#0
+2016-04-01 07:54:49.382	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:49.582	DEBUG	ReceiveData | #0#0#0#0#0#0#1#0#0#0#     0,800#      0,000#
+2016-04-01 07:54:49.582	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:49.782	DEBUG	ReceiveData | 
+2016-04-01 07:54:49.782	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:49.982	DEBUG	ReceiveData | 
+2016-04-01 07:54:49.982	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:49.982	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:54:50.182	DEBUG	ReceiveData | 
+2016-04-01 07:54:50.182	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:50.382	DEBUG	ReceiveData | 
+2016-04-01 07:54:50.382	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:50.582	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     3,778#      0,000#
+2016-04-01 07:54:50.582	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:50.582	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:54:50.782	DEBUG	ReceiveData | 
+2016-04-01 07:54:50.782	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:50.982	DEBUG	ReceiveData | 
+2016-04-01 07:54:50.982	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:50.982	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:54:51.182	DEBUG	ReceiveData | 
+2016-04-01 07:54:51.182	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:51.382	DEBUG	ReceiveData | 
+2016-04-01 07:54:51.382	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:51.582	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     4,421#      0,000#
+2016-04-01 07:54:51.582	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:51.582	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:54:51.782	DEBUG	ReceiveData | 
+2016-04-01 07:54:51.782	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:51.982	DEBUG	ReceiveData | 
+2016-04-01 07:54:51.982	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:51.982	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:54:52.182	DEBUG	ReceiveData | 
+2016-04-01 07:54:52.182	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:52.382	DEBUG	ReceiveData | 
+2016-04-01 07:54:52.382	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:52.582	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     7,885#      0,000#
+2016-04-01 07:54:52.582	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:52.582	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:54:52.782	DEBUG	ReceiveData | 
+2016-04-01 07:54:52.782	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:52.982	DEBUG	ReceiveData | 
+2016-04-01 07:54:52.982	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:52.982	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:54:53.182	DEBUG	ReceiveData | 
+2016-04-01 07:54:53.182	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:53.382	DEBUG	ReceiveData | 
+2016-04-01 07:54:53.382	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:53.582	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     4,952#      0,000#
+2016-04-01 07:54:53.582	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:53.582	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:54:53.782	DEBUG	ReceiveData | 
+2016-04-01 07:54:53.782	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:53.982	DEBUG	ReceiveData | 
+2016-04-01 07:54:53.982	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:53.983	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:54:54.182	DEBUG	ReceiveData | 
+2016-04-01 07:54:54.182	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:54.382	DEBUG	ReceiveData | 
+2016-04-01 07:54:54.382	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:54.582	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#
+2016-04-01 07:54:54.582	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:54.782	DEBUG	ReceiveData | 0#1#0#0#0#     6,250#      0,000#
+2016-04-01 07:54:54.782	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:54.982	DEBUG	ReceiveData | 
+2016-04-01 07:54:54.982	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:54.983	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:54:55.182	DEBUG	ReceiveData | 
+2016-04-01 07:54:55.182	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:55.382	DEBUG	ReceiveData | 
+2016-04-01 07:54:55.382	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:55.582	DEBUG	ReceiveData | 
+2016-04-01 07:54:55.582	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:55.782	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     4,983#      0,000#
+2016-04-01 07:54:55.782	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:55.782	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:54:55.981	DEBUG	ReceiveData | 
+2016-04-01 07:54:55.981	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:55.982	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:54:56.181	DEBUG	ReceiveData | 
+2016-04-01 07:54:56.181	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:56.381	DEBUG	ReceiveData | 
+2016-04-01 07:54:56.381	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:56.581	DEBUG	ReceiveData | 
+2016-04-01 07:54:56.581	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:56.781	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     4,235#      0,000#
+2016-04-01 07:54:56.781	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:56.781	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:54:56.981	DEBUG	ReceiveData | 
+2016-04-01 07:54:56.981	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:56.983	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:54:57.181	DEBUG	ReceiveData | 
+2016-04-01 07:54:57.181	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:57.381	DEBUG	ReceiveData | 
+2016-04-01 07:54:57.381	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:57.581	DEBUG	ReceiveData | 
+2016-04-01 07:54:57.581	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:57.781	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     1,681#      0,000#
+2016-04-01 07:54:57.781	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:57.781	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:54:57.981	DEBUG	ReceiveData | 
+2016-04-01 07:54:57.981	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:57.984	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:54:58.181	DEBUG	ReceiveData | 
+2016-04-01 07:54:58.181	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:58.381	DEBUG	ReceiveData | 
+2016-04-01 07:54:58.381	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:58.581	DEBUG	ReceiveData | 
+2016-04-01 07:54:58.581	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:58.781	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     0,261#      0,000#
+2016-04-01 07:54:58.781	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:58.781	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:54:58.982	DEBUG	ReceiveData | 
+2016-04-01 07:54:58.984	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:58.987	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:54:59.187	DEBUG	ReceiveData | 
+2016-04-01 07:54:59.187	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:59.388	DEBUG	ReceiveData | 
+2016-04-01 07:54:59.388	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:59.589	DEBUG	ReceiveData | 
+2016-04-01 07:54:59.589	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:59.790	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     0,796#  
+2016-04-01 07:54:59.790	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:54:59.791	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:54:59.988	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:54:59.991	DEBUG	ReceiveData |   0,000#
+2016-04-01 07:54:59.991	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:00.191	DEBUG	ReceiveData | 
+2016-04-01 07:55:00.191	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:00.392	DEBUG	ReceiveData | 
+2016-04-01 07:55:00.392	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:00.592	DEBUG	ReceiveData | 
+2016-04-01 07:55:00.592	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:00.792	DEBUG	ReceiveData | 
+2016-04-01 07:55:00.792	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:00.988	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:55:00.992	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     1,799#      0,000#
+2016-04-01 07:55:00.992	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:00.992	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:55:01.193	DEBUG	ReceiveData | 
+2016-04-01 07:55:01.193	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:01.393	DEBUG	ReceiveData | 
+2016-04-01 07:55:01.393	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:01.593	DEBUG	ReceiveData | 
+2016-04-01 07:55:01.593	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:01.793	DEBUG	ReceiveData | 
+2016-04-01 07:55:01.793	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:01.989	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:55:01.993	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     4,883#      0,000#
+2016-04-01 07:55:01.993	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:01.993	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:55:02.194	DEBUG	ReceiveData | 
+2016-04-01 07:55:02.194	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:02.394	DEBUG	ReceiveData | 
+2016-04-01 07:55:02.394	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:02.594	DEBUG	ReceiveData | 
+2016-04-01 07:55:02.594	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:02.794	DEBUG	ReceiveData | 
+2016-04-01 07:55:02.794	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:02.990	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:55:02.994	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     5,973#      0,000#
+2016-04-01 07:55:02.994	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:02.994	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:55:03.194	DEBUG	ReceiveData | 
+2016-04-01 07:55:03.194	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:03.394	DEBUG	ReceiveData | 
+2016-04-01 07:55:03.394	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:03.594	DEBUG	ReceiveData | 
+2016-04-01 07:55:03.594	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:03.794	DEBUG	ReceiveData | 
+2016-04-01 07:55:03.795	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:03.992	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:55:03.996	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     1,797#      0,000#
+2016-04-01 07:55:03.996	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:03.997	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:55:04.197	DEBUG	ReceiveData | 
+2016-04-01 07:55:04.198	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:04.399	DEBUG	ReceiveData | 
+2016-04-01 07:55:04.401	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:04.601	DEBUG	ReceiveData | 
+2016-04-01 07:55:04.602	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:04.803	DEBUG	ReceiveData | 
+2016-04-01 07:55:04.804	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:04.993	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:55:05.004	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     4,372#      0,000#
+2016-04-01 07:55:05.005	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:05.006	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:55:05.206	DEBUG	ReceiveData | 
+2016-04-01 07:55:05.207	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:05.407	DEBUG	ReceiveData | 
+2016-04-01 07:55:05.408	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:05.609	DEBUG	ReceiveData | 
+2016-04-01 07:55:05.609	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:05.809	DEBUG	ReceiveData | 
+2016-04-01 07:55:05.809	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:05.994	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:55:06.009	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#
+2016-04-01 07:55:06.010	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:06.212	DEBUG	ReceiveData | #0#     1,890#      0,000#
+2016-04-01 07:55:06.212	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:06.413	DEBUG	ReceiveData | 
+2016-04-01 07:55:06.414	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:06.615	DEBUG	ReceiveData | 
+2016-04-01 07:55:06.616	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:06.818	DEBUG	ReceiveData | 
+2016-04-01 07:55:06.819	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:06.997	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:55:07.019	DEBUG	ReceiveData | 
+2016-04-01 07:55:07.020	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:07.220	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     6,814#      0,000#
+2016-04-01 07:55:07.220	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:07.221	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:55:07.421	DEBUG	ReceiveData | 
+2016-04-01 07:55:07.422	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:07.622	DEBUG	ReceiveData | 
+2016-04-01 07:55:07.623	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:07.824	DEBUG	ReceiveData | 
+2016-04-01 07:55:07.824	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:07.999	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:55:08.025	DEBUG	ReceiveData | 
+2016-04-01 07:55:08.027	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:08.227	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     7,034#      0,000#
+2016-04-01 07:55:08.228	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:08.228	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:55:08.428	DEBUG	ReceiveData | 
+2016-04-01 07:55:08.429	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:08.630	DEBUG	ReceiveData | 
+2016-04-01 07:55:08.631	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:08.833	DEBUG	ReceiveData | 
+2016-04-01 07:55:08.834	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:09.002	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:55:09.035	DEBUG	ReceiveData | 
+2016-04-01 07:55:09.036	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:09.237	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     1,116#      0,000#
+2016-04-01 07:55:09.238	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:09.239	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:55:09.440	DEBUG	ReceiveData | 
+2016-04-01 07:55:09.442	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:09.642	DEBUG	ReceiveData | 
+2016-04-01 07:55:09.643	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:09.844	DEBUG	ReceiveData | 
+2016-04-01 07:55:09.847	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:10.005	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:55:10.048	DEBUG	ReceiveData | 
+2016-04-01 07:55:10.049	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:10.250	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     4,181#      0,000#
+2016-04-01 07:55:10.252	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:10.252	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:55:10.453	DEBUG	ReceiveData | 
+2016-04-01 07:55:10.454	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:10.656	DEBUG	ReceiveData | 
+2016-04-01 07:55:10.657	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:10.858	DEBUG	ReceiveData | 
+2016-04-01 07:55:10.859	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:11.009	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:55:11.060	DEBUG	ReceiveData | 
+2016-04-01 07:55:11.062	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:11.263	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     2,469#      0,000#
+2016-04-01 07:55:11.264	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:11.265	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:55:11.466	DEBUG	ReceiveData | 
+2016-04-01 07:55:11.467	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:11.667	DEBUG	ReceiveData | 
+2016-04-01 07:55:11.668	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:11.869	DEBUG	ReceiveData | 
+2016-04-01 07:55:11.870	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:12.011	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:55:12.071	DEBUG	ReceiveData | 
+2016-04-01 07:55:12.072	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:12.272	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     0,964#      0,000#
+2016-04-01 07:55:12.274	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:12.275	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:55:12.475	DEBUG	ReceiveData | 
+2016-04-01 07:55:12.476	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:12.676	DEBUG	ReceiveData | 
+2016-04-01 07:55:12.677	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:12.878	DEBUG	ReceiveData | 
+2016-04-01 07:55:12.879	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:13.014	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:55:13.080	DEBUG	ReceiveData | 
+2016-04-01 07:55:13.081	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:13.282	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0
+2016-04-01 07:55:13.284	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:13.485	DEBUG	ReceiveData | 0#1#0#0#0#     7,298#      0,000#
+2016-04-01 07:55:13.486	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:13.686	DEBUG	ReceiveData | 
+2016-04-01 07:55:13.687	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:13.888	DEBUG	ReceiveData | 
+2016-04-01 07:55:13.888	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:14.017	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:55:14.088	DEBUG	ReceiveData | 
+2016-04-01 07:55:14.089	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:14.290	DEBUG	ReceiveData | 
+2016-04-01 07:55:14.291	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:14.492	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     8,813#      0,000#
+2016-04-01 07:55:14.493	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:14.494	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:55:14.695	DEBUG	ReceiveData | 
+2016-04-01 07:55:14.696	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:14.898	DEBUG	ReceiveData | 
+2016-04-01 07:55:14.899	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:15.020	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:55:15.100	DEBUG	ReceiveData | 
+2016-04-01 07:55:15.101	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:15.307	DEBUG	ReceiveData | 
+2016-04-01 07:55:15.308	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:15.509	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     3,207#      0,000#
+2016-04-01 07:55:15.510	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:15.511	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:55:15.712	DEBUG	ReceiveData | 
+2016-04-01 07:55:15.713	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:15.914	DEBUG	ReceiveData | 
+2016-04-01 07:55:15.914	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:16.022	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:55:16.114	DEBUG	ReceiveData | 
+2016-04-01 07:55:16.115	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:16.316	DEBUG	ReceiveData | 
+2016-04-01 07:55:16.317	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:16.517	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     1,100#      0,000#
+2016-04-01 07:55:16.520	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:16.520	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:55:16.721	DEBUG	ReceiveData | 
+2016-04-01 07:55:16.722	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:16.923	DEBUG	ReceiveData | 
+2016-04-01 07:55:16.924	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:17.025	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:55:17.125	DEBUG	ReceiveData | 
+2016-04-01 07:55:17.126	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:17.327	DEBUG	ReceiveData | 
+2016-04-01 07:55:17.328	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:17.529	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     1,494#      0,000#
+2016-04-01 07:55:17.530	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:17.531	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:55:17.732	DEBUG	ReceiveData | 
+2016-04-01 07:55:17.733	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:17.934	DEBUG	ReceiveData | 
+2016-04-01 07:55:17.935	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:18.026	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:55:18.136	DEBUG	ReceiveData | 
+2016-04-01 07:55:18.137	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:18.338	DEBUG	ReceiveData | 
+2016-04-01 07:55:18.339	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:18.540	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     3,975#      0,000#
+2016-04-01 07:55:18.541	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:18.542	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:55:18.743	DEBUG	ReceiveData | 
+2016-04-01 07:55:18.744	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:18.945	DEBUG	ReceiveData | 
+2016-04-01 07:55:18.946	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:19.029	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:55:19.147	DEBUG	ReceiveData | 
+2016-04-01 07:55:19.148	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:19.349	DEBUG	ReceiveData | 
+2016-04-01 07:55:19.350	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:19.551	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     5,509#      0,000#
+2016-04-01 07:55:19.553	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:19.554	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:55:19.754	DEBUG	ReceiveData | 
+2016-04-01 07:55:19.755	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:19.956	DEBUG	ReceiveData | 
+2016-04-01 07:55:19.957	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:20.032	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:55:20.158	DEBUG	ReceiveData | 
+2016-04-01 07:55:20.159	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:20.360	DEBUG	ReceiveData | 
+2016-04-01 07:55:20.361	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:20.562	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#
+2016-04-01 07:55:20.563	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:20.764	DEBUG	ReceiveData | 0#     8,756#      0,000#
+2016-04-01 07:55:20.765	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:20.966	DEBUG	ReceiveData | 
+2016-04-01 07:55:20.967	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:21.034	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:55:21.168	DEBUG	ReceiveData | 
+2016-04-01 07:55:21.169	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:21.370	DEBUG	ReceiveData | 
+2016-04-01 07:55:21.371	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:21.572	DEBUG	ReceiveData | 
+2016-04-01 07:55:21.573	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:21.774	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     4,224#      0,000#
+2016-04-01 07:55:21.775	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:21.776	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:55:21.977	DEBUG	ReceiveData | 
+2016-04-01 07:55:21.978	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:22.037	ERROR	EZSQLException, с сообщением: SQL Error:  Unable to complete network request to host "10.21.118.34". Error writing data to the connection.. Error Code: -902. Unsuccessful execution caused by a system error that precludes successful execution of subsequent statements The SQL: select distinct pkdat from ingots
+group by pkdat
+order by pkdat desc rows 3
+; 
+2016-04-01 07:55:22.181	DEBUG	ReceiveData | 
+2016-04-01 07:55:22.182	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:22.382	DEBUG	ReceiveData | 
+2016-04-01 07:55:22.383	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:22.584	DEBUG	ReceiveData | 
+2016-04-01 07:55:22.585	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:22.786	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     3,594#      0,000#
+2016-04-01 07:55:22.787	WARN	pkdat | 1603312 | num | 51 | num_ingot | 9
+2016-04-01 07:55:22.788	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:55:22.942	INFO	close ArmWeightBlooming1
+2016-04-01 07:57:54.262	INFO	start ArmWeightBlooming1
+2016-04-01 07:57:54.643	DEBUG	ReceiveData | 
+2016-04-01 07:57:54.644	WARN	pkdat |  | num |  | num_ingot | 
+2016-04-01 07:57:54.845	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     5,139#      0,000#
+2016-04-01 07:57:54.845	WARN	pkdat |  | num |  | num_ingot | 
+2016-04-01 07:57:54.846	WARN	заготовка не выбрана	weight -> 5,139
+2016-04-01 07:57:55.047	DEBUG	ReceiveData | 
+2016-04-01 07:57:55.048	WARN	pkdat |  | num |  | num_ingot | 
+2016-04-01 07:57:55.249	DEBUG	ReceiveData | 
+2016-04-01 07:57:55.250	WARN	pkdat |  | num |  | num_ingot | 
+2016-04-01 07:57:55.451	DEBUG	ReceiveData | 
+2016-04-01 07:57:55.452	WARN	pkdat |  | num |  | num_ingot | 
+2016-04-01 07:57:55.653	DEBUG	ReceiveData | 
+2016-04-01 07:57:55.654	WARN	pkdat |  | num |  | num_ingot | 
+2016-04-01 07:57:55.855	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     2,587#      0,000#
+2016-04-01 07:57:55.856	WARN	pkdat |  | num |  | num_ingot | 
+2016-04-01 07:57:55.862	WARN	заготовка не выбрана	weight -> 2,587
+2016-04-01 07:57:56.061	DEBUG	ReceiveData | 
+2016-04-01 07:57:56.062	WARN	pkdat |  | num |  | num_ingot | 
+2016-04-01 07:57:56.263	DEBUG	ReceiveData | 
+2016-04-01 07:57:56.263	WARN	pkdat |  | num |  | num_ingot | 
+2016-04-01 07:57:56.464	DEBUG	ReceiveData | 
+2016-04-01 07:57:56.465	WARN	pkdat |  | num |  | num_ingot | 
+2016-04-01 07:57:56.666	DEBUG	ReceiveData | 
+2016-04-01 07:57:56.667	WARN	pkdat |  | num |  | num_ingot | 
+2016-04-01 07:57:56.869	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     1,575#      0,000#
+2016-04-01 07:57:56.869	WARN	pkdat |  | num |  | num_ingot | 
+2016-04-01 07:57:56.870	WARN	заготовка не выбрана	weight -> 1,575
+2016-04-01 07:57:57.072	DEBUG	ReceiveData | 
+2016-04-01 07:57:57.073	WARN	pkdat |  | num |  | num_ingot | 
+2016-04-01 07:57:57.273	DEBUG	ReceiveData | 
+2016-04-01 07:57:57.273	WARN	pkdat |  | num |  | num_ingot | 
+2016-04-01 07:57:57.474	DEBUG	ReceiveData | 
+2016-04-01 07:57:57.475	WARN	pkdat |  | num |  | num_ingot | 
+2016-04-01 07:57:57.676	DEBUG	ReceiveData | 
+2016-04-01 07:57:57.677	WARN	pkdat |  | num |  | num_ingot | 
+2016-04-01 07:57:57.878	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     6,231#      0,000#
+2016-04-01 07:57:57.879	WARN	pkdat |  | num |  | num_ingot | 
+2016-04-01 07:57:57.880	WARN	заготовка не выбрана	weight -> 6,231
+2016-04-01 07:57:58.081	DEBUG	ReceiveData | 
+2016-04-01 07:57:58.083	WARN	pkdat |  | num |  | num_ingot | 
+2016-04-01 07:57:58.283	DEBUG	ReceiveData | 
+2016-04-01 07:57:58.284	WARN	pkdat |  | num |  | num_ingot | 
+2016-04-01 07:57:58.485	DEBUG	ReceiveData | 
+2016-04-01 07:57:58.486	WARN	pkdat |  | num |  | num_ingot | 
+2016-04-01 07:57:58.686	DEBUG	ReceiveData | 
+2016-04-01 07:57:58.686	WARN	pkdat |  | num |  | num_ingot | 
+2016-04-01 07:57:58.886	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     2,184#      0,00
+2016-04-01 07:57:58.887	WARN	pkdat |  | num |  | num_ingot | 
+2016-04-01 07:57:58.888	WARN	заготовка не выбрана	weight -> 2,184
+2016-04-01 07:57:59.089	DEBUG	ReceiveData | 
+2016-04-01 07:57:59.090	WARN	pkdat |  | num |  | num_ingot | 
+2016-04-01 07:57:59.291	DEBUG	ReceiveData | 
+2016-04-01 07:57:59.291	WARN	pkdat |  | num |  | num_ingot | 
+2016-04-01 07:57:59.491	DEBUG	ReceiveData | 
+2016-04-01 07:57:59.491	WARN	pkdat |  | num |  | num_ingot | 
+2016-04-01 07:57:59.692	DEBUG	ReceiveData | 
+2016-04-01 07:57:59.693	WARN	pkdat |  | num |  | num_ingot | 
+2016-04-01 07:57:59.895	DEBUG	ReceiveData | 00#TK#0
+2016-04-01 07:57:59.896	WARN	pkdat |  | num |  | num_ingot | 
+2016-04-01 07:58:00.096	DEBUG	ReceiveData | 0#0#0#0#0#0#0#0#1#0#0#0#     2,268#      0,000#
+2016-04-01 07:58:00.097	WARN	pkdat |  | num |  | num_ingot | 
+2016-04-01 07:58:00.298	DEBUG	ReceiveData | 
+2016-04-01 07:58:00.299	WARN	pkdat |  | num |  | num_ingot | 
+2016-04-01 07:58:00.500	DEBUG	ReceiveData | 
+2016-04-01 07:58:00.500	WARN	pkdat | 1604012 | num | 6 | num_ingot | 1
+2016-04-01 07:58:00.700	DEBUG	ReceiveData | 
+2016-04-01 07:58:00.702	WARN	pkdat | 1604012 | num | 6 | num_ingot | 1
+2016-04-01 07:58:00.902	DEBUG	ReceiveData | 
+2016-04-01 07:58:00.903	WARN	pkdat | 1604012 | num | 6 | num_ingot | 1
+2016-04-01 07:58:01.104	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     2,991#      0,000#
+2016-04-01 07:58:01.105	WARN	pkdat | 1604012 | num | 6 | num_ingot | 1
+2016-04-01 07:58:01.106	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:58:01.989	DEBUG	ReceiveData | 00#EK#0#0#0#0#00#TK#0#0#0#0#0
+2016-04-01 07:58:01.990	WARN	pkdat | 1603312 | num | 51 | num_ingot | 10
+2016-04-01 07:58:02.191	DEBUG	ReceiveData | 0#0#0#0#1#0#0#0#     0,249#      0,000#
+2016-04-01 07:58:02.192	WARN	pkdat | 1603312 | num | 51 | num_ingot | 10
+2016-04-01 07:58:02.393	DEBUG	ReceiveData | 
+2016-04-01 07:58:02.394	WARN	pkdat | 1603312 | num | 51 | num_ingot | 10
+2016-04-01 07:58:02.596	DEBUG	ReceiveData | 
+2016-04-01 07:58:02.597	WARN	pkdat | 1603312 | num | 51 | num_ingot | 10
+2016-04-01 07:58:02.797	DEBUG	ReceiveData | 
+2016-04-01 07:58:02.798	WARN	pkdat | 1603312 | num | 51 | num_ingot | 10
+2016-04-01 07:58:02.999	DEBUG	ReceiveData | 
+2016-04-01 07:58:03.000	WARN	pkdat | 1603312 | num | 51 | num_ingot | 10
+2016-04-01 07:58:03.201	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     6,607#      0,000#
+2016-04-01 07:58:03.202	WARN	pkdat | 1603312 | num | 51 | num_ingot | 10
+2016-04-01 07:58:03.203	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:58:04.058	DEBUG	ReceiveData | 
+2016-04-01 07:58:04.059	WARN	pkdat | 1603312 | num | 51 | num_ingot | 11
+2016-04-01 07:58:04.260	DEBUG	ReceiveData | EK#0#0#0#0#00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     8,333#      0,000#
+2016-04-01 07:58:04.261	WARN	pkdat | 1603312 | num | 51 | num_ingot | 11
+2016-04-01 07:58:04.480	DEBUG	ReceiveData | 
+2016-04-01 07:58:04.481	WARN	pkdat | 1603312 | num | 51 | num_ingot | 11
+2016-04-01 07:58:04.682	DEBUG	ReceiveData | 
+2016-04-01 07:58:04.683	WARN	pkdat | 1603312 | num | 51 | num_ingot | 11
+2016-04-01 07:58:04.902	DEBUG	ReceiveData | 
+2016-04-01 07:58:04.903	WARN	pkdat | 1603312 | num | 51 | num_ingot | 11
+2016-04-01 07:58:05.104	DEBUG	ReceiveData | 
+2016-04-01 07:58:05.105	WARN	pkdat | 1603312 | num | 51 | num_ingot | 11
+2016-04-01 07:58:05.324	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     1,790#      0,000#
+2016-04-01 07:58:05.325	WARN	pkdat | 1603312 | num | 51 | num_ingot | 11
+2016-04-01 07:58:05.526	DEBUG	ReceiveData | 
+2016-04-01 07:58:05.526	WARN	pkdat | 1603312 | num | 51 | num_ingot | 11
+2016-04-01 07:58:05.744	DEBUG	ReceiveData | 
+2016-04-01 07:58:05.745	WARN	pkdat | 1603312 | num | 51 | num_ingot | 11
+2016-04-01 07:58:05.945	DEBUG	ReceiveData | 
+2016-04-01 07:58:05.946	WARN	pkdat | 1603312 | num | 51 | num_ingot | 11
+2016-04-01 07:58:06.165	DEBUG	ReceiveData | 00#EK#0#0#0#0#00#TK#0#0#0
+2016-04-01 07:58:06.166	WARN	pkdat | 1603312 | num | 51 | num_ingot | 11
+2016-04-01 07:58:06.368	DEBUG	ReceiveData | 0#0#0#0#0#0#1#0#0#0#     3,231#      0,000#
+2016-04-01 07:58:06.368	WARN	pkdat | 1603312 | num | 51 | num_ingot | 11
+2016-04-01 07:58:06.569	DEBUG	ReceiveData | 
+2016-04-01 07:58:06.570	WARN	pkdat | 1603312 | num | 51 | num_ingot | 11
+2016-04-01 07:58:06.771	DEBUG	ReceiveData | 
+2016-04-01 07:58:06.772	WARN	pkdat | 1603312 | num | 51 | num_ingot | 11
+2016-04-01 07:58:06.973	DEBUG	ReceiveData | 
+2016-04-01 07:58:06.974	WARN	pkdat | 1603312 | num | 51 | num_ingot | 11
+2016-04-01 07:58:07.175	DEBUG	ReceiveData | 
+2016-04-01 07:58:07.176	WARN	pkdat | 1603312 | num | 51 | num_ingot | 11
+2016-04-01 07:58:07.378	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     4,020#      0,000#
+2016-04-01 07:58:07.379	WARN	pkdat | 1603312 | num | 51 | num_ingot | 11
+2016-04-01 07:58:07.379	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:58:08.175	DEBUG	ReceiveData | 
+2016-04-01 07:58:08.176	WARN	pkdat | 1603312 | num | 51 | num_ingot | 12
+2016-04-01 07:58:08.377	DEBUG	ReceiveData | 00#EK#0#0#0#0#00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     1,227#      0,000#
+2016-04-01 07:58:08.379	WARN	pkdat | 1603312 | num | 51 | num_ingot | 12
+2016-04-01 07:58:08.579	DEBUG	ReceiveData | 
+2016-04-01 07:58:08.581	WARN	pkdat | 1603312 | num | 51 | num_ingot | 12
+2016-04-01 07:58:08.781	DEBUG	ReceiveData | 
+2016-04-01 07:58:08.782	WARN	pkdat | 1603312 | num | 51 | num_ingot | 12
+2016-04-01 07:58:08.983	DEBUG	ReceiveData | 
+2016-04-01 07:58:08.984	WARN	pkdat | 1603312 | num | 51 | num_ingot | 12
+2016-04-01 07:58:09.185	DEBUG	ReceiveData | 
+2016-04-01 07:58:09.186	WARN	pkdat | 1603312 | num | 51 | num_ingot | 12
+2016-04-01 07:58:09.388	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     1,269#      0,000#
+2016-04-01 07:58:09.389	WARN	pkdat | 1603312 | num | 51 | num_ingot | 12
+2016-04-01 07:58:09.389	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:58:10.263	DEBUG	ReceiveData | 
+2016-04-01 07:58:10.264	WARN	pkdat | 1603312 | num | 51 | num_ingot | 13
+2016-04-01 07:58:10.465	DEBUG	ReceiveData | 00#EK#0#0#0#0#00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     8,066#      0,000#
+2016-04-01 07:58:10.466	WARN	pkdat | 1603312 | num | 51 | num_ingot | 13
+2016-04-01 07:58:10.667	DEBUG	ReceiveData | 
+2016-04-01 07:58:10.668	WARN	pkdat | 1603312 | num | 51 | num_ingot | 13
+2016-04-01 07:58:10.869	DEBUG	ReceiveData | 
+2016-04-01 07:58:10.870	WARN	pkdat | 1603312 | num | 51 | num_ingot | 13
+2016-04-01 07:58:11.071	DEBUG	ReceiveData | 
+2016-04-01 07:58:11.072	WARN	pkdat | 1603312 | num | 51 | num_ingot | 13
+2016-04-01 07:58:11.273	DEBUG	ReceiveData | 
+2016-04-01 07:58:11.274	WARN	pkdat | 1603312 | num | 51 | num_ingot | 13
+2016-04-01 07:58:11.475	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     6,030#      0,000#
+2016-04-01 07:58:11.476	WARN	pkdat | 1603312 | num | 51 | num_ingot | 13
+2016-04-01 07:58:11.477	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:58:12.304	DEBUG	ReceiveData | 
+2016-04-01 07:58:12.305	WARN	pkdat | 1603312 | num | 53 | num_ingot | 1
+2016-04-01 07:58:12.506	DEBUG	ReceiveData | 00#EK#0#0#0#0#00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     5,453#      0,000#
+2016-04-01 07:58:12.507	WARN	pkdat | 1603312 | num | 53 | num_ingot | 1
+2016-04-01 07:58:12.708	DEBUG	ReceiveData | 
+2016-04-01 07:58:12.709	WARN	pkdat | 1603312 | num | 53 | num_ingot | 1
+2016-04-01 07:58:12.910	DEBUG	ReceiveData | 
+2016-04-01 07:58:12.911	WARN	pkdat | 1603312 | num | 53 | num_ingot | 1
+2016-04-01 07:58:13.112	DEBUG	ReceiveData | 
+2016-04-01 07:58:13.114	WARN	pkdat | 1603312 | num | 53 | num_ingot | 1
+2016-04-01 07:58:13.315	DEBUG	ReceiveData | 
+2016-04-01 07:58:13.315	WARN	pkdat | 1603312 | num | 53 | num_ingot | 1
+2016-04-01 07:58:13.516	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     0,611#      0,000#
+2016-04-01 07:58:13.517	WARN	pkdat | 1603312 | num | 53 | num_ingot | 1
+2016-04-01 07:58:13.518	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:58:14.340	DEBUG	ReceiveData | 
+2016-04-01 07:58:14.340	WARN	pkdat | 1603312 | num | 54 | num_ingot | 1
+2016-04-01 07:58:14.540	DEBUG	ReceiveData | 00#EK#0#0#0#0#00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#
+2016-04-01 07:58:14.541	WARN	pkdat | 1603312 | num | 54 | num_ingot | 1
+2016-04-01 07:58:14.742	DEBUG	ReceiveData |   0,909#      0,000#
+2016-04-01 07:58:14.743	WARN	pkdat | 1603312 | num | 54 | num_ingot | 1
+2016-04-01 07:58:14.944	DEBUG	ReceiveData | 
+2016-04-01 07:58:14.945	WARN	pkdat | 1603312 | num | 54 | num_ingot | 1
+2016-04-01 07:58:15.146	DEBUG	ReceiveData | 
+2016-04-01 07:58:15.148	WARN	pkdat | 1603312 | num | 54 | num_ingot | 1
+2016-04-01 07:58:15.348	DEBUG	ReceiveData | 
+2016-04-01 07:58:15.349	WARN	pkdat | 1603312 | num | 54 | num_ingot | 1
+2016-04-01 07:58:15.550	DEBUG	ReceiveData | 
+2016-04-01 07:58:15.552	WARN	pkdat | 1603312 | num | 54 | num_ingot | 1
+2016-04-01 07:58:15.752	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     4,967#      0,000#
+2016-04-01 07:58:15.753	WARN	pkdat | 1603312 | num | 54 | num_ingot | 1
+2016-04-01 07:58:15.754	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:58:16.591	DEBUG	ReceiveData | 
+2016-04-01 07:58:16.592	WARN	pkdat | 1603312 | num | 55 | num_ingot | 1
+2016-04-01 07:58:16.794	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     5,798#      0,000#
+2016-04-01 07:58:16.795	WARN	pkdat | 1603312 | num | 55 | num_ingot | 1
+2016-04-01 07:58:17.013	DEBUG	ReceiveData | 
+2016-04-01 07:58:17.014	WARN	pkdat | 1603312 | num | 55 | num_ingot | 1
+2016-04-01 07:58:17.215	DEBUG	ReceiveData | 
+2016-04-01 07:58:17.216	WARN	pkdat | 1603312 | num | 55 | num_ingot | 1
+2016-04-01 07:58:17.435	DEBUG	ReceiveData | 
+2016-04-01 07:58:17.437	WARN	pkdat | 1603312 | num | 55 | num_ingot | 1
+2016-04-01 07:58:17.637	DEBUG	ReceiveData | 00#T
+2016-04-01 07:58:17.638	WARN	pkdat | 1603312 | num | 55 | num_ingot | 1
+2016-04-01 07:58:17.857	DEBUG	ReceiveData | #0#0#0#0#0#0#0#0#0#1#0#0#0#     3,885#      0,000#
+2016-04-01 07:58:17.858	WARN	pkdat | 1603312 | num | 55 | num_ingot | 1
+2016-04-01 07:58:18.059	DEBUG	ReceiveData | 
+2016-04-01 07:58:18.060	WARN	pkdat | 1603312 | num | 55 | num_ingot | 1
+2016-04-01 07:58:18.279	DEBUG	ReceiveData | 
+2016-04-01 07:58:18.281	WARN	pkdat | 1603312 | num | 55 | num_ingot | 1
+2016-04-01 07:58:18.481	DEBUG	ReceiveData | 
+2016-04-01 07:58:18.482	WARN	pkdat | 1603312 | num | 55 | num_ingot | 1
+2016-04-01 07:58:18.701	DEBUG	ReceiveData | 00#EK#0#0#0#0#00#TK#0#0#0#0#0#0#0#0#0#0
+2016-04-01 07:58:18.702	WARN	pkdat | 1603312 | num | 55 | num_ingot | 1
+2016-04-01 07:58:18.902	DEBUG	ReceiveData | #0#0#0#     8,442#      0,000#
+2016-04-01 07:58:18.903	WARN	pkdat | 1603312 | num | 55 | num_ingot | 1
+2016-04-01 07:58:19.104	DEBUG	ReceiveData | 
+2016-04-01 07:58:19.105	WARN	pkdat | 1603312 | num | 55 | num_ingot | 1
+2016-04-01 07:58:19.309	DEBUG	ReceiveData | 
+2016-04-01 07:58:19.309	WARN	pkdat | 1604012 | num | 7 | num_ingot | 2
+2016-04-01 07:58:19.510	DEBUG	ReceiveData | 
+2016-04-01 07:58:19.511	WARN	pkdat | 1604012 | num | 7 | num_ingot | 2
+2016-04-01 07:58:19.712	DEBUG	ReceiveData | 
+2016-04-01 07:58:19.713	WARN	pkdat | 1604012 | num | 7 | num_ingot | 2
+2016-04-01 07:58:19.913	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     3,941#      0,000#
+2016-04-01 07:58:19.914	WARN	pkdat | 1604012 | num | 7 | num_ingot | 2
+2016-04-01 07:58:19.915	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:58:20.748	DEBUG	ReceiveData | 
+2016-04-01 07:58:20.749	WARN	pkdat | 1603312 | num | 56 | num_ingot | 1
+2016-04-01 07:58:20.951	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     0,765#      0,000#
+2016-04-01 07:58:20.952	WARN	pkdat | 1603312 | num | 56 | num_ingot | 1
+2016-04-01 07:58:21.170	DEBUG	ReceiveData | 
+2016-04-01 07:58:21.171	WARN	pkdat | 1603312 | num | 56 | num_ingot | 1
+2016-04-01 07:58:21.372	DEBUG	ReceiveData | 
+2016-04-01 07:58:21.373	WARN	pkdat | 1603312 | num | 56 | num_ingot | 1
+2016-04-01 07:58:21.592	DEBUG	ReceiveData | 
+2016-04-01 07:58:21.593	WARN	pkdat | 1603312 | num | 56 | num_ingot | 1
+2016-04-01 07:58:21.794	DEBUG	ReceiveData | 
+2016-04-01 07:58:21.795	WARN	pkdat | 1603312 | num | 56 | num_ingot | 1
+2016-04-01 07:58:22.014	DEBUG	ReceiveData | 00#EK#0#0#0#0#00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     3,468#      0,000#
+2016-04-01 07:58:22.014	WARN	pkdat | 1603312 | num | 56 | num_ingot | 1
+2016-04-01 07:58:22.214	DEBUG	ReceiveData | 
+2016-04-01 07:58:22.215	WARN	pkdat | 1603312 | num | 56 | num_ingot | 1
+2016-04-01 07:58:22.416	DEBUG	ReceiveData | 
+2016-04-01 07:58:22.417	WARN	pkdat | 1603312 | num | 56 | num_ingot | 1
+2016-04-01 07:58:22.618	DEBUG	ReceiveData | 
+2016-04-01 07:58:22.618	WARN	pkdat | 1603312 | num | 56 | num_ingot | 1
+2016-04-01 07:58:22.819	DEBUG	ReceiveData | 
+2016-04-01 07:58:22.820	WARN	pkdat | 1603312 | num | 56 | num_ingot | 1
+2016-04-01 07:58:23.021	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     3,646#      0,000#
+2016-04-01 07:58:23.022	WARN	pkdat | 1603312 | num | 56 | num_ingot | 1
+2016-04-01 07:58:23.023	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:58:23.865	DEBUG	ReceiveData | 
+2016-04-01 07:58:23.866	WARN	pkdat | 1603312 | num | 56 | num_ingot | 2
+2016-04-01 07:58:24.067	DEBUG	ReceiveData | 00#EK#0#0#0#0#00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     1,861#      0,000#
+2016-04-01 07:58:24.067	WARN	pkdat | 1603312 | num | 56 | num_ingot | 2
+2016-04-01 07:58:24.267	DEBUG	ReceiveData | 
+2016-04-01 07:58:24.268	WARN	pkdat | 1603312 | num | 56 | num_ingot | 2
+2016-04-01 07:58:24.469	DEBUG	ReceiveData | 
+2016-04-01 07:58:24.470	WARN	pkdat | 1603312 | num | 56 | num_ingot | 2
+2016-04-01 07:58:24.671	DEBUG	ReceiveData | 
+2016-04-01 07:58:24.672	WARN	pkdat | 1603312 | num | 56 | num_ingot | 2
+2016-04-01 07:58:24.873	DEBUG	ReceiveData | 
+2016-04-01 07:58:24.874	WARN	pkdat | 1603312 | num | 56 | num_ingot | 2
+2016-04-01 07:58:25.075	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     2,919#      0,000#
+2016-04-01 07:58:25.075	WARN	pkdat | 1603312 | num | 56 | num_ingot | 2
+2016-04-01 07:58:25.076	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:58:25.879	DEBUG	ReceiveData | 
+2016-04-01 07:58:25.880	WARN	pkdat | 1603312 | num | 56 | num_ingot | 3
+2016-04-01 07:58:26.081	DEBUG	ReceiveData | 00#EK#0#0#0#0#00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     7,489#      0,000#
+2016-04-01 07:58:26.081	WARN	pkdat | 1603312 | num | 56 | num_ingot | 3
+2016-04-01 07:58:26.282	DEBUG	ReceiveData | 
+2016-04-01 07:58:26.282	WARN	pkdat | 1603312 | num | 56 | num_ingot | 3
+2016-04-01 07:58:26.482	DEBUG	ReceiveData | 
+2016-04-01 07:58:26.483	WARN	pkdat | 1603312 | num | 56 | num_ingot | 3
+2016-04-01 07:58:26.683	DEBUG	ReceiveData | 
+2016-04-01 07:58:26.683	WARN	pkdat | 1603312 | num | 56 | num_ingot | 3
+2016-04-01 07:58:26.883	DEBUG	ReceiveData | 
+2016-04-01 07:58:26.883	WARN	pkdat | 1603312 | num | 56 | num_ingot | 3
+2016-04-01 07:58:27.084	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     2,855#      0,000#
+2016-04-01 07:58:27.084	WARN	pkdat | 1603312 | num | 56 | num_ingot | 3
+2016-04-01 07:58:27.085	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:58:27.886	DEBUG	ReceiveData | 
+2016-04-01 07:58:27.886	WARN	pkdat | 1603312 | num | 56 | num_ingot | 4
+2016-04-01 07:58:28.086	DEBUG	ReceiveData | 00#EK#0#0#0#0#00#TK
+2016-04-01 07:58:28.086	WARN	pkdat | 1603312 | num | 56 | num_ingot | 4
+2016-04-01 07:58:28.286	DEBUG	ReceiveData | #0#0#0#0#0#0#0#0#0#0#1#0#0#0#     0,626#      0,000#
+2016-04-01 07:58:28.286	WARN	pkdat | 1603312 | num | 56 | num_ingot | 4
+2016-04-01 07:58:28.486	DEBUG	ReceiveData | 
+2016-04-01 07:58:28.488	WARN	pkdat | 1603312 | num | 56 | num_ingot | 4
+2016-04-01 07:58:28.689	DEBUG	ReceiveData | 
+2016-04-01 07:58:28.690	WARN	pkdat | 1603312 | num | 56 | num_ingot | 4
+2016-04-01 07:58:28.891	DEBUG	ReceiveData | 
+2016-04-01 07:58:28.893	WARN	pkdat | 1603312 | num | 56 | num_ingot | 4
+2016-04-01 07:58:29.093	DEBUG	ReceiveData | 
+2016-04-01 07:58:29.095	WARN	pkdat | 1603312 | num | 56 | num_ingot | 4
+2016-04-01 07:58:29.295	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     0,228#      0,000#
+2016-04-01 07:58:29.297	WARN	pkdat | 1603312 | num | 56 | num_ingot | 4
+2016-04-01 07:58:29.297	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:58:30.550	DEBUG	ReceiveData | 
+2016-04-01 07:58:30.550	WARN	pkdat | 1603312 | num | 56 | num_ingot | 5
+2016-04-01 07:58:30.750	DEBUG	ReceiveData | 
+2016-04-01 07:58:30.751	WARN	pkdat | 1603312 | num | 56 | num_ingot | 5
+2016-04-01 07:58:30.970	DEBUG	ReceiveData | 
+2016-04-01 07:58:30.971	WARN	pkdat | 1603312 | num | 56 | num_ingot | 5
+2016-04-01 07:58:31.172	DEBUG	ReceiveData | 00#EK#0#0#0#0
+2016-04-01 07:58:31.173	WARN	pkdat | 1603312 | num | 56 | num_ingot | 5
+2016-04-01 07:58:31.374	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     5,381#      0,000#
+2016-04-01 07:58:31.375	WARN	pkdat | 1603312 | num | 56 | num_ingot | 5
+2016-04-01 07:58:31.577	DEBUG	ReceiveData | 
+2016-04-01 07:58:31.578	WARN	pkdat | 1603312 | num | 56 | num_ingot | 5
+2016-04-01 07:58:31.779	DEBUG	ReceiveData | 
+2016-04-01 07:58:31.779	WARN	pkdat | 1603312 | num | 56 | num_ingot | 5
+2016-04-01 07:58:31.980	DEBUG	ReceiveData | 
+2016-04-01 07:58:31.981	WARN	pkdat | 1603312 | num | 56 | num_ingot | 5
+2016-04-01 07:58:32.182	DEBUG	ReceiveData | 
+2016-04-01 07:58:32.184	WARN	pkdat | 1603312 | num | 56 | num_ingot | 5
+2016-04-01 07:58:32.384	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     1,305#      0,000#
+2016-04-01 07:58:32.384	WARN	pkdat | 1603312 | num | 56 | num_ingot | 5
+2016-04-01 07:58:32.384	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:58:33.906	DEBUG	ReceiveData | 
+2016-04-01 07:58:33.906	WARN	pkdat | 1603312 | num | 56 | num_ingot | 6
+2016-04-01 07:58:34.106	DEBUG	ReceiveData | 
+2016-04-01 07:58:34.106	WARN	pkdat | 1603312 | num | 56 | num_ingot | 6
+2016-04-01 07:58:34.325	DEBUG	ReceiveData | 00#EK#0#0#0#0#00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     5,309#      0,000#
+2016-04-01 07:58:34.325	WARN	pkdat | 1603312 | num | 56 | num_ingot | 6
+2016-04-01 07:58:34.525	DEBUG	ReceiveData | 
+2016-04-01 07:58:34.525	WARN	pkdat | 1603312 | num | 56 | num_ingot | 6
+2016-04-01 07:58:34.725	DEBUG	ReceiveData | 
+2016-04-01 07:58:34.725	WARN	pkdat | 1603312 | num | 56 | num_ingot | 6
+2016-04-01 07:58:34.926	DEBUG	ReceiveData | 
+2016-04-01 07:58:34.927	WARN	pkdat | 1603312 | num | 56 | num_ingot | 6
+2016-04-01 07:58:35.128	DEBUG	ReceiveData | 
+2016-04-01 07:58:35.129	WARN	pkdat | 1603312 | num | 56 | num_ingot | 6
+2016-04-01 07:58:35.329	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     7
+2016-04-01 07:58:35.329	WARN	pkdat | 1603312 | num | 56 | num_ingot | 6
+2016-04-01 07:58:35.329	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:58:36.344	DEBUG	ReceiveData | 00#EK#0
+2016-04-01 07:58:36.344	WARN	pkdat | 1603312 | num | 56 | num_ingot | 7
+2016-04-01 07:58:36.544	DEBUG	ReceiveData | #0#0#0#00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     5,450#      0,000#
+2016-04-01 07:58:36.544	WARN	pkdat | 1603312 | num | 56 | num_ingot | 7
+2016-04-01 07:58:36.745	DEBUG	ReceiveData | 
+2016-04-01 07:58:36.746	WARN	pkdat | 1603312 | num | 56 | num_ingot | 7
+2016-04-01 07:58:36.946	DEBUG	ReceiveData | 
+2016-04-01 07:58:36.947	WARN	pkdat | 1603312 | num | 56 | num_ingot | 7
+2016-04-01 07:58:37.148	DEBUG	ReceiveData | 
+2016-04-01 07:58:37.149	WARN	pkdat | 1603312 | num | 56 | num_ingot | 7
+2016-04-01 07:58:37.354	DEBUG	ReceiveData | 
+2016-04-01 07:58:37.355	WARN	pkdat | 1603312 | num | 56 | num_ingot | 7
+2016-04-01 07:58:37.556	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     8,232#      0,000#
+2016-04-01 07:58:37.557	WARN	pkdat | 1603312 | num | 56 | num_ingot | 7
+2016-04-01 07:58:37.558	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:58:38.452	DEBUG	ReceiveData | 00#EK#0#0#0#0#00#TK#0#0#0#0#0#0#0#0
+2016-04-01 07:58:38.453	WARN	pkdat | 1603312 | num | 56 | num_ingot | 8
+2016-04-01 07:58:38.653	DEBUG	ReceiveData | 0#0#1#0#0#0#     0,504#      0,000#
+2016-04-01 07:58:38.655	WARN	pkdat | 1603312 | num | 56 | num_ingot | 8
+2016-04-01 07:58:38.855	DEBUG	ReceiveData | 
+2016-04-01 07:58:38.855	WARN	pkdat | 1603312 | num | 56 | num_ingot | 8
+2016-04-01 07:58:39.056	DEBUG	ReceiveData | 
+2016-04-01 07:58:39.056	WARN	pkdat | 1603312 | num | 56 | num_ingot | 8
+2016-04-01 07:58:39.257	DEBUG	ReceiveData | 
+2016-04-01 07:58:39.258	WARN	pkdat | 1603312 | num | 56 | num_ingot | 8
+2016-04-01 07:58:39.459	DEBUG	ReceiveData | 
+2016-04-01 07:58:39.460	WARN	pkdat | 1603312 | num | 56 | num_ingot | 8
+2016-04-01 07:58:39.661	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     8,911#      0,000#
+2016-04-01 07:58:39.662	WARN	pkdat | 1603312 | num | 56 | num_ingot | 8
+2016-04-01 07:58:39.664	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:58:41.110	DEBUG	ReceiveData | 
+2016-04-01 07:58:41.111	WARN	pkdat | 1603312 | num | 56 | num_ingot | 9
+2016-04-01 07:58:41.312	DEBUG	ReceiveData | 
+2016-04-01 07:58:41.313	WARN	pkdat | 1603312 | num | 56 | num_ingot | 9
+2016-04-01 07:58:41.532	DEBUG	ReceiveData | 00#EK#0#0#0#0#00#TK#
+2016-04-01 07:58:41.533	WARN	pkdat | 1603312 | num | 56 | num_ingot | 9
+2016-04-01 07:58:41.734	DEBUG	ReceiveData | #0#0#0#0#0#0#0#0#1#0#0#0#     5,852#      0,000#
+2016-04-01 07:58:41.735	WARN	pkdat | 1603312 | num | 56 | num_ingot | 9
+2016-04-01 07:58:41.936	DEBUG	ReceiveData | 
+2016-04-01 07:58:41.937	WARN	pkdat | 1603312 | num | 56 | num_ingot | 9
+2016-04-01 07:58:42.138	DEBUG	ReceiveData | 
+2016-04-01 07:58:42.139	WARN	pkdat | 1603312 | num | 56 | num_ingot | 9
+2016-04-01 07:58:42.340	DEBUG	ReceiveData | 
+2016-04-01 07:58:42.341	WARN	pkdat | 1603312 | num | 56 | num_ingot | 9
+2016-04-01 07:58:42.542	DEBUG	ReceiveData | 
+2016-04-01 07:58:42.543	WARN	pkdat | 1604012 | num | 7 | num_ingot | 5
+2016-04-01 07:58:42.743	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     3,833#      0,000#
+2016-04-01 07:58:42.744	WARN	pkdat | 1604012 | num | 7 | num_ingot | 5
+2016-04-01 07:58:42.746	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:58:43.553	DEBUG	ReceiveData | 
+2016-04-01 07:58:43.554	WARN	pkdat | 1603312 | num | 56 | num_ingot | 10
+2016-04-01 07:58:43.755	DEBUG	ReceiveData | 00#EK#0#0#0#0#00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     7,290#      0,000#
+2016-04-01 07:58:43.757	WARN	pkdat | 1603312 | num | 56 | num_ingot | 10
+2016-04-01 07:58:43.957	DEBUG	ReceiveData | 
+2016-04-01 07:58:43.958	WARN	pkdat | 1603312 | num | 56 | num_ingot | 10
+2016-04-01 07:58:44.159	DEBUG	ReceiveData | 
+2016-04-01 07:58:44.160	WARN	pkdat | 1603312 | num | 56 | num_ingot | 10
+2016-04-01 07:58:44.360	DEBUG	ReceiveData | 
+2016-04-01 07:58:44.361	WARN	pkdat | 1603312 | num | 56 | num_ingot | 10
+2016-04-01 07:58:44.562	DEBUG	ReceiveData | 
+2016-04-01 07:58:44.563	WARN	pkdat | 1603312 | num | 56 | num_ingot | 10
+2016-04-01 07:58:44.764	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     6,942#      0,000#
+2016-04-01 07:58:44.764	WARN	pkdat | 1603312 | num | 56 | num_ingot | 10
+2016-04-01 07:58:44.764	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:58:45.630	DEBUG	ReceiveData | 
+2016-04-01 07:58:45.631	WARN	pkdat | 1603312 | num | 56 | num_ingot | 11
+2016-04-01 07:58:45.832	DEBUG	ReceiveData | 00#EK#0#0#0#0#00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     4,723#      0,000#
+2016-04-01 07:58:45.833	WARN	pkdat | 1603312 | num | 56 | num_ingot | 11
+2016-04-01 07:58:46.033	DEBUG	ReceiveData | 
+2016-04-01 07:58:46.035	WARN	pkdat | 1603312 | num | 56 | num_ingot | 11
+2016-04-01 07:58:46.235	DEBUG	ReceiveData | 
+2016-04-01 07:58:46.236	WARN	pkdat | 1603312 | num | 56 | num_ingot | 11
+2016-04-01 07:58:46.437	DEBUG	ReceiveData | 
+2016-04-01 07:58:46.438	WARN	pkdat | 1603312 | num | 56 | num_ingot | 11
+2016-04-01 07:58:46.639	DEBUG	ReceiveData | 
+2016-04-01 07:58:46.640	WARN	pkdat | 1603312 | num | 56 | num_ingot | 11
+2016-04-01 07:58:46.841	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     3,522#      0,000#
+2016-04-01 07:58:46.841	WARN	pkdat | 1603312 | num | 56 | num_ingot | 11
+2016-04-01 07:58:46.841	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:58:47.727	DEBUG	ReceiveData | 
+2016-04-01 07:58:47.728	WARN	pkdat | 1603312 | num | 56 | num_ingot | 12
+2016-04-01 07:58:47.929	DEBUG	ReceiveData | 00#EK#0#0#0#0#00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     2,310#      0,000#
+2016-04-01 07:58:47.930	WARN	pkdat | 1603312 | num | 56 | num_ingot | 12
+2016-04-01 07:58:48.131	DEBUG	ReceiveData | 
+2016-04-01 07:58:48.132	WARN	pkdat | 1603312 | num | 56 | num_ingot | 12
+2016-04-01 07:58:48.333	DEBUG	ReceiveData | 
+2016-04-01 07:58:48.334	WARN	pkdat | 1603312 | num | 56 | num_ingot | 12
+2016-04-01 07:58:48.535	DEBUG	ReceiveData | 
+2016-04-01 07:58:48.536	WARN	pkdat | 1603312 | num | 56 | num_ingot | 12
+2016-04-01 07:58:48.737	DEBUG	ReceiveData | 
+2016-04-01 07:58:48.738	WARN	pkdat | 1603312 | num | 56 | num_ingot | 12
+2016-04-01 07:58:48.939	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     1,475#      0,000#
+2016-04-01 07:58:48.940	WARN	pkdat | 1603312 | num | 56 | num_ingot | 12
+2016-04-01 07:58:48.942	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:58:49.756	DEBUG	ReceiveData | 
+2016-04-01 07:58:49.757	WARN	pkdat | 1603312 | num | 56 | num_ingot | 13
+2016-04-01 07:58:49.958	DEBUG	ReceiveData | 00#EK#0#0#0#0#00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     8,252#      0,000#
+2016-04-01 07:58:49.959	WARN	pkdat | 1603312 | num | 56 | num_ingot | 13
+2016-04-01 07:58:50.160	DEBUG	ReceiveData | 
+2016-04-01 07:58:50.161	WARN	pkdat | 1603312 | num | 56 | num_ingot | 13
+2016-04-01 07:58:50.362	DEBUG	ReceiveData | 
+2016-04-01 07:58:50.363	WARN	pkdat | 1603312 | num | 56 | num_ingot | 13
+2016-04-01 07:58:50.564	DEBUG	ReceiveData | 
+2016-04-01 07:58:50.565	WARN	pkdat | 1603312 | num | 56 | num_ingot | 13
+2016-04-01 07:58:50.765	DEBUG	ReceiveData | 
+2016-04-01 07:58:50.766	WARN	pkdat | 1603312 | num | 56 | num_ingot | 13
+2016-04-01 07:58:50.967	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     2,199#      0,000#
+2016-04-01 07:58:50.967	WARN	pkdat | 1603312 | num | 56 | num_ingot | 13
+2016-04-01 07:58:50.967	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:58:51.779	DEBUG	ReceiveData | 
+2016-04-01 07:58:51.780	WARN	pkdat | 1604011 | num | 2 | num_ingot | 1
+2016-04-01 07:58:51.981	DEBUG	ReceiveData | 00#EK#0#0#0#0#00#TK#0#0#0#0#0#0#
+2016-04-01 07:58:51.982	WARN	pkdat | 1604011 | num | 2 | num_ingot | 1
+2016-04-01 07:58:52.183	DEBUG	ReceiveData | #0#0#1#0#0#0#     4,071#      0,000#
+2016-04-01 07:58:52.184	WARN	pkdat | 1604011 | num | 2 | num_ingot | 1
+2016-04-01 07:58:52.385	DEBUG	ReceiveData | 
+2016-04-01 07:58:52.387	WARN	pkdat | 1604011 | num | 2 | num_ingot | 1
+2016-04-01 07:58:52.587	DEBUG	ReceiveData | 
+2016-04-01 07:58:52.588	WARN	pkdat | 1604011 | num | 2 | num_ingot | 1
+2016-04-01 07:58:52.789	DEBUG	ReceiveData | 
+2016-04-01 07:58:52.790	WARN	pkdat | 1604011 | num | 2 | num_ingot | 1
+2016-04-01 07:58:52.991	DEBUG	ReceiveData | 
+2016-04-01 07:58:52.991	WARN	pkdat | 1604011 | num | 2 | num_ingot | 1
+2016-04-01 07:58:53.191	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     8,235#      0,000#
+2016-04-01 07:58:53.192	WARN	pkdat | 1604011 | num | 2 | num_ingot | 1
+2016-04-01 07:58:53.193	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:58:53.769	INFO	close ArmWeightBlooming1
+2016-04-01 07:59:01.669	INFO	start ArmWeightBlooming1
+2016-04-01 07:59:02.061	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0
+2016-04-01 07:59:02.062	WARN	pkdat |  | num |  | num_ingot | 
+2016-04-01 07:59:02.262	DEBUG	ReceiveData | 0#1#0#0#0#     6,396#      0,000#
+2016-04-01 07:59:02.263	WARN	pkdat |  | num |  | num_ingot | 
+2016-04-01 07:59:02.464	DEBUG	ReceiveData | 
+2016-04-01 07:59:02.465	WARN	pkdat |  | num |  | num_ingot | 
+2016-04-01 07:59:02.666	DEBUG	ReceiveData | 
+2016-04-01 07:59:02.666	WARN	pkdat |  | num |  | num_ingot | 
+2016-04-01 07:59:02.866	DEBUG	ReceiveData | 
+2016-04-01 07:59:02.867	WARN	pkdat |  | num |  | num_ingot | 
+2016-04-01 07:59:03.068	DEBUG	ReceiveData | 
+2016-04-01 07:59:03.069	WARN	pkdat |  | num |  | num_ingot | 
+2016-04-01 07:59:03.270	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     8,007#      0,000#
+2016-04-01 07:59:03.271	WARN	pkdat |  | num |  | num_ingot | 
+2016-04-01 07:59:03.272	WARN	заготовка не выбрана	weight -> 8,007
+2016-04-01 07:59:03.473	DEBUG	ReceiveData | 
+2016-04-01 07:59:03.474	WARN	pkdat |  | num |  | num_ingot | 
+2016-04-01 07:59:03.675	DEBUG	ReceiveData | 
+2016-04-01 07:59:03.676	WARN	pkdat |  | num |  | num_ingot | 
+2016-04-01 07:59:03.876	DEBUG	ReceiveData | 
+2016-04-01 07:59:03.877	WARN	pkdat |  | num |  | num_ingot | 
+2016-04-01 07:59:04.078	DEBUG	ReceiveData | 
+2016-04-01 07:59:04.079	WARN	pkdat |  | num |  | num_ingot | 
+2016-04-01 07:59:04.280	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     7,777#      0,000#
+2016-04-01 07:59:04.281	WARN	pkdat |  | num |  | num_ingot | 
+2016-04-01 07:59:04.282	WARN	заготовка не выбрана	weight -> 7,777
+2016-04-01 07:59:04.483	DEBUG	ReceiveData | 
+2016-04-01 07:59:04.484	WARN	pkdat |  | num |  | num_ingot | 
+2016-04-01 07:59:04.686	DEBUG	ReceiveData | 
+2016-04-01 07:59:04.686	WARN	pkdat |  | num |  | num_ingot | 
+2016-04-01 07:59:04.887	DEBUG	ReceiveData | 
+2016-04-01 07:59:04.888	WARN	pkdat |  | num |  | num_ingot | 
+2016-04-01 07:59:05.090	DEBUG	ReceiveData | 
+2016-04-01 07:59:05.090	WARN	pkdat |  | num |  | num_ingot | 
+2016-04-01 07:59:05.291	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     5,114#      0,000#
+2016-04-01 07:59:05.292	WARN	pkdat |  | num |  | num_ingot | 
+2016-04-01 07:59:05.293	WARN	заготовка не выбрана	weight -> 5,114
+2016-04-01 07:59:05.494	DEBUG	ReceiveData | 
+2016-04-01 07:59:05.495	WARN	pkdat |  | num |  | num_ingot | 
+2016-04-01 07:59:05.696	DEBUG	ReceiveData | 
+2016-04-01 07:59:05.697	WARN	pkdat | 1604012 | num | 6 | num_ingot | 1
+2016-04-01 07:59:05.898	DEBUG	ReceiveData | 
+2016-04-01 07:59:05.899	WARN	pkdat | 1604012 | num | 6 | num_ingot | 1
+2016-04-01 07:59:06.100	DEBUG	ReceiveData | 
+2016-04-01 07:59:06.101	WARN	pkdat | 1604012 | num | 6 | num_ingot | 1
+2016-04-01 07:59:06.302	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     2,816#      0,000#
+2016-04-01 07:59:06.302	WARN	pkdat | 1604012 | num | 6 | num_ingot | 1
+2016-04-01 07:59:06.303	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:59:07.092	DEBUG	ReceiveData | 
+2016-04-01 07:59:07.093	WARN	pkdat | 1604011 | num | 2 | num_ingot | 2
+2016-04-01 07:59:07.294	DEBUG	ReceiveData | 00#EK#0#0#0#0#00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     2,755#      0,000#
+2016-04-01 07:59:07.295	WARN	pkdat | 1604011 | num | 2 | num_ingot | 2
+2016-04-01 07:59:07.496	DEBUG	ReceiveData | 
+2016-04-01 07:59:07.496	WARN	pkdat | 1604011 | num | 2 | num_ingot | 2
+2016-04-01 07:59:07.696	DEBUG	ReceiveData | 
+2016-04-01 07:59:07.697	WARN	pkdat | 1604011 | num | 2 | num_ingot | 2
+2016-04-01 07:59:07.898	DEBUG	ReceiveData | 
+2016-04-01 07:59:07.899	WARN	pkdat | 1604011 | num | 2 | num_ingot | 2
+2016-04-01 07:59:08.099	DEBUG	ReceiveData | 
+2016-04-01 07:59:08.100	WARN	pkdat | 1604011 | num | 2 | num_ingot | 2
+2016-04-01 07:59:08.301	DEBUG	ReceiveData | 00#TK#0#0#0#0#0
+2016-04-01 07:59:08.302	WARN	pkdat | 1604011 | num | 2 | num_ingot | 2
+2016-04-01 07:59:08.503	DEBUG	ReceiveData | 0#0#0#0#1#0#0#0#     8,274#      0,000#
+2016-04-01 07:59:08.503	WARN	pkdat | 1604011 | num | 2 | num_ingot | 2
+2016-04-01 07:59:08.704	DEBUG	ReceiveData | 
+2016-04-01 07:59:08.704	WARN	pkdat | 1604011 | num | 2 | num_ingot | 2
+2016-04-01 07:59:08.904	DEBUG	ReceiveData | 
+2016-04-01 07:59:08.905	WARN	pkdat | 1604011 | num | 2 | num_ingot | 2
+2016-04-01 07:59:09.105	DEBUG	ReceiveData | 
+2016-04-01 07:59:09.105	WARN	pkdat | 1604011 | num | 2 | num_ingot | 2
+2016-04-01 07:59:09.305	DEBUG	ReceiveData | 
+2016-04-01 07:59:09.307	WARN	pkdat | 1604011 | num | 2 | num_ingot | 2
+2016-04-01 07:59:09.507	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     3,480#      0,000#
+2016-04-01 07:59:09.507	WARN	pkdat | 1604011 | num | 2 | num_ingot | 2
+2016-04-01 07:59:09.507	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:59:10.557	DEBUG	ReceiveData | 00#EK#0#0#0#0#00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     0,616#      0,000#
+2016-04-01 07:59:10.557	WARN	pkdat | 1604011 | num | 3 | num_ingot | 1
+2016-04-01 07:59:10.757	DEBUG	ReceiveData | 
+2016-04-01 07:59:10.757	WARN	pkdat | 1604011 | num | 3 | num_ingot | 1
+2016-04-01 07:59:10.957	DEBUG	ReceiveData | 
+2016-04-01 07:59:10.957	WARN	pkdat | 1604011 | num | 3 | num_ingot | 1
+2016-04-01 07:59:11.158	DEBUG	ReceiveData | 
+2016-04-01 07:59:11.158	WARN	pkdat | 1604011 | num | 3 | num_ingot | 1
+2016-04-01 07:59:11.358	DEBUG	ReceiveData | 
+2016-04-01 07:59:11.358	WARN	pkdat | 1604011 | num | 3 | num_ingot | 1
+2016-04-01 07:59:11.558	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     6,961#      0,000#
+2016-04-01 07:59:11.558	WARN	pkdat | 1604011 | num | 3 | num_ingot | 1
+2016-04-01 07:59:11.559	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:59:12.330	DEBUG	ReceiveData | 
+2016-04-01 07:59:12.330	WARN	pkdat | 1604011 | num | 4 | num_ingot | 1
+2016-04-01 07:59:12.530	DEBUG	ReceiveData | 00#EK#0#0#0#0#00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     6,173#      0,000#
+2016-04-01 07:59:12.530	WARN	pkdat | 1604011 | num | 4 | num_ingot | 1
+2016-04-01 07:59:12.730	DEBUG	ReceiveData | 
+2016-04-01 07:59:12.730	WARN	pkdat | 1604011 | num | 4 | num_ingot | 1
+2016-04-01 07:59:12.930	DEBUG	ReceiveData | 
+2016-04-01 07:59:12.930	WARN	pkdat | 1604011 | num | 4 | num_ingot | 1
+2016-04-01 07:59:13.130	DEBUG	ReceiveData | 
+2016-04-01 07:59:13.130	WARN	pkdat | 1604011 | num | 4 | num_ingot | 1
+2016-04-01 07:59:13.330	DEBUG	ReceiveData | 
+2016-04-01 07:59:13.330	WARN	pkdat | 1604011 | num | 4 | num_ingot | 1
+2016-04-01 07:59:13.530	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     6
+2016-04-01 07:59:13.530	WARN	pkdat | 1604011 | num | 4 | num_ingot | 1
+2016-04-01 07:59:13.530	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:59:14.300	DEBUG	ReceiveData | 
+2016-04-01 07:59:14.300	WARN	pkdat | 1604011 | num | 4 | num_ingot | 2
+2016-04-01 07:59:14.500	DEBUG	ReceiveData | 
+2016-04-01 07:59:14.500	WARN	pkdat | 1604011 | num | 4 | num_ingot | 2
+2016-04-01 07:59:14.718	DEBUG	ReceiveData | 00#EK#0#0#0#0#00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     1,083#      0,000#
+2016-04-01 07:59:14.718	WARN	pkdat | 1604011 | num | 4 | num_ingot | 2
+2016-04-01 07:59:14.918	DEBUG	ReceiveData | 
+2016-04-01 07:59:14.918	WARN	pkdat | 1604011 | num | 4 | num_ingot | 2
+2016-04-01 07:59:15.118	DEBUG	ReceiveData | 
+2016-04-01 07:59:15.118	WARN	pkdat | 1604011 | num | 4 | num_ingot | 2
+2016-04-01 07:59:15.318	DEBUG	ReceiveData | 
+2016-04-01 07:59:15.319	WARN	pkdat | 1604011 | num | 4 | num_ingot | 2
+2016-04-01 07:59:15.520	DEBUG	ReceiveData | 
+2016-04-01 07:59:15.520	WARN	pkdat | 1604011 | num | 4 | num_ingot | 2
+2016-04-01 07:59:15.720	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     3,149#      0,000#
+2016-04-01 07:59:15.720	WARN	pkdat | 1604011 | num | 4 | num_ingot | 2
+2016-04-01 07:59:15.720	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:59:16.551	DEBUG	ReceiveData | 
+2016-04-01 07:59:16.551	WARN	pkdat | 1604011 | num | 4 | num_ingot | 3
+2016-04-01 07:59:16.751	DEBUG	ReceiveData | 00#EK#0#0#0#0#00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     6,011#      0,000#
+2016-04-01 07:59:16.751	WARN	pkdat | 1604011 | num | 4 | num_ingot | 3
+2016-04-01 07:59:16.951	DEBUG	ReceiveData | 
+2016-04-01 07:59:16.951	WARN	pkdat | 1604011 | num | 4 | num_ingot | 3
+2016-04-01 07:59:17.151	DEBUG	ReceiveData | 
+2016-04-01 07:59:17.151	WARN	pkdat | 1604011 | num | 4 | num_ingot | 3
+2016-04-01 07:59:17.351	DEBUG	ReceiveData | 
+2016-04-01 07:59:17.351	WARN	pkdat | 1604011 | num | 4 | num_ingot | 3
+2016-04-01 07:59:17.551	DEBUG	ReceiveData | 
+2016-04-01 07:59:17.551	WARN	pkdat | 1604011 | num | 4 | num_ingot | 3
+2016-04-01 07:59:17.751	DEBUG	ReceiveData | 00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     6,975#      0,000#
+2016-04-01 07:59:17.751	WARN	pkdat | 1604011 | num | 4 | num_ingot | 3
+2016-04-01 07:59:17.752	ERROR	Fno_save | 0 | false 0
+2016-04-01 07:59:18.561	DEBUG	ReceiveData | 
+2016-04-01 07:59:18.561	WARN	pkdat | 1604011 | num | 4 | num_ingot | 4
+2016-04-01 07:59:18.761	DEBUG	ReceiveData | 00#EK#0#0#0#0#00#TK#0#0#0#0#0#0#0#0#0#0#1#0#0#0#     4,977#  
+2016-04-01 07:59:18.761	WARN	pkdat | 1604011 | num | 4 | num_ingot | 4
+2016-04-01 07:59:18.961	DEBUG	ReceiveData |     0,000#
+2016-04-01 07:59:18.961	WARN	pkdat | 1604011 | num | 4 | num_ingot | 4
+2016-04-01 07:59:19.161	DEBUG	ReceiveData | 
+2016-04-01 07:59:19.161	WARN	pkdat | 1604011 | num | 4 | num_ingot | 4
+2016-04-01 07:59:19.181	INFO	close ArmWeightBlooming1

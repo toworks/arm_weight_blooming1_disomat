@@ -96,10 +96,15 @@ procedure TForm1.DBGrid1DrawColumnCell(Sender: TObject; const Rect: TRect;
   DataCol: Integer; Column: TColumn; State: TGridDrawState);
 var
   R: TRect;
+
+  Left: Integer;
 begin
   begin
       R := Rect;
       Dec(R.Bottom, 2);
+
+      Left := R.Left + (R.Right - R.Left - Canvas.TextWidth(S)) div 2;
+{
       if Column.FieldName = 'heat_to_work' then
        begin
           (Sender As TDBGrid).Canvas.FillRect(Rect); //не смазывает при прокрутке
@@ -111,7 +116,7 @@ begin
           TDBGrid(Sender).DefaultDrawColumnCell(Rect, DataCol, Column, State);
       end;
 
-      if Column.FieldName('step').AsString = 'Красный' then
+      if Column.FieldName = 'step' then
        begin
           (Sender As TDBGrid).Canvas.FillRect(Rect); //не смазывает при прокрутке
           with (Sender As TDBGrid).Canvas do
@@ -135,9 +140,9 @@ begin
                                  Rect.Top + 2, Column.Field.AsWideString);
           end
       end;
-  end
-  else
-    (Sender As TDBGrid).DefaultDrawColumnCell(Rect, DataCol, Column, State);
+  end}
+//  else
+//    (Sender As TDBGrid).DefaultDrawColumnCell(Rect, DataCol, Column, State);
 end;
 
 procedure TForm1.FormCreate(Sender: TObject);

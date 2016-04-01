@@ -167,12 +167,12 @@ begin
              Add('isc_tpb_concurrency');              // Needed for multiuser environments
              Add('isc_tpb_nowait');                   // Needed for multiuser environments
              Add('timeout=3');
+             Add('codepage=win1251');
 //             Add('codepage=NONE');
 //             Add('controls_cp=CP_UTF8');
 //             Add('AutoEncodeStrings=ON');
 //             Add('codepage=win1251');
 //             Add('client_encoding=UTF8');
-               Add('codepage=win1251');
         end;
         FFConnect.Connect;
         FFQuery.Connection := FFConnect;
@@ -217,9 +217,13 @@ begin
   except
     on E : Exception do begin
       Log.save('e', E.ClassName+' sql next weight to record, с сообщением: '+E.Message);
+      FreeAndNil(_SSql);
       exit;
     end;
   end;
+
+  if (_SSql.FieldByName('pkdat').IsNull)
+     exit;
 
   try
       _FSql.FQuery.Close;
@@ -312,6 +316,7 @@ begin
     on E : Exception do
       Log.save('e', E.ClassName+' sql 4, с сообщением: '+E.Message);
   end;
+  FreeAndNil(_SSql);
   FreeAndNil(_FSql);
 end;
 

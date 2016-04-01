@@ -36,7 +36,6 @@ object Form1: TForm1
       Anchors = [akTop, akLeft, akRight, akBottom]
       Color = clWindow
       Columns = <>
-      DefaultDrawing = False
       Options = [dgTitles, dgIndicator, dgColumnResize, dgColumnMove, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit]
       ReadOnly = True
       TabOrder = 0
@@ -48,6 +47,7 @@ object Form1: TForm1
       TitleFont.Quality = fqDraft
       TitleFont.Style = [fsBold]
       OnDrawColumnCell = DBGrid1DrawColumnCell
+      OnPrepareCanvas = DBGrid1PrepareCanvas
     end
   end
   object gb_data_pu2: TGroupBox

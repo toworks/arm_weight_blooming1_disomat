@@ -4,14 +4,15 @@ unit thread_comport;
 interface
 
 uses
-  SysUtils, Classes, ActiveX, synaser, SyncObjs, logging, Messages, ZDataset, sql;
+  SysUtils, Classes, ActiveX, synaser, SyncObjs, logging, Messages, ZDataset,
+  strutils, Variants, sql;
 
 type
-  //Здесь необходимо описать класс TThreadComPort:
+  //Р—РґРµСЃСЊ РЅРµРѕР±С…РѕРґРёРјРѕ РѕРїРёСЃР°С‚СЊ РєР»Р°СЃСЃ TThreadComPort:
   TThreadComPort = class(TThread)
 
   private
-    Fcount: integer;
+//    Fcount: integer;
     Fno_save: boolean;
     FThreadComPort: TThreadComPort;
     FMessageData: AnsiString;
@@ -26,6 +27,9 @@ type
     procedure SyncStatus;
     procedure SyncCalibration;
     function SqlSaveInBuffer(DataIn: AnsiString): boolean;
+    function ManipulationWithDate(InDate: string): string;
+    procedure SyncNextWeightToRecord;
+    procedure SyncNextWeightToRecordLocation;
   protected
     procedure Execute; override;
   public
@@ -57,14 +61,14 @@ begin
 
   lLog := _Log;
   TCsqlite := TSqlite.Create(lLog);
-  // создаем поток True - создание остановка, False - создание старт
+  // СЃРѕР·РґР°РµРј РїРѕС‚РѕРє True - СЃРѕР·РґР°РЅРёРµ РѕСЃС‚Р°РЅРѕРІРєР°, False - СЃРѕР·РґР°РЅРёРµ СЃС‚Р°СЂС‚
   FThreadComPort := TThreadComPort.Create(True);
   FThreadComPort.Priority := tpNormal;
   FThreadComPort.FreeOnTerminate := True;
   FThreadComPort.Start;
 
   Fno_save := false;
-  Fcount := 10;
+//  Fcount := 10;
 end;
 
 
@@ -83,11 +87,20 @@ begin
   while True do
   begin
       try
+
+          //С‚РµСЃС‚РёСЂРѕРІР°РЅРёРµ
+          if assigned(MemoTesting) then
+             Synchronize(@SyncMemoTesting);
+          //РєР°Р»РёР±СЂРѕРІРєР°
+          if assigned(CalibrationForm) then
+             Synchronize(@SyncCalibration);
 //          Synchronize(SyncStatus);
           ReadToMessage;
+          if Fno_save then
+             SendAttribute;
       except
         on E : Exception do
-          lLog.save('e', E.ClassName+' serial execute, с сообщением: '+E.Message);
+          lLog.save('e', E.ClassName+' serial execute, СЃ СЃРѕРѕР±С‰РµРЅРёРµРј: '+E.Message);
       end;
 
 //      sleep(1000);
@@ -100,7 +113,7 @@ function TThreadComPort.SendReadToSerial(InData: AnsiString): AnsiString;
 var
   serial_port: TBlockserial;
 begin
-    //status работы с контроллером
+    //status СЂР°Р±РѕС‚С‹ СЃ РєРѕРЅС‚СЂРѕР»Р»РµСЂРѕРј
 //    if Fcount > 5 then begin
 //      Synchronize(Status);
 //      Fcount := 0;
@@ -110,7 +123,7 @@ begin
 
     try
         serial_port := TBlockserial.Create;
-        serial_port.RaiseExcept := false; //false игнорировать ошибки порта
+        serial_port.RaiseExcept := false; //false РёРіРЅРѕСЂРёСЂРѕРІР°С‚СЊ РѕС€РёР±РєРё РїРѕСЂС‚Р°
         serial_port.Connect('COM'+SerialPortSettings.serial_port_number);
         if serial_port.InstanceActive then begin
 //          serial_port.Config(19200,8,'E',SB2,false,false);
@@ -120,7 +133,7 @@ begin
                               strtoint(SerialPortSettings.stop_bits),false,false);
           serial_port.SendString(InData);
           sleep(200);
-          FMessageData := serial_port.RecvBufferStr(serial_port.WaitingData, 200);
+          Result := serial_port.RecvBufferStr(serial_port.WaitingData, 200);
        end;
     finally
           FreeAndNil(serial_port);
@@ -129,27 +142,29 @@ end;
 
 
 procedure TThreadComPort.ReadToMessage;
+var
+    msg: AnsiString;
 begin
   try
-      SendReadToSerial(#2'00#TK#'#16#3+hash_bcc('00#TK#'#16#3));
+         msg := SendReadToSerial(#2'00#TK#'#16#3+hash_bcc('00#TK#'#16#3));
   except
     on E : Exception do
-      lLog.save('e', E.ClassName+' serial send/read, с сообщением: '+E.Message);
+      lLog.save('e', E.ClassName+' serial send/read, СЃ СЃРѕРѕР±С‰РµРЅРёРµРј: '+E.Message);
   end;
 
   try
-      ReceiveData(FMessageData);
+      ReceiveData(msg);
   except
     on E : Exception do
-      lLog.save('e', E.ClassName+' serial recive, с сообщением: '+E.Message);
+      lLog.save('e', E.ClassName+' serial recive, СЃ СЃРѕРѕР±С‰РµРЅРёРµРј: '+E.Message);
   end;
 
-  if Fno_save then
+{  if Fno_save then
     SendAttribute;
 
   {$IFDEF DEBUG}
     lLog.save('d', 'no_save | '+booltostr(Fno_save));
-  {$ENDIF}
+  {$ENDIF}}
 end;
 
 
@@ -165,45 +180,52 @@ end;
 
 function TThreadComPort.ReceiveData(Data: AnsiString): string;
 begin
+
+  FMessageData := Data;
+
+  lLog.save('d', 'ReceiveData | '+Data);
+
   if (copy(Data, 2, 6) = '00#EK#') and (copy(Data, 8, 1) = '0') then
   begin
-      Fno_save := false;//запрещаем отправку подтверждения в контроллер -> сброс в SqlSaveInBuffer
+      Fno_save := false;//Р·Р°РїСЂРµС‰Р°РµРј РѕС‚РїСЂР°РІРєСѓ РїРѕРґС‚РІРµСЂР¶РґРµРЅРёСЏ РІ РєРѕРЅС‚СЂРѕР»Р»РµСЂ -> СЃР±СЂРѕСЃ РІ SqlSaveInBuffer
   end;
 //{ test }  if (copy(Data, 2, 6) = '00#TK#') and (copy(Data, 26, 1) = '1') and (no_save = false) then
   if ( copy(Data, 2, 6) = '00#TK#' ) and (copy(Data, 28, 1) = '1')
       and (Fno_save = false) then
   begin
-      if ( trim(copy(Data, 40, 6)) <> '' ) then begin //не пропускать пустых значений
+      if ( trim(copy(Data, 40, 6)) <> '' ) then begin //РЅРµ РїСЂРѕРїСѓСЃРєР°С‚СЊ РїСѓСЃС‚С‹С… Р·РЅР°С‡РµРЅРёР№
           if pkdat <> '' then
     //{ test }      SqlSaveInBuffer(trim(copy(Data, 60, 6)))
             SqlSaveInBuffer(trim(copy(Data, 40, 6)))
           else
-            lLog.save('w', 'заготовка не выбрана'+#9+'weight -> '+trim(copy(Data, 40, 6)));
-        //copy(Data, 2, 6);          //ответ по весу
-        //copy(Data, 28, 1);         //признак
-        //trim(copy(Data, 40, 6));   //вес только целая часть
+            lLog.save('w', 'Р·Р°РіРѕС‚РѕРІРєР° РЅРµ РІС‹Р±СЂР°РЅР°'+#9+'weight -> '+trim(copy(Data, 40, 6)));
+        //copy(Data, 2, 6);          //РѕС‚РІРµС‚ РїРѕ РІРµСЃСѓ
+        //copy(Data, 28, 1);         //РїСЂРёР·РЅР°Рє
+        //trim(copy(Data, 40, 6));   //РІРµСЃ С‚РѕР»СЊРєРѕ С†РµР»Р°СЏ С‡Р°СЃС‚СЊ
       end;
   end;
 
-  //тестирование
+{  //С‚РµСЃС‚РёСЂРѕРІР°РЅРёРµ
   if assigned(MemoTesting) then
 //    Synchronize(SyncMemoTesting);
 
-  //калибровка
+  //РєР°Р»РёР±СЂРѕРІРєР°
   if assigned(CalibrationForm) then
-//    Synchronize(SyncCalibration);
+//    Synchronize(SyncCalibration);}
 end;
 
 
 function TThreadComPort.SendAttribute: boolean;
+var
+    msg: AnsiString;
 begin
   try
-    //передаем ЭОД вход1-4 переменные 1|0|0|0
-    SendReadToSerial(#2'00#EK#1#0#0#0#'#16#3+hash_bcc('00#EK#1#0#0#0#'#16#3));
-    ReceiveData(FMessageData);
+    //РїРµСЂРµРґР°РµРј Р­РћР” РІС…РѕРґ1-4 РїРµСЂРµРјРµРЅРЅС‹Рµ 1|0|0|0
+    msg := SendReadToSerial(#2'00#EK#1#0#0#0#'#16#3+hash_bcc('00#EK#1#0#0#0#'#16#3));
+    ReceiveData(msg);
   except
     on E : Exception do
-      lLog.save('e', E.ClassName+#9' com send attribute, с сообщением: '+E.Message);
+      lLog.save('e', E.ClassName+' com send attribute, СЃ СЃРѕРѕР±С‰РµРЅРёРµРј: '+E.Message);
   end;
 end;
 
@@ -238,7 +260,7 @@ end;
 
 procedure TThreadComPort.SyncStatus;
 begin
-  form1.no_save := Fno_save;
+//  form1.no_save := Fno_save;
 end;
 
 
@@ -253,7 +275,9 @@ var
   num_correct, num_ingot_correct, pkdat_correct: string;
 begin
 
-  // маркер следующей заготовки (ожидание)
+  lLog.save('e', 'Fno_save | '+booltostr(Fno_save)+' | false '+booltostr(false));
+
+  // РјР°СЂРєРµСЂ СЃР»РµРґСѓСЋС‰РµР№ Р·Р°РіРѕС‚РѕРІРєРё (РѕР¶РёРґР°РЅРёРµ)
   if MarkerNextWait then
     exit;
 
@@ -278,10 +302,10 @@ begin
     lLog.save('d', 'num_ingot_correct -> '+num_ingot_correct);
   {$ENDIF}
 
-{ id_asutp состоит из полей pkdat+num+num_ingot, где в АСУТП pkdat состоит
-  год месяц день,num номер, num_ingot номер слитка.
-  в IT pkdat состоит день месяц год,num номер (3х значное нужно добавлять перед числом
-  2 нуля), num_ingot (2х значное нужно добавлять перед числом 1 ноль)) номер слитка.
+{ id_asutp СЃРѕСЃС‚РѕРёС‚ РёР· РїРѕР»РµР№ pkdat+num+num_ingot, РіРґРµ РІ РђРЎРЈРўРџ pkdat СЃРѕСЃС‚РѕРёС‚
+  РіРѕРґ РјРµСЃСЏС† РґРµРЅСЊ,num РЅРѕРјРµСЂ, num_ingot РЅРѕРјРµСЂ СЃР»РёС‚РєР°.
+  РІ IT pkdat СЃРѕСЃС‚РѕРёС‚ РґРµРЅСЊ РјРµСЃСЏС† РіРѕРґ,num РЅРѕРјРµСЂ (3С… Р·РЅР°С‡РЅРѕРµ РЅСѓР¶РЅРѕ РґРѕР±Р°РІР»СЏС‚СЊ РїРµСЂРµРґ С‡РёСЃР»РѕРј
+  2 РЅСѓР»СЏ), num_ingot (2С… Р·РЅР°С‡РЅРѕРµ РЅСѓР¶РЅРѕ РґРѕР±Р°РІР»СЏС‚СЊ РїРµСЂРµРґ С‡РёСЃР»РѕРј 1 РЅРѕР»СЊ)) РЅРѕРјРµСЂ СЃР»РёС‚РєР°.
 }
   try
       TCsqlite.SQuery.Close;
@@ -294,12 +318,12 @@ begin
       TCsqlite.SQuery.ExecSQL;
   except
     on E : Exception do
-      lLog.save('e', E.ClassName+' sql save in buffer, с сообщением: '+E.Message+' | '+TCsqlite.SQuery.SQL.Text);
+      lLog.save('e', E.ClassName+' sql save in buffer, СЃ СЃРѕРѕР±С‰РµРЅРёРµРј: '+E.Message+' | '+TCsqlite.SQuery.SQL.Text);
   end;
 
-  //ThreadComPort.no_save := true;//разрешаем отправку подтверждения в контроллер
-  //form1.no_save := true;//разрешаем отправку подтверждения в контроллер
-  Fno_save := true;//разрешаем отправку подтверждения в контроллер
+  //ThreadComPort.no_save := true;//СЂР°Р·СЂРµС€Р°РµРј РѕС‚РїСЂР°РІРєСѓ РїРѕРґС‚РІРµСЂР¶РґРµРЅРёСЏ РІ РєРѕРЅС‚СЂРѕР»Р»РµСЂ
+  //form1.no_save := true;//СЂР°Р·СЂРµС€Р°РµРј РѕС‚РїСЂР°РІРєСѓ РїРѕРґС‚РІРµСЂР¶РґРµРЅРёСЏ РІ РєРѕРЅС‚СЂРѕР»Р»РµСЂ
+  Fno_save := true;//СЂР°Р·СЂРµС€Р°РµРј РѕС‚РїСЂР°РІРєСѓ РїРѕРґС‚РІРµСЂР¶РґРµРЅРёСЏ РІ РєРѕРЅС‚СЂРѕР»Р»РµСЂ
   //Synchronize(SyncStatus);
 
   try
@@ -311,30 +335,81 @@ begin
       TCsqlite.SQuery.Open;
   except
     on E : Exception do
-      lLog.save('e', E.ClassName+' sql select in buffer, с сообщением: '+E.Message+' | '+TCsqlite.SQuery.SQL.Text);
+      lLog.save('e', E.ClassName+' sql select in buffer, СЃ СЃРѕРѕР±С‰РµРЅРёРµРј: '+E.Message+' | '+TCsqlite.SQuery.SQL.Text);
   end;
   //save to log file
   {lLog.save('sql'+#9#9+'write'+#9+'id_asutp -> '+SQuery.FieldByName('id_asutp').AsString);
   lLog.save('sql'+#9#9+'write'+#9+'weight -> '+SQuery.FieldByName('weight').AsString);}
 
-  //сообщение оператору
-  ShowTrayMessage('Заготовка', '№: '+num_ingot+#9+'вес: '+TCsqlite.SQuery.FieldByName('weight').AsString, 1);
+  //СЃРѕРѕР±С‰РµРЅРёРµ РѕРїРµСЂР°С‚РѕСЂСѓ
+//  ShowTrayMessage('Р—Р°РіРѕС‚РѕРІРєР°', 'в„–: '+num_ingot+#9+'РІРµСЃ: '+TCsqlite.SQuery.FieldByName('weight').AsString, 1);
 
   {$IFDEF DEBUG}
     lLog.save('d', 'pkdat_correct -> '+ TCsqlite.SQuery.FieldByName('id_asutp').AsString);
   {$ENDIF}
 
-  //следующая запись (слиток) от записаной
-  Synchronize(NextWeightToRecord);
+  //СЃР»РµРґСѓСЋС‰Р°СЏ Р·Р°РїРёСЃСЊ (СЃР»РёС‚РѕРє) РѕС‚ Р·Р°РїРёСЃР°РЅРѕР№
+  Synchronize(@SyncNextWeightToRecord);
 end;
 
 
-// При загрузке программы класс будет создаваться
+procedure TThreadComPort.SyncNextWeightToRecord;
+var
+  KeyValues : Variant;
+begin
+  try
+      //РѕС‚РєР»СЋС‡Р°РµРј СѓРїСЂР°РІР»РµРЅРёРµ
+      form1.DBGrid1.DataSource.DataSet.DisableControls;
+      SqlNextWeightToRecord;
+      //dbgrid С‚РµРєСѓС‰Р°СЏ РІС‹Р±СЂР°РЅР°СЏ Р·Р°РіРѕС‚РѕРІРєР°
+      Synchronize(@SyncNextWeightToRecordLocation);
+  finally
+      //РІРєР»СЋС‡Р°РµРј СѓРїСЂР°РІР»РµРЅРёРµ
+      form1.DBGrid1.DataSource.DataSet.EnableControls;
+  end;
+end;
+
+
+procedure TThreadComPort.SyncNextWeightToRecordLocation;
+var
+  KeyValues : Variant;
+begin
+  try
+      //РѕС‚РєР»СЋС‡Р°РµРј СѓРїСЂР°РІР»РµРЅРёРµ
+      form1.DBGrid1.DataSource.DataSet.DisableControls;
+      //РїРµСЂРµРјРµРЅРЅС‹Рµ РїРѕ РєРѕС‚РѕСЂС‹Рј Р±СѓРґРµС‚ РїСЂРѕРёР·РІРѕРґРёС‚СЊСЃСЏ РїРѕРёСЃРє
+      KeyValues := VarArrayOf([pkdat,num,num_ingot]);
+      //РїРѕРёСЃРє РїРѕ РєР»СЋС‡РёРІС‹Рј РїРѕР»СЏРј
+      form1.DBGrid1.DataSource.DataSet.Locate('pkdat;num;num_ingot', KeyValues, []);
+  finally
+      //РІРєР»СЋС‡Р°РµРј СѓРїСЂР°РІР»РµРЅРёРµ
+      form1.DBGrid1.DataSource.DataSet.EnableControls;
+  end;
+  //-- test
+  //Form1.l_next_id.Caption:=pkdat+'|'+num+'|'+num_ingot;
+end;
+
+
+// РёР·РјРµРЅРµРЅРёРµ РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃРё 1401292 -> 2901142, РґР»СЏ id_asutp
+function TThreadComPort.ManipulationWithDate(InDate: string): string;
+var
+  pkdat_correct: string;
+begin
+    pkdat_correct := InDate;
+    pkdat_correct := StuffString(pkdat_correct, 5, 2, copy(InDate, 1,2));
+    pkdat_correct := StuffString(pkdat_correct, 1, 2, copy(InDate, 5,2));
+    Result := pkdat_correct;
+end;
+
+
+
+
+// РџСЂРё Р·Р°РіСЂСѓР·РєРµ РїСЂРѕРіСЂР°РјРјС‹ РєР»Р°СЃСЃ Р±СѓРґРµС‚ СЃРѕР·РґР°РІР°С‚СЊСЃСЏ
 initialization
 //ThreadComPort := TThreadComPort.Create;
 
 
-// При закрытии программы уничтожаться
+// РџСЂРё Р·Р°РєСЂС‹С‚РёРё РїСЂРѕРіСЂР°РјРјС‹ СѓРЅРёС‡С‚РѕР¶Р°С‚СЊСЃСЏ
 finalization
 //ThreadComPort.Destroy;
 

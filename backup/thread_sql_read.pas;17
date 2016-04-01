@@ -143,7 +143,7 @@ begin
         Synchronize(@SyncSqlReadTable);
 
         //dbgrid текущая выбраная заготовка
-        if Fpkdat_in <> '' then
+//        if Fpkdat_in <> '' then
 //          Synchronize(@NextWeightToRecordLocation);
 
   {$IFDEF DEBUG}
@@ -183,7 +183,6 @@ begin
   end;
   //исправляем отображение даты в DBGrid -> pFIBDataSet1
   TDateTimeField(MainFSql.FQuery.FieldByName('time_ingot')).DisplayFormat:='hh:nn:ss';
-  lLog.save('e', MainFSql.FQuery.FieldByName('time_ingot').AsString);
 end;
 
 

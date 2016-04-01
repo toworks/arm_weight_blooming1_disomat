@@ -59,6 +59,9 @@ package main;
   my $start = pack "c1", 0x02;
   my $end = pack "c1", 0x03;
   my $c = 0;
+
+  my $str = "";
+  my $stx;
   
   while (1) {
 	foreach (@ports) {
@@ -68,19 +71,43 @@ package main;
 		
 		last unless $string_in;
 
-		if( $string_in =~ /(00#EK#\d#\d#\d#\d#*)/ ) {
-			if (substr($1, 8, 1) == 0) {
-				print "$1   EK $string_in\n";
+		foreach (split '', $string_in) {
+			if ($_ eq (pack "c1", 0x02)) {
+				$stx = 1;
+				next;
+				#print "STX was found! " . $_ . "\n";
+			}
+			
+			if ($stx == 1 and $_ ne (pack "c1", 0x03)) {
+				$str .= $_;
+			} else {
+				$stx = 0;
+				#print "\nContents of str is " . $str . "\n";
+				$string_in = $str;
+				$str =''; 
+				last;
+			}
+		}
+
+#		if( $string_in =~ /(00#EK#\d#\d#\d#\d#*)/ ) {
+		if( $string_in =~ /(00#EK#*)/ ) {
+#		print "$1   EK $string_in\n";
+#		print"\n";
+#			if (substr($1, 8, 1) == 0) {
+			if (substr($string_in, 8, 1) == 0) {
+				#print "$1   EK $string_in\n";
+				print " read EK | $string_in\n";
 				#print substr($1, 8, 1)." sign \n";
 				$message = $start."00#EK#0#0#0#0#".$end;
-				print $message."\n";
+				print "\n send | $message\n\n";
 				eval{ $serial_port{$_}->write($message) || die print STDERR "$!"; };# обработка ошибки
 				$m_send_sign = 0;
 			}
 		}
 		if ( $string_in =~ /(00#TK#*)/ ) {
 			#print "$1   TK\n" if $string_in =~ /(00#TK#*)/;
-			print "$1   TK\n";
+			#print "$1   TK\n";
+			print " read TK | $string_in\n";
 			if ( $c == 5 and $m_send_sign == 0 ) {
 				$m_send_weight = 1;
 			} elsif ( $m_send_weight == 1 and $m_send_sign == 1 ) {
@@ -102,7 +129,7 @@ package main;
 			my $m = sprintf("%.3f", rand(9));
 			$m =~ s/\./,/;
 			$message = $start."00#TK#0#0#0#0#0#0#0#0#0#0#$m_send_weight#0#0#0#     ".$m."#      0,000#".$end;
-			print $message."\n";
+			print "\n send | $message\n\n";
 			eval{ $serial_port{$_}->write($message) || die print STDERR "$!"; };# обработка ошибки
 		}
 		

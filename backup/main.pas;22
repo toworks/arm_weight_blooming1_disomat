@@ -57,9 +57,9 @@ var
 
 //    {$DEFINE DEBUG}
 
-  function ViewSelectedIngot: bool;
+  function ViewSelectedIngot: boolean;
   function PointReplace(DataIn: string): string;
-  function ViewClear: bool;
+  function ViewClear: boolean;
 
 
 implementation
@@ -103,51 +103,6 @@ begin
 end;
 
 
-procedure TForm1.DBGrid1DrawColumnCell(Sender: TObject; const Rect: TRect;
-  DataCol: Integer; Column: TColumn; State: TGridDrawState);
-var
-  R: TRect;
-begin
-{      if Column.FieldName = 'smena' then
-       begin
-          (Sender As TDBGrid).Canvas.FillRect(Rect); //не смазывает при прокрутке
-          (Sender As TDBGrid).Canvas.TextRect(R, R.Left + 2, R.Top + 2,
-                                  Column.FieldName);
-       end
-      else begin
-          TDBGrid(Sender).Canvas.FillRect(Rect); //не смазывает при прокрутке
-          TDBGrid(Sender).DefaultDrawColumnCell(Rect, DataCol, Column, State);
-      end;
-
-      if Column.FieldName = 'step' then
-       begin
-          (Sender As TDBGrid).Canvas.FillRect(Rect); //не смазывает при прокрутке
-          with (Sender As TDBGrid).Canvas do
-          begin
-            Font.Color := clRed;
-            if (Column.FieldName = 'low') or (Column.FieldName = 'high') then
-              font.Style:= [fsBold];
-            (Sender as TDBGrid).Canvas.TextRect(Rect, Rect.Left + 2,
-                                  Rect.Top + 2, Column.Field.AsWideString);
-          end
-       end
-      else
-       begin
-          (Sender As TDBGrid).Canvas.FillRect(Rect); //не смазывает при прокрутке
-          with (Sender As TDBGrid).Canvas do
-          begin
-            Font.Color := clGreen;
-            if (Column.FieldName = 'low') or (Column.FieldName = 'high') then
-              font.Style:= [fsBold];
-            (Sender as TDBGrid).Canvas.TextRect(Rect, Rect.Left + 2,
-                                 Rect.Top + 2, Column.Field.AsWideString);
-          end
-      end;
-//  end
-//  else
-//    (Sender As TDBGrid).DefaultDrawColumnCell(Rect, DataCol, Column, State);}
-end;
-
 
 procedure TForm1.DBGrid1DblClick(Sender: TObject);
 begin
@@ -163,6 +118,29 @@ begin
         form1.DBGrid1.DataSource.DataSet.EnableControls;
     end;
   end;
+end;
+
+
+procedure TForm1.DBGrid1DrawColumnCell(Sender: TObject; const Rect: TRect;
+  DataCol: Integer; Column: TColumn; State: TGridDrawState);
+var
+  R: TRect;
+begin
+  if  gdSelected in State then //color selected
+  begin
+    with DBGrid1.Canvas do
+    begin
+      (Sender as TDBGrid).Canvas.Brush.Color:= $002CB902;//green
+      	    (Sender as TDBGrid).Canvas.Font.Color := clHighLightText;
+    end;
+  end;
+
+      DBGrid1.Canvas.FillRect(Rect);
+{   if (gdFocused in State) then begin
+     DBGrid1.Canvas.DrawFocusRect(Rect);
+   end;}
+
+  Dbgrid1.DefaultDrawColumnCell(Rect, DataCol, Column, State);
 end;
 
 
@@ -313,14 +291,7 @@ begin
   DBGrid1.Columns.Items[5].Title.Caption := 'Масса слитка ПУ-1 (т)';
   DBGrid1.Columns.Items[6].Title.Caption := 'steel_group';
 
-//  for i := 0 to DBGrid1.columns.Count - 1 do begin
-//      DBGrid1.Columns.Items[i].Title.Alignment := taCenter;
-//      DBGrid1.Columns.Items[i].MaxSize:=150;
-//  end;
-
-//  DBGrid1.Columns.Items[0].MaxSize:=10;
   DBGrid1.Columns.Items[6].Visible := false;
-
 end;
 
 
@@ -345,7 +316,7 @@ begin
 end;
 
 
-function ViewClear: bool;
+function ViewClear: boolean;
 var
   i: integer;
 begin

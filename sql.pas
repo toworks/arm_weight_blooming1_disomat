@@ -217,9 +217,13 @@ begin
   except
     on E : Exception do begin
       Log.save('e', E.ClassName+' sql next weight to record, с сообщением: '+E.Message);
+      FreeAndNil(_SSql);
       exit;
     end;
   end;
+
+  if (_SSql.FieldByName('pkdat').IsNull) then
+     exit;
 
   try
       _FSql.FQuery.Close;
@@ -312,6 +316,7 @@ begin
     on E : Exception do
       Log.save('e', E.ClassName+' sql 4, с сообщением: '+E.Message);
   end;
+  FreeAndNil(_SSql);
   FreeAndNil(_FSql);
 end;
 

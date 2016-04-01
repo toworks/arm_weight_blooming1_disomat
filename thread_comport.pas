@@ -4,14 +4,15 @@ unit thread_comport;
 interface
 
 uses
-  SysUtils, Classes, ActiveX, synaser, SyncObjs, logging, Messages, ZDataset, sql;
+  SysUtils, Classes, ActiveX, synaser, SyncObjs, logging, Messages, ZDataset,
+  strutils, Variants, sql;
 
 type
   //Здесь необходимо описать класс TThreadComPort:
   TThreadComPort = class(TThread)
 
   private
-    Fcount: integer;
+//    Fcount: integer;
     Fno_save: boolean;
     FThreadComPort: TThreadComPort;
     FMessageData: AnsiString;
@@ -26,6 +27,9 @@ type
     procedure SyncStatus;
     procedure SyncCalibration;
     function SqlSaveInBuffer(DataIn: AnsiString): boolean;
+    function ManipulationWithDate(InDate: string): string;
+    procedure SyncNextWeightToRecord;
+    procedure SyncNextWeightToRecordLocation;
   protected
     procedure Execute; override;
   public
@@ -64,7 +68,7 @@ begin
   FThreadComPort.Start;
 
   Fno_save := false;
-  Fcount := 10;
+//  Fcount := 10;
 end;
 
 
@@ -83,8 +87,17 @@ begin
   while True do
   begin
       try
+
+          //тестирование
+          if assigned(MemoTesting) then
+             Synchronize(@SyncMemoTesting);
+          //калибровка
+          if assigned(CalibrationForm) then
+             Synchronize(@SyncCalibration);
 //          Synchronize(SyncStatus);
           ReadToMessage;
+          if Fno_save then
+             SendAttribute;
       except
         on E : Exception do
           lLog.save('e', E.ClassName+' serial execute, с сообщением: '+E.Message);
@@ -120,7 +133,7 @@ begin
                               strtoint(SerialPortSettings.stop_bits),false,false);
           serial_port.SendString(InData);
           sleep(200);
-          FMessageData := serial_port.RecvBufferStr(serial_port.WaitingData, 200);
+          Result := serial_port.RecvBufferStr(serial_port.WaitingData, 200);
        end;
     finally
           FreeAndNil(serial_port);
@@ -129,27 +142,29 @@ end;
 
 
 procedure TThreadComPort.ReadToMessage;
+var
+    msg: AnsiString;
 begin
   try
-      SendReadToSerial(#2'00#TK#'#16#3+hash_bcc('00#TK#'#16#3));
+         msg := SendReadToSerial(#2'00#TK#'#16#3+hash_bcc('00#TK#'#16#3));
   except
     on E : Exception do
       lLog.save('e', E.ClassName+' serial send/read, с сообщением: '+E.Message);
   end;
 
   try
-      ReceiveData(FMessageData);
+      ReceiveData(msg);
   except
     on E : Exception do
       lLog.save('e', E.ClassName+' serial recive, с сообщением: '+E.Message);
   end;
 
-  if Fno_save then
+{  if Fno_save then
     SendAttribute;
 
   {$IFDEF DEBUG}
     lLog.save('d', 'no_save | '+booltostr(Fno_save));
-  {$ENDIF}
+  {$ENDIF}}
 end;
 
 
@@ -165,6 +180,12 @@ end;
 
 function TThreadComPort.ReceiveData(Data: AnsiString): string;
 begin
+
+  FMessageData := Data;
+
+  lLog.save('d', 'ReceiveData | '+Data);
+  lLog.save('w', 'pkdat | '+pkdat+' | num | '+num+' | num_ingot | '+num_ingot);
+
   if (copy(Data, 2, 6) = '00#EK#') and (copy(Data, 8, 1) = '0') then
   begin
       Fno_save := false;//запрещаем отправку подтверждения в контроллер -> сброс в SqlSaveInBuffer
@@ -185,25 +206,27 @@ begin
       end;
   end;
 
-  //тестирование
+{  //тестирование
   if assigned(MemoTesting) then
 //    Synchronize(SyncMemoTesting);
 
   //калибровка
   if assigned(CalibrationForm) then
-//    Synchronize(SyncCalibration);
+//    Synchronize(SyncCalibration);}
 end;
 
 
 function TThreadComPort.SendAttribute: boolean;
+var
+    msg: AnsiString;
 begin
   try
     //передаем ЭОД вход1-4 переменные 1|0|0|0
-    SendReadToSerial(#2'00#EK#1#0#0#0#'#16#3+hash_bcc('00#EK#1#0#0#0#'#16#3));
-    ReceiveData(FMessageData);
+    msg := SendReadToSerial(#2'00#EK#1#0#0#0#'#16#3+hash_bcc('00#EK#1#0#0#0#'#16#3));
+    ReceiveData(msg);
   except
     on E : Exception do
-      lLog.save('e', E.ClassName+#9' com send attribute, с сообщением: '+E.Message);
+      lLog.save('e', E.ClassName+' com send attribute, с сообщением: '+E.Message);
   end;
 end;
 
@@ -253,11 +276,16 @@ var
   num_correct, num_ingot_correct, pkdat_correct: string;
 begin
 
+  lLog.save('e', 'Fno_save | '+booltostr(Fno_save)+' | false '+booltostr(false));
+
   // маркер следующей заготовки (ожидание)
   if MarkerNextWait then
     exit;
 
-//  pkdat_correct := ManipulationWithDate(pkdat);
+  //следующая запись (слиток) от записаной
+  Synchronize(@SyncNextWeightToRecord);
+
+  pkdat_correct := ManipulationWithDate(pkdat);
   num_correct := '';
   num_ingot_correct := num_correct;
 
@@ -290,7 +318,7 @@ begin
       TCsqlite.SQuery.SQL.Add('(pkdat, num, num_ingot, id_asutp, heat, timestamp, weight)');
       TCsqlite.SQuery.SQL.Add('VALUES('+pkdat+', '+num+', '+num_ingot+',');
       TCsqlite.SQuery.SQL.Add(''+pkdat_correct+num_correct+num_ingot_correct+',');
-//      TCsqlite.SQuery.SQL.Add(''+num_heat+', strftime(''%s'',''now''), '+PointReplace(DataIn)+')');
+      TCsqlite.SQuery.SQL.Add(''+num_heat+', strftime(''%s'',''now''), '+PointReplace(DataIn)+')');
       TCsqlite.SQuery.ExecSQL;
   except
     on E : Exception do
@@ -323,10 +351,58 @@ begin
   {$IFDEF DEBUG}
     lLog.save('d', 'pkdat_correct -> '+ TCsqlite.SQuery.FieldByName('id_asutp').AsString);
   {$ENDIF}
-
-  //следующая запись (слиток) от записаной
-//  Synchronize(NextWeightToRecord);
 end;
+
+
+procedure TThreadComPort.SyncNextWeightToRecord;
+var
+  KeyValues : Variant;
+begin
+  try
+      //отключаем управление
+      form1.DBGrid1.DataSource.DataSet.DisableControls;
+      SqlNextWeightToRecord;
+      //dbgrid текущая выбраная заготовка
+      Synchronize(@SyncNextWeightToRecordLocation);
+  finally
+      //включаем управление
+      form1.DBGrid1.DataSource.DataSet.EnableControls;
+  end;
+end;
+
+
+procedure TThreadComPort.SyncNextWeightToRecordLocation;
+var
+  KeyValues : Variant;
+begin
+  try
+      //отключаем управление
+      form1.DBGrid1.DataSource.DataSet.DisableControls;
+      //переменные по которым будет производиться поиск
+      KeyValues := VarArrayOf([pkdat,num,num_ingot]);
+      //поиск по ключивым полям
+      form1.DBGrid1.DataSource.DataSet.Locate('pkdat;num;num_ingot', KeyValues, []);
+  finally
+      //включаем управление
+      form1.DBGrid1.DataSource.DataSet.EnableControls;
+  end;
+  //-- test
+  //Form1.l_next_id.Caption:=pkdat+'|'+num+'|'+num_ingot;
+end;
+
+
+// изменение последовательноси 1401292 -> 2901142, для id_asutp
+function TThreadComPort.ManipulationWithDate(InDate: string): string;
+var
+  pkdat_correct: string;
+begin
+    pkdat_correct := InDate;
+    pkdat_correct := StuffString(pkdat_correct, 5, 2, copy(InDate, 1,2));
+    pkdat_correct := StuffString(pkdat_correct, 1, 2, copy(InDate, 5,2));
+    Result := pkdat_correct;
+end;
+
+
 
 
 // При загрузке программы класс будет создаваться

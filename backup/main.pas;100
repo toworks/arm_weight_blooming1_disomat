@@ -7,7 +7,7 @@ interface
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, DBGrids,
   ExtCtrls, StdCtrls, Menus, db, {$ifdef windows} Windows, {$endif}
-  logging, sql, thread_sql_read{, thread_sql_send, thread_comport};
+  logging, sql, thread_sql_read{, thread_sql_send, thread_comport}, Grids;
 
 type
 
@@ -29,6 +29,8 @@ type
     l_n_number_ingot: TLabel;
     l_number_ingot: TLabel;
     l_n_datetime: TLabel;
+    procedure DBGrid1DrawColumnCell(Sender: TObject; const Rect: TRect;
+      DataCol: Integer; Column: TColumn; State: TGridDrawState);
     procedure FormCloseQuery(Sender: TObject; var CanClose: boolean);
     procedure FormCreate(Sender: TObject);
     function CreateMenu: boolean;
@@ -88,6 +90,56 @@ begin
       TerminateProcess(GetCurrentProcess, 0);
     {$endif}
   end;
+end;
+
+procedure TForm1.DBGrid1DrawColumnCell(Sender: TObject; const Rect: TRect;
+  DataCol: Integer; Column: TColumn; State: TGridDrawState);
+var
+  R: TRect;
+begin
+  begin
+      R := Rect;
+      Dec(R.Bottom, 2);
+
+
+      if Column.FieldName = 'heat_to_work' then
+       begin
+          (Sender As TDBGrid).Canvas.FillRect(Rect); //не смазывает при прокрутке
+          (Sender As TDBGrid).Canvas.TextRect(R, R.Left + 2, R.Top + 2,
+                                  Column.FieldName);
+       end
+      else begin
+          TDBGrid(Sender).Canvas.FillRect(Rect); //не смазывает при прокрутке
+          TDBGrid(Sender).DefaultDrawColumnCell(Rect, DataCol, Column, State);
+      end;
+
+      if Column.FieldName = 'step' then
+       begin
+          (Sender As TDBGrid).Canvas.FillRect(Rect); //не смазывает при прокрутке
+          with (Sender As TDBGrid).Canvas do
+          begin
+            Font.Color := clRed;
+            if (Column.FieldName = 'low') or (Column.FieldName = 'high') then
+              font.Style:= [fsBold];
+            (Sender as TDBGrid).Canvas.TextRect(Rect, Rect.Left + 2,
+                                  Rect.Top + 2, Column.Field.AsWideString);
+          end
+       end
+      else
+       begin
+          (Sender As TDBGrid).Canvas.FillRect(Rect); //не смазывает при прокрутке
+          with (Sender As TDBGrid).Canvas do
+          begin
+            Font.Color := clGreen;
+            if (Column.FieldName = 'low') or (Column.FieldName = 'high') then
+              font.Style:= [fsBold];
+            (Sender as TDBGrid).Canvas.TextRect(Rect, Rect.Left + 2,
+                                 Rect.Top + 2, Column.Field.AsWideString);
+          end
+      end;
+  end
+//  else
+//    (Sender As TDBGrid).DefaultDrawColumnCell(Rect, DataCol, Column, State);
 end;
 
 procedure TForm1.FormCreate(Sender: TObject);

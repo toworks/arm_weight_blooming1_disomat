@@ -47,6 +47,7 @@ object Form1: TForm1
       TitleFont.Quality = fqDraft
       TitleFont.Style = [fsBold]
       OnDrawColumnCell = DBGrid1DrawColumnCell
+      OnPrepareCanvas = DBGrid1PrepareCanvas
     end
   end
   object gb_data_pu2: TGroupBox
@@ -253,11 +254,11 @@ object Form1: TForm1
   end
   object gb_weighed_ingot_in_sql: TGroupBox
     Left = 8
-    Height = 215
+    Height = 176
     Top = 264
     Width = 628
     Caption = ' Взвешенные слитки '
-    ClientHeight = 190
+    ClientHeight = 151
     ClientWidth = 624
     Font.CharSet = RUSSIAN_CHARSET
     Font.Height = -16
@@ -269,8 +270,8 @@ object Form1: TForm1
     TabOrder = 2
     object DBGrid2: TDBGrid
       Left = 5
-      Height = 127
-      Top = 32
+      Height = 144
+      Top = 0
       Width = 614
       Anchors = [akTop, akLeft, akRight, akBottom]
       Color = clWindow

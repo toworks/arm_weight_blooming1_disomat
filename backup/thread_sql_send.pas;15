@@ -279,8 +279,7 @@ begin
       MainSqlite.SQuery.SQL.Add('SELECT substr(pkdat,7,1) as shift, num_ingot,');
       MainSqlite.SQuery.SQL.Add('datetime(timestamp, ''unixepoch'', ''localtime'' ) as timestamp,');
       MainSqlite.SQuery.SQL.Add('heat, weight,');
-//      MainSqlite.SQuery.SQL.Add('case when transferred = 1 then ''передан'' else ''не передан'' end as transferred');
-      MainSqlite.SQuery.SQL.Add('transferred');
+      MainSqlite.SQuery.SQL.Add('case when transferred = 1 then ''передан'' else ''не передан'' end as transferred');
       MainSqlite.SQuery.SQL.Add('FROM weight');
       MainSqlite.SQuery.SQL.Add('order by timestamp desc limit 100');
       MainSqlite.SQuery.Open;

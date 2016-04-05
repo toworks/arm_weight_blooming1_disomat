@@ -327,7 +327,8 @@ begin
   end;
 
   try
-      if not TSSsqlite.SQuery.FieldByName('timestamp').IsNull then begin
+      if not TSSsqlite.SQuery.FieldByName('timestamp').IsNull then
+      begin
         timestamp := TSSsqlite.SQuery.FieldByName('timestamp').AsLargeInt;
 
         if FSqlMaxLocal >= timestamp then

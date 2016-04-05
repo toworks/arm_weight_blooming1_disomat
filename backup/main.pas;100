@@ -176,7 +176,7 @@ begin
     with DBGrid2.Canvas do
     begin
       (Sender as TDBGrid).Canvas.Brush.Color:= clMedGray;
-      	    (Sender as TDBGrid).Canvas.Font.Color := clHighLightText;
+      (Sender as TDBGrid).Canvas.Font.Color := clHighLightText;
     end;
   end;
 
@@ -218,6 +218,8 @@ begin
         end
     end;
   end;
+  DBGrid1.Canvas.FillRect(Rect);
+  Dbgrid1.DefaultDrawColumnCell(Rect, DataCol, Column, State);
 end;
 
 procedure TForm1.DBGrid2PrepareCanvas(sender: TObject; DataCol: Integer;
@@ -230,9 +232,9 @@ begin
 {    with (Sender As TDBGrid) do begin
       for i:=0 to Columns.Count-1 do begin
           TitleWidth := Canvas.TextWidth(Columns.Items[i].Title.Caption);
-//          TextWidth := Canvas.TextWidth(Columns.Items[i].Field.ToString);
-{          if (TitleWidth < TextWidth {Columns.Items[i].Width}) then begin}
-          if ( Columns.Items[i].FieldName = 'timestamp' ) then
+          TextWidth := Canvas.TextWidth(Columns.Items[i].Field.ToString);
+//          if (TitleWidth < TextWidth {Columns.Items[i].Width}) then begin}
+{          if ( Columns.Items[i].FieldName = 'timestamp' ) then
              Columns.Items[i].Width := TextWidth+55;
           if ( Columns.Items[i].FieldName = 'weight' ) or
              (Columns.Items[i].FieldName = 'transferred') then

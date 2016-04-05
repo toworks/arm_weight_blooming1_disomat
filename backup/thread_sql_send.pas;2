@@ -186,7 +186,7 @@ begin
   {$IFDEF DEBUG}
     lLog.save('d', 'send_error | '+booltostr(send_error));
   {$ENDIF}
-{        if not send_error then begin
+        if not send_error then begin
             TSSsqlite.SQuery.Close;
             TSSsqlite.SQuery.SQL.Clear;
             TSSsqlite.SQuery.SQL.Add('UPDATE weight SET transferred=1');
@@ -203,7 +203,7 @@ begin
             TSSsqlite.SQuery.SQL.Add('delete from weight');
             TSSsqlite.SQuery.SQL.Add('where timestamp < strftime(''%s'', ''now'') - (86400*3)');
             TSSsqlite.SQuery.ExecSQL;
-        end;}
+        end;
       except
         on E : Exception do
           lLog.save('e', E.ClassName+' sql send update, с сообщением: '+E.Message);

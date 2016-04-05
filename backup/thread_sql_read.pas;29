@@ -143,8 +143,8 @@ begin
         Synchronize(@SyncSqlReadTable);
 
         //dbgrid текущая выбраная заготовка
-        if Fpkdat_in <> '' then
-          Synchronize(@TForm1.NextWeightToRecordLocation);
+//        if Fpkdat_in <> '' then
+//          Synchronize(@NextWeightToRecordLocation);
 
   {$IFDEF DEBUG}
     lLog.save('d', 'count -> '+inttostr(count));

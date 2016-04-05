@@ -4,7 +4,7 @@ unit thread_sql_send;
 interface
 
 uses
-  SysUtils, Classes, Data.DB, ActiveX, ZConnection, ZDataset, ZDbcIntfs,
+  SysUtils, Classes, DB, ActiveX, ZConnection, ZDataset, ZDbcIntfs,
   logging, sql;
 
 type

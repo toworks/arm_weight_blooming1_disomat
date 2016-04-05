@@ -185,8 +185,13 @@ begin
 
   if Assigned(Column) then
     begin
-     (Sender as TDBGrid).Canvas.FillRect(Rect);
+//     (Sender as TDBGrid).Canvas.FillRect(Rect);
 //     (Sender as TDBGrid).Canvas.TextRect(Rect, Rect.Left, Rect.Top, ' '+Column.Field.AsString);
+       // fix (memo)
+       (Sender As TDBGrid).Canvas.FillRect(Rect); //не смазывает при прокрутке
+       (Sender As TDBGrid).Canvas.TextRect(R, R.Left + 2, R.Top + 2,
+                                    Column.Field.AsWideString);
+
           with (Sender As TDBGrid) do begin
             for i:=0 to Columns.Count-1 do begin
                 TitleWidth := Canvas.TextWidth(Columns.Items[i].Title.Caption);
@@ -219,10 +224,11 @@ begin
   else begin
       TDBGrid(Sender).Canvas.FillRect(Rect); //не смазывает при прокрутке
       TDBGrid(Sender).DefaultDrawColumnCell(Rect, DataCol, Column, State);
-  end;
+  end; }
 
   if ( Column.FieldName = 'transferred' ) then
   begin
+     Log.save('i', 'transferred | '+Column.Field.Text);
      if ( Column.Field.Text = 'не передан' ) then
      begin
        (Sender As TDBGrid).Canvas.FillRect(Rect); //не смазывает при прокрутке
@@ -245,7 +251,7 @@ begin
                                 Rect.Top + 2, Column.Field.AsWideString);
         end
     end;
-  end;}
+  end;
 end;
 
 procedure TForm1.DBGrid2PrepareCanvas(sender: TObject; DataCol: Integer;

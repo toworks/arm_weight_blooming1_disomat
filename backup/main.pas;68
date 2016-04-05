@@ -185,12 +185,12 @@ begin
 
   if Assigned(Column) then
     begin
-//     (Sender as TDBGrid).Canvas.FillRect(Rect);
-//     (Sender as TDBGrid).Canvas.TextRect(Rect, Rect.Left, Rect.Top, ' '+Column.Field.AsString);
+     (Sender as TDBGrid).Canvas.FillRect(Rect);
+     (Sender as TDBGrid).Canvas.TextRect(Rect, Rect.Left, Rect.Top, ' '+Column.Field.AsString);
        // fix (memo)
-       (Sender As TDBGrid).Canvas.FillRect(Rect); //не смазывает при прокрутке
-       (Sender As TDBGrid).Canvas.TextRect(R, R.Left + 2, R.Top + 2,
-                                    Column.Field.AsWideString);
+//       (Sender As TDBGrid).Canvas.FillRect(Rect); //не смазывает при прокрутке
+//       (Sender As TDBGrid).Canvas.TextRect(R, R.Left + 2, R.Top + 2,
+//                                    Column.Field.AsWideString);
 
           with (Sender As TDBGrid) do begin
             for i:=0 to Columns.Count-1 do begin
@@ -228,8 +228,9 @@ begin
 
   if ( Column.FieldName = 'transferred' ) then
   begin
-     Log.save('i', 'transferred | '+Column.Field.Text);
-     if ( Column.Field.Text = 'не передан' ) then
+     Log.save('i', 'transferred | '+Column.Field.AsWideString);
+     if ( Column.Field.AsWideString = '0' ) then
+     Column.Field.AsWideString := 'yt';
      begin
        (Sender As TDBGrid).Canvas.FillRect(Rect); //не смазывает при прокрутке
         with DBGrid2.Canvas do
@@ -240,7 +241,7 @@ begin
                                 Rect.Top + 2, Column.Field.AsWideString);
         end
      end
-    else
+{    else
      begin
        (Sender As TDBGrid).Canvas.FillRect(Rect); //не смазывает при прокрутке
         with DBGrid2.Canvas do
@@ -250,7 +251,7 @@ begin
           (Sender as TDBGrid).Canvas.TextRect(Rect, Rect.Left + 2,
                                 Rect.Top + 2, Column.Field.AsWideString);
         end
-    end;
+    end;}
   end;
 end;
 

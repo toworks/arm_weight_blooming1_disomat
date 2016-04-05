@@ -5,7 +5,7 @@ interface
 
 uses
   SysUtils, Classes, ActiveX, synaser, SyncObjs, logging, Messages, ZDataset,
-  strutils, Variants, sql;
+  strutils, Variants, {$ifdef windows} Windows, Forms, {$endif} sql;
 
 type
   //Здесь необходимо описать класс TThreadComPort:
@@ -29,7 +29,8 @@ type
     function SqlSaveInBuffer(DataIn: AnsiString): boolean;
     function ManipulationWithDate(InDate: string): string;
     procedure SyncNextWeightToRecord;
-    procedure SyncNextWeightToRecordLocation;
+//    procedure SyncNextWeightToRecordLocation;
+    function MouseMoved: boolean;
   protected
     procedure Execute; override;
   public
@@ -87,10 +88,6 @@ begin
   while True do
   begin
       try
-//          Synchronize(SyncStatus);
-          ReadToMessage;
-          if Fno_save then
-             SendAttribute;
 
           //тестирование
           if assigned(MemoTesting) then
@@ -98,6 +95,10 @@ begin
           //калибровка
           if assigned(CalibrationForm) then
              Synchronize(@SyncCalibration);
+//          Synchronize(SyncStatus);
+          ReadToMessage;
+          if Fno_save then
+             SendAttribute;
       except
         on E : Exception do
           lLog.save('e', E.ClassName+' serial execute, с сообщением: '+E.Message);
@@ -183,6 +184,11 @@ begin
 
   FMessageData := Data;
 
+  {$IFDEF DEBUG}
+    lLog.save('d', 'ReceiveData | '+Data);
+    lLog.save('w', 'pkdat | '+pkdat+' | num | '+num+' | num_ingot | '+num_ingot);
+  {$ENDIF}
+
   if (copy(Data, 2, 6) = '00#EK#') and (copy(Data, 8, 1) = '0') then
   begin
       Fno_save := false;//запрещаем отправку подтверждения в контроллер -> сброс в SqlSaveInBuffer
@@ -264,7 +270,8 @@ end;
 
 procedure TThreadComPort.SyncCalibration;
 begin
-      CalibrationForm.l_calibration.caption := trim(copy(FMessageData, 40, 6));
+     if assigned(CalibrationForm.l_calibration) then
+        CalibrationForm.l_calibration.caption := trim(copy(FMessageData, 40, 6));
 end;
 
 
@@ -273,11 +280,14 @@ var
   num_correct, num_ingot_correct, pkdat_correct: string;
 begin
 
-  lLog.save('e', 'Fno_save | '+booltostr(Fno_save));
+  lLog.save('e', 'Fno_save | '+booltostr(Fno_save)+' | false '+booltostr(false));
 
   // маркер следующей заготовки (ожидание)
   if MarkerNextWait then
     exit;
+
+  //следующая запись (слиток) от записаной
+  Synchronize(@SyncNextWeightToRecord);
 
   pkdat_correct := ManipulationWithDate(pkdat);
   num_correct := '';
@@ -345,12 +355,19 @@ begin
   {$IFDEF DEBUG}
     lLog.save('d', 'pkdat_correct -> '+ TCsqlite.SQuery.FieldByName('id_asutp').AsString);
   {$ENDIF}
+end;
 
-  //следующая запись (слиток) от записаной
-  Synchronize(@SyncNextWeightToRecord);
+procedure TThreadComPort.SyncNextWeightToRecord;
+begin
+  if not Fno_save then
+  begin
+     SqlNextWeightToRecord;
+     NextWeightToRecordLocation;
+  end;
 end;
 
 
+{
 procedure TThreadComPort.SyncNextWeightToRecord;
 var
   KeyValues : Variant;
@@ -386,7 +403,7 @@ begin
   //-- test
   //Form1.l_next_id.Caption:=pkdat+'|'+num+'|'+num_ingot;
 end;
-
+}
 
 // изменение последовательноси 1401292 -> 2901142, для id_asutp
 function TThreadComPort.ManipulationWithDate(InDate: string): string;
@@ -400,16 +417,21 @@ begin
 end;
 
 
+function TThreadComPort.MouseMoved: boolean;
+var
+  MousePoint: TPoint;
+begin
+  GetCursorPos(MousePoint);
+  {Преобразуем MousePoint к "mickeys" (аболютным координатам курсора мышки}
+  MousePoint.x := Round(MousePoint.x * (65535 / Screen.Width));
+  MousePoint.y := Round(MousePoint.y * (65535 / Screen.Height));
+  {Переместим курсор мыши}
+  Mouse_Event(MOUSEEVENTF_ABSOLUTE or MOUSEEVENTF_MOVE, MousePoint.x-20, MousePoint.y-20, 0, 0);
+  {Переместим курсор мыши}
+  Mouse_Event(MOUSEEVENTF_ABSOLUTE or MOUSEEVENTF_MOVE, MousePoint.x+20, MousePoint.y+20, 0, 0);
+end;
 
 
-// При загрузке программы класс будет создаваться
-initialization
-//ThreadComPort := TThreadComPort.Create;
-
-
-// При закрытии программы уничтожаться
-finalization
-//ThreadComPort.Destroy;
 
 
 end.

@@ -121,7 +121,7 @@ begin
    begin
       try
           SqlSend;
-          GetMaxLocalCount;
+//          GetMaxLocalCount;
 //          Synchronize(SyncSqlMaxLocal);
       except
         on E : Exception do

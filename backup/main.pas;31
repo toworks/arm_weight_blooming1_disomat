@@ -183,31 +183,27 @@ begin
     begin
       (Sender as TDBGrid).Canvas.Brush.Color:= clMedGray;
       (Sender as TDBGrid).Canvas.Font.Color := clHighLightText;
-
-      (Sender As TDBGrid).Canvas.FillRect(Rect); //не смазывает при прокрутке
-      (Sender As TDBGrid).Canvas.TextRect(R, R.Left + 2, R.Top + 2,
-                                    DBGrid2.DataSource.DataSet.FieldByName('transferred').AsString);
-
     end;
   end;
   DBGrid2.Canvas.FillRect(Rect);
   Dbgrid2.DefaultDrawColumnCell(Rect, DataCol, Column, State);
 
-  if Assigned(Column) then
+  if Column.Field <> nil then
     begin
 //     (Sender as TDBGrid).Canvas.FillRect(Rect);
 //     (Sender as TDBGrid).Canvas.TextRect(Rect, Rect.Left, Rect.Top, ' '+Column.Field.AsString);
-{       // fix (memo)
+
+       // fix (memo)
        (Sender As TDBGrid).Canvas.FillRect(Rect); //не смазывает при прокрутке
        (Sender As TDBGrid).Canvas.TextRect(R, R.Left + 2, R.Top + 2,
                                     Column.Field.AsWideString);
-}
-{          with (Sender As TDBGrid) do begin
+
+          with (Sender As TDBGrid) do begin
             for i:=0 to Columns.Count-1 do begin
                 TitleWidth := Canvas.TextWidth(Columns.Items[i].Title.Caption);
                 TextWidth := Canvas.TextWidth(Columns.Items[i].Field.ToString);
       //          if (TitleWidth < TextWidth {Columns.Items[i].Width}) then begin}
-{                if ( Columns.Items[i].FieldName = 'timestamp' ) then
+                if ( Columns.Items[i].FieldName = 'timestamp' ) then
                    Columns.Items[i].Width := TextWidth+55;
                 if ( Columns.Items[i].FieldName = 'weight' ) or
                    (Columns.Items[i].FieldName = 'transferred') then
@@ -220,7 +216,7 @@ begin
                 Columns.Items[i].Alignment := taCenter;//taLeftJustify;
                 Columns.Items[i].Title.Alignment := taCenter;//taLeftJustify;
             end;
-          end;}
+          end;
     end;
 
 {  if (Column.FieldName = 'shift') or
@@ -236,7 +232,7 @@ begin
       TDBGrid(Sender).DefaultDrawColumnCell(Rect, DataCol, Column, State);
   end; }
 
-{  if ( Column.FieldName = 'transferred' ) then
+  if ( Column.FieldName = 'transferred' ) then
   begin
      Log.save('i', 'transferred | '+Column.Field.AsWideString);
      if ( Column.Field.AsWideString = UTF8Encode('не передан') ) then
@@ -261,7 +257,7 @@ begin
                                 Rect.Top + 2, Column.Field.AsWideString);
         end
     end;
-  end;}
+  end;
 end;
 
 procedure TForm1.DBGrid2PrepareCanvas(sender: TObject; DataCol: Integer;

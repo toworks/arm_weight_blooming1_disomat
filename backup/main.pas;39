@@ -128,6 +128,9 @@ procedure TForm1.DBGrid1DrawColumnCell(Sender: TObject; const Rect: TRect;
   DataCol: Integer; Column: TColumn; State: TGridDrawState);
 var
   R: TRect;
+  i: integer;
+  TitleWidth: integer;
+  TextWidth: integer;
 begin
   if  gdSelected in State then //color selected
   begin
@@ -180,6 +183,11 @@ begin
     begin
       (Sender as TDBGrid).Canvas.Brush.Color:= clMedGray;
       (Sender as TDBGrid).Canvas.Font.Color := clHighLightText;
+
+      (Sender As TDBGrid).Canvas.FillRect(Rect); //не смазывает при прокрутке
+      (Sender As TDBGrid).Canvas.TextRect(R, R.Left + 2, R.Top + 2,
+                                    DBGrid2.DataSource.DataSet.FieldByName('transferred').AsString);
+
     end;
   end;
   DBGrid2.Canvas.FillRect(Rect);
@@ -189,12 +197,12 @@ begin
     begin
 //     (Sender as TDBGrid).Canvas.FillRect(Rect);
 //     (Sender as TDBGrid).Canvas.TextRect(Rect, Rect.Left, Rect.Top, ' '+Column.Field.AsString);
-       // fix (memo)
-{       (Sender As TDBGrid).Canvas.FillRect(Rect); //не смазывает при прокрутке
+{       // fix (memo)
+       (Sender As TDBGrid).Canvas.FillRect(Rect); //не смазывает при прокрутке
        (Sender As TDBGrid).Canvas.TextRect(R, R.Left + 2, R.Top + 2,
                                     Column.Field.AsWideString);
-
-          with (Sender As TDBGrid) do begin
+}
+{          with (Sender As TDBGrid) do begin
             for i:=0 to Columns.Count-1 do begin
                 TitleWidth := Canvas.TextWidth(Columns.Items[i].Title.Caption);
                 TextWidth := Canvas.TextWidth(Columns.Items[i].Field.ToString);

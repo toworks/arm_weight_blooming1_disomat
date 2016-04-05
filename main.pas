@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, DBGrids,
-  ExtCtrls, StdCtrls, Menus, db, {$ifdef windows} Windows, {$endif} Grids,
+  ExtCtrls, StdCtrls, Menus, db, {$ifdef windows} Windows, {$endif} Grids, Variants,
   logging, sql, thread_sql_read, thread_sql_send, thread_comport;
 
 type
@@ -60,6 +60,7 @@ var
   function ViewSelectedIngot: boolean;
   function PointReplace(DataIn: string): string;
   function ViewClear: boolean;
+  procedure NextWeightToRecordLocation;
 
 
 implementation
@@ -398,15 +399,35 @@ var
   i: integer;
 begin
 
-  for i:=0 to form1.ComponentCount - 1 do
+  for i:=0 to Form1.ComponentCount - 1 do
    begin
-    if (form1.Components[i] is Tlabel) then
+    if (Form1.Components[i] is Tlabel) then
       begin
-        if copy(form1.Components[i].Name,1,4) <> 'l_n_' then
-          Tlabel(Form1.FindComponent(form1.Components[i].Name)).Caption := '';
+        if copy(Form1.Components[i].Name,1,4) <> 'l_n_' then
+          Tlabel(Form1.FindComponent(Form1.Components[i].Name)).Caption := '';
       end;
    end;
 
+end;
+
+
+procedure NextWeightToRecordLocation;
+var
+  KeyValues : Variant;
+begin
+  try
+      //отключаем управление
+      form1.DBGrid1.DataSource.DataSet.DisableControls;
+      //переменные по которым будет производиться поиск
+      KeyValues := VarArrayOf([pkdat,num,num_ingot]);
+      //поиск по ключивым полям
+      form1.DBGrid1.DataSource.DataSet.Locate('pkdat;num;num_ingot', KeyValues, []);
+  finally
+      //включаем управление
+      form1.DBGrid1.DataSource.DataSet.EnableControls;
+  end;
+  //-- test
+  //Form1.l_next_id.Caption:=pkdat+'|'+num+'|'+num_ingot;
 end;
 
 

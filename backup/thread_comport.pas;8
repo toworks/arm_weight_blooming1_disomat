@@ -5,7 +5,7 @@ interface
 
 uses
   SysUtils, Classes, ActiveX, synaser, SyncObjs, logging, Messages, ZDataset,
-  strutils, Variants, sql;
+  strutils, Variants, {$ifdef windows} Windows, Forms, {$endif} sql;
 
 type
   //Здесь необходимо описать класс TThreadComPort:
@@ -29,7 +29,7 @@ type
     function SqlSaveInBuffer(DataIn: AnsiString): boolean;
     function ManipulationWithDate(InDate: string): string;
     procedure SyncNextWeightToRecord;
-    procedure SyncNextWeightToRecordLocation;
+    function MouseMoved: boolean;
   protected
     procedure Execute; override;
   public
@@ -68,7 +68,6 @@ begin
   FThreadComPort.Start;
 
   Fno_save := false;
-//  Fcount := 10;
 end;
 
 
@@ -113,14 +112,6 @@ function TThreadComPort.SendReadToSerial(InData: AnsiString): AnsiString;
 var
   serial_port: TBlockserial;
 begin
-    //status работы с контроллером
-//    if Fcount > 5 then begin
-//      Synchronize(Status);
-//      Fcount := 0;
-//    end
-//    else
-//      inc(Fcount);
-
     try
         serial_port := TBlockserial.Create;
         serial_port.RaiseExcept := false; //false игнорировать ошибки порта
@@ -183,8 +174,10 @@ begin
 
   FMessageData := Data;
 
-  lLog.save('d', 'ReceiveData | '+Data);
-  lLog.save('w', 'pkdat | '+pkdat+' | num | '+num+' | num_ingot | '+num_ingot);
+  {$IFDEF DEBUG}
+    lLog.save('d', 'ReceiveData | '+Data);
+    lLog.save('w', 'pkdat | '+pkdat+' | num | '+num+' | num_ingot | '+num_ingot);
+  {$ENDIF}
 
   if (copy(Data, 2, 6) = '00#EK#') and (copy(Data, 8, 1) = '0') then
   begin
@@ -267,7 +260,8 @@ end;
 
 procedure TThreadComPort.SyncCalibration;
 begin
-      CalibrationForm.l_calibration.caption := trim(copy(FMessageData, 40, 6));
+     if assigned(CalibrationForm.l_calibration) then
+        CalibrationForm.l_calibration.caption := trim(copy(FMessageData, 40, 6));
 end;
 
 
@@ -338,53 +332,19 @@ begin
     on E : Exception do
       lLog.save('e', E.ClassName+' sql select in buffer, с сообщением: '+E.Message+' | '+TCsqlite.SQuery.SQL.Text);
   end;
-  //save to log file
-  {lLog.save('sql'+#9#9+'write'+#9+'id_asutp -> '+SQuery.FieldByName('id_asutp').AsString);
-  lLog.save('sql'+#9#9+'write'+#9+'weight -> '+SQuery.FieldByName('weight').AsString);}
-
-  //сообщение оператору
-//  ShowTrayMessage('Заготовка', '№: '+num_ingot+#9+'вес: '+TCsqlite.SQuery.FieldByName('weight').AsString, 1);
 
   {$IFDEF DEBUG}
     lLog.save('d', 'pkdat_correct -> '+ TCsqlite.SQuery.FieldByName('id_asutp').AsString);
   {$ENDIF}
-end;
 
+  //следующая запись (слиток) от записаной
+  Synchronize(@SyncNextWeightToRecord);
+end;
 
 procedure TThreadComPort.SyncNextWeightToRecord;
-var
-  KeyValues : Variant;
 begin
-  try
-      //отключаем управление
-      form1.DBGrid1.DataSource.DataSet.DisableControls;
-      SqlNextWeightToRecord;
-      //dbgrid текущая выбраная заготовка
-      Synchronize(@SyncNextWeightToRecordLocation);
-  finally
-      //включаем управление
-      form1.DBGrid1.DataSource.DataSet.EnableControls;
-  end;
-end;
-
-
-procedure TThreadComPort.SyncNextWeightToRecordLocation;
-var
-  KeyValues : Variant;
-begin
-  try
-      //отключаем управление
-      form1.DBGrid1.DataSource.DataSet.DisableControls;
-      //переменные по которым будет производиться поиск
-      KeyValues := VarArrayOf([pkdat,num,num_ingot]);
-      //поиск по ключивым полям
-      form1.DBGrid1.DataSource.DataSet.Locate('pkdat;num;num_ingot', KeyValues, []);
-  finally
-      //включаем управление
-      form1.DBGrid1.DataSource.DataSet.EnableControls;
-  end;
-  //-- test
-  //Form1.l_next_id.Caption:=pkdat+'|'+num+'|'+num_ingot;
+     SqlNextWeightToRecord;
+     NextWeightToRecordLocation;
 end;
 
 
@@ -400,16 +360,21 @@ begin
 end;
 
 
+function TThreadComPort.MouseMoved: boolean;
+var
+  MousePoint: TPoint;
+begin
+  GetCursorPos(MousePoint);
+  {Преобразуем MousePoint к "mickeys" (аболютным координатам курсора мышки}
+  MousePoint.x := Round(MousePoint.x * (65535 / Screen.Width));
+  MousePoint.y := Round(MousePoint.y * (65535 / Screen.Height));
+  {Переместим курсор мыши}
+  Mouse_Event(MOUSEEVENTF_ABSOLUTE or MOUSEEVENTF_MOVE, MousePoint.x-20, MousePoint.y-20, 0, 0);
+  {Переместим курсор мыши}
+  Mouse_Event(MOUSEEVENTF_ABSOLUTE or MOUSEEVENTF_MOVE, MousePoint.x+20, MousePoint.y+20, 0, 0);
+end;
 
 
-// При загрузке программы класс будет создаваться
-initialization
-//ThreadComPort := TThreadComPort.Create;
-
-
-// При закрытии программы уничтожаться
-finalization
-//ThreadComPort.Destroy;
 
 
 end.

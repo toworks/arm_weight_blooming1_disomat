@@ -147,7 +147,7 @@ begin
             TitleWidth := Canvas.TextWidth(Columns.Items[i].Title.Caption);
             TextWidth := Canvas.TextWidth(Columns.Items[i].Field.ToString);
   //          if (TextWidth < Columns.Items[i].Width) then begin
-               Columns.Items[i].Width := TitleWidth+25;
+               Columns.Items[i].Width := TitleWidth+40;
                Columns.Items[i].Alignment := taCenter;//taLeftJustify;
                Columns.Items[i].Title.Alignment := taCenter;//taLeftJustify;
   //          end;
@@ -188,7 +188,7 @@ begin
        // fix (memo)
        (Sender As TDBGrid).Canvas.FillRect(Rect); //не смазывает при прокрутке
        (Sender As TDBGrid).Canvas.TextRect(R, R.Left + 2, R.Top + 2,
-                                    Column.Field.AsWideString);
+                                                   Column.Field.AsWideString);
 
        // fix size title and column
        with (Sender As TDBGrid) do begin

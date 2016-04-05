@@ -4,7 +4,7 @@ unit thread_sql_read;
 interface
 
 uses
-  SysUtils, Data.DB, Classes, ActiveX, ZDataset, SyncObjs, logging, sql;
+  SysUtils, DB, Classes, ActiveX, ZDataset, SyncObjs, logging, sql;
 
 type
   //Здесь необходимо описать класс TThreadSql:
@@ -74,7 +74,7 @@ begin
   while True do
    begin
       try
-          Synchronize(SyncSqlMax);
+//          Synchronize(SyncSqlMax);
           SqlNewRecord;
       except
         on E : Exception do
@@ -97,7 +97,7 @@ begin
       if NOW > FutureDate then
       begin
         FutureDate := Now + 4 / (24 * 60); //+4 minutes
-        MouseMoved;//двигаем мышку
+//        MouseMoved;//двигаем мышку
       end;
   {$IFDEF DEBUG}
     lLog.save('d', 'NOW -> '+datetimetostr(now));
@@ -142,10 +142,10 @@ begin
     begin
         FSqlMax := count;
         //обновление отображение записанных данных ViewDbWeight;
-        Synchronize(SyncSqlReadTable);
+//        Synchronize(SyncSqlReadTable);
 
         //dbgrid текущая выбраная заготовка
-        if not Fpkdat_in.IsEmpty then
+        if Fpkdat_in <> '' then
           Synchronize(NextWeightToRecordLocation);
 
   {$IFDEF DEBUG}

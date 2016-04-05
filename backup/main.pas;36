@@ -140,19 +140,6 @@ begin
       	    (Sender as TDBGrid).Canvas.Font.Color := clHighLightText;
     end;
   end;
-
-  with (Sender As TDBGrid) do begin
-        for i:=0 to Columns.Count-1 do begin
-            TitleWidth := Canvas.TextWidth(Columns.Items[i].Title.Caption);
-            TextWidth := Canvas.TextWidth(Columns.Items[i].Field.ToString);
-  //          if (TextWidth < Columns.Items[i].Width) then begin
-               Columns.Items[i].Width := TitleWidth+25;
-               Columns.Items[i].Alignment := taCenter;//taLeftJustify;
-               Columns.Items[i].Title.Alignment := taCenter;//taLeftJustify;
-  //          end;
-        end;
-      end;
-
   DBGrid1.Canvas.FillRect(Rect);
   Dbgrid1.DefaultDrawColumnCell(Rect, DataCol, Column, State);
 end;
@@ -165,7 +152,7 @@ var
    TitleWidth: integer;
    TextWidth: integer;
 begin
-{    with (Sender As TDBGrid) do begin
+    with (Sender As TDBGrid) do begin
       for i:=0 to Columns.Count-1 do begin
           TitleWidth := Canvas.TextWidth(Columns.Items[i].Title.Caption);
           TextWidth := Canvas.TextWidth(Columns.Items[i].Field.ToString);
@@ -175,7 +162,7 @@ begin
              Columns.Items[i].Title.Alignment := taCenter;//taLeftJustify;
 //          end;
       end;
-    end;}
+    end;
 end;
 
 procedure TForm1.DBGrid2DrawColumnCell(Sender: TObject; const Rect: TRect;
@@ -205,10 +192,13 @@ begin
     begin
 //     (Sender as TDBGrid).Canvas.FillRect(Rect);
 //     (Sender as TDBGrid).Canvas.TextRect(Rect, Rect.Left, Rect.Top, ' '+Column.Field.AsString);
+
+      if Column.Field <> nil then begin
        // fix (memo)
        (Sender As TDBGrid).Canvas.FillRect(Rect); //не смазывает при прокрутке
        (Sender As TDBGrid).Canvas.TextRect(R, R.Left + 2, R.Top + 2,
                                     Column.Field.AsWideString);
+      end;
 
 {          with (Sender As TDBGrid) do begin
             for i:=0 to Columns.Count-1 do begin

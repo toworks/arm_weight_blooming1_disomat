@@ -284,19 +284,6 @@ begin
       MainSqlite.SQuery.SQL.Add('order by timestamp desc limit 100');
       MainSqlite.SQuery.Open;
 
-{  while not _SLQuery.Eof do
-   begin
-      Log.save('e', 'shift | '+_SLQuery.FieldByName('shift').AsString);
-      Log.save('e', 'weight | '+_SLQuery.FieldByName('weight').AsString);
-      Log.save('e', 'heat | '+_SLQuery.FieldByName('heat').AsString);
-      _SLQuery.Next;
-   end;}
-
- //     if assigned(Form1.DBGrid2) then begin
-//        Form1.DBGrid2.DataSource := SLDataSource;
-//        Synchronize(Form1.DBGrid2.Refresh);//views взвешенные заготовки
- //     end;
-
       //исправляем отображение даты в DBGrid -> 20 characters
       TStringField(MainSqlite.SQuery.FieldByName('shift')).DisplayWidth := 3;
       TStringField(MainSqlite.SQuery.FieldByName('timestamp')).DisplayWidth := 20;

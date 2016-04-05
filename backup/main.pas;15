@@ -32,8 +32,6 @@ type
     procedure DBGrid1DblClick(Sender: TObject);
     procedure DBGrid1DrawColumnCell(Sender: TObject; const Rect: TRect;
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
-    procedure DBGrid1PrepareCanvas(sender: TObject; DataCol: Integer;
-      Column: TColumn; AState: TGridDrawState);
     procedure DBGrid2DrawColumnCell(Sender: TObject; const Rect: TRect;
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
     procedure FormCloseQuery(Sender: TObject; var CanClose: boolean);
@@ -140,28 +138,24 @@ begin
   end;
   DBGrid1.Canvas.FillRect(Rect);
   Dbgrid1.DefaultDrawColumnCell(Rect, DataCol, Column, State);
-end;
 
-
-procedure TForm1.DBGrid1PrepareCanvas(sender: TObject; DataCol: Integer;
-  Column: TColumn; AState: TGridDrawState);
-var
-   i: integer;
-   TitleWidth: integer;
-   TextWidth: integer;
-begin
-    with (Sender As TDBGrid) do begin
-      for i:=0 to Columns.Count-1 do begin
-          TitleWidth := Canvas.TextWidth(Columns.Items[i].Title.Caption);
-          TextWidth := Canvas.TextWidth(Columns.Items[i].Field.ToString);
-//          if (TextWidth < Columns.Items[i].Width) then begin
-             Columns.Items[i].Width := TitleWidth+25;
-             Columns.Items[i].Alignment := taCenter;//taLeftJustify;
-             Columns.Items[i].Title.Alignment := taCenter;//taLeftJustify;
-//          end;
+  // fix size title and column
+  if Column.Field <> nil then
+  begin
+      with (Sender As TDBGrid) do begin
+        for i:=0 to Columns.Count-1 do begin
+            TitleWidth := Canvas.TextWidth(Columns.Items[i].Title.Caption);
+            TextWidth := Canvas.TextWidth(Columns.Items[i].Field.ToString);
+  //          if (TextWidth < Columns.Items[i].Width) then begin
+               Columns.Items[i].Width := TitleWidth+25;
+               Columns.Items[i].Alignment := taCenter;//taLeftJustify;
+               Columns.Items[i].Title.Alignment := taCenter;//taLeftJustify;
+  //          end;
+        end;
       end;
-    end;
+  end;
 end;
+
 
 procedure TForm1.DBGrid2DrawColumnCell(Sender: TObject; const Rect: TRect;
   DataCol: Integer; Column: TColumn; State: TGridDrawState);
@@ -194,7 +188,7 @@ begin
        // fix (memo)
        (Sender As TDBGrid).Canvas.FillRect(Rect); //не смазывает при прокрутке
        (Sender As TDBGrid).Canvas.TextRect(R, R.Left + 2, R.Top + 2,
-                                    Column.Field.AsWideString);
+                                                   Column.Field.AsWideString);
 
        // fix size title and column
        with (Sender As TDBGrid) do begin
@@ -217,23 +211,9 @@ begin
           end;
        end;
 
-
-    {  if (Column.FieldName = 'shift') or
-         (Column.FieldName = 'timestamp') {or
-         (Column.FieldName = 'transferred')} then
-      begin
-         (Sender As TDBGrid).Canvas.FillRect(Rect); //не смазывает при прокрутке
-         (Sender As TDBGrid).Canvas.TextRect(R, R.Left + 2, R.Top + 2,
-                                  Column.Field.AsWideString);
-      end
-      else begin
-          TDBGrid(Sender).Canvas.FillRect(Rect); //не смазывает при прокрутке
-          TDBGrid(Sender).DefaultDrawColumnCell(Rect, DataCol, Column, State);
-      end; }
-
+       // colored text in column
        if ( Column.FieldName = 'transferred' ) then
        begin
-          Log.save('i', 'transferred | '+Column.Field.AsWideString);
           if ( Column.Field.AsWideString = UTF8Encode('не передан') ) then
           begin
             (Sender As TDBGrid).Canvas.FillRect(Rect); //не смазывает при прокрутке

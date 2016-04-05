@@ -166,6 +166,7 @@ procedure TForm1.DBGrid2DrawColumnCell(Sender: TObject; const Rect: TRect;
   DataCol: Integer; Column: TColumn; State: TGridDrawState);
 var
   R: TRect;
+  I: integer;
 begin
 
   R := Rect;
@@ -179,6 +180,31 @@ begin
       (Sender as TDBGrid).Canvas.Font.Color := clHighLightText;
     end;
   end;
+
+  if Assigned(Column) then
+    begin
+//     (Sender as TDBGrid).Canvas.FillRect(Rect);
+//     (Sender as TDBGrid).Canvas.TextRect(Rect, Rect.Left, Rect.Top, ' '+Column.Field.AsString);
+          with (Sender As TDBGrid) do begin
+            for i:=0 to Columns.Count-1 do begin
+                TitleWidth := Canvas.TextWidth(Columns.Items[i].Title.Caption);
+                TextWidth := Canvas.TextWidth(Columns.Items[i].Field.ToString);
+      //          if (TitleWidth < TextWidth {Columns.Items[i].Width}) then begin}
+                if ( Columns.Items[i].FieldName = 'timestamp' ) then
+                   Columns.Items[i].Width := TextWidth+55;
+                if ( Columns.Items[i].FieldName = 'weight' ) or
+                   (Columns.Items[i].FieldName = 'transferred') then
+                   Columns.Items[i].Width := TitleWidth+30;
+                if ( Columns.Items[i].FieldName = 'shift' ) or
+                   (Columns.Items[i].FieldName = 'num_ingot') or
+                   (Columns.Items[i].FieldName = 'heat') then
+                   Columns.Items[i].Width := TitleWidth+20;
+
+                Columns.Items[i].Alignment := taCenter;//taLeftJustify;
+                Columns.Items[i].Title.Alignment := taCenter;//taLeftJustify;
+            end;
+          end;
+    end;
 
 {  if (Column.FieldName = 'shift') or
      (Column.FieldName = 'timestamp') {or
@@ -227,12 +253,12 @@ var
    TitleWidth: integer;
    TextWidth: integer;
 begin
-    with (Sender As TDBGrid) do begin
+{    with (Sender As TDBGrid) do begin
       for i:=0 to Columns.Count-1 do begin
           TitleWidth := Canvas.TextWidth(Columns.Items[i].Title.Caption);
           TextWidth := Canvas.TextWidth(Columns.Items[i].Field.ToString);
 //          if (TitleWidth < TextWidth {Columns.Items[i].Width}) then begin}
-          if ( Columns.Items[i].FieldName = 'timestamp' ) then
+{          if ( Columns.Items[i].FieldName = 'timestamp' ) then
              Columns.Items[i].Width := TextWidth+55;
           if ( Columns.Items[i].FieldName = 'weight' ) or
              (Columns.Items[i].FieldName = 'transferred') then
@@ -245,7 +271,7 @@ begin
           Columns.Items[i].Alignment := taCenter;//taLeftJustify;
           Columns.Items[i].Title.Alignment := taCenter;//taLeftJustify;
       end;
-    end;
+    end;}
 end;
 
 
@@ -267,9 +293,9 @@ begin
   FDataSource.DataSet := MainFSql.FQuery;
   DBGrid1.DataSource := FDataSource;
 
-//  ThreadSqlRead := TThreadSqlRead.Create(Log);
+  ThreadSqlRead := TThreadSqlRead.Create(Log);
   ThreadSqlSend := TThreadSqlSend.Create(Log);
-//  ThreadComPort := TThreadComPort.Create(Log);
+  ThreadComPort := TThreadComPort.Create(Log);
 
   Form1.Caption := SettingsApp.HeadName+'  build('+SettingsApp.GetVersion+')';
   //заголовки к showmessage

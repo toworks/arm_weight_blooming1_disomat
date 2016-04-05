@@ -229,7 +229,7 @@ begin
   if ( Column.FieldName = 'transferred' ) then
   begin
      Log.save('i', 'transferred | '+Column.Field.AsWideString);
-     if ( Column.Field.Text = 'не передан' ) then
+     if ( Column.Field.AsWideString = 'не передан' ) then
      begin
        (Sender As TDBGrid).Canvas.FillRect(Rect); //не смазывает при прокрутке
         with DBGrid2.Canvas do
@@ -240,7 +240,7 @@ begin
                                 Rect.Top + 2, Column.Field.AsWideString);
         end
      end
-    else
+{    else
      begin
        (Sender As TDBGrid).Canvas.FillRect(Rect); //не смазывает при прокрутке
         with DBGrid2.Canvas do
@@ -250,7 +250,7 @@ begin
           (Sender as TDBGrid).Canvas.TextRect(Rect, Rect.Left + 2,
                                 Rect.Top + 2, Column.Field.AsWideString);
         end
-    end;
+    end;}
   end;
 end;
 

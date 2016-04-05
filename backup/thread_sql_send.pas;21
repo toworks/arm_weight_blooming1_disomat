@@ -361,7 +361,7 @@ end;
 
 procedure TThreadSqlSend.SyncSqlMaxLocal;
 begin
-  Form1.SqlMaxLocal := FSqlMaxLocal;
+//  Form1.SqlMaxLocal := FSqlMaxLocal;
 end;
 
 

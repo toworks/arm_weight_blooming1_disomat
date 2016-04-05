@@ -4,7 +4,7 @@ unit thread_sql_read;
 interface
 
 uses
-  SysUtils, DB, Classes, ActiveX, ZDataset, SyncObjs, logging, sql;
+  SysUtils, DB, Classes, ActiveX, ZDataset, logging, sql;
 
 type
   //Здесь необходимо описать класс TThreadSql:
@@ -13,7 +13,6 @@ type
     FThreadSqlRead: TThreadSqlRead;
     FSqlMax: int64;
     Fpkdat_in: string;
-//    Fsql: TFsql;
 
     procedure SyncSqlReadTable;
     procedure SqlNewRecord;
@@ -26,7 +25,6 @@ type
   end;
 
 var
-//  SqlMax: int64 = 0;
   FutureDate: TDateTime;
   lLog: TLog;
   Fsql: TFsql;
@@ -74,7 +72,7 @@ begin
   while True do
    begin
       try
-//          Synchronize(SyncSqlMax);
+          Synchronize(@SyncSqlMax);
           SqlNewRecord;
       except
         on E : Exception do
@@ -161,7 +159,7 @@ begin
 
   // маркер следующей заготовки
   if MarkerNextWait then
-    Synchronize(NextWeightToRecord); //следующая запись (слиток) от записаной
+//    Synchronize(NextWeightToRecord); //следующая запись (слиток) от записаной
 end;
 
 
@@ -190,7 +188,7 @@ end;
 
 procedure TThreadSqlRead.SyncSqlMax;
 begin
-  Form1.SqlMax := FSqlMax;
+//  Form1.SqlMax := FSqlMax;
 end;
 
 

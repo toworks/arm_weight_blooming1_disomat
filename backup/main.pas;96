@@ -179,19 +179,19 @@ begin
       (Sender as TDBGrid).Canvas.Font.Color := clHighLightText;
     end;
   end;
-{
-   if (Column.FieldName = 'shift') or
-      (Column.FieldName = 'timestamp') or
-      (Column.FieldName = 'transferred') then
-   begin
-      (Sender As TDBGrid).Canvas.FillRect(Rect); //не смазывает при прокрутке
-      (Sender As TDBGrid).Canvas.TextRect(R, R.Left + 2, R.Top + 2,
+
+{  if (Column.FieldName = 'shift') or
+     (Column.FieldName = 'timestamp') {or
+     (Column.FieldName = 'transferred')} then
+  begin
+     (Sender As TDBGrid).Canvas.FillRect(Rect); //не смазывает при прокрутке
+     (Sender As TDBGrid).Canvas.TextRect(R, R.Left + 2, R.Top + 2,
                               Column.Field.AsWideString);
-   end
-   else begin
+  end
+  else begin
       TDBGrid(Sender).Canvas.FillRect(Rect); //не смазывает при прокрутке
       TDBGrid(Sender).DefaultDrawColumnCell(Rect, DataCol, Column, State);
-   end;
+  end;
 
   if ( Column.FieldName = 'transferred' ) then
   begin
@@ -218,6 +218,8 @@ begin
         end
     end;
   end;}
+  DBGrid1.Canvas.FillRect(Rect);
+  Dbgrid1.DefaultDrawColumnCell(Rect, DataCol, Column, State);
 end;
 
 procedure TForm1.DBGrid2PrepareCanvas(sender: TObject; DataCol: Integer;
@@ -227,12 +229,12 @@ var
    TitleWidth: integer;
    TextWidth: integer;
 begin
-    with (Sender As TDBGrid) do begin
+{    with (Sender As TDBGrid) do begin
       for i:=0 to Columns.Count-1 do begin
           TitleWidth := Canvas.TextWidth(Columns.Items[i].Title.Caption);
-//          TextWidth := Canvas.TextWidth(Columns.Items[i].Field.ToString);
-          if (TitleWidth < TextWidth {Columns.Items[i].Width}) then begin}
-          if ( Columns.Items[i].FieldName = 'timestamp' ) then
+          TextWidth := Canvas.TextWidth(Columns.Items[i].Field.ToString);
+//          if (TitleWidth < TextWidth {Columns.Items[i].Width}) then begin}
+{          if ( Columns.Items[i].FieldName = 'timestamp' ) then
              Columns.Items[i].Width := TextWidth+55;
           if ( Columns.Items[i].FieldName = 'weight' ) or
              (Columns.Items[i].FieldName = 'transferred') then
@@ -245,7 +247,7 @@ begin
           Columns.Items[i].Alignment := taCenter;//taLeftJustify;
           Columns.Items[i].Title.Alignment := taCenter;//taLeftJustify;
       end;
-    end;
+    end;}
 end;
 
 

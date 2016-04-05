@@ -183,6 +183,9 @@ begin
 
   FMessageData := Data;
 
+  lLog.save('d', 'ReceiveData | '+Data);
+  lLog.save('w', 'pkdat | '+pkdat+' | num | '+num+' | num_ingot | '+num_ingot);
+
   if (copy(Data, 2, 6) = '00#EK#') and (copy(Data, 8, 1) = '0') then
   begin
       Fno_save := false;//запрещаем отправку подтверждения в контроллер -> сброс в SqlSaveInBuffer
@@ -279,6 +282,9 @@ begin
   if MarkerNextWait then
     exit;
 
+  //следующая запись (слиток) от записаной
+  Synchronize(@SyncNextWeightToRecord);
+
   pkdat_correct := ManipulationWithDate(pkdat);
   num_correct := '';
   num_ingot_correct := num_correct;
@@ -345,9 +351,6 @@ begin
   {$IFDEF DEBUG}
     lLog.save('d', 'pkdat_correct -> '+ TCsqlite.SQuery.FieldByName('id_asutp').AsString);
   {$ENDIF}
-
-  //следующая запись (слиток) от записаной
-  Synchronize(@SyncNextWeightToRecord);
 end;
 
 

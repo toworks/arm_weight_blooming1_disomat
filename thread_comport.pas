@@ -183,8 +183,10 @@ begin
 
   FMessageData := Data;
 
-  lLog.save('d', 'ReceiveData | '+Data);
-  lLog.save('w', 'pkdat | '+pkdat+' | num | '+num+' | num_ingot | '+num_ingot);
+  {$IFDEF DEBUG}
+    lLog.save('d', 'ReceiveData | '+Data);
+    lLog.save('w', 'pkdat | '+pkdat+' | num | '+num+' | num_ingot | '+num_ingot);
+  {$ENDIF}
 
   if (copy(Data, 2, 6) = '00#EK#') and (copy(Data, 8, 1) = '0') then
   begin
@@ -267,7 +269,8 @@ end;
 
 procedure TThreadComPort.SyncCalibration;
 begin
-      CalibrationForm.l_calibration.caption := trim(copy(FMessageData, 40, 6));
+     if assigned(CalibrationForm.l_calibration) then
+        CalibrationForm.l_calibration.caption := trim(copy(FMessageData, 40, 6));
 end;
 
 
@@ -324,6 +327,11 @@ begin
     on E : Exception do
       lLog.save('e', E.ClassName+' sql save in buffer, с сообщением: '+E.Message+' | '+TCsqlite.SQuery.SQL.Text);
   end;
+
+{  //чистим для следующей заготовки
+  pkdat := '';
+  num := '';
+  num_ingot := '';}
 
   //ThreadComPort.no_save := true;//разрешаем отправку подтверждения в контроллер
   //form1.no_save := true;//разрешаем отправку подтверждения в контроллер

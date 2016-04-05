@@ -1,12 +1,12 @@
 object Form1: TForm1
-  Left = 759
+  Left = 667
   Height = 502
-  Top = 328
+  Top = 239
   Width = 643
   BorderStyle = bsSingle
   Caption = 'Form1'
-  ClientHeight = 0
-  ClientWidth = 0
+  ClientHeight = 502
+  ClientWidth = 643
   KeyPreview = True
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
@@ -36,7 +36,13 @@ object Form1: TForm1
       Anchors = [akTop, akLeft, akRight, akBottom]
       Color = clWindow
       Columns = <>
+      Font.CharSet = RUSSIAN_CHARSET
+      Font.Height = -16
+      Font.Name = 'Arial Narrow'
+      Font.Pitch = fpVariable
+      Font.Quality = fqDraft
       Options = [dgTitles, dgIndicator, dgColumnResize, dgColumnMove, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit]
+      ParentFont = False
       ReadOnly = True
       TabOrder = 0
       TitleFont.CharSet = RUSSIAN_CHARSET
@@ -47,6 +53,7 @@ object Form1: TForm1
       TitleFont.Quality = fqDraft
       TitleFont.Style = [fsBold]
       OnDrawColumnCell = DBGrid1DrawColumnCell
+      OnDblClick = DBGrid1DblClick
       OnPrepareCanvas = DBGrid1PrepareCanvas
     end
   end
@@ -254,11 +261,11 @@ object Form1: TForm1
   end
   object gb_weighed_ingot_in_sql: TGroupBox
     Left = 8
-    Height = 176
+    Height = 174
     Top = 264
     Width = 628
     Caption = ' Взвешенные слитки '
-    ClientHeight = 151
+    ClientHeight = 149
     ClientWidth = 624
     Font.CharSet = RUSSIAN_CHARSET
     Font.Height = -16
@@ -270,13 +277,19 @@ object Form1: TForm1
     TabOrder = 2
     object DBGrid2: TDBGrid
       Left = 5
-      Height = 144
+      Height = 142
       Top = 0
       Width = 614
       Anchors = [akTop, akLeft, akRight, akBottom]
       Color = clWindow
       Columns = <>
+      Font.CharSet = RUSSIAN_CHARSET
+      Font.Height = -13
+      Font.Name = 'Arial Narrow'
+      Font.Pitch = fpVariable
+      Font.Quality = fqDraft
       Options = [dgTitles, dgIndicator, dgColumnResize, dgColumnMove, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit]
+      ParentFont = False
       TabOrder = 0
       TitleFont.CharSet = RUSSIAN_CHARSET
       TitleFont.Color = clWindowText
@@ -285,6 +298,8 @@ object Form1: TForm1
       TitleFont.Pitch = fpVariable
       TitleFont.Quality = fqDraft
       TitleFont.Style = [fsBold]
+      OnDrawColumnCell = DBGrid2DrawColumnCell
+      OnPrepareCanvas = DBGrid2PrepareCanvas
     end
   end
 end

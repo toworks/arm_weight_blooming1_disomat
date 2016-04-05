@@ -6,8 +6,8 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, DBGrids,
-  ExtCtrls, StdCtrls, Menus, db, {$ifdef windows} Windows, {$endif}
-  logging, sql, thread_sql_read{, thread_sql_send, thread_comport}, Grids;
+  ExtCtrls, StdCtrls, Menus, db, {$ifdef windows} Windows, {$endif} Grids,
+  logging, sql, thread_sql_read, thread_sql_send, thread_comport;
 
 type
 
@@ -29,9 +29,14 @@ type
     l_n_number_ingot: TLabel;
     l_number_ingot: TLabel;
     l_n_datetime: TLabel;
+    procedure DBGrid1DblClick(Sender: TObject);
     procedure DBGrid1DrawColumnCell(Sender: TObject; const Rect: TRect;
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
     procedure DBGrid1PrepareCanvas(sender: TObject; DataCol: Integer;
+      Column: TColumn; AState: TGridDrawState);
+    procedure DBGrid2DrawColumnCell(Sender: TObject; const Rect: TRect;
+      DataCol: Integer; Column: TColumn; State: TGridDrawState);
+    procedure DBGrid2PrepareCanvas(sender: TObject; DataCol: Integer;
       Column: TColumn; AState: TGridDrawState);
     procedure FormCloseQuery(Sender: TObject; var CanClose: boolean);
     procedure FormCreate(Sender: TObject);
@@ -39,6 +44,7 @@ type
     procedure ActionMenuItemClick(Sender: TObject);
   private
     procedure DBgrid1Create(Sender: TObject);
+    procedure DBgrid2Create(Sender: TObject);
   public
     { public declarations }
   end;
@@ -46,12 +52,18 @@ type
 var
   Form1: TForm1;
   ThreadSqlRead: TThreadSqlRead;
-{  ThreadSqlSend: TThreadSqlSend;
-  ThreadComPort: TThreadComPort;}
+  ThreadSqlSend: TThreadSqlSend;
+  ThreadComPort: TThreadComPort;
   MainSqlite: TSqlite;
   SDataSource: TDataSource;
   MainFSql: TFsql;
   FDataSource: TDataSource;
+
+//    {$DEFINE DEBUG}
+
+  function ViewSelectedIngot: boolean;
+  function PointReplace(DataIn: string): string;
+  function ViewClear: boolean;
 
 
 implementation
@@ -68,7 +80,7 @@ begin
   try
       Log.save('i', 'close '+Log.ProgFileName);
 
-{      if assigned(ThreadComPort) then
+      if assigned(ThreadComPort) then
         ThreadComPort.Terminate;
       if assigned(ThreadSqlRead) then
         ThreadSqlRead.Terminate;
@@ -82,7 +94,7 @@ begin
       if assigned(MainFSql) then
         MainFSql.Destroy;
       if assigned(FDataSource) then
-        FDataSource.Destroy;}
+        FDataSource.Destroy;
   finally
     // закрываем приложение
     {$ifdef unix}
@@ -95,49 +107,38 @@ begin
 end;
 
 
+procedure TForm1.DBGrid1DblClick(Sender: TObject);
+begin
+  // маркер следующей заготовки
+  if not MarkerNextWait then begin
+    try
+        //отключаем управление
+        form1.DBGrid1.DataSource.DataSet.DisableControls;
+        if MessageDlg('Выбрать заготовку для взвешивания?', mtCustom, mbYesNo, 0) = mrYes then
+          ViewSelectedIngot;
+    finally
+        //включаем управление
+        form1.DBGrid1.DataSource.DataSet.EnableControls;
+    end;
+  end;
+end;
+
+
 procedure TForm1.DBGrid1DrawColumnCell(Sender: TObject; const Rect: TRect;
   DataCol: Integer; Column: TColumn; State: TGridDrawState);
 var
   R: TRect;
 begin
-      if Column.FieldName = 'smena' then
-       begin
-          (Sender As TDBGrid).Canvas.FillRect(Rect); //не смазывает при прокрутке
-          (Sender As TDBGrid).Canvas.TextRect(R, R.Left + 2, R.Top + 2,
-                                  Column.FieldName);
-       end
-      else begin
-          TDBGrid(Sender).Canvas.FillRect(Rect); //не смазывает при прокрутке
-          TDBGrid(Sender).DefaultDrawColumnCell(Rect, DataCol, Column, State);
-      end;
-
-      if Column.FieldName = 'step' then
-       begin
-          (Sender As TDBGrid).Canvas.FillRect(Rect); //не смазывает при прокрутке
-          with (Sender As TDBGrid).Canvas do
-          begin
-            Font.Color := clRed;
-            if (Column.FieldName = 'low') or (Column.FieldName = 'high') then
-              font.Style:= [fsBold];
-            (Sender as TDBGrid).Canvas.TextRect(Rect, Rect.Left + 2,
-                                  Rect.Top + 2, Column.Field.AsWideString);
-          end
-       end
-      else
-       begin
-          (Sender As TDBGrid).Canvas.FillRect(Rect); //не смазывает при прокрутке
-          with (Sender As TDBGrid).Canvas do
-          begin
-            Font.Color := clGreen;
-            if (Column.FieldName = 'low') or (Column.FieldName = 'high') then
-              font.Style:= [fsBold];
-            (Sender as TDBGrid).Canvas.TextRect(Rect, Rect.Left + 2,
-                                 Rect.Top + 2, Column.Field.AsWideString);
-          end
-      end;
-//  end
-//  else
-//    (Sender As TDBGrid).DefaultDrawColumnCell(Rect, DataCol, Column, State);
+  if  gdSelected in State then //color selected
+  begin
+    with DBGrid1.Canvas do
+    begin
+      (Sender as TDBGrid).Canvas.Brush.Color:= $002CB902;//green
+      	    (Sender as TDBGrid).Canvas.Font.Color := clHighLightText;
+    end;
+  end;
+  DBGrid1.Canvas.FillRect(Rect);
+  Dbgrid1.DefaultDrawColumnCell(Rect, DataCol, Column, State);
 end;
 
 
@@ -152,36 +153,133 @@ begin
       for i:=0 to Columns.Count-1 do begin
           TitleWidth := Canvas.TextWidth(Columns.Items[i].Title.Caption);
           TextWidth := Canvas.TextWidth(Columns.Items[i].Field.ToString);
-  {        if (TitleWidth < Columns.Items[i].Width) and not _resize then begin
-             Columns.Items[i].Width := TextWidth;
-             Columns.Items[i].Alignment := taCenter;
-             Columns.Items[i].Alignment := taLeftJustify;
-          end;}
-          if (TextWidth < Columns.Items[i].Width) then begin
+//          if (TextWidth < Columns.Items[i].Width) then begin
              Columns.Items[i].Width := TitleWidth+25;
              Columns.Items[i].Alignment := taCenter;//taLeftJustify;
              Columns.Items[i].Title.Alignment := taCenter;//taLeftJustify;
-          end;
+//          end;
       end;
     end;
+end;
 
+procedure TForm1.DBGrid2DrawColumnCell(Sender: TObject; const Rect: TRect;
+  DataCol: Integer; Column: TColumn; State: TGridDrawState);
+var
+  R: TRect;
+  i: integer;
+  TitleWidth: integer;
+  TextWidth: integer;
+begin
 
-      begin
-        with (Sender As TDBGrid) do
+  R := Rect;
+  Dec(R.Bottom, 2);
+
+  if  gdSelected in State then //color selected
+  begin
+    with DBGrid2.Canvas do
+    begin
+      (Sender as TDBGrid).Canvas.Brush.Color:= clMedGray;
+      (Sender as TDBGrid).Canvas.Font.Color := clHighLightText;
+    end;
+  end;
+
+  if Assigned(Column) then
+    begin
+     (Sender as TDBGrid).Canvas.FillRect(Rect);
+     (Sender as TDBGrid).Canvas.TextRect(Rect, Rect.Left, Rect.Top, ' '+Column.Field.AsString);
+       // fix (memo)
+//       (Sender As TDBGrid).Canvas.FillRect(Rect); //не смазывает при прокрутке
+//       (Sender As TDBGrid).Canvas.TextRect(R, R.Left + 2, R.Top + 2,
+//                                    Column.Field.AsWideString);
+
+          with (Sender As TDBGrid) do begin
+            for i:=0 to Columns.Count-1 do begin
+                TitleWidth := Canvas.TextWidth(Columns.Items[i].Title.Caption);
+                TextWidth := Canvas.TextWidth(Columns.Items[i].Field.ToString);
+      //          if (TitleWidth < TextWidth {Columns.Items[i].Width}) then begin}
+                if ( Columns.Items[i].FieldName = 'timestamp' ) then
+                   Columns.Items[i].Width := TextWidth+55;
+                if ( Columns.Items[i].FieldName = 'weight' ) or
+                   (Columns.Items[i].FieldName = 'transferred') then
+                   Columns.Items[i].Width := TitleWidth+30;
+                if ( Columns.Items[i].FieldName = 'shift' ) or
+                   (Columns.Items[i].FieldName = 'num_ingot') or
+                   (Columns.Items[i].FieldName = 'heat') then
+                   Columns.Items[i].Width := TitleWidth+20;
+
+                Columns.Items[i].Alignment := taCenter;//taLeftJustify;
+                Columns.Items[i].Title.Alignment := taCenter;//taLeftJustify;
+            end;
+          end;
+    end;
+
+{  if (Column.FieldName = 'shift') or
+     (Column.FieldName = 'timestamp') {or
+     (Column.FieldName = 'transferred')} then
+  begin
+     (Sender As TDBGrid).Canvas.FillRect(Rect); //не смазывает при прокрутке
+     (Sender As TDBGrid).Canvas.TextRect(R, R.Left + 2, R.Top + 2,
+                              Column.Field.AsWideString);
+  end
+  else begin
+      TDBGrid(Sender).Canvas.FillRect(Rect); //не смазывает при прокрутке
+      TDBGrid(Sender).DefaultDrawColumnCell(Rect, DataCol, Column, State);
+  end; }
+
+  if ( Column.FieldName = 'transferred' ) then
+  begin
+     Log.save('i', 'transferred | '+Column.Field.AsWideString);
+     if ( Column.Field.AsWideString = 'не передан' ) then
+     begin
+       (Sender As TDBGrid).Canvas.FillRect(Rect); //не смазывает при прокрутке
+        with DBGrid2.Canvas do
         begin
-          if (Column.FieldName = 'num_ingot') then begin
-                Canvas.Brush.Color := $006868FD; //Red
-                Canvas.Font.Color := clBlack;
-                Canvas.font.Style := [fsBold];
-          end;
-          if (Column.FieldName = 'high') then begin
-                Canvas.Brush.Color := $0002E813; //Green;
-                Canvas.Font.Color := clBlack;
-                Canvas.font.Style := [fsBold];
-          end;
-        end;
+          Font.Color := clRed;
+          font.Style:= [fsBold];
+          (Sender as TDBGrid).Canvas.TextRect(Rect, Rect.Left + 2,
+                                Rect.Top + 2, Column.Field.AsWideString);
+        end
+     end
+{    else
+     begin
+       (Sender As TDBGrid).Canvas.FillRect(Rect); //не смазывает при прокрутке
+        with DBGrid2.Canvas do
+        begin
+          Font.Color := $002CB902;//green
+          font.Style:= [fsBold];
+          (Sender as TDBGrid).Canvas.TextRect(Rect, Rect.Left + 2,
+                                Rect.Top + 2, Column.Field.AsWideString);
+        end
+    end;}
+  end;
+end;
+
+procedure TForm1.DBGrid2PrepareCanvas(sender: TObject; DataCol: Integer;
+  Column: TColumn; AState: TGridDrawState);
+var
+   i: integer;
+   TitleWidth: integer;
+   TextWidth: integer;
+begin
+{    with (Sender As TDBGrid) do begin
+      for i:=0 to Columns.Count-1 do begin
+          TitleWidth := Canvas.TextWidth(Columns.Items[i].Title.Caption);
+          TextWidth := Canvas.TextWidth(Columns.Items[i].Field.ToString);
+//          if (TitleWidth < TextWidth {Columns.Items[i].Width}) then begin}
+{          if ( Columns.Items[i].FieldName = 'timestamp' ) then
+             Columns.Items[i].Width := TextWidth+55;
+          if ( Columns.Items[i].FieldName = 'weight' ) or
+             (Columns.Items[i].FieldName = 'transferred') then
+             Columns.Items[i].Width := TitleWidth+30;
+          if ( Columns.Items[i].FieldName = 'shift' ) or
+             (Columns.Items[i].FieldName = 'num_ingot') or
+             (Columns.Items[i].FieldName = 'heat') then
+             Columns.Items[i].Width := TitleWidth+20;
+
+          Columns.Items[i].Alignment := taCenter;//taLeftJustify;
+          Columns.Items[i].Title.Alignment := taCenter;//taLeftJustify;
       end;
-//      _resize := true;
+    end;}
 end;
 
 
@@ -192,6 +290,7 @@ begin
   MainSqlite := TSqlite.Create(Log);
   //отображение в dbgrid
   SDataSource := TDataSource.Create(nil);
+  DBgrid2Create(self);
   SDataSource.DataSet := MainSqlite.SQuery;
   DBGrid2.DataSource := SDataSource;
 
@@ -203,8 +302,8 @@ begin
   DBGrid1.DataSource := FDataSource;
 
   ThreadSqlRead := TThreadSqlRead.Create(Log);
-//  ThreadSqlSend := TThreadSqlSend.Create(Log);
-//  ThreadComPort := TThreadComPort.Create(Log);
+  ThreadSqlSend := TThreadSqlSend.Create(Log);
+  ThreadComPort := TThreadComPort.Create(Log);
 
   Form1.Caption := SettingsApp.HeadName+'  build('+SettingsApp.GetVersion+')';
   //заголовки к showmessage
@@ -213,6 +312,8 @@ begin
   //запрет на изменение формы
   BorderStyle := bsToolWindow;
   BorderIcons := BorderIcons - [biMaximize];
+
+  ViewClear;
 
   CreateMenu;
 end;
@@ -287,15 +388,69 @@ begin
   DBGrid1.Columns.Items[5].Title.Caption := 'Масса слитка ПУ-1 (т)';
   DBGrid1.Columns.Items[6].Title.Caption := 'steel_group';
 
-//  for i := 0 to DBGrid1.columns.Count - 1 do begin
-//      DBGrid1.Columns.Items[i].Title.Alignment := taCenter;
-//      DBGrid1.Columns.Items[i].MaxSize:=150;
-//  end;
-
-//  DBGrid1.Columns.Items[0].MaxSize:=10;
   DBGrid1.Columns.Items[6].Visible := false;
+end;
+
+
+procedure TForm1.DBgrid2Create(Sender: TObject);
+var
+   i: integer;
+begin
+  DBGrid2.Columns.Clear;
+  DBGrid2.Columns.Add.FieldName := 'shift';
+  DBGrid2.Columns.Add.FieldName := 'num_ingot';
+  DBGrid2.Columns.Add.FieldName := 'timestamp';
+  DBGrid2.Columns.Add.FieldName := 'heat';
+  DBGrid2.Columns.Add.FieldName := 'weight';
+  DBGrid2.Columns.Add.FieldName := 'transferred';
+
+  DBGrid2.Columns.Items[0].Title.Caption := 'Смена';
+  DBGrid2.Columns.Items[1].Title.Caption := '№ Слитка';
+  DBGrid2.Columns.Items[2].Title.Caption := 'Время';
+  DBGrid2.Columns.Items[3].Title.Caption := '№ Плавки';
+  DBGrid2.Columns.Items[4].Title.Caption := 'Масса слитка ПУ-5 (т)';
+  DBGrid2.Columns.Items[5].Title.Caption := 'передача в ДИТ';
+end;
+
+
+function ViewSelectedIngot: boolean;
+begin
+  Form1.l_number_ingot.Caption := Form1.DBGrid1.DataSource.DataSet.FieldByName('NUM_INGOT').AsString;
+  Form1.l_datetime.Caption := Form1.DBGrid1.DataSource.DataSet.FieldByName('TIME_INGOT').AsString;
+  Form1.l_heat.Caption := Form1.DBGrid1.DataSource.DataSet.FieldByName('NUM_HEAT').AsString;
+  Form1.l_grade.Caption := Form1.DBGrid1.DataSource.DataSet.FieldByName('NAME').AsString;
+  Form1.l_weight_ingot.Caption := Form1.DBGrid1.DataSource.DataSet.FieldByName('WEIGHT_INGOT').AsString;
+  pkdat := Form1.DBGrid1.DataSource.DataSet.FieldByName('PKDAT').AsString;
+  num := Form1.DBGrid1.DataSource.DataSet.FieldByName('NUM').AsString;
+  num_ingot := Form1.DBGrid1.DataSource.DataSet.FieldByName('NUM_INGOT').AsString;
+  num_heat := Form1.DBGrid1.DataSource.DataSet.FieldByName('NUM_HEAT').AsString;
+  smena := Form1.DBGrid1.DataSource.DataSet.FieldByName('SMENA').AsString;
+end;
+
+
+function PointReplace(DataIn: string): string;
+begin
+      result:=StringReplace(Datain,',','.', [rfReplaceAll]);
+end;
+
+
+function ViewClear: boolean;
+var
+  i: integer;
+begin
+
+  for i:=0 to form1.ComponentCount - 1 do
+   begin
+    if (form1.Components[i] is Tlabel) then
+      begin
+        if copy(form1.Components[i].Name,1,4) <> 'l_n_' then
+          Tlabel(Form1.FindComponent(form1.Components[i].Name)).Caption := '';
+      end;
+   end;
 
 end;
+
+
 
 
 end.

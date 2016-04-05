@@ -15,7 +15,7 @@ type
 //    Fcount: integer;
     Fno_save: boolean;
     FThreadComPort: TThreadComPort;
-//    FMessageData: AnsiString;
+    FMessageData: AnsiString;
 
     function CPortParity(InData: String): Char;
     function SendReadToSerial(InData: AnsiString): AnsiString;
@@ -66,7 +66,7 @@ begin
   FThreadComPort.Start;
 
   Fno_save := false;
-  Fcount := 10;
+//  Fcount := 10;
 end;
 
 
@@ -178,6 +178,9 @@ end;
 
 function TThreadComPort.ReceiveData(Data: AnsiString): string;
 begin
+
+  FMessageData := Data;
+
   if (copy(Data, 2, 6) = '00#EK#') and (copy(Data, 8, 1) = '0') then
   begin
       Fno_save := false;//запрещаем отправку подтверждения в контроллер -> сброс в SqlSaveInBuffer
@@ -209,14 +212,16 @@ end;
 
 
 function TThreadComPort.SendAttribute: boolean;
+var
+    msg: AnsiString;
 begin
   try
     //передаем ЭОД вход1-4 переменные 1|0|0|0
-    SendReadToSerial(#2'00#EK#1#0#0#0#'#16#3+hash_bcc('00#EK#1#0#0#0#'#16#3));
-    //ReceiveData(FMessageData);
+    msg := SendReadToSerial(#2'00#EK#1#0#0#0#'#16#3+hash_bcc('00#EK#1#0#0#0#'#16#3));
+    ReceiveData(msg);
   except
     on E : Exception do
-      lLog.save('e', E.ClassName+#9' com send attribute, с сообщением: '+E.Message);
+      lLog.save('e', E.ClassName+' com send attribute, с сообщением: '+E.Message);
   end;
 end;
 
@@ -352,6 +357,8 @@ begin
     pkdat_correct := StuffString(pkdat_correct, 1, 2, copy(InDate, 5,2));
     Result := pkdat_correct;
 end;
+
+
 
 
 // При загрузке программы класс будет создаваться

@@ -4,7 +4,7 @@ interface
 
 uses
    SysUtils, ActiveX, Variants, Classes, StrUtils, DB, ZConnection, ZDataset,
-   ZDbcIntfs, SyncObjs, logging;
+   ZDbcIntfs, ZCompatibility, SyncObjs, logging;
 
 var
     time_ingot, pkdat, num, num_ingot, num_heat, name, weight_ingot, steel_group,
@@ -158,6 +158,9 @@ begin
         FFConnect.ReadOnly := True;
         FFConnect.LoginPrompt := false;
         FFConnect.Port := 3050;
+        FFConnect.AutoEncodeStrings := true;// перекодировка с сервера в клиент
+//        FFConnect.ClientCodepage := 'CL8MSWIN1251';// кодировка на сервере
+        FFConnect.ControlsCodePage := cCP_UTF8;// кодировка на клиенте
         FFConnect.AutoCommit := False;
         FFConnect.TransactIsolationLevel := tiReadCommitted;
         with FFConnect.Properties do

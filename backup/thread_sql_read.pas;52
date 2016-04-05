@@ -4,7 +4,7 @@ unit thread_sql_read;
 interface
 
 uses
-  SysUtils, DB, Classes, ActiveX, ZDataset, SyncObjs, logging, sql;
+  DB, Classes, ZDataset, logging, sql;
 
 type
   //Здесь необходимо описать класс TThreadSql:
@@ -25,7 +25,6 @@ type
   end;
 
 var
-//  SqlMax: int64 = 0;
   FutureDate: TDateTime;
   lLog: TLog;
   Fsql: TFsql;
@@ -73,7 +72,7 @@ begin
   while True do
    begin
       try
-//          Synchronize(SyncSqlMax);
+          Synchronize(@SyncSqlMax);
           SqlNewRecord;
       except
         on E : Exception do

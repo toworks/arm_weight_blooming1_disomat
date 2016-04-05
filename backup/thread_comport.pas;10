@@ -87,10 +87,6 @@ begin
   while True do
   begin
       try
-//          Synchronize(SyncStatus);
-          ReadToMessage;
-          if Fno_save then
-             SendAttribute;
 
           //тестирование
           if assigned(MemoTesting) then
@@ -98,6 +94,10 @@ begin
           //калибровка
           if assigned(CalibrationForm) then
              Synchronize(@SyncCalibration);
+//          Synchronize(SyncStatus);
+          ReadToMessage;
+          if Fno_save then
+             SendAttribute;
       except
         on E : Exception do
           lLog.save('e', E.ClassName+' serial execute, с сообщением: '+E.Message);
@@ -182,6 +182,9 @@ function TThreadComPort.ReceiveData(Data: AnsiString): string;
 begin
 
   FMessageData := Data;
+
+  lLog.save('d', 'ReceiveData | '+Data);
+  lLog.save('w', 'pkdat | '+pkdat+' | num | '+num+' | num_ingot | '+num_ingot);
 
   if (copy(Data, 2, 6) = '00#EK#') and (copy(Data, 8, 1) = '0') then
   begin

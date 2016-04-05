@@ -4,7 +4,8 @@ unit thread_comport;
 interface
 
 uses
-  SysUtils, Classes, ActiveX, synaser, SyncObjs, logging, Messages, ZDataset, sql;
+  SysUtils, Classes, ActiveX, synaser, SyncObjs, logging, Messages, ZDataset,
+  strutils, sql;
 
 type
   //Здесь необходимо описать класс TThreadComPort:
@@ -26,6 +27,7 @@ type
     procedure SyncStatus;
     procedure SyncCalibration;
     function SqlSaveInBuffer(DataIn: AnsiString): boolean;
+    function ManipulationWithDate(InDate: string): string;
   protected
     procedure Execute; override;
   public
@@ -85,6 +87,16 @@ begin
       try
 //          Synchronize(SyncStatus);
           ReadToMessage;
+          ReceiveData(FMessageData);
+          if Fno_save then
+             SendAttribute;
+
+          //тестирование
+          if assigned(MemoTesting) then
+             Synchronize(SyncMemoTesting);
+          //калибровка
+          if assigned(CalibrationForm) then
+             Synchronize(SyncCalibration);
       except
         on E : Exception do
           lLog.save('e', E.ClassName+' serial execute, с сообщением: '+E.Message);
@@ -137,7 +149,7 @@ begin
       lLog.save('e', E.ClassName+' serial send/read, с сообщением: '+E.Message);
   end;
 
-  try
+{  try
       ReceiveData(FMessageData);
   except
     on E : Exception do
@@ -149,7 +161,7 @@ begin
 
   {$IFDEF DEBUG}
     lLog.save('d', 'no_save | '+booltostr(Fno_save));
-  {$ENDIF}
+  {$ENDIF}}
 end;
 
 
@@ -185,13 +197,13 @@ begin
       end;
   end;
 
-  //тестирование
+{  //тестирование
   if assigned(MemoTesting) then
 //    Synchronize(SyncMemoTesting);
 
   //калибровка
   if assigned(CalibrationForm) then
-//    Synchronize(SyncCalibration);
+//    Synchronize(SyncCalibration);}
 end;
 
 
@@ -326,6 +338,18 @@ begin
 
   //следующая запись (слиток) от записаной
 //  Synchronize(NextWeightToRecord);
+end;
+
+
+// изменение последовательноси 1401292 -> 2901142, для id_asutp
+function TThreadComPort.ManipulationWithDate(InDate: string): string;
+var
+  pkdat_correct: string;
+begin
+    pkdat_correct := InDate;
+    pkdat_correct := StuffString(pkdat_correct, 5, 2, copy(InDate, 1,2));
+    pkdat_correct := StuffString(pkdat_correct, 1, 2, copy(InDate, 5,2));
+    Result := pkdat_correct;
 end;
 
 

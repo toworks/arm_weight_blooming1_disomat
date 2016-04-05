@@ -83,7 +83,7 @@ begin
   while True do
   begin
       try
-          Synchronize(SyncStatus);
+//          Synchronize(SyncStatus);
           ReadToMessage;
       except
         on E : Exception do
@@ -102,7 +102,7 @@ var
 begin
     //status работы с контроллером
 //    if Fcount > 5 then begin
-      Synchronize(Status);
+//      Synchronize(Status);
 //      Fcount := 0;
 //    end
 //    else
@@ -187,11 +187,11 @@ begin
 
   //тестирование
   if assigned(MemoTesting) then
-    Synchronize(SyncMemoTesting);
+//    Synchronize(SyncMemoTesting);
 
   //калибровка
   if assigned(CalibrationForm) then
-    Synchronize(SyncCalibration);
+//    Synchronize(SyncCalibration);
 end;
 
 
@@ -238,7 +238,7 @@ end;
 
 procedure TThreadComPort.SyncStatus;
 begin
-  form1.no_save := Fno_save;
+//  form1.no_save := Fno_save;
 end;
 
 
@@ -257,7 +257,7 @@ begin
   if MarkerNextWait then
     exit;
 
-  pkdat_correct := ManipulationWithDate(pkdat);
+//  pkdat_correct := ManipulationWithDate(pkdat);
   num_correct := '';
   num_ingot_correct := num_correct;
 
@@ -290,7 +290,7 @@ begin
       TCsqlite.SQuery.SQL.Add('(pkdat, num, num_ingot, id_asutp, heat, timestamp, weight)');
       TCsqlite.SQuery.SQL.Add('VALUES('+pkdat+', '+num+', '+num_ingot+',');
       TCsqlite.SQuery.SQL.Add(''+pkdat_correct+num_correct+num_ingot_correct+',');
-      TCsqlite.SQuery.SQL.Add(''+num_heat+', strftime(''%s'',''now''), '+PointReplace(DataIn)+')');
+//      TCsqlite.SQuery.SQL.Add(''+num_heat+', strftime(''%s'',''now''), '+PointReplace(DataIn)+')');
       TCsqlite.SQuery.ExecSQL;
   except
     on E : Exception do

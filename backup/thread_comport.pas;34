@@ -87,6 +87,16 @@ begin
       try
 //          Synchronize(SyncStatus);
           ReadToMessage;
+          ReceiveData(FMessageData);
+          if Fno_save then
+             SendAttribute;
+
+          //тестирование
+          if assigned(MemoTesting) then
+             Synchronize(@SyncMemoTesting);
+          //калибровка
+          if assigned(CalibrationForm) then
+             Synchronize(@SyncCalibration);
       except
         on E : Exception do
           lLog.save('e', E.ClassName+' serial execute, с сообщением: '+E.Message);
@@ -139,7 +149,7 @@ begin
       lLog.save('e', E.ClassName+' serial send/read, с сообщением: '+E.Message);
   end;
 
-  try
+{  try
       ReceiveData(FMessageData);
   except
     on E : Exception do
@@ -151,7 +161,7 @@ begin
 
   {$IFDEF DEBUG}
     lLog.save('d', 'no_save | '+booltostr(Fno_save));
-  {$ENDIF}
+  {$ENDIF}}
 end;
 
 
@@ -187,13 +197,13 @@ begin
       end;
   end;
 
-  //тестирование
+{  //тестирование
   if assigned(MemoTesting) then
 //    Synchronize(SyncMemoTesting);
 
   //калибровка
   if assigned(CalibrationForm) then
-//    Synchronize(SyncCalibration);
+//    Synchronize(SyncCalibration);}
 end;
 
 
@@ -202,7 +212,7 @@ begin
   try
     //передаем ЭОД вход1-4 переменные 1|0|0|0
     SendReadToSerial(#2'00#EK#1#0#0#0#'#16#3+hash_bcc('00#EK#1#0#0#0#'#16#3));
-    ReceiveData(FMessageData);
+    //ReceiveData(FMessageData);
   except
     on E : Exception do
       lLog.save('e', E.ClassName+#9' com send attribute, с сообщением: '+E.Message);

@@ -5,7 +5,7 @@ interface
 
 uses
   SysUtils, Classes, ActiveX, synaser, SyncObjs, logging, Messages, ZDataset,
-  strutils, sql;
+  strutils, Variants, sql;
 
 type
   //Здесь необходимо описать класс TThreadComPort:
@@ -185,7 +185,7 @@ begin
 
   if (copy(Data, 2, 6) = '00#EK#') and (copy(Data, 8, 1) = '0') then
   begin
-      Fno_save := false;//запрещаем отправку подтверждения в контроллер -> сброс в SqlSaveInBuffer
+//      Fno_save := false;//запрещаем отправку подтверждения в контроллер -> сброс в SqlSaveInBuffer
   end;
 //{ test }  if (copy(Data, 2, 6) = '00#TK#') and (copy(Data, 26, 1) = '1') and (no_save = false) then
   if ( copy(Data, 2, 6) = '00#TK#' ) and (copy(Data, 28, 1) = '1')
@@ -273,6 +273,8 @@ var
   num_correct, num_ingot_correct, pkdat_correct: string;
 begin
 
+  lLog.save('e', 'Fno_save | '+booltostr(Fno_save)+' | false '+booltostr(false));
+
   // маркер следующей заготовки (ожидание)
   if MarkerNextWait then
     exit;
@@ -345,11 +347,11 @@ begin
   {$ENDIF}
 
   //следующая запись (слиток) от записаной
-  Synchronize(@SuncNextWeightToRecord);
+  Synchronize(@SyncNextWeightToRecord);
 end;
 
 
-procedure TThreadSqlRead.SyncNextWeightToRecord;
+procedure TThreadComPort.SyncNextWeightToRecord;
 var
   KeyValues : Variant;
 begin
@@ -366,7 +368,7 @@ begin
 end;
 
 
-procedure TThreadSqlRead.SyncNextWeightToRecordLocation;
+procedure TThreadComPort.SyncNextWeightToRecordLocation;
 var
   KeyValues : Variant;
 begin

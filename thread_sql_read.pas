@@ -183,8 +183,9 @@ begin
     on E : Exception do
       lLog.save('e', E.ClassName+', с сообщением: '+E.Message);
   end;
-  //исправляем отображение даты в DBGrid -> pFIBDataSet1
+  //исправляем отображение даты в DBGrid
   TDateTimeField(MainFSql.FQuery.FieldByName('time_ingot')).DisplayFormat:='hh:nn:ss';
+  TDateTimeField(MainFSql.FQuery.FieldByName('weight_ingot')).DisplayFormat:='#,###0.000';
 end;
 
 

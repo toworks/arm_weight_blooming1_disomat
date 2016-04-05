@@ -3,8 +3,8 @@ unit sql;
 interface
 
 uses
-   SysUtils, ActiveX, Variants, Classes, StrUtils, Data.DB, ZConnection, ZDataset,
-   ZDbcIntfs, SyncObjs, logging;
+   SysUtils, ActiveX, Variants, Classes, StrUtils, DB, ZConnection, ZDataset,
+   ZDbcIntfs, sqldblib, SyncObjs, logging;
 
 var
     time_ingot, pkdat, num, num_ingot, num_heat, name, weight_ingot, steel_group,
@@ -84,12 +84,15 @@ begin
         SConnect.Database := '.\'+SettingsApp.DBFile;
         SConnect.LibraryLocation := '.\sqlite3.dll';
         SConnect.Protocol := 'sqlite-3';
+        SConnect.AutoEncodeStrings := true;// РїРµСЂРµРєРѕРґРёСЂРѕРІРєР° СЃ СЃРµСЂРІРµСЂР° РІ РєР»РёРµРЅС‚
+//        SConnect.ClientCodepage := 'CL8MSWIN1251';// РєРѕРґРёСЂРѕРІРєР° РЅР° СЃРµСЂРІРµСЂРµ
+        SConnect.ControlsCodePage := cCP_UTF8;// РєРѕРґРёСЂРѕРІРєР° РЅР° РєР»РёРµРЅС‚Рµ
         SConnect.Connect;
         SQuery.Connection := SConnect;
         SqlJournalMode;
       except
         on E : Exception do
-          Log.save('e', E.ClassName+' sqlite config settings, с сообщением: '+E.Message);
+          Log.save('e', E.ClassName+' sqlite config settings, СЃ СЃРѕРѕР±С‰РµРЅРёРµРј: '+E.Message);
       end;
    end
   else
@@ -109,7 +112,7 @@ begin
       SQuery.Open;
   except
     on E: Exception do
-      Log.save('e', E.ClassName + ' sql get journal_mode, с сообщением: ' + E.Message);
+      Log.save('e', E.ClassName + ' sql get journal_mode, СЃ СЃРѕРѕР±С‰РµРЅРёРµРј: ' + E.Message);
   end;
 
   if SQuery.FieldByName('journal_mode').AsString <> 'wal' then
@@ -121,7 +124,7 @@ begin
       SQuery.ExecSQL;
     except
       on E: Exception do
-        Log.save('e', E.ClassName + ' sql set journal_mode wal, с сообщением: ' + E.Message);
+        Log.save('e', E.ClassName + ' sql set journal_mode wal, СЃ СЃРѕРѕР±С‰РµРЅРёРµРј: ' + E.Message);
     end;
   end;
 end;
@@ -149,7 +152,7 @@ begin
       try
         FFConnect := TZConnection.Create(nil);
         FFQuery := TZQuery.Create(nil);
-        FFConnect.LibraryLocation := '.\fbclient.dll';// отказался от полных путей не читает
+        FFConnect.LibraryLocation := '.\fbclient.dll';// РѕС‚РєР°Р·Р°Р»СЃСЏ РѕС‚ РїРѕР»РЅС‹С… РїСѓС‚РµР№ РЅРµ С‡РёС‚Р°РµС‚
         FFConnect.Protocol := 'firebird-2.5';
         FFConnect.Database := FbSqlSettings.db_name;
         FFConnect.HostName := FbSqlSettings.ip;
@@ -177,7 +180,7 @@ begin
         FFQuery.Connection := FFConnect;
       except
         on E: Exception do begin
-          Log.save('e', E.ClassName+', с сообщением: '+E.Message);
+          Log.save('e', E.ClassName+', СЃ СЃРѕРѕР±С‰РµРЅРёРµРј: '+E.Message);
         end;
       end;
   end
@@ -200,7 +203,7 @@ begin
       _FSql := TFsql.Create(Log);
   except
     on E : Exception do
-      Log.save('e', E.ClassName+' sql create _FSql, с сообщением: '+E.Message);
+      Log.save('e', E.ClassName+' sql create _FSql, СЃ СЃРѕРѕР±С‰РµРЅРёРµРј: '+E.Message);
   end;
 
   i:=0;
@@ -215,7 +218,7 @@ begin
       _SSql.Open;
   except
     on E : Exception do begin
-      Log.save('e', E.ClassName+' sql next weight to record, с сообщением: '+E.Message);
+      Log.save('e', E.ClassName+' sql next weight to record, СЃ СЃРѕРѕР±С‰РµРЅРёРµРј: '+E.Message);
       exit;
     end;
   end;
@@ -240,7 +243,7 @@ begin
   {$ENDIF}
   except
     on E : Exception do
-      Log.save('e', E.ClassName+' sql read next weight to record, с сообщением: '+E.Message);
+      Log.save('e', E.ClassName+' sql read next weight to record, СЃ СЃРѕРѕР±С‰РµРЅРёРµРј: '+E.Message);
   end;
 
   {$IFDEF DEBUG}
@@ -248,13 +251,13 @@ begin
   {$ENDIF}
 
   try
-      // маркер следующей заготовки (ожидание)
+      // РјР°СЂРєРµСЂ СЃР»РµРґСѓСЋС‰РµР№ Р·Р°РіРѕС‚РѕРІРєРё (РѕР¶РёРґР°РЅРёРµ)
       if _FSql.FQuery.FieldByName('pkdat').AsString = '' then
       begin
-          form1.SqlMax := 0;
-          form1.l_n_message.Visible := true;
-          form1.l_n_message.Font.Color := $002CB902;//green
-          form1.l_n_message.Caption := ' Ожидание сдедующей заготовки ';
+//          form1.SqlMax := 0;
+//          form1.l_n_message.Visible := true;
+//          form1.l_n_message.Font.Color := $002CB902;//green
+//          form1.l_n_message.Caption := ' РћР¶РёРґР°РЅРёРµ СЃРґРµРґСѓСЋС‰РµР№ Р·Р°РіРѕС‚РѕРІРєРё ';
           MarkerNextWait := true;
 
           form1.l_weight_ingot.Visible := false;
@@ -267,7 +270,7 @@ begin
       end
       else
       begin
-          form1.l_n_message.Visible := false;
+//          form1.l_n_message.Visible := false;
           MarkerNextWait := false;
           form1.l_weight_ingot.Visible := true;
           form1.l_grade.Visible := true;
@@ -277,7 +280,7 @@ begin
       end;
   except
     on E : Exception do
-      Log.save('e', E.ClassName+' sql 3, с сообщением: '+E.Message);
+      Log.save('e', E.ClassName+' sql 3, СЃ СЃРѕРѕР±С‰РµРЅРёРµРј: '+E.Message);
   end;
 
   try
@@ -302,14 +305,14 @@ begin
           Form1.l_weight_ingot.Caption := weight_ingot;
 
           //-- test
-          Form1.l_next_id.Caption := pkdat+'|'+num+'|'+num_ingot;
+//          Form1.l_next_id.Caption := pkdat+'|'+num+'|'+num_ingot;
 
           inc(i);
           _FSql.FQuery.Next;
       end;
   except
     on E : Exception do
-      Log.save('e', E.ClassName+' sql 4, с сообщением: '+E.Message);
+      Log.save('e', E.ClassName+' sql 4, СЃ СЃРѕРѕР±С‰РµРЅРёРµРј: '+E.Message);
   end;
   FreeAndNil(_FSql);
 end;

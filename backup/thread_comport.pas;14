@@ -5,7 +5,7 @@ interface
 
 uses
   SysUtils, Classes, ActiveX, synaser, SyncObjs, logging, Messages, ZDataset,
-  strutils, sql;
+  strutils, Variants, sql;
 
 type
   //Здесь необходимо описать класс TThreadComPort:
@@ -87,10 +87,6 @@ begin
   while True do
   begin
       try
-//          Synchronize(SyncStatus);
-          ReadToMessage;
-          if Fno_save then
-             SendAttribute;
 
           //тестирование
           if assigned(MemoTesting) then
@@ -98,6 +94,10 @@ begin
           //калибровка
           if assigned(CalibrationForm) then
              Synchronize(@SyncCalibration);
+//          Synchronize(SyncStatus);
+          ReadToMessage;
+          if Fno_save then
+             SendAttribute;
       except
         on E : Exception do
           lLog.save('e', E.ClassName+' serial execute, с сообщением: '+E.Message);
@@ -272,6 +272,8 @@ function TThreadComPort.SqlSaveInBuffer(DataIn: AnsiString): boolean;
 var
   num_correct, num_ingot_correct, pkdat_correct: string;
 begin
+
+  lLog.save('e', 'Fno_save | '+booltostr(Fno_save)+' | false '+booltostr(false));
 
   // маркер следующей заготовки (ожидание)
   if MarkerNextWait then

@@ -18,7 +18,7 @@ type
     procedure SqlSend;
     function SqlSaveToOracle(IdIn, WeightIn, TimestampIn: AnsiString): boolean;
     function GetMaxLocalCount: boolean;
-
+    procedure SqlReadTableLocal;
   protected
     procedure Execute; override;
   public
@@ -186,7 +186,7 @@ begin
   {$IFDEF DEBUG}
     lLog.save('d', 'send_error | '+booltostr(send_error));
   {$ENDIF}
-        if not send_error then begin
+{        if not send_error then begin
             TSSsqlite.SQuery.Close;
             TSSsqlite.SQuery.SQL.Clear;
             TSSsqlite.SQuery.SQL.Add('UPDATE weight SET transferred=1');
@@ -203,7 +203,7 @@ begin
             TSSsqlite.SQuery.SQL.Add('delete from weight');
             TSSsqlite.SQuery.SQL.Add('where timestamp < strftime(''%s'', ''now'') - (86400*3)');
             TSSsqlite.SQuery.ExecSQL;
-        end;
+        end;}
       except
         on E : Exception do
           lLog.save('e', E.ClassName+' sql send update, с сообщением: '+E.Message);
@@ -220,9 +220,8 @@ begin
 
   try
     //была ошибака: EZSQLException, с сообщением: SQL Error: OCI_NO_DATA
-//    if not FOraConnect.Connected then
-      lLog.save('e', 'ServerVersion | '+inttostr(FOraConnect.ServerVersion));
-//      FOraConnect.Reconnect;
+    if not FOraConnect.Connected then
+      FOraConnect.Reconnect;
 
     FOraQuery.Close;
     FOraQuery.SQL.Clear;
@@ -271,41 +270,28 @@ end;
 
 
 //-- start main
-{procedure TThreadSqlSend.SqlReadTableLocal;
+procedure TThreadSqlSend.SqlReadTableLocal;
 begin
   try
-      SLQuery.Close;
-      SLQuery.SQL.Clear;
-      SLQuery.SQL.Add('SELECT substr(pkdat,7,1) as shift, num_ingot,');
-      SLQuery.SQL.Add('datetime(timestamp, ''unixepoch'', ''localtime'' ) as timestamp,');
-      SLQuery.SQL.Add('heat, weight,');
-      SLQuery.SQL.Add('case when transferred = 1 then ''передан'' else ''не передан'' end as transferred');
-      SLQuery.SQL.Add('FROM weight');
-      SLQuery.SQL.Add('order by timestamp desc limit 100');
-      SLQuery.Open;
-
-{  while not _SLQuery.Eof do
-   begin
-      Log.save('e', 'shift | '+_SLQuery.FieldByName('shift').AsString);
-      Log.save('e', 'weight | '+_SLQuery.FieldByName('weight').AsString);
-      Log.save('e', 'heat | '+_SLQuery.FieldByName('heat').AsString);
-      _SLQuery.Next;
-   end;}
-
- //     if assigned(Form1.DBGrid2) then begin
-//        Form1.DBGrid2.DataSource := SLDataSource;
-//        Synchronize(Form1.DBGrid2.Refresh);//views взвешенные заготовки
- //     end;
+      MainSqlite.SQuery.Close;
+      MainSqlite.SQuery.SQL.Clear;
+      MainSqlite.SQuery.SQL.Add('SELECT substr(pkdat,7,1) as shift, num_ingot,');
+      MainSqlite.SQuery.SQL.Add('datetime(timestamp, ''unixepoch'', ''localtime'' ) as timestamp,');
+      MainSqlite.SQuery.SQL.Add('heat, weight,');
+      MainSqlite.SQuery.SQL.Add('case when transferred = 1 then ''передан'' else ''не передан'' end as transferred');
+      MainSqlite.SQuery.SQL.Add('FROM weight');
+      MainSqlite.SQuery.SQL.Add('order by timestamp desc limit 100');
+      MainSqlite.SQuery.Open;
 
       //исправляем отображение даты в DBGrid -> 20 characters
-{      TStringField(SLQuery.FieldByName('shift')).DisplayWidth := 3;
-      TStringField(SLQuery.FieldByName('timestamp')).DisplayWidth := 20;
-      TStringField(SLQuery.FieldByName('transferred')).DisplayWidth := 20;
+      TStringField(MainSqlite.SQuery.FieldByName('shift')).DisplayWidth := 3;
+      TStringField(MainSqlite.SQuery.FieldByName('timestamp')).DisplayWidth := 20;
+      TStringField(MainSqlite.SQuery.FieldByName('transferred')).DisplayWidth := 20;
   except
     on E : Exception do
-      Log.save('e', E.ClassName+'8, с сообщением: '+E.Message);
+      Log.save('e', E.ClassName+' sql read table local, с сообщением: '+E.Message);
   end;
-end;}
+end;
 //-- end main
 
 
@@ -349,7 +335,7 @@ begin
         FSqlMaxLocal := timestamp;
 
         if assigned(MainSqlite.SQuery) then
-          Synchronize(SqlReadTableLocal);//views взвешенные заготовки
+          Synchronize(@SqlReadTableLocal);//views взвешенные заготовки
       end
   except
     on E : Exception do
@@ -361,7 +347,7 @@ end;
 
 procedure TThreadSqlSend.SyncSqlMaxLocal;
 begin
-  Form1.SqlMaxLocal := FSqlMaxLocal;
+//  Form1.SqlMaxLocal := FSqlMaxLocal;
 end;
 
 

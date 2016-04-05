@@ -12,10 +12,10 @@ type
   TThreadComPort = class(TThread)
 
   private
-    Fcount: integer;
+//    Fcount: integer;
     Fno_save: boolean;
     FThreadComPort: TThreadComPort;
-    FMessageData: AnsiString;
+//    FMessageData: AnsiString;
 
     function CPortParity(InData: String): Char;
     function SendReadToSerial(InData: AnsiString): AnsiString;
@@ -89,6 +89,13 @@ begin
           ReadToMessage;
           if Fno_save then
              SendAttribute;
+
+          //тестирование
+          if assigned(MemoTesting) then
+             Synchronize(@SyncMemoTesting);
+          //калибровка
+          if assigned(CalibrationForm) then
+             Synchronize(@SyncCalibration);
       except
         on E : Exception do
           lLog.save('e', E.ClassName+' serial execute, с сообщением: '+E.Message);
@@ -124,7 +131,7 @@ begin
                               strtoint(SerialPortSettings.stop_bits),false,false);
           serial_port.SendString(InData);
           sleep(200);
-          FMessageData := serial_port.RecvBufferStr(serial_port.WaitingData, 200);
+          Result := serial_port.RecvBufferStr(serial_port.WaitingData, 200);
        end;
     finally
           FreeAndNil(serial_port);
@@ -133,21 +140,23 @@ end;
 
 
 procedure TThreadComPort.ReadToMessage;
+var
+    msg: AnsiString;
 begin
   try
-      SendReadToSerial(#2'00#TK#'#16#3+hash_bcc('00#TK#'#16#3));
+         msg := SendReadToSerial(#2'00#TK#'#16#3+hash_bcc('00#TK#'#16#3));
   except
     on E : Exception do
       lLog.save('e', E.ClassName+' serial send/read, с сообщением: '+E.Message);
   end;
 
-  try
+{  try
       ReceiveData(FMessageData);
   except
     on E : Exception do
       lLog.save('e', E.ClassName+' serial recive, с сообщением: '+E.Message);
   end;
-{
+
   if Fno_save then
     SendAttribute;
 
@@ -189,13 +198,13 @@ begin
       end;
   end;
 
-  //тестирование
+{  //тестирование
   if assigned(MemoTesting) then
 //    Synchronize(SyncMemoTesting);
 
   //калибровка
   if assigned(CalibrationForm) then
-//    Synchronize(SyncCalibration);
+//    Synchronize(SyncCalibration);}
 end;
 
 
@@ -204,7 +213,7 @@ begin
   try
     //передаем ЭОД вход1-4 переменные 1|0|0|0
     SendReadToSerial(#2'00#EK#1#0#0#0#'#16#3+hash_bcc('00#EK#1#0#0#0#'#16#3));
-    ReceiveData(FMessageData);
+    //ReceiveData(FMessageData);
   except
     on E : Exception do
       lLog.save('e', E.ClassName+#9' com send attribute, с сообщением: '+E.Message);

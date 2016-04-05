@@ -13,7 +13,6 @@ type
     FThreadSqlRead: TThreadSqlRead;
     FSqlMax: int64;
     Fpkdat_in: string;
-//    Fsql: TFsql;
 
     procedure SyncSqlReadTable;
     procedure SqlNewRecord;
@@ -145,8 +144,8 @@ begin
 //        Synchronize(SyncSqlReadTable);
 
         //dbgrid текущая выбраная заготовка
-        if not Fpkdat_in == '' then
-          Synchronize(NextWeightToRecordLocation);
+        if Fpkdat_in <> '' then
+//          Synchronize(NextWeightToRecordLocation);
 
   {$IFDEF DEBUG}
     lLog.save('d', 'count -> '+inttostr(count));
@@ -161,7 +160,7 @@ begin
 
   // маркер следующей заготовки
   if MarkerNextWait then
-    Synchronize(NextWeightToRecord); //следующая запись (слиток) от записаной
+//    Synchronize(NextWeightToRecord); //следующая запись (слиток) от записаной
 end;
 
 
@@ -190,7 +189,7 @@ end;
 
 procedure TThreadSqlRead.SyncSqlMax;
 begin
-  Form1.SqlMax := FSqlMax;
+//  Form1.SqlMax := FSqlMax;
 end;
 
 

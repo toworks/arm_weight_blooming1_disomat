@@ -4,10 +4,9 @@ unit thread_sql_read;
 interface
 
 uses
-  SysUtils, DB, Classes, ActiveX, ZDataset, logging, sql;
+  SysUtils, DB, Classes, ActiveX, ZDataset, Variants, logging, sql;
 
 type
-  //Здесь необходимо описать класс TThreadSql:
   TThreadSqlRead = class(TThread)
   private
     FThreadSqlRead: TThreadSqlRead;
@@ -16,6 +15,8 @@ type
 
     procedure SyncSqlReadTable;
     procedure SqlNewRecord;
+    procedure SyncNextWeightToRecord;
+//    procedure SyncNextWeightToRecordLocation;
   protected
     procedure Execute; override;
   public
@@ -75,12 +76,6 @@ begin
       try
           Synchronize(@SyncSqlMax);
           SqlNewRecord;
-          //dbgrid текущая выбраная заготовка
-          if Fpkdat_in <> '' then
-             Synchronize(@form1.NextWeightToRecordLocation);
-          // маркер следующей заготовки
-          if MarkerNextWait then
-             Synchronize(@NextWeightToRecord); //следующая запись (слиток) от записаной
       except
         on E : Exception do
           lLog.save('e', E.ClassName+', с сообщением: '+E.Message);
@@ -149,9 +144,9 @@ begin
         //обновление отображение записанных данных ViewDbWeight;
         Synchronize(@SyncSqlReadTable);
 
-        //dbgrid текущая выбраная заготовка
-//        if Fpkdat_in <> '' then
-//          Synchronize(@NextWeightToRecordLocation);
+{        //dbgrid текущая выбраная заготовка
+        if Fpkdat_in <> '' then
+          Synchronize(@SyncNextWeightToRecordLocation);}
 
   {$IFDEF DEBUG}
     lLog.save('d', 'count -> '+inttostr(count));
@@ -188,8 +183,19 @@ begin
     on E : Exception do
       lLog.save('e', E.ClassName+', с сообщением: '+E.Message);
   end;
-  //исправляем отображение даты в DBGrid -> pFIBDataSet1
+  //исправляем отображение даты в DBGrid
   TDateTimeField(MainFSql.FQuery.FieldByName('time_ingot')).DisplayFormat:='hh:nn:ss';
+  TDateTimeField(MainFSql.FQuery.FieldByName('weight_ingot')).DisplayFormat:='#,###0.000';
+end;
+
+
+procedure TThreadSqlRead.SyncNextWeightToRecord;
+begin
+//  SqlNextWeightToRecord;
+  //dbgrid текущая выбраная заготовка
+  if Fpkdat_in <> '' then
+     NextWeightToRecordLocation;
+
 end;
 
 

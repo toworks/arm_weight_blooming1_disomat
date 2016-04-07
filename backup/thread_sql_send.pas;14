@@ -24,7 +24,7 @@ type
   public
     Constructor Create(_Log: TLog); overload;
     Destructor Destroy; override;
-    procedure SyncSqlMaxLocal;
+//    procedure SyncSqlMaxLocal;
   end;
 
 var
@@ -74,8 +74,6 @@ begin
   TSSsqlite.Destroy;
   inherited Destroy;
 end;
-
-
 
 
 function TThreadSqlSend.ConfigOracleSetting(InData: boolean): boolean;
@@ -148,6 +146,7 @@ begin
       TSSsqlite.SQuery.SQL.Add('datetime(timestamp, ''unixepoch'', ''localtime'' ) as timestamp');
       TSSsqlite.SQuery.SQL.Add('FROM weight');
       TSSsqlite.SQuery.SQL.Add('where transferred=0');
+      TSSsqlite.SQuery.SQL.Add('and timestamp > strftime(''%s'', ''now'') - (86400*3)'); //за 3 дня от текущей даты
       TSSsqlite.SQuery.SQL.Add('order by id asc limit 10'); //порциями по 10 шт
       TSSsqlite.SQuery.Open;
    except
@@ -182,7 +181,7 @@ begin
       try
 //        send_error := SqlSaveToOracle(Byffer[i,0], Byffer[i,1], Byffer[i,2]);
         if Byffer[i,0] <> '' then
-//          send_error := SqlSaveToOracle(Byffer[i,0], Byffer[i,1], Byffer[i,2]);
+          send_error := SqlSaveToOracle(Byffer[i,0], Byffer[i,1], Byffer[i,2]);
   {$IFDEF DEBUG}
     lLog.save('d', 'send_error | '+booltostr(send_error));
   {$ENDIF}
@@ -216,13 +215,12 @@ function TThreadSqlSend.SqlSaveToOracle(IdIn, WeightIn, TimestampIn: AnsiString)
 var
   error: boolean;
 begin
-  error := false;
+//  error := false;
 
   try
     //была ошибака: EZSQLException, с сообщением: SQL Error: OCI_NO_DATA
-//    if not FOraConnect.Connected then
-      lLog.save('e', 'ServerVersion | '+inttostr(FOraConnect.ServerVersion));
-//      FOraConnect.Reconnect;
+    if not FOraConnect.Connected then
+      FOraConnect.Reconnect;
 
     FOraQuery.Close;
     FOraQuery.SQL.Clear;
@@ -237,6 +235,7 @@ begin
   except
     on E : Exception do begin
       error := true;
+ //     Result := true;
       lLog.save('e', E.ClassName+' sql save to oracle, с сообщением: '+E.Message+' | '+FOraQuery.SQL.Text);
     end;
   end;
@@ -260,13 +259,16 @@ begin
     except
       on E : Exception do begin
         error := true;
+//        Result := true;
         lLog.save('e', E.ClassName+'7, с сообщением: '+E.Message+' | '+FOraQuery.SQL.Text);
       end;
     end;
   end;
 
-  Result := error;
-
+  if error then
+     Result := false
+  else
+     Result := true;
 end;
 
 
@@ -327,7 +329,8 @@ begin
   end;
 
   try
-      if not TSSsqlite.SQuery.FieldByName('timestamp').IsNull then begin
+      if not TSSsqlite.SQuery.FieldByName('timestamp').IsNull then
+      begin
         timestamp := TSSsqlite.SQuery.FieldByName('timestamp').AsLargeInt;
 
         if FSqlMaxLocal >= timestamp then
@@ -343,12 +346,6 @@ begin
       lLog.save('e', E.ClassName+' sql max local synchronize, с сообщением: '+E.Message);
   end;
   //-- локальные данные
-end;
-
-
-procedure TThreadSqlSend.SyncSqlMaxLocal;
-begin
-//  Form1.SqlMaxLocal := FSqlMaxLocal;
 end;
 
 

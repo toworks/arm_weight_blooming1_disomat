@@ -84,7 +84,6 @@ begin
         SConnect.Database := '.\'+SettingsApp.DBFile;
         SConnect.LibraryLocation := '.\sqlite3.dll';
         SConnect.Protocol := 'sqlite-3';
-        SConnect.AutoEncodeStrings := true;
         SConnect.Connect;
         SQuery.Connection := SConnect;
         SqlJournalMode;

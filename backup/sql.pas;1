@@ -4,7 +4,8 @@ interface
 
 uses
    SysUtils, ActiveX, Variants, Classes, StrUtils, DB, ZConnection, ZDataset,
-   ZDbcIntfs, ZCompatibility, SyncObjs, logging;
+   ZDbcIntfs, ZCompatibility, SyncObjs, {$ifdef windows} Windows, Forms, {$endif}
+   logging;
 
 var
     time_ingot, pkdat, num, num_ingot, num_heat, name, weight_ingot, steel_group,
@@ -84,8 +85,6 @@ begin
         SConnect.Database := '.\'+SettingsApp.DBFile;
         SConnect.LibraryLocation := '.\sqlite3.dll';
         SConnect.Protocol := 'sqlite-3';
-//        SConnect.AutoEncodeStrings := true;
-        SConnect.ControlsCodePage := cCP_UTF8;
         SConnect.Connect;
         SQuery.Connection := SConnect;
         SqlJournalMode;

@@ -24,7 +24,7 @@ type
   public
     Constructor Create(_Log: TLog); overload;
     Destructor Destroy; override;
-    procedure SyncSqlMaxLocal;
+//    procedure SyncSqlMaxLocal;
   end;
 
 var
@@ -74,8 +74,6 @@ begin
   TSSsqlite.Destroy;
   inherited Destroy;
 end;
-
-
 
 
 function TThreadSqlSend.ConfigOracleSetting(InData: boolean): boolean;
@@ -216,8 +214,8 @@ end;
 function TThreadSqlSend.SqlSaveToOracle(IdIn, WeightIn, TimestampIn: AnsiString): boolean;
 var
   error: boolean;
+  err_oci_no_data: integer;
 begin
-  error := false;
 
   try
     //была ошибака: EZSQLException, с сообщением: SQL Error: OCI_NO_DATA
@@ -234,14 +232,16 @@ begin
   {$IFDEF DEBUG}
     Log.save('d', 'OraQuery insert | '+FOraQuery.SQL.Text);
   {$ENDIF}
+     error := false;
   except
     on E : Exception do begin
       error := true;
+      err_oci_no_data := AnsiPos('OCI_NO_DATA', E.Message);
       lLog.save('e', E.ClassName+' sql save to oracle, с сообщением: '+E.Message+' | '+FOraQuery.SQL.Text);
     end;
   end;
-
-  if error then
+  Log.save('d', 'position | '+inttostr(err_oci_no_data));
+  if error and (err_oci_no_data = 0) then
   begin
     try
         FOraQuery.Close;
@@ -266,7 +266,6 @@ begin
   end;
 
   Result := error;
-
 end;
 
 
@@ -344,12 +343,6 @@ begin
       lLog.save('e', E.ClassName+' sql max local synchronize, с сообщением: '+E.Message);
   end;
   //-- локальные данные
-end;
-
-
-procedure TThreadSqlSend.SyncSqlMaxLocal;
-begin
-//  Form1.SqlMaxLocal := FSqlMaxLocal;
 end;
 
 

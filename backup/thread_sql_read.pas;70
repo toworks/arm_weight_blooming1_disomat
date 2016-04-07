@@ -4,7 +4,7 @@ unit thread_sql_read;
 interface
 
 uses
-  SysUtils, DB, Classes, ActiveX, ZDataset, SyncObjs, logging, sql;
+  SysUtils, DB, Classes, ActiveX, ZDataset, logging, sql;
 
 type
   //Здесь необходимо описать класс TThreadSql:
@@ -13,7 +13,6 @@ type
     FThreadSqlRead: TThreadSqlRead;
     FSqlMax: int64;
     Fpkdat_in: string;
-//    Fsql: TFsql;
 
     procedure SyncSqlReadTable;
     procedure SqlNewRecord;
@@ -26,7 +25,6 @@ type
   end;
 
 var
-//  SqlMax: int64 = 0;
   FutureDate: TDateTime;
   lLog: TLog;
   Fsql: TFsql;
@@ -74,7 +72,7 @@ begin
   while True do
    begin
       try
-//          Synchronize(SyncSqlMax);
+          Synchronize(@SyncSqlMax);
           SqlNewRecord;
       except
         on E : Exception do
@@ -142,11 +140,11 @@ begin
     begin
         FSqlMax := count;
         //обновление отображение записанных данных ViewDbWeight;
-//        Synchronize(SyncSqlReadTable);
+        Synchronize(@SyncSqlReadTable);
 
         //dbgrid текущая выбраная заготовка
-        if not Fpkdat_in = '' then
-          Synchronize(NextWeightToRecordLocation);
+        if Fpkdat_in <> '' then
+//          Synchronize(@NextWeightToRecordLocation);
 
   {$IFDEF DEBUG}
     lLog.save('d', 'count -> '+inttostr(count));
@@ -161,7 +159,7 @@ begin
 
   // маркер следующей заготовки
   if MarkerNextWait then
-    Synchronize(NextWeightToRecord); //следующая запись (слиток) от записаной
+//    Synchronize(@NextWeightToRecord); //следующая запись (слиток) от записаной
 end;
 
 
@@ -185,12 +183,13 @@ begin
   end;
   //исправляем отображение даты в DBGrid -> pFIBDataSet1
   TDateTimeField(MainFSql.FQuery.FieldByName('time_ingot')).DisplayFormat:='hh:nn:ss';
+  lLog.save('e', MainFSql.FQuery.FieldByName('name').AsString);
 end;
 
 
 procedure TThreadSqlRead.SyncSqlMax;
 begin
-  Form1.SqlMax := FSqlMax;
+//  Form1.SqlMax := FSqlMax;
 end;
 
 

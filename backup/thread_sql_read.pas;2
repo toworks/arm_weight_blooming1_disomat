@@ -15,14 +15,13 @@ type
 
     procedure SyncSqlReadTable;
     procedure SqlNewRecord;
-    procedure SyncNextWeightToRecord;
+//    procedure SyncNextWeightToRecord;
 //    procedure SyncNextWeightToRecordLocation;
   protected
     procedure Execute; override;
   public
     Constructor Create(_Log: TLog); overload;
     Destructor Destroy; override;
-    procedure SyncSqlMax;
   end;
 
 var
@@ -74,7 +73,6 @@ begin
    begin
 
       try
-          Synchronize(@SyncSqlMax);
           SqlNewRecord;
       except
         on E : Exception do
@@ -97,7 +95,7 @@ begin
       if NOW > FutureDate then
       begin
         FutureDate := Now + 4 / (24 * 60); //+4 minutes
-//        MouseMoved;//двигаем мышку
+        MouseMoved;//двигаем мышку
       end;
   {$IFDEF DEBUG}
     lLog.save('d', 'NOW -> '+datetimetostr(now));
@@ -141,12 +139,9 @@ begin
     if (FSqlMax < count) then
     begin
         FSqlMax := count;
+
         //обновление отображение записанных данных ViewDbWeight;
         Synchronize(@SyncSqlReadTable);
-
-{        //dbgrid текущая выбраная заготовка
-        if Fpkdat_in <> '' then
-          Synchronize(@SyncNextWeightToRecordLocation);}
 
   {$IFDEF DEBUG}
     lLog.save('d', 'count -> '+inttostr(count));
@@ -160,8 +155,8 @@ begin
   end;
 
   // маркер следующей заготовки
-//  if MarkerNextWait then
-//    Synchronize(@NextWeightToRecord); //следующая запись (слиток) от записаной
+{  if MarkerNextWait then
+    Synchronize(@NextWeightToRecord); //следующая запись (слиток) от записаной}
 end;
 
 
@@ -189,22 +184,20 @@ begin
 end;
 
 
-procedure TThreadSqlRead.SyncNextWeightToRecord;
+
+function TThreadComPort.MouseMoved: boolean;
+var
+  MousePoint: TPoint;
 begin
-//  SqlNextWeightToRecord;
-  //dbgrid текущая выбраная заготовка
-  if Fpkdat_in <> '' then
-     NextWeightToRecordLocation;
-
+  GetCursorPos(MousePoint);
+  {Преобразуем MousePoint к "mickeys" (аболютным координатам курсора мышки}
+  MousePoint.x := Round(MousePoint.x * (65535 / Screen.Width));
+  MousePoint.y := Round(MousePoint.y * (65535 / Screen.Height));
+  {Переместим курсор мыши}
+  Mouse_Event(MOUSEEVENTF_ABSOLUTE or MOUSEEVENTF_MOVE, MousePoint.x-20, MousePoint.y-20, 0, 0);
+  {Переместим курсор мыши}
+  Mouse_Event(MOUSEEVENTF_ABSOLUTE or MOUSEEVENTF_MOVE, MousePoint.x+20, MousePoint.y+20, 0, 0);
 end;
-
-
-procedure TThreadSqlRead.SyncSqlMax;
-begin
-//  Form1.SqlMax := FSqlMax;
-end;
-
-
 
 
 // При загрузке программы класс будет создаваться

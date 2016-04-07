@@ -140,11 +140,11 @@ begin
     begin
         FSqlMax := count;
         //обновление отображение записанных данных ViewDbWeight;
-//        Synchronize(SyncSqlReadTable);
+        Synchronize(@SyncSqlReadTable);
 
         //dbgrid текущая выбраная заготовка
         if Fpkdat_in <> '' then
-//          Synchronize(NextWeightToRecordLocation);
+          Synchronize(@NextWeightToRecordLocation);
 
   {$IFDEF DEBUG}
     lLog.save('d', 'count -> '+inttostr(count));
@@ -159,7 +159,7 @@ begin
 
   // маркер следующей заготовки
   if MarkerNextWait then
-//    Synchronize(NextWeightToRecord); //следующая запись (слиток) от записаной
+//    Synchronize(@NextWeightToRecord); //следующая запись (слиток) от записаной
 end;
 
 

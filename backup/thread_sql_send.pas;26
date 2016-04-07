@@ -12,13 +12,13 @@ type
   TThreadSqlSend = class(TThread)
   private
     FThreadSqlSend: TThreadSqlSend;
-    FSqlMaxLocal: Int64;
+//    FSqlMaxLocal: Int64;
 
     function ConfigOracleSetting(InData: boolean): boolean;
     procedure SqlSend;
     function SqlSaveToOracle(IdIn, WeightIn, TimestampIn: AnsiString): boolean;
-    function GetMaxLocalCount: boolean;
-
+//    function GetMaxLocalCount: boolean;
+//    procedure SqlReadTableLocal;
   protected
     procedure Execute; override;
   public
@@ -57,7 +57,7 @@ begin
   FThreadSqlSend.Priority := tpNormal;
   FThreadSqlSend.FreeOnTerminate := True;
 
-  FSqlMaxLocal := 0;
+//  FSqlMaxLocal := 0;
 
   ConfigOracleSetting(true);
 
@@ -121,7 +121,7 @@ begin
    begin
       try
           SqlSend;
-          GetMaxLocalCount;
+//          GetMaxLocalCount;
 //          Synchronize(SyncSqlMaxLocal);
       except
         on E : Exception do
@@ -148,6 +148,7 @@ begin
       TSSsqlite.SQuery.SQL.Add('datetime(timestamp, ''unixepoch'', ''localtime'' ) as timestamp');
       TSSsqlite.SQuery.SQL.Add('FROM weight');
       TSSsqlite.SQuery.SQL.Add('where transferred=0');
+      TSSsqlite.SQuery.SQL.Add('and timestamp > strftime(''%s'', ''now'') - (86400*3)'); //за 3 дня от текущей даты
       TSSsqlite.SQuery.SQL.Add('order by id asc limit 10'); //порциями по 10 шт
       TSSsqlite.SQuery.Open;
    except
@@ -220,15 +221,14 @@ begin
 
   try
     //была ошибака: EZSQLException, с сообщением: SQL Error: OCI_NO_DATA
-//    if not FOraConnect.Connected then
-      lLog.save('e', 'ServerVersion | '+inttostr(FOraConnect.ServerVersion));
-//      FOraConnect.Reconnect;
+    if not FOraConnect.Connected then
+      FOraConnect.Reconnect;
 
     FOraQuery.Close;
     FOraQuery.SQL.Clear;
     FOraQuery.SQL.Add('INSERT INTO crop');
     FOraQuery.SQL.Add('(id_asutp, weight_bloom, date_weight_bloom)');
-//    FOraQuery.SQL.Add('VALUES ('+IdIn+', '+PointReplace(WeightIn)+',');
+    FOraQuery.SQL.Add('VALUES ('+IdIn+', '+PointReplace(WeightIn)+',');
     FOraQuery.SQL.Add('TO_DATE('''+TimestampIn+''', ''yyyy-mm-dd hh24:mi:ss''))');
     FOraQuery.ExecSQL;
   {$IFDEF DEBUG}
@@ -274,38 +274,25 @@ end;
 {procedure TThreadSqlSend.SqlReadTableLocal;
 begin
   try
-      SLQuery.Close;
-      SLQuery.SQL.Clear;
-      SLQuery.SQL.Add('SELECT substr(pkdat,7,1) as shift, num_ingot,');
-      SLQuery.SQL.Add('datetime(timestamp, ''unixepoch'', ''localtime'' ) as timestamp,');
-      SLQuery.SQL.Add('heat, weight,');
-      SLQuery.SQL.Add('case when transferred = 1 then ''передан'' else ''не передан'' end as transferred');
-      SLQuery.SQL.Add('FROM weight');
-      SLQuery.SQL.Add('order by timestamp desc limit 100');
-      SLQuery.Open;
-
-{  while not _SLQuery.Eof do
-   begin
-      Log.save('e', 'shift | '+_SLQuery.FieldByName('shift').AsString);
-      Log.save('e', 'weight | '+_SLQuery.FieldByName('weight').AsString);
-      Log.save('e', 'heat | '+_SLQuery.FieldByName('heat').AsString);
-      _SLQuery.Next;
-   end;}
-
- //     if assigned(Form1.DBGrid2) then begin
-//        Form1.DBGrid2.DataSource := SLDataSource;
-//        Synchronize(Form1.DBGrid2.Refresh);//views взвешенные заготовки
- //     end;
+      MainSqlite.SQuery.Close;
+      MainSqlite.SQuery.SQL.Clear;
+      MainSqlite.SQuery.SQL.Add('SELECT substr(pkdat,7,1) as shift, num_ingot,');
+      MainSqlite.SQuery.SQL.Add('datetime(timestamp, ''unixepoch'', ''localtime'' ) as timestamp,');
+      MainSqlite.SQuery.SQL.Add('heat, weight,');
+      MainSqlite.SQuery.SQL.Add('case when transferred = 1 then ''передан'' else ''не передан'' end as transferred');
+      MainSqlite.SQuery.SQL.Add('FROM weight');
+      MainSqlite.SQuery.SQL.Add('order by timestamp desc limit 100');
+      MainSqlite.SQuery.Open;
 
       //исправляем отображение даты в DBGrid -> 20 characters
-{      TStringField(SLQuery.FieldByName('shift')).DisplayWidth := 3;
-      TStringField(SLQuery.FieldByName('timestamp')).DisplayWidth := 20;
-      TStringField(SLQuery.FieldByName('transferred')).DisplayWidth := 20;
+      TStringField(MainSqlite.SQuery.FieldByName('shift')).DisplayWidth := 3;
+      TStringField(MainSqlite.SQuery.FieldByName('timestamp')).DisplayWidth := 20;
+      TStringField(MainSqlite.SQuery.FieldByName('transferred')).DisplayWidth := 20;
   except
     on E : Exception do
-      Log.save('e', E.ClassName+'8, с сообщением: '+E.Message);
+      Log.save('e', E.ClassName+' sql read table local, с сообщением: '+E.Message);
   end;
-end;}
+end;
 //-- end main
 
 
@@ -340,7 +327,8 @@ begin
   end;
 
   try
-      if not TSSsqlite.SQuery.FieldByName('timestamp').IsNull then begin
+      if not TSSsqlite.SQuery.FieldByName('timestamp').IsNull then
+      begin
         timestamp := TSSsqlite.SQuery.FieldByName('timestamp').AsLargeInt;
 
         if FSqlMaxLocal >= timestamp then
@@ -349,20 +337,14 @@ begin
         FSqlMaxLocal := timestamp;
 
         if assigned(MainSqlite.SQuery) then
-          Synchronize(SqlReadTableLocal);//views взвешенные заготовки
+          Synchronize(@SqlReadTableLocal);//views взвешенные заготовки
       end
   except
     on E : Exception do
       lLog.save('e', E.ClassName+' sql max local synchronize, с сообщением: '+E.Message);
   end;
   //-- локальные данные
-end;
-
-
-procedure TThreadSqlSend.SyncSqlMaxLocal;
-begin
-  Form1.SqlMaxLocal := FSqlMaxLocal;
-end;
+end;}
 
 
 

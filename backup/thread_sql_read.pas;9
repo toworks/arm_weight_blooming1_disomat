@@ -4,7 +4,8 @@ unit thread_sql_read;
 interface
 
 uses
-  SysUtils, DB, Classes, ActiveX, ZDataset, Variants, logging, sql;
+  SysUtils, DB, Classes, ActiveX, ZDataset, Variants,
+  {$ifdef windows} Windows, Forms, {$endif} logging, sql;
 
 type
   TThreadSqlRead = class(TThread)
@@ -15,8 +16,7 @@ type
 
     procedure SyncSqlReadTable;
     procedure SqlNewRecord;
-    procedure SyncNextWeightToRecord;
-//    procedure SyncNextWeightToRecordLocation;
+    function MouseMoved: boolean;
   protected
     procedure Execute; override;
   public
@@ -71,15 +71,18 @@ begin
   CoInitialize(nil);
   while True do
    begin
-
-      try
-          SqlNewRecord;
-      except
-        on E : Exception do
-          lLog.save('e', E.ClassName+', с сообщением: '+E.Message);
+      // при выбор заготовки останавливаем чтение
+      if not ThreadStop then begin
+        try
+            SqlNewRecord;
+        except
+          on E : Exception do
+            lLog.save('e', E.ClassName+', с сообщением: '+E.Message);
+        end;
       end;
 
       sleep(1000);
+
    end;
    CoUninitialize;
 end;
@@ -95,7 +98,7 @@ begin
       if NOW > FutureDate then
       begin
         FutureDate := Now + 4 / (24 * 60); //+4 minutes
-//        MouseMoved;//двигаем мышку
+        MouseMoved;//двигаем мышку
       end;
   {$IFDEF DEBUG}
     lLog.save('d', 'NOW -> '+datetimetostr(now));
@@ -139,12 +142,9 @@ begin
     if (FSqlMax < count) then
     begin
         FSqlMax := count;
+
         //обновление отображение записанных данных ViewDbWeight;
         Synchronize(@SyncSqlReadTable);
-
-{        //dbgrid текущая выбраная заготовка
-        if Fpkdat_in <> '' then
-          Synchronize(@SyncNextWeightToRecordLocation);}
 
   {$IFDEF DEBUG}
     lLog.save('d', 'count -> '+inttostr(count));
@@ -156,16 +156,13 @@ begin
     on E : Exception do
       lLog.save('e', E.ClassName+', с сообщением: '+E.Message);
   end;
-
-  // маркер следующей заготовки
-{  if MarkerNextWait then
-    Synchronize(@NextWeightToRecord); //следующая запись (слиток) от записаной}
 end;
 
 
 procedure TThreadSqlRead.SyncSqlReadTable;
 begin
   try
+      lLog.save('d', 'thread sql read refresh');
       MainFSql.FQuery.Close;
       MainFSql.FQuery.SQL.Clear;
       MainFSql.FQuery.SQL.Add('select i.pkdat,i.num,i.num_ingot,h.num_heat, s.name,i.weight_ingot, i.time_ingot, s.steel_group, sh.smena');
@@ -184,6 +181,22 @@ begin
   //исправляем отображение даты в DBGrid
   TDateTimeField(MainFSql.FQuery.FieldByName('time_ingot')).DisplayFormat:='hh:nn:ss';
   TDateTimeField(MainFSql.FQuery.FieldByName('weight_ingot')).DisplayFormat:='#,###0.000';
+end;
+
+
+
+function TThreadSqlRead.MouseMoved: boolean;
+var
+  MousePoint: TPoint;
+begin
+  GetCursorPos(MousePoint);
+  {Преобразуем MousePoint к "mickeys" (аболютным координатам курсора мышки}
+  MousePoint.x := Round(MousePoint.x * (65535 / Screen.Width));
+  MousePoint.y := Round(MousePoint.y * (65535 / Screen.Height));
+  {Переместим курсор мыши}
+  Mouse_Event(MOUSEEVENTF_ABSOLUTE or MOUSEEVENTF_MOVE, MousePoint.x-20, MousePoint.y-20, 0, 0);
+  {Переместим курсор мыши}
+  Mouse_Event(MOUSEEVENTF_ABSOLUTE or MOUSEEVENTF_MOVE, MousePoint.x+20, MousePoint.y+20, 0, 0);
 end;
 
 

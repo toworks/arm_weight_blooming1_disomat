@@ -16,6 +16,8 @@ type
 
     procedure SyncSqlReadTable;
     procedure SqlNewRecord;
+    procedure SyncNextWeightToRecord;
+    procedure SyncNextWeightToRecordLocation;
   protected
     procedure Execute; override;
   public
@@ -71,9 +73,16 @@ begin
   CoInitialize(nil);
   while True do
    begin
+
       try
           Synchronize(@SyncSqlMax);
           SqlNewRecord;
+          //dbgrid текущая выбраная заготовка
+          if Fpkdat_in <> '' then
+             Synchronize(@NextWeightToRecordLocation);
+          // маркер следующей заготовки
+          if MarkerNextWait then
+             Synchronize(@NextWeightToRecord); //следующая запись (слиток) от записаной
       except
         on E : Exception do
           lLog.save('e', E.ClassName+', с сообщением: '+E.Message);
@@ -143,8 +152,8 @@ begin
         Synchronize(@SyncSqlReadTable);
 
         //dbgrid текущая выбраная заготовка
-        if Fpkdat_in <> '' then
-          Synchronize(@NextWeightToRecordLocation);
+//        if Fpkdat_in <> '' then
+//          Synchronize(@NextWeightToRecordLocation);
 
   {$IFDEF DEBUG}
     lLog.save('d', 'count -> '+inttostr(count));
@@ -158,7 +167,7 @@ begin
   end;
 
   // маркер следующей заготовки
-  if MarkerNextWait then
+//  if MarkerNextWait then
 //    Synchronize(@NextWeightToRecord); //следующая запись (слиток) от записаной
 end;
 
@@ -183,6 +192,43 @@ begin
   end;
   //исправляем отображение даты в DBGrid -> pFIBDataSet1
   TDateTimeField(MainFSql.FQuery.FieldByName('time_ingot')).DisplayFormat:='hh:nn:ss';
+end;
+
+
+procedure TThreadSqlRead.SyncNextWeightToRecord;
+var
+  KeyValues : Variant;
+begin
+  try
+      //отключаем управление
+      form1.DBGrid1.DataSource.DataSet.DisableControls;
+      SqlNextWeightToRecord;
+      //dbgrid текущая выбраная заготовка
+      NextWeightToRecordLocation;
+  finally
+      //включаем управление
+      form1.DBGrid1.DataSource.DataSet.EnableControls;
+  end;
+end;
+
+
+procedure TThreadSqlRead.SyncNextWeightToRecordLocation;
+var
+  KeyValues : Variant;
+begin
+  try
+      //отключаем управление
+      form1.DBGrid1.DataSource.DataSet.DisableControls;
+      //переменные по которым будет производиться поиск
+      KeyValues := VarArrayOf([pkdat,num,num_ingot]);
+      //поиск по ключивым полям
+      form1.DBGrid1.DataSource.DataSet.Locate('pkdat;num;num_ingot', KeyValues, []);
+  finally
+      //включаем управление
+      form1.DBGrid1.DataSource.DataSet.EnableControls;
+  end;
+  //-- test
+  //Form1.l_next_id.Caption:=pkdat+'|'+num+'|'+num_ingot;
 end;
 
 

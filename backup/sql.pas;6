@@ -12,12 +12,7 @@ var
     MarkerNextWait: boolean = false;
 
 
-//    {$DEFINE DEBUG}
-
-
-//    function ConfigFirebirdSetting(InData: boolean): boolean;
     function SqlNextWeightToRecord: boolean;
-
 
 
 type
@@ -49,6 +44,9 @@ type
     property FConnect: TZConnection read FFConnect write FFConnect;
     property FQuery: TZQuery read FFQuery write FFQuery;
   end;
+
+
+//    {$DEFINE DEBUG}
 
 
 implementation
@@ -84,7 +82,6 @@ begin
         SConnect.Database := '.\'+SettingsApp.DBFile;
         SConnect.LibraryLocation := '.\sqlite3.dll';
         SConnect.Protocol := 'sqlite-3';
-        SConnect.AutoEncodeStrings := true;
         SConnect.Connect;
         SQuery.Connection := SConnect;
         SqlJournalMode;
@@ -284,6 +281,10 @@ begin
           weight_ingot := _FSql.FQuery.FieldByName('weight_ingot').AsString;
           smena := _FSql.FQuery.FieldByName('smena').AsString;
 
+          Apkdat := pkdat;
+          Anum := num;
+          Anum_ingot := num_ingot;
+
           Form1.l_number_ingot.Caption := num_ingot;
           Form1.l_datetime.Caption := time_ingot;
           Form1.l_heat.Caption := num_heat;
@@ -298,7 +299,7 @@ begin
       end;
   except
     on E : Exception do
-      Log.save('e', E.ClassName+' sql 4, с сообщением: '+E.Message);
+      Log.save('e', E.ClassName+' sql set pkdat | num | num_ingot, с сообщением: '+E.Message);
   end;
   FreeAndNil(_FSql);
 end;

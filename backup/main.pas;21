@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, DBGrids,
-  ExtCtrls, StdCtrls, Menus, db, {$ifdef windows} Windows, {$endif} Grids,
+  ExtCtrls, StdCtrls, Menus, db, Windows, Grids, PopupNotifier, Variants,
   logging, sql, thread_sql_read, thread_sql_send, thread_comport;
 
 type
@@ -29,11 +29,10 @@ type
     l_n_number_ingot: TLabel;
     l_number_ingot: TLabel;
     l_n_datetime: TLabel;
+    PopupNotifier1: TPopupNotifier;
     procedure DBGrid1DblClick(Sender: TObject);
     procedure DBGrid1DrawColumnCell(Sender: TObject; const Rect: TRect;
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
-    procedure DBGrid1PrepareCanvas(sender: TObject; DataCol: Integer;
-      Column: TColumn; AState: TGridDrawState);
     procedure DBGrid2DrawColumnCell(Sender: TObject; const Rect: TRect;
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
     procedure FormCloseQuery(Sender: TObject; var CanClose: boolean);
@@ -56,12 +55,15 @@ var
   SDataSource: TDataSource;
   MainFSql: TFsql;
   FDataSource: TDataSource;
-
-//    {$DEFINE DEBUG}
+  ThreadStop: boolean = false;
 
   function ViewSelectedIngot: boolean;
   function PointReplace(DataIn: string): string;
   function ViewClear: boolean;
+  procedure NextWeightToRecordLocation;
+
+
+  //    {$DEFINE DEBUG}
 
 
 implementation
@@ -140,27 +142,22 @@ begin
   end;
   DBGrid1.Canvas.FillRect(Rect);
   Dbgrid1.DefaultDrawColumnCell(Rect, DataCol, Column, State);
-end;
 
-
-procedure TForm1.DBGrid1PrepareCanvas(sender: TObject; DataCol: Integer;
-  Column: TColumn; AState: TGridDrawState);
-var
-   i: integer;
-   TitleWidth: integer;
-   TextWidth: integer;
-begin
-    with (Sender As TDBGrid) do begin
-      for i:=0 to Columns.Count-1 do begin
-          TitleWidth := Canvas.TextWidth(Columns.Items[i].Title.Caption);
-          TextWidth := Canvas.TextWidth(Columns.Items[i].Field.ToString);
-//          if (TextWidth < Columns.Items[i].Width) then begin
-             Columns.Items[i].Width := TitleWidth+25;
-             Columns.Items[i].Alignment := taCenter;//taLeftJustify;
-             Columns.Items[i].Title.Alignment := taCenter;//taLeftJustify;
-//          end;
+  // fix size title and column
+  if Column.Field <> nil then
+  begin
+      with (Sender As TDBGrid) do begin
+        for i:=0 to Columns.Count-1 do begin
+            TitleWidth := Canvas.TextWidth(Columns.Items[i].Title.Caption);
+            TextWidth := Canvas.TextWidth(Columns.Items[i].Field.ToString);
+  //          if (TextWidth < Columns.Items[i].Width) then begin
+               Columns.Items[i].Width := TitleWidth+35;
+               Columns.Items[i].Alignment := taCenter;//taLeftJustify;
+               Columns.Items[i].Title.Alignment := taCenter;//taLeftJustify;
+  //          end;
+        end;
       end;
-    end;
+  end;
 end;
 
 
@@ -195,7 +192,7 @@ begin
        // fix (memo)
        (Sender As TDBGrid).Canvas.FillRect(Rect); //не смазывает при прокрутке
        (Sender As TDBGrid).Canvas.TextRect(R, R.Left + 2, R.Top + 2,
-                                    Column.Field.AsWideString);
+                                                   Column.Field.AsWideString);
 
        // fix size title and column
        with (Sender As TDBGrid) do begin
@@ -266,6 +263,8 @@ begin
   DBgrid1Create(self);
   FDataSource.DataSet := MainFSql.FQuery;
   DBGrid1.DataSource := FDataSource;
+
+  ThreadStop := false;
 
   ThreadSqlRead := TThreadSqlRead.Create(Log);
   ThreadSqlSend := TThreadSqlSend.Create(Log);
@@ -405,15 +404,35 @@ var
   i: integer;
 begin
 
-  for i:=0 to form1.ComponentCount - 1 do
+  for i:=0 to Form1.ComponentCount - 1 do
    begin
-    if (form1.Components[i] is Tlabel) then
+    if (Form1.Components[i] is Tlabel) then
       begin
-        if copy(form1.Components[i].Name,1,4) <> 'l_n_' then
-          Tlabel(Form1.FindComponent(form1.Components[i].Name)).Caption := '';
+        if copy(Form1.Components[i].Name,1,4) <> 'l_n_' then
+          Tlabel(Form1.FindComponent(Form1.Components[i].Name)).Caption := '';
       end;
    end;
 
+end;
+
+
+procedure NextWeightToRecordLocation;
+var
+  KeyValues : Variant;
+begin
+  try
+      //отключаем управление
+      form1.DBGrid1.DataSource.DataSet.DisableControls;
+      //переменные по которым будет производиться поиск
+      KeyValues := VarArrayOf([pkdat,num,num_ingot]);
+      //поиск по ключивым полям
+      form1.DBGrid1.DataSource.DataSet.Locate('pkdat;num;num_ingot', KeyValues, []);
+  finally
+      //включаем управление
+      form1.DBGrid1.DataSource.DataSet.EnableControls;
+  end;
+  //-- test
+  //Form1.l_next_id.Caption:=pkdat+'|'+num+'|'+num_ingot;
 end;
 
 

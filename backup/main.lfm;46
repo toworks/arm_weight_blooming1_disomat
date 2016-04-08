@@ -1,11 +1,11 @@
 object Form1: TForm1
   Left = 1257
-  Height = 502
+  Height = 442
   Top = 498
   Width = 643
   BorderStyle = bsSingle
   Caption = 'Form1'
-  ClientHeight = 502
+  ClientHeight = 442
   ClientWidth = 643
   KeyPreview = True
   OnCloseQuery = FormCloseQuery
@@ -54,7 +54,6 @@ object Form1: TForm1
       TitleFont.Style = [fsBold]
       OnDrawColumnCell = DBGrid1DrawColumnCell
       OnDblClick = DBGrid1DblClick
-      OnPrepareCanvas = DBGrid1PrepareCanvas
     end
   end
   object gb_data_pu2: TGroupBox
@@ -299,7 +298,6 @@ object Form1: TForm1
       TitleFont.Quality = fqDraft
       TitleFont.Style = [fsBold]
       OnDrawColumnCell = DBGrid2DrawColumnCell
-      OnPrepareCanvas = DBGrid2PrepareCanvas
     end
   end
 end

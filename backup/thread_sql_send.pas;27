@@ -18,7 +18,7 @@ type
     procedure SqlSend;
     function SqlSaveToOracle(IdIn, WeightIn, TimestampIn: AnsiString): boolean;
 //    function GetMaxLocalCount: boolean;
-    procedure SqlReadTableLocal;
+//    procedure SqlReadTableLocal;
   protected
     procedure Execute; override;
   public

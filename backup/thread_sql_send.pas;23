@@ -17,7 +17,7 @@ type
     function ConfigOracleSetting(InData: boolean): boolean;
     procedure SqlSend;
     function SqlSaveToOracle(IdIn, WeightIn, TimestampIn: AnsiString): boolean;
-//    function GetMaxLocalCount: boolean;
+    function GetMaxLocalCount: boolean;
 //    procedure SqlReadTableLocal;
   protected
     procedure Execute; override;

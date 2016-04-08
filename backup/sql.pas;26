@@ -4,7 +4,7 @@ interface
 
 uses
    SysUtils, ActiveX, Variants, Classes, StrUtils, DB, ZConnection, ZDataset,
-   ZDbcIntfs, SyncObjs, logging;
+   ZDbcIntfs, ZCompatibility, SyncObjs, logging;
 
 var
     time_ingot, pkdat, num, num_ingot, num_heat, name, weight_ingot, steel_group,
@@ -172,6 +172,7 @@ begin
 //             Add('AutoEncodeStrings=ON');
 //             Add('codepage=win1251');
 //             Add('client_encoding=UTF8');
+               Add('codepage=UTF8');
         end;
         FFConnect.Connect;
         FFQuery.Connection := FFConnect;

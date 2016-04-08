@@ -71,9 +71,16 @@ begin
   CoInitialize(nil);
   while True do
    begin
+
       try
           Synchronize(@SyncSqlMax);
           SqlNewRecord;
+          //dbgrid текущая выбраная заготовка
+          if Fpkdat_in <> '' then
+             Synchronize(@main.NextWeightToRecordLocation);
+          // маркер следующей заготовки
+          if MarkerNextWait then
+             Synchronize(@NextWeightToRecord); //следующая запись (слиток) от записаной
       except
         on E : Exception do
           lLog.save('e', E.ClassName+', с сообщением: '+E.Message);
@@ -143,8 +150,8 @@ begin
         Synchronize(@SyncSqlReadTable);
 
         //dbgrid текущая выбраная заготовка
-        if Fpkdat_in <> '' then
-          Synchronize(@NextWeightToRecordLocation);
+//        if Fpkdat_in <> '' then
+//          Synchronize(@NextWeightToRecordLocation);
 
   {$IFDEF DEBUG}
     lLog.save('d', 'count -> '+inttostr(count));
@@ -158,7 +165,7 @@ begin
   end;
 
   // маркер следующей заготовки
-  if MarkerNextWait then
+//  if MarkerNextWait then
 //    Synchronize(@NextWeightToRecord); //следующая запись (слиток) от записаной
 end;
 

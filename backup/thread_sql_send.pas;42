@@ -220,9 +220,8 @@ begin
 
   try
     //была ошибака: EZSQLException, с сообщением: SQL Error: OCI_NO_DATA
-//    if not FOraConnect.Connected then
-      lLog.save('e', 'ServerVersion | '+inttostr(FOraConnect.ServerVersion));
-//      FOraConnect.Reconnect;
+    if not FOraConnect.Connected then
+      FOraConnect.Reconnect;
 
     FOraQuery.Close;
     FOraQuery.SQL.Clear;

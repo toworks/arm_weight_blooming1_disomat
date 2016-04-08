@@ -182,11 +182,14 @@ begin
       (Sender as TDBGrid).Canvas.Font.Color := clHighLightText;
     end;
   end;
+  DBGrid2.Canvas.FillRect(Rect);
+  Dbgrid2.DefaultDrawColumnCell(Rect, DataCol, Column, State);
 
   if Assigned(Column) then
     begin
 //     (Sender as TDBGrid).Canvas.FillRect(Rect);
 //     (Sender as TDBGrid).Canvas.TextRect(Rect, Rect.Left, Rect.Top, ' '+Column.Field.AsString);
+       // fix (memo)
        (Sender As TDBGrid).Canvas.FillRect(Rect); //не смазывает при прокрутке
        (Sender As TDBGrid).Canvas.TextRect(R, R.Left + 2, R.Top + 2,
                                     Column.Field.AsWideString);
@@ -223,11 +226,12 @@ begin
   else begin
       TDBGrid(Sender).Canvas.FillRect(Rect); //не смазывает при прокрутке
       TDBGrid(Sender).DefaultDrawColumnCell(Rect, DataCol, Column, State);
-  end;
+  end; }
 
   if ( Column.FieldName = 'transferred' ) then
   begin
-     if ( Column.Field.Text = 'не передан' ) then
+     Log.save('i', 'transferred | '+Column.Field.AsWideString);
+     if ( Column.Field.AsWideString = UTF8Encode('не передан') ) then
      begin
        (Sender As TDBGrid).Canvas.FillRect(Rect); //не смазывает при прокрутке
         with DBGrid2.Canvas do
@@ -249,7 +253,9 @@ begin
                                 Rect.Top + 2, Column.Field.AsWideString);
         end
     end;
-  end;}
+  end;
+  DBGrid2.Canvas.FillRect(Rect);
+  Dbgrid2.DefaultDrawColumnCell(Rect, DataCol, Column, State);
 end;
 
 procedure TForm1.DBGrid2PrepareCanvas(sender: TObject; DataCol: Integer;

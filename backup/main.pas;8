@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, DBGrids,
-  ExtCtrls, StdCtrls, Menus, db, {$ifdef windows} Windows, {$endif} Grids,
+  ExtCtrls, StdCtrls, Menus, db, Windows, Grids, PopupNotifier, Variants,
   logging, sql, thread_sql_read, thread_sql_send, thread_comport;
 
 type
@@ -29,6 +29,7 @@ type
     l_n_number_ingot: TLabel;
     l_number_ingot: TLabel;
     l_n_datetime: TLabel;
+    PopupNotifier1: TPopupNotifier;
     procedure DBGrid1DblClick(Sender: TObject);
     procedure DBGrid1DrawColumnCell(Sender: TObject; const Rect: TRect;
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
@@ -54,12 +55,15 @@ var
   SDataSource: TDataSource;
   MainFSql: TFsql;
   FDataSource: TDataSource;
-
-//    {$DEFINE DEBUG}
+  ThreadStop: boolean = false;
 
   function ViewSelectedIngot: boolean;
   function PointReplace(DataIn: string): string;
   function ViewClear: boolean;
+  procedure NextWeightToRecordLocation;
+
+
+  //    {$DEFINE DEBUG}
 
 
 implementation
@@ -74,8 +78,6 @@ uses
 procedure TForm1.FormCloseQuery(Sender: TObject; var CanClose: boolean);
 begin
   try
-      Log.save('i', 'close '+Log.ProgFileName);
-
       if assigned(ThreadComPort) then
         ThreadComPort.Terminate;
       if assigned(ThreadSqlRead) then
@@ -92,6 +94,7 @@ begin
       if assigned(FDataSource) then
         FDataSource.Destroy;
   finally
+    Log.save('i', 'close '+Log.ProgFileName);
     // закрываем приложение
     {$ifdef unix}
       FpKill(FpGetpid, 9);
@@ -106,17 +109,20 @@ end;
 procedure TForm1.DBGrid1DblClick(Sender: TObject);
 begin
   // маркер следующей заготовки
-  if not MarkerNextWait then begin
+//  if not MarkerNextWait then begin
     try
+        ThreadStop := true;// останавливаем потоки
         //отключаем управление
         form1.DBGrid1.DataSource.DataSet.DisableControls;
         if MessageDlg('Выбрать заготовку для взвешивания?', mtCustom, mbYesNo, 0) = mrYes then
           ViewSelectedIngot;
+        ThreadStop := false;// запускаем потоки
+        MarkerNextWait := false;// сбрасываем маркер следующей заготовки при выборе новой
     finally
         //включаем управление
         form1.DBGrid1.DataSource.DataSet.EnableControls;
     end;
-  end;
+//  end;
 end;
 
 
@@ -260,9 +266,9 @@ begin
   FDataSource.DataSet := MainFSql.FQuery;
   DBGrid1.DataSource := FDataSource;
 
-  ThreadSqlRead := TThreadSqlRead.Create(Log);
-  ThreadSqlSend := TThreadSqlSend.Create(Log);
-  ThreadComPort := TThreadComPort.Create(Log);
+//  ThreadSqlRead := TThreadSqlRead.Create(Log);
+//  ThreadSqlSend := TThreadSqlSend.Create(Log);
+//  ThreadComPort := TThreadComPort.Create(Log);
 
   Form1.Caption := SettingsApp.HeadName+'  build('+SettingsApp.GetVersion+')';
   //заголовки к showmessage
@@ -374,16 +380,19 @@ end;
 
 function ViewSelectedIngot: boolean;
 begin
-  Form1.l_number_ingot.Caption := Form1.DBGrid1.DataSource.DataSet.FieldByName('NUM_INGOT').AsString;
-  Form1.l_datetime.Caption := Form1.DBGrid1.DataSource.DataSet.FieldByName('TIME_INGOT').AsString;
-  Form1.l_heat.Caption := Form1.DBGrid1.DataSource.DataSet.FieldByName('NUM_HEAT').AsString;
-  Form1.l_grade.Caption := Form1.DBGrid1.DataSource.DataSet.FieldByName('NAME').AsString;
-  Form1.l_weight_ingot.Caption := Form1.DBGrid1.DataSource.DataSet.FieldByName('WEIGHT_INGOT').AsString;
-  pkdat := Form1.DBGrid1.DataSource.DataSet.FieldByName('PKDAT').AsString;
-  num := Form1.DBGrid1.DataSource.DataSet.FieldByName('NUM').AsString;
-  num_ingot := Form1.DBGrid1.DataSource.DataSet.FieldByName('NUM_INGOT').AsString;
-  num_heat := Form1.DBGrid1.DataSource.DataSet.FieldByName('NUM_HEAT').AsString;
-  smena := Form1.DBGrid1.DataSource.DataSet.FieldByName('SMENA').AsString;
+  if assigned(Form1.DBGrid1.DataSource.DataSet.FieldByName('PKDAT').IsNull) then
+  begin
+    Form1.l_number_ingot.Caption := Form1.DBGrid1.DataSource.DataSet.FieldByName('NUM_INGOT').AsString;
+    Form1.l_datetime.Caption := Form1.DBGrid1.DataSource.DataSet.FieldByName('TIME_INGOT').AsString;
+    Form1.l_heat.Caption := Form1.DBGrid1.DataSource.DataSet.FieldByName('NUM_HEAT').AsString;
+    Form1.l_grade.Caption := Form1.DBGrid1.DataSource.DataSet.FieldByName('NAME').AsString;
+    Form1.l_weight_ingot.Caption := Form1.DBGrid1.DataSource.DataSet.FieldByName('WEIGHT_INGOT').AsString;
+    pkdat := Form1.DBGrid1.DataSource.DataSet.FieldByName('PKDAT').AsString;
+    num := Form1.DBGrid1.DataSource.DataSet.FieldByName('NUM').AsString;
+    num_ingot := Form1.DBGrid1.DataSource.DataSet.FieldByName('NUM_INGOT').AsString;
+    num_heat := Form1.DBGrid1.DataSource.DataSet.FieldByName('NUM_HEAT').AsString;
+    smena := Form1.DBGrid1.DataSource.DataSet.FieldByName('SMENA').AsString;
+  end;
 end;
 
 
@@ -398,15 +407,35 @@ var
   i: integer;
 begin
 
-  for i:=0 to form1.ComponentCount - 1 do
+  for i:=0 to Form1.ComponentCount - 1 do
    begin
-    if (form1.Components[i] is Tlabel) then
+    if (Form1.Components[i] is Tlabel) then
       begin
-        if copy(form1.Components[i].Name,1,4) <> 'l_n_' then
-          Tlabel(Form1.FindComponent(form1.Components[i].Name)).Caption := '';
+        if copy(Form1.Components[i].Name,1,4) <> 'l_n_' then
+          Tlabel(Form1.FindComponent(Form1.Components[i].Name)).Caption := '';
       end;
    end;
 
+end;
+
+
+procedure NextWeightToRecordLocation;
+var
+  KeyValues : Variant;
+begin
+  try
+      //отключаем управление
+      form1.DBGrid1.DataSource.DataSet.DisableControls;
+      //переменные по которым будет производиться поиск
+      KeyValues := VarArrayOf([pkdat,num,num_ingot]);
+      //поиск по ключивым полям
+      form1.DBGrid1.DataSource.DataSet.Locate('pkdat;num;num_ingot', KeyValues, []);
+  finally
+      //включаем управление
+      form1.DBGrid1.DataSource.DataSet.EnableControls;
+  end;
+  //-- test
+  //Form1.l_next_id.Caption:=pkdat+'|'+num+'|'+num_ingot;
 end;
 
 

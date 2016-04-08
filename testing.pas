@@ -39,7 +39,7 @@ begin
   MemoTesting.Parent := Self;
 
   b_ForceSendAttribute := TButton.Create(Self);
-  b_ForceSendAttribute.SetBounds(2, 310, 130, 20);
+  b_ForceSendAttribute.SetBounds(2, 310, 130, 35);
   b_ForceSendAttribute.Caption := 'Послать признак';
   b_ForceSendAttribute.OnClick := @b_ForceSendAttributeClick;
   b_ForceSendAttribute.Parent := Self;
@@ -76,10 +76,13 @@ begin
     else
       MemoTesting.Lines.Insert(0, timetostr(now)+#9+'testing'+#9+InData);
 
+    if MemoTesting.Lines.Count-1 > 30 then
+      MemoTesting.Lines.Delete(MemoTesting.Lines.Count-1);
+
     MemoTesting.SelStart := 0;
     MemoTesting.SelLength := 0;
 
-    if MemoTesting.Lines.Count-1 > 10 then
+    if MemoTesting.Lines.Count-1 > 18 then
       MemoTesting.ScrollBars := ssVertical;
 
   except
@@ -91,7 +94,8 @@ end;
 
 procedure TTestingForm.b_ForceSendAttributeClick(Sender: TObject);
 begin
-//  ThreadComPort.SendAttribute;
+  ThreadComPort.SendAttribute;
+  Log.save('i', 'testing send attribute');
 end;
 
 

@@ -272,7 +272,6 @@ end;
 //-- start main
 procedure TThreadSqlSend.SqlReadTableLocal;
 begin
-  exit;
   try
       MainSqlite.SQuery.Close;
       MainSqlite.SQuery.SQL.Clear;

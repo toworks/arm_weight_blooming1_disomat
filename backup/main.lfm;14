@@ -1,11 +1,11 @@
 object Form1: TForm1
   Left = 1257
-  Height = 442
+  Height = 461
   Top = 498
   Width = 643
   BorderStyle = bsSingle
   Caption = 'Form1'
-  ClientHeight = 442
+  ClientHeight = 461
   ClientWidth = 643
   KeyPreview = True
   OnCloseQuery = FormCloseQuery

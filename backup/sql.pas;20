@@ -4,7 +4,7 @@ interface
 
 uses
    SysUtils, ActiveX, Variants, Classes, StrUtils, DB, ZConnection, ZDataset,
-   ZDbcIntfs, DateUtils, SyncObjs, logging;
+   ZDbcIntfs, ZCompatibility, SyncObjs, logging;
 
 var
     time_ingot, pkdat, num, num_ingot, num_heat, name, weight_ingot, steel_group,
@@ -158,9 +158,6 @@ begin
         FFConnect.ReadOnly := True;
         FFConnect.LoginPrompt := false;
         FFConnect.Port := 3050;
-        FFConnect.AutoEncodeStrings := true;// перекодировка с сервера в клиент
-//        FFConnect.ClientCodepage := 'CL8MSWIN1251';// кодировка на сервере
-        FFConnect.ControlsCodePage := cCP_UTF8;// кодировка на клиенте
         FFConnect.AutoCommit := False;
         FFConnect.TransactIsolationLevel := tiReadCommitted;
         with FFConnect.Properties do
@@ -170,6 +167,7 @@ begin
              Add('isc_tpb_concurrency');              // Needed for multiuser environments
              Add('isc_tpb_nowait');                   // Needed for multiuser environments
              Add('timeout=3');
+             Add('codepage=win1251');
 //             Add('codepage=NONE');
 //             Add('controls_cp=CP_UTF8');
 //             Add('AutoEncodeStrings=ON');
@@ -207,7 +205,7 @@ begin
   end;
 
   i:=0;
-
+{
   try
       _SSql := TZQuery.Create(nil);
       _SSql.Connection := MainSqlite.SConnect;
@@ -219,20 +217,24 @@ begin
   except
     on E : Exception do begin
       Log.save('e', E.ClassName+' sql next weight to record, с сообщением: '+E.Message);
+      FreeAndNil(_SSql);
       exit;
     end;
   end;
+
+  if (_SSql.FieldByName('pkdat').IsNull) then
+     exit;}
 
   try
       _FSql.FQuery.Close;
       _FSql.FQuery.SQL.Clear;
       _FSql.FQuery.SQL.Add('select i.pkdat,i.num,i.num_ingot,h.num_heat, s.name,i.weight_ingot, i.time_ingot, s.steel_group , sh.smena');
       _FSql.FQuery.SQL.Add('from ingots i, heats h, steels s, shifts sh');
-      _FSql.FQuery.SQL.Add('where ((i.pkdat='+ _SSql.FieldByName('pkdat').AsString +'');
-      _FSql.FQuery.SQL.Add('and (i.num='+ _SSql.FieldByName('num').AsString +'');
-      _FSql.FQuery.SQL.Add('and i.num_ingot>'+ _SSql.FieldByName('num_ingot').AsString +'');
-      _FSql.FQuery.SQL.Add('or i.num>'+ _SSql.FieldByName('num').AsString +'))');
-      _FSql.FQuery.SQL.Add('or i.pkdat>'+ _SSql.FieldByName('pkdat').AsString +')');
+      _FSql.FQuery.SQL.Add('where ((i.pkdat='+ pkdat +'');
+      _FSql.FQuery.SQL.Add('and (i.num='+ num +'');
+      _FSql.FQuery.SQL.Add('and i.num_ingot>'+ num_ingot +'');
+      _FSql.FQuery.SQL.Add('or i.num>'+ num +'))');
+      _FSql.FQuery.SQL.Add('or i.pkdat>'+ pkdat +')');
       _FSql.FQuery.SQL.Add('and i.pkdat=h.pkdat and i.num=h.num');
       _FSql.FQuery.SQL.Add('and i.pkdat=sh.pkdat');
       _FSql.FQuery.SQL.Add('and h.steel_grade=s.steel_grade');
@@ -314,6 +316,7 @@ begin
     on E : Exception do
       Log.save('e', E.ClassName+' sql 4, с сообщением: '+E.Message);
   end;
+  FreeAndNil(_SSql);
   FreeAndNil(_FSql);
 end;
 

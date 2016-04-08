@@ -16,8 +16,6 @@ type
 
     procedure SyncSqlReadTable;
     procedure SqlNewRecord;
-//    procedure SyncNextWeightToRecord;
-//    procedure SyncNextWeightToRecordLocation;
     function MouseMoved: boolean;
   protected
     procedure Execute; override;
@@ -74,14 +72,18 @@ begin
   while True do
    begin
 
-      try
-          SqlNewRecord;
-      except
-        on E : Exception do
-          lLog.save('e', E.ClassName+', с сообщением: '+E.Message);
+      // при выбор заготовки останавливаем чтение
+      if not ThreadStop then begin
+        try
+            SqlNewRecord;
+        except
+          on E : Exception do
+            lLog.save('e', E.ClassName+', с сообщением: '+E.Message);
+        end;
       end;
 
       sleep(1000);
+
    end;
    CoUninitialize;
 end;
@@ -155,34 +157,39 @@ begin
     on E : Exception do
       lLog.save('e', E.ClassName+', с сообщением: '+E.Message);
   end;
-
-  // маркер следующей заготовки
-{  if MarkerNextWait then
-    Synchronize(@NextWeightToRecord); //следующая запись (слиток) от записаной}
 end;
 
 
 procedure TThreadSqlRead.SyncSqlReadTable;
 begin
   try
-      MainFSql.FQuery.Close;
-      MainFSql.FQuery.SQL.Clear;
-      MainFSql.FQuery.SQL.Add('select i.pkdat,i.num,i.num_ingot,h.num_heat, s.name,i.weight_ingot, i.time_ingot, s.steel_group, sh.smena');
-      MainFSql.FQuery.SQL.Add('from ingots i, heats h, steels s, shifts sh');
-      MainFSql.FQuery.SQL.Add('where i.pkdat=h.pkdat');
-      MainFSql.FQuery.SQL.Add('and i.pkdat=sh.pkdat');
-      MainFSql.FQuery.SQL.Add('and i.num=h.num');
-      MainFSql.FQuery.SQL.Add('and h.steel_grade=s.steel_grade');
-      MainFSql.FQuery.SQL.Add('and i.pkdat in ('+Fpkdat_in+')');
-      MainFSql.FQuery.SQL.Add('order by i.pkdat desc, i.num desc, i.num_ingot desc');
-      MainFSql.FQuery.Open;
-  except
-    on E : Exception do
-      lLog.save('e', E.ClassName+', с сообщением: '+E.Message);
+      //отключаем управление
+      form1.DBGrid1.DataSource.DataSet.DisableControls;
+      try
+          MainFSql.FQuery.Close;
+          MainFSql.FQuery.SQL.Clear;
+          MainFSql.FQuery.SQL.Add('select i.pkdat,i.num,i.num_ingot,h.num_heat, s.name,i.weight_ingot, i.time_ingot, s.steel_group, sh.smena');
+          MainFSql.FQuery.SQL.Add('from ingots i, heats h, steels s, shifts sh');
+          MainFSql.FQuery.SQL.Add('where i.pkdat=h.pkdat');
+          MainFSql.FQuery.SQL.Add('and i.pkdat=sh.pkdat');
+          MainFSql.FQuery.SQL.Add('and i.num=h.num');
+          MainFSql.FQuery.SQL.Add('and h.steel_grade=s.steel_grade');
+          MainFSql.FQuery.SQL.Add('and i.pkdat in ('+Fpkdat_in+')');
+          MainFSql.FQuery.SQL.Add('order by i.pkdat desc, i.num desc, i.num_ingot desc');
+          MainFSql.FQuery.Open;
+      except
+        on E : Exception do
+          lLog.save('e', E.ClassName+', с сообщением: '+E.Message);
+      end;
+      //исправляем отображение даты в DBGrid
+      TDateTimeField(MainFSql.FQuery.FieldByName('time_ingot')).DisplayFormat:='hh:nn:ss';
+      TDateTimeField(MainFSql.FQuery.FieldByName('weight_ingot')).DisplayFormat:='#,###0.000';
+
+  finally
+      //включаем управление
+      form1.DBGrid1.DataSource.DataSet.EnableControls;
   end;
-  //исправляем отображение даты в DBGrid
-  TDateTimeField(MainFSql.FQuery.FieldByName('time_ingot')).DisplayFormat:='hh:nn:ss';
-  TDateTimeField(MainFSql.FQuery.FieldByName('weight_ingot')).DisplayFormat:='#,###0.000';
+
 end;
 
 

@@ -303,7 +303,7 @@ begin
       TStringField(MainSqlite.SQuery.FieldByName('transferred')).DisplayWidth := 20;
   except
     on E : Exception do
-      Log.save('e', E.ClassName+'8, с сообщением: '+E.Message);
+      Log.save('e', E.ClassName+' sql read table local, с сообщением: '+E.Message);
   end;
 end;
 //-- end main

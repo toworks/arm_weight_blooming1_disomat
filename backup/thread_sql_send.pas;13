@@ -215,7 +215,6 @@ function TThreadSqlSend.SqlSaveToOracle(IdIn, WeightIn, TimestampIn: AnsiString)
 var
   error: boolean;
 begin
-//  error := false;
 
   try
     //была ошибака: EZSQLException, с сообщением: SQL Error: OCI_NO_DATA

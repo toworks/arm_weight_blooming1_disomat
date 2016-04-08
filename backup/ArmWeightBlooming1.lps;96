@@ -4,13 +4,13 @@
     <PathDelim Value="\"/>
     <Version Value="9"/>
     <BuildModes Active="Debug"/>
-    <Units Count="16">
+    <Units Count="14">
       <Unit0>
         <Filename Value="ArmWeightBlooming1.lpr"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
         <CursorPos Y="20"/>
-        <UsageCount Value="128"/>
+        <UsageCount Value="220"/>
       </Unit0>
       <Unit1>
         <Filename Value="main.pas"/>
@@ -18,10 +18,9 @@
         <ComponentName Value="Form1"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <IsVisibleTab Value="True"/>
         <TopLine Value="242"/>
-        <CursorPos X="9" Y="284"/>
-        <UsageCount Value="128"/>
+        <CursorPos Y="266"/>
+        <UsageCount Value="220"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit1>
@@ -30,8 +29,9 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="Logging"/>
         <EditorIndex Value="-1"/>
+        <TopLine Value="14"/>
         <CursorPos Y="17"/>
-        <UsageCount Value="128"/>
+        <UsageCount Value="220"/>
       </Unit2>
       <Unit3>
         <Filename Value="settings.pas"/>
@@ -39,7 +39,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="65"/>
         <CursorPos Y="87"/>
-        <UsageCount Value="128"/>
+        <UsageCount Value="220"/>
       </Unit3>
       <Unit4>
         <Filename Value="testing.pas"/>
@@ -47,15 +47,15 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="20"/>
         <CursorPos X="36" Y="43"/>
-        <UsageCount Value="128"/>
+        <UsageCount Value="220"/>
       </Unit4>
       <Unit5>
         <Filename Value="sql.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="3"/>
-        <TopLine Value="64"/>
-        <CursorPos Y="87"/>
-        <UsageCount Value="127"/>
+        <TopLine Value="259"/>
+        <CursorPos Y="49"/>
+        <UsageCount Value="219"/>
         <Loaded Value="True"/>
       </Unit5>
       <Unit6>
@@ -65,32 +65,33 @@
         <WindowIndex Value="-1"/>
         <TopLine Value="-1"/>
         <CursorPos X="-1" Y="-1"/>
-        <UsageCount Value="127"/>
+        <UsageCount Value="219"/>
       </Unit6>
       <Unit7>
         <Filename Value="thread_comport.pas"/>
         <IsPartOfProject Value="True"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="4"/>
-        <TopLine Value="366"/>
-        <CursorPos X="28" Y="200"/>
-        <UsageCount Value="77"/>
+        <TopLine Value="326"/>
+        <CursorPos X="11" Y="366"/>
+        <UsageCount Value="218"/>
         <Loaded Value="True"/>
       </Unit7>
       <Unit8>
         <Filename Value="thread_sql_send.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="167"/>
-        <CursorPos Y="189"/>
-        <UsageCount Value="44"/>
+        <TopLine Value="312"/>
+        <CursorPos X="20" Y="178"/>
+        <UsageCount Value="187"/>
         <Loaded Value="True"/>
       </Unit8>
       <Unit9>
         <Filename Value="thread_sql_read.pas"/>
         <EditorIndex Value="2"/>
-        <TopLine Value="28"/>
-        <CursorPos X="48" Y="192"/>
-        <UsageCount Value="63"/>
+        <TopLine Value="49"/>
+        <CursorPos X="36" Y="71"/>
+        <UsageCount Value="109"/>
         <Loaded Value="True"/>
       </Unit9>
       <Unit10>
@@ -99,167 +100,151 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="11892"/>
         <CursorPos Y="11912"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="5"/>
       </Unit10>
       <Unit11>
         <Filename Value="D:\bin\lazarus\components_outside\zeosdbo\packages\lazarus\packages\lazarus\zcore.pas"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="3" Y="10"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="5"/>
       </Unit11>
       <Unit12>
         <Filename Value="D:\bin\lazarus\components_outside\zeosdbo\src\dbc\ZDbcInterbase6Utils.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="812"/>
         <CursorPos Y="831"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="5"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit12>
       <Unit13>
-        <Filename Value="D:\bin\lazarus\components_outside\zeosdbo\src\dbc\ZDbcSqLiteUtils.pas"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="209"/>
-        <CursorPos Y="236"/>
-        <UsageCount Value="5"/>
-        <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit13>
-      <Unit14>
-        <Filename Value="D:\bin\lazarus\components_outside\zeosdbo\src\dbc\ZDbcOracleUtils.pas"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="1128"/>
-        <CursorPos Y="1153"/>
-        <UsageCount Value="9"/>
-        <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit14>
-      <Unit15>
         <Filename Value="D:\bin\lazarus\lcl\dbgrids.pas"/>
         <UnitName Value="DBGrids"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="3066"/>
         <CursorPos X="47" Y="3105"/>
-        <UsageCount Value="10"/>
-      </Unit15>
+        <UsageCount Value="5"/>
+      </Unit13>
     </Units>
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
-        <Filename Value="thread_sql_send.pas"/>
-        <Caret Line="235" Column="49" TopLine="196"/>
+        <Filename Value="thread_comport.pas"/>
+        <Caret Line="110" Column="27" TopLine="85"/>
       </Position1>
       <Position2>
-        <Filename Value="thread_sql_send.pas"/>
-        <Caret Line="240" Column="108" TopLine="197"/>
+        <Filename Value="thread_comport.pas"/>
+        <Caret Line="347" Column="9" TopLine="312"/>
       </Position2>
       <Position3>
-        <Filename Value="thread_sql_send.pas"/>
-        <Caret Line="247" Column="18" TopLine="204"/>
+        <Filename Value="thread_comport.pas"/>
+        <Caret Line="385" Column="39" TopLine="342"/>
       </Position3>
       <Position4>
-        <Filename Value="thread_sql_send.pas"/>
-        <Caret Line="248" Column="18" TopLine="205"/>
+        <Filename Value="thread_comport.pas"/>
+        <Caret Line="391" Column="22" TopLine="345"/>
       </Position4>
       <Position5>
-        <Filename Value="thread_sql_send.pas"/>
-        <Caret Line="249" Column="18" TopLine="206"/>
+        <Filename Value="thread_comport.pas"/>
+        <Caret Line="378" Column="25" TopLine="348"/>
       </Position5>
       <Position6>
-        <Filename Value="thread_sql_send.pas"/>
-        <Caret Line="250" Column="18" TopLine="207"/>
+        <Filename Value="thread_comport.pas"/>
+        <Caret Line="391" Column="31" TopLine="348"/>
       </Position6>
       <Position7>
-        <Filename Value="thread_sql_send.pas"/>
-        <Caret Line="251" Column="18" TopLine="208"/>
+        <Filename Value="thread_comport.pas"/>
+        <Caret Line="346" TopLine="341"/>
       </Position7>
       <Position8>
-        <Filename Value="thread_sql_send.pas"/>
-        <Caret Line="252" Column="18" TopLine="209"/>
+        <Filename Value="thread_comport.pas"/>
+        <Caret Line="332" Column="36" TopLine="307"/>
       </Position8>
       <Position9>
         <Filename Value="thread_sql_send.pas"/>
-        <Caret Line="253" Column="18" TopLine="210"/>
+        <Caret Line="239" Column="26" TopLine="201"/>
       </Position9>
       <Position10>
-        <Filename Value="thread_sql_send.pas"/>
-        <Caret Line="254" Column="18" TopLine="211"/>
+        <Filename Value="thread_sql_read.pas"/>
+        <Caret Line="145" TopLine="3"/>
       </Position10>
       <Position11>
-        <Filename Value="thread_sql_send.pas"/>
-        <Caret Line="263" Column="92" TopLine="221"/>
+        <Filename Value="thread_comport.pas"/>
+        <Caret Line="38" TopLine="18"/>
       </Position11>
       <Position12>
-        <Filename Value="thread_sql_send.pas"/>
-        <Caret Line="33" Column="12" TopLine="8"/>
+        <Filename Value="thread_sql_read.pas"/>
+        <Caret Line="20" Column="14"/>
       </Position12>
       <Position13>
-        <Filename Value="thread_sql_send.pas"/>
-        <Caret Line="185" TopLine="164"/>
+        <Filename Value="thread_sql_read.pas"/>
+        <Caret Line="193" Column="3" TopLine="165"/>
       </Position13>
       <Position14>
         <Filename Value="thread_sql_send.pas"/>
-        <Caret Line="298" Column="25" TopLine="273"/>
+        <Caret Line="251" Column="33" TopLine="222"/>
       </Position14>
       <Position15>
-        <Filename Value="thread_sql_send.pas"/>
-        <Caret Line="186" Column="28" TopLine="163"/>
+        <Filename Value="thread_comport.pas"/>
+        <Caret Line="22" Column="10" TopLine="78"/>
       </Position15>
       <Position16>
-        <Filename Value="thread_sql_send.pas"/>
-        <Caret Line="124" Column="27" TopLine="94"/>
+        <Filename Value="main.pas"/>
+        <Caret Line="284" Column="5" TopLine="259"/>
       </Position16>
       <Position17>
-        <Filename Value="thread_sql_send.pas"/>
-        <Caret Line="338" Column="41" TopLine="301"/>
+        <Filename Value="main.pas"/>
+        <Caret Line="248" Column="3" TopLine="246"/>
       </Position17>
       <Position18>
-        <Filename Value="thread_sql_send.pas"/>
-        <Caret Line="275" Column="8" TopLine="253"/>
+        <Filename Value="main.pas"/>
+        <Caret Line="282" TopLine="246"/>
       </Position18>
       <Position19>
-        <Filename Value="thread_sql_send.pas"/>
-        <Caret Line="183" Column="11" TopLine="167"/>
+        <Filename Value="main.pas"/>
+        <Caret Line="336" Column="3" TopLine="333"/>
       </Position19>
       <Position20>
-        <Filename Value="thread_sql_send.pas"/>
-        <Caret Line="185" Column="11" TopLine="167"/>
+        <Filename Value="main.pas"/>
+        <Caret Line="335" Column="3" TopLine="332"/>
       </Position20>
       <Position21>
-        <Filename Value="thread_sql_send.pas"/>
-        <Caret Line="187" Column="21" TopLine="167"/>
+        <Filename Value="thread_sql_read.pas"/>
+        <Caret Line="162" Column="36" TopLine="124"/>
       </Position21>
       <Position22>
-        <Filename Value="thread_sql_send.pas"/>
-        <Caret Line="189" Column="16" TopLine="167"/>
+        <Filename Value="main.pas"/>
+        <Caret Line="267" Column="13"/>
       </Position22>
       <Position23>
-        <Filename Value="thread_sql_send.pas"/>
-        <Caret Line="206" Column="14" TopLine="167"/>
+        <Filename Value="main.pas"/>
+        <Caret Line="121" Column="20" TopLine="98"/>
       </Position23>
       <Position24>
-        <Filename Value="main.pas"/>
-        <Caret Line="214" Column="10" TopLine="210"/>
+        <Filename Value="thread_comport.pas"/>
+        <Caret Line="115" Column="52" TopLine="80"/>
       </Position24>
       <Position25>
         <Filename Value="main.pas"/>
-        <Caret Line="189" TopLine="163"/>
+        <Caret Line="385" Column="10" TopLine="270"/>
       </Position25>
       <Position26>
         <Filename Value="main.pas"/>
-        <Caret Line="213" Column="16" TopLine="185"/>
+        <Caret Line="57" Column="28" TopLine="215"/>
       </Position26>
       <Position27>
         <Filename Value="main.pas"/>
-        <Caret Line="257" TopLine="217"/>
+        <Caret Line="117" Column="28" TopLine="106"/>
       </Position27>
       <Position28>
         <Filename Value="main.pas"/>
-        <Caret Line="215" Column="16" TopLine="173"/>
+        <Caret Line="392" Column="46" TopLine="358"/>
       </Position28>
       <Position29>
-        <Filename Value="main.pas"/>
-        <Caret Line="195" TopLine="173"/>
+        <Filename Value="thread_comport.pas"/>
+        <Caret Line="105" Column="51" TopLine="73"/>
       </Position29>
       <Position30>
-        <Filename Value="main.pas"/>
-        <Caret Line="256" Column="8" TopLine="216"/>
+        <Filename Value="thread_sql_read.pas"/>
+        <Caret Line="79" Column="6" TopLine="50"/>
       </Position30>
     </JumpHistory>
   </ProjectSession>

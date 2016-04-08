@@ -266,9 +266,9 @@ begin
   end;
 
   if error then
-     Result := false
+     Result := true
   else
-     Result := true;
+     Result := false;
 end;
 
 

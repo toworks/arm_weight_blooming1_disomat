@@ -18,7 +18,7 @@ type
     procedure SqlSend;
     function SqlSaveToOracle(IdIn, WeightIn, TimestampIn: AnsiString): boolean;
     function GetMaxLocalCount: boolean;
-
+    procedure SqlReadTableLocal;
   protected
     procedure Execute; override;
   public
@@ -349,7 +349,7 @@ begin
         FSqlMaxLocal := timestamp;
 
         if assigned(MainSqlite.SQuery) then
-          Synchronize(SqlReadTableLocal);//views взвешенные заготовки
+          Synchronize(@SqlReadTableLocal);//views взвешенные заготовки
       end
   except
     on E : Exception do

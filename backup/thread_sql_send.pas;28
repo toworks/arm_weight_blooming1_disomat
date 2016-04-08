@@ -57,7 +57,7 @@ begin
   FThreadSqlSend.Priority := tpNormal;
   FThreadSqlSend.FreeOnTerminate := True;
 
-  FSqlMaxLocal := 0;
+//  FSqlMaxLocal := 0;
 
   ConfigOracleSetting(true);
 

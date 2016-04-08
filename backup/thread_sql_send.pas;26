@@ -24,7 +24,7 @@ type
   public
     Constructor Create(_Log: TLog); overload;
     Destructor Destroy; override;
-    procedure SyncSqlMaxLocal;
+//    procedure SyncSqlMaxLocal;
   end;
 
 var

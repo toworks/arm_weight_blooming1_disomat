@@ -5,7 +5,7 @@ interface
 
 uses
   SysUtils, Classes, ActiveX, synaser, SyncObjs, logging, Messages, ZDataset,
-  strutils, Variants, {$ifdef windows} Windows, Forms, {$endif} sql;
+  strutils, Variants, sql;
 
 type
   //Здесь необходимо описать класс TThreadComPort:
@@ -15,6 +15,10 @@ type
     Fno_save: boolean;
     FThreadComPort: TThreadComPort;
     FMessageData: AnsiString;
+    FNextSave: boolean;
+    Fpkdat: string;
+    Fnum: string;
+    Fnum_ingot: string;
 
     function CPortParity(InData: String): Char;
     function SendReadToSerial(InData: AnsiString): AnsiString;
@@ -24,18 +28,22 @@ type
     function ReceiveTKData(Data: AnsiString): string;
     function SendEKMessage: boolean;
     function ReceiveEKData(Data: AnsiString): string;
+    function ComparePkdat: boolean;
 
     procedure SyncMemoTesting;
     procedure SyncCalibration;
     function SqlSaveInBuffer(DataIn: AnsiString): boolean;
     function ManipulationWithDate(InDate: string): string;
     procedure SyncNextWeightToRecord;
-    function MouseMoved: boolean;
   protected
     procedure Execute; override;
   public
     Constructor Create(_Log: TLog); overload;
     Destructor Destroy; override;
+  published
+    property NextSave: boolean read FNextSave write FNextSave;
+    property no_save: boolean read Fno_save write Fno_save;
+    property SendAttribute: boolean read SendEKMessage;
   end;
 
 var
@@ -57,17 +65,21 @@ uses
 
 constructor TThreadComPort.Create(_Log: TLog);
 begin
-  inherited Create(True);
+//  inherited Create(True);
 
   lLog := _Log;
   TCsqlite := TSqlite.Create(lLog);
+
+  no_save := false;
+  NextSave := true;
+
+  inherited Create(True);
+
   // создаем поток True - создание остановка, False - создание старт
   FThreadComPort := TThreadComPort.Create(True);
   FThreadComPort.Priority := tpNormal;
   FThreadComPort.FreeOnTerminate := True;
   FThreadComPort.Start;
-
-  Fno_save := false;
 end;
 
 
@@ -82,36 +94,40 @@ end;
 
 procedure TThreadComPort.Execute;
 begin
-  CoInitialize(nil);
+//  CoInitialize(nil);
   while True do
   begin
       try
-          lLog.save('t', 'step 1');
+{$IFDEF DEBUG}
+  lLog.save('t', 'step 1');
+{$ENDIF}
+          // при выбор заготовки останавливаем чтение
+          if not ThreadStop and not MarkerNextWait then begin
+              //тестирование
+              if assigned(MemoTesting) then
+                 Synchronize(@SyncMemoTesting);
+              //калибровка
+              if assigned(CalibrationForm) then
+                 Synchronize(@SyncCalibration);
+              lLog.save('e', 'main do NextSave | '+booltostr(NextSave));
+              if NextSave and not MarkerNextWait then
+                 SendTKMessage;
 
-          //тестирование
-          if assigned(MemoTesting) then
-             Synchronize(@SyncMemoTesting);
-          //калибровка
-          if assigned(CalibrationForm) then
-             Synchronize(@SyncCalibration);
-
-          SendTKMessage;
-
-//          if Fno_save then begin
-             SendEKMessage;
-//          end;
-
-          lLog.save('e', 'MarkerNextWait | '+booltostr(MarkerNextWait));
-
-          Synchronize(@SyncNextWeightToRecord);
+              if no_save then begin
+                 SendEKMessage;
+              end;
+              lLog.save('e', 'main NextSave | '+booltostr(NextSave));
+              if not NextSave then
+                 Synchronize(@SyncNextWeightToRecord);
+          end
+          else
+              sleep(1000);
       except
         on E : Exception do
           lLog.save('e', E.ClassName+' serial execute, с сообщением: '+E.Message);
       end;
-
-//      sleep(1000);
    end;
-   CoUninitialize;
+//   CoUninitialize;
 end;
 
 
@@ -144,7 +160,9 @@ var
     msg: AnsiString;
 begin
   try
-         lLog.save('t', 'step 2');
+{$IFDEF DEBUG}
+  lLog.save('t', 'step 2');
+{$ENDIF}
          msg := SendReadToSerial(#2'00#TK#'#16#3+hash_bcc('00#TK#'#16#3));
          FMessageData := msg;
   except
@@ -153,7 +171,7 @@ begin
   end;
 
   try
-      ReceiveTKData(msg);
+         ReceiveTKData(msg);
   except
     on E : Exception do
       lLog.save('e', E.ClassName+' recive tk, с сообщением: '+E.Message);
@@ -166,7 +184,9 @@ var
     msg: AnsiString;
 begin
   try
-     lLog.save('t', 'step 4');
+{$IFDEF DEBUG}
+  lLog.save('t', 'step 4');
+{$ENDIF}
      //передаем ЭОД вход1-4 переменные 1|0|0|0
      msg := SendReadToSerial(#2'00#EK#1#0#0#0#'#16#3+hash_bcc('00#EK#1#0#0#0#'#16#3));
      FMessageData := msg;
@@ -186,21 +206,26 @@ end;
 
 function TThreadComPort.ReceiveTKData(Data: AnsiString): string;
 begin
-  lLog.save('t', 'TK marker | '+copy(Data, 28, 1)+' | Fno_save | '+booltostr(Fno_save));
+{$IFDEF DEBUG}
+  lLog.save('t', 'TK marker | '+copy(Data, 28, 1)+' | no_save | '+booltostr(no_save)+' | NextSave | '+booltostr(NextSave));
+{$ENDIF}
 //{ test }  if (copy(Data, 2, 6) = '00#TK#') and (copy(Data, 26, 1) = '1') and (no_save = false) then
   if ( {copy(Data, 2, 6) = '00#TK#' )
        and} (copy(Data, 28, 1) = '1')
-       and (Fno_save = false) ) then
+       and (no_save = false) ) then
   begin
-      lLog.save('t', 'step 3');
+{$IFDEF DEBUG}
+  lLog.save('t', 'step 3');
+{$ENDIF}
       if ( trim(copy(Data, 40, 6)) <> '' ) then begin //не пропускать пустых значений
           if pkdat <> '' then begin
     //{ test }      SqlSaveInBuffer(trim(copy(Data, 60, 6)))
             SqlSaveInBuffer(trim(copy(Data, 40, 6)));
-            lLog.save('w', 'weight | '+trim(copy(Data, 40, 6)));
+            NextSave := false;
+            lLog.save('w', 'ReceiveTKData | '+trim(copy(Data, 40, 6)));
           end
           else
-            lLog.save('w', 'заготовка не выбрана'+#9+'weight -> '+trim(copy(Data, 40, 6)));
+            lLog.save('w', 'заготовка не выбрана'+#9+'weight | '+trim(copy(Data, 40, 6)));
         //copy(Data, 2, 6);          //ответ по весу
         //copy(Data, 28, 1);         //признак
         //trim(copy(Data, 40, 6));   //вес только целая часть
@@ -213,8 +238,10 @@ function TThreadComPort.ReceiveEKData(Data: AnsiString): string;
 begin
   if (copy(Data, 2, 6) = '00#EK#') and (copy(Data, 8, 1) = '0') then
   begin
-      lLog.save('t', 'step 5');
-      Fno_save := false;//запрещаем отправку подтверждения в контроллер -> сброс в SqlSaveInBuffer
+{$IFDEF DEBUG}
+  lLog.save('t', 'step 5');
+{$ENDIF}
+      no_save := false;//запрещаем отправку подтверждения в контроллер -> сброс в SqlSaveInBuffer
   end;
 end;
 
@@ -268,12 +295,9 @@ function TThreadComPort.SqlSaveInBuffer(DataIn: AnsiString): boolean;
 var
   num_correct, num_ingot_correct, pkdat_correct: string;
 begin
-
-  lLog.save('e', 'Fno_save | '+booltostr(Fno_save)+' | false '+booltostr(false));
-
-  // маркер следующей заготовки (ожидание)
-  if MarkerNextWait then
-    exit;
+{$IFDEF DEBUG}
+  lLog.save('e', 'no_save | '+booltostr(no_save)+' | false '+booltostr(false));
+{$ENDIF}
 
   pkdat_correct := ManipulationWithDate(pkdat);
   num_correct := '';
@@ -315,19 +339,23 @@ begin
       lLog.save('e', E.ClassName+' sql save in buffer, с сообщением: '+E.Message+' | '+TCsqlite.SQuery.SQL.Text);
   end;
 
-  Fno_save := true;//разрешаем отправку подтверждения в контроллер
-
-  {$IFDEF DEBUG}
-    lLog.save('d', 'pkdat_correct -> '+ TCsqlite.SQuery.FieldByName('id_asutp').AsString);
-  {$ENDIF}
+  no_save := true;//разрешаем отправку подтверждения в контроллер
 end;
 
 
 procedure TThreadComPort.SyncNextWeightToRecord;
+var
+  t: boolean;
 begin
-     lLog.save('t', 'step 6');
+{$IFDEF DEBUG}
+  lLog.save('t', 'step 6');
+{$ENDIF}
      SqlNextWeightToRecord;
      NextWeightToRecordLocation;
+     t := ComparePkdat;//разрешаем снятие следующего показания
+     //NextSave := ComparePkdat;//разрешаем снятие следующего показания
+     NextSave := t;
+     lLog.save('t', 'SyncNextWeightToRecord | ComparePkdat | '+booltostr(t));
 end;
 
 
@@ -343,21 +371,24 @@ begin
 end;
 
 
-function TThreadComPort.MouseMoved: boolean;
-var
-  MousePoint: TPoint;
+function TThreadComPort.ComparePkdat: boolean;
 begin
-  GetCursorPos(MousePoint);
-  {Преобразуем MousePoint к "mickeys" (аболютным координатам курсора мышки}
-  MousePoint.x := Round(MousePoint.x * (65535 / Screen.Width));
-  MousePoint.y := Round(MousePoint.y * (65535 / Screen.Height));
-  {Переместим курсор мыши}
-  Mouse_Event(MOUSEEVENTF_ABSOLUTE or MOUSEEVENTF_MOVE, MousePoint.x-20, MousePoint.y-20, 0, 0);
-  {Переместим курсор мыши}
-  Mouse_Event(MOUSEEVENTF_ABSOLUTE or MOUSEEVENTF_MOVE, MousePoint.x+20, MousePoint.y+20, 0, 0);
+  lLog.save('t', pkdat+' | '+num+' | '+num_ingot);
+  // first run and after next weight
+{  if (pkdat = '') then begin
+     Result := true;
+     exit;
+  end;}
+
+  if (pkdat = Fpkdat) and (num = Fnum) and (num_ingot = Fnum_ingot) then
+     Result := false
+  else begin
+     Fpkdat := pkdat;
+     Fnum := num;
+     Fnum_ingot := num_ingot;
+     Result := true;
+  end;
 end;
-
-
 
 
 end.

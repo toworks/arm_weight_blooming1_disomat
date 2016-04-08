@@ -328,13 +328,12 @@ begin
       begin
         timestamp := TSSsqlite.SQuery.FieldByName('timestamp').AsLargeInt;
 
-        if FSqlMaxLocal >= timestamp then
-          exit;
-
-        FSqlMaxLocal := timestamp;
-
-        if assigned(MainSqlite.SQuery) then
-          Synchronize(@SqlReadTableLocal);//views взвешенные заготовки
+        if FSqlMaxLocal <= timestamp then
+        begin
+             FSqlMaxLocal := timestamp;
+             if assigned(MainSqlite.SQuery) then
+                Synchronize(@SqlReadTableLocal);//views взвешенные заготовки
+        end;
       end
   except
     on E : Exception do

@@ -240,7 +240,9 @@ begin
       lLog.save('e', E.ClassName+' sql save to oracle, с сообщением: '+E.Message+' | '+FOraQuery.SQL.Text);
     end;
   end;
+{$IFDEF DEBUG}
   Log.save('d', 'position | '+inttostr(err_oci_no_data));
+{$ENDIF}
   if error and (err_oci_no_data = 0) then
   begin
     try

@@ -332,7 +332,7 @@ begin
         begin
              FSqlMaxLocal := timestamp;
              if assigned(MainSqlite.SQuery) then
-                Synchronize(@SqlReadTableLocal);//views взвешенные заготовки
+                //Synchronize(@SqlReadTableLocal);//views взвешенные заготовки
         end;
       end
   except

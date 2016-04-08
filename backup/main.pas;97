@@ -166,6 +166,9 @@ procedure TForm1.DBGrid2DrawColumnCell(Sender: TObject; const Rect: TRect;
   DataCol: Integer; Column: TColumn; State: TGridDrawState);
 var
   R: TRect;
+  i: integer;
+  TitleWidth: integer;
+  TextWidth: integer;
 begin
 
   R := Rect;
@@ -180,7 +183,37 @@ begin
     end;
   end;
 
-  if (Column.FieldName = 'shift') or
+  if Assigned(Column) then
+    begin
+     (Sender as TDBGrid).Canvas.FillRect(Rect);
+     (Sender as TDBGrid).Canvas.TextRect(Rect, Rect.Left, Rect.Top, ' '+Column.Field.AsString);
+       // fix (memo)
+//       (Sender As TDBGrid).Canvas.FillRect(Rect); //не смазывает при прокрутке
+//       (Sender As TDBGrid).Canvas.TextRect(R, R.Left + 2, R.Top + 2,
+//                                    Column.Field.AsWideString);
+
+          with (Sender As TDBGrid) do begin
+            for i:=0 to Columns.Count-1 do begin
+                TitleWidth := Canvas.TextWidth(Columns.Items[i].Title.Caption);
+                TextWidth := Canvas.TextWidth(Columns.Items[i].Field.ToString);
+      //          if (TitleWidth < TextWidth {Columns.Items[i].Width}) then begin}
+                if ( Columns.Items[i].FieldName = 'timestamp' ) then
+                   Columns.Items[i].Width := TextWidth+55;
+                if ( Columns.Items[i].FieldName = 'weight' ) or
+                   (Columns.Items[i].FieldName = 'transferred') then
+                   Columns.Items[i].Width := TitleWidth+30;
+                if ( Columns.Items[i].FieldName = 'shift' ) or
+                   (Columns.Items[i].FieldName = 'num_ingot') or
+                   (Columns.Items[i].FieldName = 'heat') then
+                   Columns.Items[i].Width := TitleWidth+20;
+
+                Columns.Items[i].Alignment := taCenter;//taLeftJustify;
+                Columns.Items[i].Title.Alignment := taCenter;//taLeftJustify;
+            end;
+          end;
+    end;
+
+{  if (Column.FieldName = 'shift') or
      (Column.FieldName = 'timestamp') {or
      (Column.FieldName = 'transferred')} then
   begin
@@ -191,11 +224,13 @@ begin
   else begin
       TDBGrid(Sender).Canvas.FillRect(Rect); //не смазывает при прокрутке
       TDBGrid(Sender).DefaultDrawColumnCell(Rect, DataCol, Column, State);
-  end;
+  end; }
 
   if ( Column.FieldName = 'transferred' ) then
   begin
-     if ( Column.Field.Text = 'не передан' ) then
+     Log.save('i', 'transferred | '+Column.Field.AsWideString);
+     if ( Column.Field.AsWideString = '0' ) then
+     Column.Field.Text := 'yt';
      begin
        (Sender As TDBGrid).Canvas.FillRect(Rect); //не смазывает при прокрутке
         with DBGrid2.Canvas do
@@ -206,7 +241,7 @@ begin
                                 Rect.Top + 2, Column.Field.AsWideString);
         end
      end
-    else
+{    else
      begin
        (Sender As TDBGrid).Canvas.FillRect(Rect); //не смазывает при прокрутке
         with DBGrid2.Canvas do
@@ -216,10 +251,8 @@ begin
           (Sender as TDBGrid).Canvas.TextRect(Rect, Rect.Left + 2,
                                 Rect.Top + 2, Column.Field.AsWideString);
         end
-    end;
+    end;}
   end;
-  DBGrid1.Canvas.FillRect(Rect);
-  Dbgrid1.DefaultDrawColumnCell(Rect, DataCol, Column, State);
 end;
 
 procedure TForm1.DBGrid2PrepareCanvas(sender: TObject; DataCol: Integer;
@@ -269,9 +302,9 @@ begin
   FDataSource.DataSet := MainFSql.FQuery;
   DBGrid1.DataSource := FDataSource;
 
-//  ThreadSqlRead := TThreadSqlRead.Create(Log);
+  ThreadSqlRead := TThreadSqlRead.Create(Log);
   ThreadSqlSend := TThreadSqlSend.Create(Log);
-//  ThreadComPort := TThreadComPort.Create(Log);
+  ThreadComPort := TThreadComPort.Create(Log);
 
   Form1.Caption := SettingsApp.HeadName+'  build('+SettingsApp.GetVersion+')';
   //заголовки к showmessage

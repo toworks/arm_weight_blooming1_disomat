@@ -266,7 +266,7 @@ begin
   end;
 
   if error then
-     Result := error;
+     Result := error
   else
      Result := error;
 end;

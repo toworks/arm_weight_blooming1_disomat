@@ -4,7 +4,7 @@ unit thread_sql_read;
 interface
 
 uses
-  SysUtils, DB, Classes, ActiveX, ZDataset, logging, sql;
+  SysUtils, DB, Classes, ActiveX, ZDataset, Variants, logging, sql;
 
 type
   //Здесь необходимо описать класс TThreadSql:
@@ -16,6 +16,7 @@ type
 
     procedure SyncSqlReadTable;
     procedure SqlNewRecord;
+    procedure NextWeightToRecordLocation;
   protected
     procedure Execute; override;
   public
@@ -144,7 +145,7 @@ begin
 
         //dbgrid текущая выбраная заготовка
         if Fpkdat_in <> '' then
-//          Synchronize(@NextWeightToRecordLocation);
+          Synchronize(@NextWeightToRecordLocation);
 
   {$IFDEF DEBUG}
     lLog.save('d', 'count -> '+inttostr(count));
@@ -192,6 +193,24 @@ begin
 end;
 
 
+procedure TThreadSqlRead.NextWeightToRecordLocation;
+var
+  KeyValues : Variant;
+begin
+  try
+      //отключаем управление
+      form1.DBGrid1.DataSource.DataSet.DisableControls;
+      //переменные по которым будет производиться поиск
+      KeyValues := VarArrayOf([pkdat,num,num_ingot]);
+      //поиск по ключивым полям
+      form1.DBGrid1.DataSource.DataSet.Locate('pkdat;num;num_ingot', KeyValues, []);
+  finally
+      //включаем управление
+      form1.DBGrid1.DataSource.DataSet.EnableControls;
+  end;
+  //-- test
+  //Form1.l_next_id.Caption:=pkdat+'|'+num+'|'+num_ingot;
+end;
 
 
 // При загрузке программы класс будет создаваться

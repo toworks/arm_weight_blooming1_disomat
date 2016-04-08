@@ -228,7 +228,7 @@ begin
     FOraQuery.SQL.Clear;
     FOraQuery.SQL.Add('INSERT INTO crop');
     FOraQuery.SQL.Add('(id_asutp, weight_bloom, date_weight_bloom)');
-//    FOraQuery.SQL.Add('VALUES ('+IdIn+', '+PointReplace(WeightIn)+',');
+    FOraQuery.SQL.Add('VALUES ('+IdIn+', '+PointReplace(WeightIn)+',');
     FOraQuery.SQL.Add('TO_DATE('''+TimestampIn+''', ''yyyy-mm-dd hh24:mi:ss''))');
     FOraQuery.ExecSQL;
   {$IFDEF DEBUG}
@@ -247,7 +247,7 @@ begin
         FOraQuery.Close;
         FOraQuery.SQL.Clear;
         FOraQuery.SQL.Add('update crop');
-//        FOraQuery.SQL.Add('set weight_bloom = '+PointReplace(WeightIn)+',');
+        FOraQuery.SQL.Add('set weight_bloom = '+PointReplace(WeightIn)+',');
         FOraQuery.SQL.Add('date_weight_bloom = TO_DATE('''+TimestampIn+''',');
         FOraQuery.SQL.Add('''yyyy-mm-dd hh24:mi:ss'')');
         FOraQuery.SQL.Add('where id_asutp = '+IdIn+'');
@@ -271,7 +271,7 @@ end;
 
 
 //-- start main
-{procedure TThreadSqlSend.SqlReadTableLocal;
+procedure TThreadSqlSend.SqlReadTableLocal;
 begin
   try
       SLQuery.Close;
@@ -298,14 +298,14 @@ begin
  //     end;
 
       //исправляем отображение даты в DBGrid -> 20 characters
-{      TStringField(SLQuery.FieldByName('shift')).DisplayWidth := 3;
+      TStringField(SLQuery.FieldByName('shift')).DisplayWidth := 3;
       TStringField(SLQuery.FieldByName('timestamp')).DisplayWidth := 20;
       TStringField(SLQuery.FieldByName('transferred')).DisplayWidth := 20;
   except
     on E : Exception do
       Log.save('e', E.ClassName+'8, с сообщением: '+E.Message);
   end;
-end;}
+end;
 //-- end main
 
 

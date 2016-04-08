@@ -128,6 +128,9 @@ procedure TForm1.DBGrid1DrawColumnCell(Sender: TObject; const Rect: TRect;
   DataCol: Integer; Column: TColumn; State: TGridDrawState);
 var
   R: TRect;
+  i: integer;
+  TitleWidth: integer;
+  TextWidth: integer;
 begin
   if  gdSelected in State then //color selected
   begin
@@ -182,15 +185,18 @@ begin
       (Sender as TDBGrid).Canvas.Font.Color := clHighLightText;
     end;
   end;
+  DBGrid2.Canvas.FillRect(Rect);
+  Dbgrid2.DefaultDrawColumnCell(Rect, DataCol, Column, State);
 
-  if Assigned(Column) then
-    begin
-     (Sender as TDBGrid).Canvas.FillRect(Rect);
-     (Sender as TDBGrid).Canvas.TextRect(Rect, Rect.Left, Rect.Top, ' '+Column.Field.AsString);
+  if Column.Field <> nil then
+  begin
+//     (Sender as TDBGrid).Canvas.FillRect(Rect);
+//     (Sender as TDBGrid).Canvas.TextRect(Rect, Rect.Left, Rect.Top, ' '+Column.Field.AsString);
+
        // fix (memo)
-//       (Sender As TDBGrid).Canvas.FillRect(Rect); //не смазывает при прокрутке
-//       (Sender As TDBGrid).Canvas.TextRect(R, R.Left + 2, R.Top + 2,
-//                                    Column.Field.AsWideString);
+       (Sender As TDBGrid).Canvas.FillRect(Rect); //не смазывает при прокрутке
+       (Sender As TDBGrid).Canvas.TextRect(R, R.Left + 2, R.Top + 2,
+                                    Column.Field.AsWideString);
 
           with (Sender As TDBGrid) do begin
             for i:=0 to Columns.Count-1 do begin
@@ -211,46 +217,55 @@ begin
                 Columns.Items[i].Title.Alignment := taCenter;//taLeftJustify;
             end;
           end;
-    end;
 
-{  if (Column.FieldName = 'shift') or
-     (Column.FieldName = 'timestamp') {or
-     (Column.FieldName = 'transferred')} then
-  begin
-     (Sender As TDBGrid).Canvas.FillRect(Rect); //не смазывает при прокрутке
-     (Sender As TDBGrid).Canvas.TextRect(R, R.Left + 2, R.Top + 2,
-                              Column.Field.AsWideString);
-  end
-  else begin
-      TDBGrid(Sender).Canvas.FillRect(Rect); //не смазывает при прокрутке
-      TDBGrid(Sender).DefaultDrawColumnCell(Rect, DataCol, Column, State);
-  end; }
+          //Exception: fixed header should always be drawn like normal:
+            // this never gets picked up as OnDrawColumnCell apparently only deals with data cells!!!
+            if (gdFixed in State) then
+            begin
+              OverrideDraw:=false;
+              Log.save('e', '++++++ gdFixed | '+Column.FieldName);
+            end;
 
-  if ( Column.FieldName = 'transferred' ) then
-  begin
-     Log.save('i', 'transferred | '+Column.Field.AsWideString);
-     if ( Column.Field.AsWideString = UTF8Encode('не передан') ) then
-     begin
-       (Sender As TDBGrid).Canvas.FillRect(Rect); //не смазывает при прокрутке
-        with DBGrid2.Canvas do
-        begin
-          Font.Color := clRed;
-          font.Style:= [fsBold];
-          (Sender as TDBGrid).Canvas.TextRect(Rect, Rect.Left + 2,
-                                Rect.Top + 2, Column.Field.AsWideString);
-        end
-     end
-    else
-     begin
-       (Sender As TDBGrid).Canvas.FillRect(Rect); //не смазывает при прокрутке
-        with DBGrid2.Canvas do
-        begin
-          Font.Color := $002CB902;//green
-          font.Style:= [fsBold];
-          (Sender as TDBGrid).Canvas.TextRect(Rect, Rect.Left + 2,
-                                Rect.Top + 2, Column.Field.AsWideString);
-        end
-    end;
+    {  if (Column.FieldName = 'shift') or
+         (Column.FieldName = 'timestamp') {or
+         (Column.FieldName = 'transferred')} then
+      begin
+         (Sender As TDBGrid).Canvas.FillRect(Rect); //не смазывает при прокрутке
+         (Sender As TDBGrid).Canvas.TextRect(R, R.Left + 2, R.Top + 2,
+                                  Column.Field.AsWideString);
+      end
+      else begin
+          TDBGrid(Sender).Canvas.FillRect(Rect); //не смазывает при прокрутке
+          TDBGrid(Sender).DefaultDrawColumnCell(Rect, DataCol, Column, State);
+      end; }
+
+      if ( Column.FieldName = 'transferred' ) then
+      begin
+         Log.save('i', 'transferred | '+Column.Field.AsWideString);
+         if ( Column.Field.AsWideString = UTF8Encode('не передан') ) then
+         begin
+           (Sender As TDBGrid).Canvas.FillRect(Rect); //не смазывает при прокрутке
+            with DBGrid2.Canvas do
+            begin
+              Font.Color := clRed;
+              font.Style:= [fsBold];
+              (Sender as TDBGrid).Canvas.TextRect(Rect, Rect.Left + 2,
+                                    Rect.Top + 2, Column.Field.AsWideString);
+            end
+         end
+        else
+         begin
+           (Sender As TDBGrid).Canvas.FillRect(Rect); //не смазывает при прокрутке
+            with DBGrid2.Canvas do
+            begin
+              Font.Color := $002CB902;//green
+              font.Style:= [fsBold];
+              (Sender as TDBGrid).Canvas.TextRect(Rect, Rect.Left + 2,
+                                    Rect.Top + 2, Column.Field.AsWideString);
+            end
+        end;
+      end;
+
   end;
 end;
 

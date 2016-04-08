@@ -4,7 +4,7 @@ unit thread_sql_read;
 interface
 
 uses
-  SysUtils, Data.DB, Classes, ActiveX, ZDataset, SyncObjs, logging, sql;
+  SysUtils, DB, Classes, ActiveX, ZDataset, logging, sql;
 
 type
   //Здесь необходимо описать класс TThreadSql:
@@ -13,7 +13,6 @@ type
     FThreadSqlRead: TThreadSqlRead;
     FSqlMax: int64;
     Fpkdat_in: string;
-//    Fsql: TFsql;
 
     procedure SyncSqlReadTable;
     procedure SqlNewRecord;
@@ -26,7 +25,6 @@ type
   end;
 
 var
-//  SqlMax: int64 = 0;
   FutureDate: TDateTime;
   lLog: TLog;
   Fsql: TFsql;
@@ -74,7 +72,7 @@ begin
   while True do
    begin
       try
-          Synchronize(SyncSqlMax);
+          Synchronize(@SyncSqlMax);
           SqlNewRecord;
       except
         on E : Exception do
@@ -97,7 +95,7 @@ begin
       if NOW > FutureDate then
       begin
         FutureDate := Now + 4 / (24 * 60); //+4 minutes
-        MouseMoved;//двигаем мышку
+//        MouseMoved;//двигаем мышку
       end;
   {$IFDEF DEBUG}
     lLog.save('d', 'NOW -> '+datetimetostr(now));
@@ -142,11 +140,11 @@ begin
     begin
         FSqlMax := count;
         //обновление отображение записанных данных ViewDbWeight;
-        Synchronize(SyncSqlReadTable);
+        Synchronize(@SyncSqlReadTable);
 
         //dbgrid текущая выбраная заготовка
-        if not Fpkdat_in.IsEmpty then
-          Synchronize(NextWeightToRecordLocation);
+        if Fpkdat_in <> '' then
+//          Synchronize(@NextWeightToRecordLocation);
 
   {$IFDEF DEBUG}
     lLog.save('d', 'count -> '+inttostr(count));
@@ -190,7 +188,7 @@ end;
 
 procedure TThreadSqlRead.SyncSqlMax;
 begin
-  Form1.SqlMax := FSqlMax;
+//  Form1.SqlMax := FSqlMax;
 end;
 
 

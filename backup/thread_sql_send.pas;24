@@ -342,8 +342,7 @@ begin
       lLog.save('e', E.ClassName+' sql max local synchronize, с сообщением: '+E.Message);
   end;
   //-- локальные данные
-end;}
-
+end;
 
 
 

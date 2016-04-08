@@ -266,7 +266,7 @@ begin
   end;
 
   if error then
-     Result := fase;
+     Result := false;
   else
      Result := true;
 end;

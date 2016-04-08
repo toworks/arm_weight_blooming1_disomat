@@ -240,7 +240,7 @@ begin
       lLog.save('e', E.ClassName+' sql save to oracle, с сообщением: '+E.Message+' | '+FOraQuery.SQL.Text);
     end;
   end;
-  Log.save('d', 'position | '+inttostr(position)+);
+  Log.save('d', 'position | '+inttostr(position));
   if error then
   begin
     try

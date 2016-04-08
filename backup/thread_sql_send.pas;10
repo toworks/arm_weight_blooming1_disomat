@@ -235,7 +235,6 @@ begin
   except
     on E : Exception do begin
       error := true;
- //     Result := true;
       lLog.save('e', E.ClassName+' sql save to oracle, с сообщением: '+E.Message+' | '+FOraQuery.SQL.Text);
     end;
   end;
@@ -259,16 +258,12 @@ begin
     except
       on E : Exception do begin
         error := true;
-//        Result := true;
         lLog.save('e', E.ClassName+'7, с сообщением: '+E.Message+' | '+FOraQuery.SQL.Text);
       end;
     end;
   end;
 
-  if error then
-     Result := true
-  else
-     Result := false;
+  Result := error;
 end;
 
 

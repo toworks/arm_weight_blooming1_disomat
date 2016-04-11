@@ -4,7 +4,7 @@ unit thread_sql_read;
 interface
 
 uses
-  SysUtils, DB, Classes, ActiveX, ZDataset, Variants, logging, sql;
+  SysUtils, DB, Classes, ActiveX, ZDataset, logging, sql;
 
 type
   //Здесь необходимо описать класс TThreadSql:
@@ -143,8 +143,8 @@ begin
         Synchronize(@SyncSqlReadTable);
 
         //dbgrid текущая выбраная заготовка
-        if Fpkdat_in <> '' then
-          Synchronize(@NextWeightToRecordLocation);
+//        if Fpkdat_in <> '' then
+//          Synchronize(@NextWeightToRecordLocation);
 
   {$IFDEF DEBUG}
     lLog.save('d', 'count -> '+inttostr(count));
@@ -159,7 +159,7 @@ begin
 
   // маркер следующей заготовки
   if MarkerNextWait then
-//    Synchronize(@NextWeightToRecord); //следующая запись (слиток) от записаной
+    Synchronize(@NextWeightToRecord); //следующая запись (слиток) от записаной
 end;
 
 

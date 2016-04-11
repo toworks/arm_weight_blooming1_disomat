@@ -53,8 +53,8 @@
         <Filename Value="sql.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="5"/>
-        <TopLine Value="260"/>
-        <CursorPos X="17" Y="303"/>
+        <TopLine Value="259"/>
+        <CursorPos X="24" Y="206"/>
         <UsageCount Value="219"/>
         <Loaded Value="True"/>
       </Unit5>
@@ -72,8 +72,8 @@
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
         <EditorIndex Value="4"/>
-        <TopLine Value="338"/>
-        <CursorPos X="76" Y="346"/>
+        <TopLine Value="325"/>
+        <CursorPos X="33" Y="346"/>
         <UsageCount Value="218"/>
         <Loaded Value="True"/>
       </Unit7>
@@ -89,7 +89,7 @@
       <Unit9>
         <Filename Value="thread_sql_read.pas"/>
         <EditorIndex Value="3"/>
-        <TopLine Value="141"/>
+        <TopLine Value="111"/>
         <CursorPos X="6" Y="165"/>
         <UsageCount Value="109"/>
         <Loaded Value="True"/>

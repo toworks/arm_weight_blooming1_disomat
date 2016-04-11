@@ -183,11 +183,6 @@ begin
     begin
       (Sender as TDBGrid).Canvas.Brush.Color:= clMedGray;
       (Sender as TDBGrid).Canvas.Font.Color := clHighLightText;
-
-      (Sender As TDBGrid).Canvas.FillRect(Rect); //не смазывает при прокрутке
-      (Sender As TDBGrid).Canvas.TextRect(R, R.Left + 2, R.Top + 2,
-                                    Column.Field.AsWideString);
-
     end;
   end;
   DBGrid2.Canvas.FillRect(Rect);
@@ -197,10 +192,13 @@ begin
     begin
 //     (Sender as TDBGrid).Canvas.FillRect(Rect);
 //     (Sender as TDBGrid).Canvas.TextRect(Rect, Rect.Left, Rect.Top, ' '+Column.Field.AsString);
-{       // fix (memo)
+
+      if Column.Field <> nil then begin
+       // fix (memo)
        (Sender As TDBGrid).Canvas.FillRect(Rect); //не смазывает при прокрутке
        (Sender As TDBGrid).Canvas.TextRect(R, R.Left + 2, R.Top + 2,
                                     Column.Field.AsWideString);
+      end;
 
 {          with (Sender As TDBGrid) do begin
             for i:=0 to Columns.Count-1 do begin

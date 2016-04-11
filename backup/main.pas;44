@@ -6,8 +6,8 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, DBGrids,
-  ExtCtrls, StdCtrls, Menus, db, {$ifdef windows} Windows, {$endif} Grids,
-  logging, sql, thread_sql_read, thread_sql_send, thread_comport;
+  ExtCtrls, StdCtrls, Menus, db, Forms, Grids, logging, sql, thread_sql_read,
+  thread_sql_send, thread_comport;
 
 type
 
@@ -147,7 +147,7 @@ begin
             TitleWidth := Canvas.TextWidth(Columns.Items[i].Title.Caption);
             TextWidth := Canvas.TextWidth(Columns.Items[i].Field.ToString);
   //          if (TextWidth < Columns.Items[i].Width) then begin
-               Columns.Items[i].Width := TitleWidth+25;
+               Columns.Items[i].Width := TitleWidth+35;
                Columns.Items[i].Alignment := taCenter;//taLeftJustify;
                Columns.Items[i].Title.Alignment := taCenter;//taLeftJustify;
   //          end;

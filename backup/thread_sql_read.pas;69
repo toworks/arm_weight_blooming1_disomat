@@ -16,6 +16,7 @@ type
 
     procedure SyncSqlReadTable;
     procedure SqlNewRecord;
+    procedure _NextWeightToRecordLocation;
   protected
     procedure Execute; override;
   public
@@ -71,9 +72,17 @@ begin
   CoInitialize(nil);
   while True do
    begin
+
       try
           Synchronize(@SyncSqlMax);
           SqlNewRecord;
+          //dbgrid текущая выбраная заготовка
+          if Fpkdat_in <> '' then
+             //Synchronize(@NextWeightToRecordLocation);
+             _NextWeightToRecordLocation;
+          // маркер следующей заготовки
+          if MarkerNextWait then
+//             Synchronize(@NextWeightToRecord); //следующая запись (слиток) от записаной
       except
         on E : Exception do
           lLog.save('e', E.ClassName+', с сообщением: '+E.Message);
@@ -84,6 +93,10 @@ begin
    CoUninitialize;
 end;
 
+procedure _NextWeightToRecordLocation;
+begin
+  Synchronize(@NextWeightToRecordLocation);
+end;
 
 procedure TThreadSqlRead.SqlNewRecord;
 var
@@ -158,8 +171,8 @@ begin
   end;
 
   // маркер следующей заготовки
-  if MarkerNextWait then
-    Synchronize(@NextWeightToRecord); //следующая запись (слиток) от записаной
+//  if MarkerNextWait then
+//    Synchronize(@NextWeightToRecord); //следующая запись (слиток) от записаной
 end;
 
 

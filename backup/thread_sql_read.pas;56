@@ -4,10 +4,9 @@ unit thread_sql_read;
 interface
 
 uses
-  SysUtils, DB, Classes, ActiveX, ZDataset, logging, sql;
+  SysUtils, DB, Classes, ActiveX, ZDataset, Variants, logging, sql;
 
 type
-  //Здесь необходимо описать класс TThreadSql:
   TThreadSqlRead = class(TThread)
   private
     FThreadSqlRead: TThreadSqlRead;
@@ -77,12 +76,6 @@ begin
       try
           Synchronize(@SyncSqlMax);
           SqlNewRecord;
-          //dbgrid текущая выбраная заготовка
-          if Fpkdat_in <> '' then
-             Synchronize(@SyncNextWeightToRecordLocation);
-          // маркер следующей заготовки
-          if MarkerNextWait then
-             Synchronize(@SyncNextWeightToRecord); //следующая запись (слиток) от записаной
       except
         on E : Exception do
           lLog.save('e', E.ClassName+', с сообщением: '+E.Message);
@@ -152,8 +145,8 @@ begin
         Synchronize(@SyncSqlReadTable);
 
         //dbgrid текущая выбраная заготовка
-//        if Fpkdat_in <> '' then
-//          Synchronize(@NextWeightToRecordLocation);
+        if Fpkdat_in <> '' then
+          Synchronize(@SyncNextWeightToRecordLocation);
 
   {$IFDEF DEBUG}
     lLog.save('d', 'count -> '+inttostr(count));
@@ -204,7 +197,7 @@ begin
       form1.DBGrid1.DataSource.DataSet.DisableControls;
       SqlNextWeightToRecord;
       //dbgrid текущая выбраная заготовка
-      Synchronize(@NextWeightToRecordLocation);
+      Synchronize(@SyncNextWeightToRecordLocation);
   finally
       //включаем управление
       form1.DBGrid1.DataSource.DataSet.EnableControls;

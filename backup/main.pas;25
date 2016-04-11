@@ -55,6 +55,7 @@ var
   SDataSource: TDataSource;
   MainFSql: TFsql;
   FDataSource: TDataSource;
+  ThreadStop: boolean = false;
 
   function ViewSelectedIngot: boolean;
   function PointReplace(DataIn: string): string;
@@ -111,10 +112,14 @@ begin
   // маркер следующей заготовки
   if not MarkerNextWait then begin
     try
+ThreadStop := true;
         //отключаем управление
         form1.DBGrid1.DataSource.DataSet.DisableControls;
         if MessageDlg('Выбрать заготовку для взвешивания?', mtCustom, mbYesNo, 0) = mrYes then
+begin
           ViewSelectedIngot;
+          ThreadStop := false;
+end;
     finally
         //включаем управление
         form1.DBGrid1.DataSource.DataSet.EnableControls;
@@ -262,8 +267,6 @@ begin
   DBgrid1Create(self);
   FDataSource.DataSet := MainFSql.FQuery;
   DBGrid1.DataSource := FDataSource;
-
-  ThreadStop := false;
 
   ThreadSqlRead := TThreadSqlRead.Create(Log);
   ThreadSqlSend := TThreadSqlSend.Create(Log);

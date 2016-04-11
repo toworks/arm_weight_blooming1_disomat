@@ -6,8 +6,8 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, DBGrids,
-  ExtCtrls, StdCtrls, Menus, db, Forms, Grids, logging, sql, thread_sql_read,
-  thread_sql_send, thread_comport;
+  ExtCtrls, StdCtrls, Menus, db, {$ifdef windows} Windows, {$endif} Grids, Variants,
+  logging, sql, thread_sql_read, thread_sql_send, thread_comport;
 
 type
 
@@ -60,6 +60,7 @@ var
   function ViewSelectedIngot: boolean;
   function PointReplace(DataIn: string): string;
   function ViewClear: boolean;
+  procedure NextWeightToRecordLocation;
 
 
 implementation
@@ -407,6 +408,26 @@ begin
       end;
    end;
 
+end;
+
+
+procedure NextWeightToRecordLocation;
+var
+  KeyValues : Variant;
+begin
+  try
+      //отключаем управление
+      form1.DBGrid1.DataSource.DataSet.DisableControls;
+      //переменные по которым будет производиться поиск
+      KeyValues := VarArrayOf([pkdat,num,num_ingot]);
+      //поиск по ключивым полям
+      form1.DBGrid1.DataSource.DataSet.Locate('pkdat;num;num_ingot', KeyValues, []);
+  finally
+      //включаем управление
+      form1.DBGrid1.DataSource.DataSet.EnableControls;
+  end;
+  //-- test
+  //Form1.l_next_id.Caption:=pkdat+'|'+num+'|'+num_ingot;
 end;
 
 

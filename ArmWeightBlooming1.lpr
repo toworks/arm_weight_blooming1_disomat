@@ -7,7 +7,8 @@ uses
   cthreads,
   {$ENDIF}{$ENDIF}
   Interfaces, // this includes the LCL widgetset
-  Forms, main, sql, thread_comport, thread_sql_send, zcore
+  Forms, uniqueinstance_package, main, sql, thread_comport, thread_sql_send,
+  zcore
   { you can add units after this };
 
 {$R *.res}

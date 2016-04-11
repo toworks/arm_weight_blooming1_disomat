@@ -4,7 +4,7 @@ unit thread_sql_read;
 interface
 
 uses
-  SysUtils, DB, Classes, ActiveX, ZDataset, logging, sql;
+  SysUtils, DB, Classes, ActiveX, ZDataset, Variants, logging, sql;
 
 type
   //Здесь необходимо описать класс TThreadSql:
@@ -204,7 +204,7 @@ begin
       form1.DBGrid1.DataSource.DataSet.DisableControls;
       SqlNextWeightToRecord;
       //dbgrid текущая выбраная заготовка
-      NextWeightToRecordLocation;
+      Synchronize(@SyncNextWeightToRecordLocation);
   finally
       //включаем управление
       form1.DBGrid1.DataSource.DataSet.EnableControls;

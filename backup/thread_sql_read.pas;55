@@ -4,10 +4,9 @@ unit thread_sql_read;
 interface
 
 uses
-  SysUtils, DB, Classes, ActiveX, ZDataset, logging, sql;
+  SysUtils, DB, Classes, ActiveX, ZDataset, Variants, logging, sql;
 
 type
-  //Здесь необходимо описать класс TThreadSql:
   TThreadSqlRead = class(TThread)
   private
     FThreadSqlRead: TThreadSqlRead;
@@ -77,12 +76,6 @@ begin
       try
           Synchronize(@SyncSqlMax);
           SqlNewRecord;
-          //dbgrid текущая выбраная заготовка
-          if Fpkdat_in <> '' then
-             Synchronize(@SyncNextWeightToRecordLocation);
-          // маркер следующей заготовки
-          if MarkerNextWait then
-             Synchronize(@SyncNextWeightToRecord); //следующая запись (слиток) от записаной
       except
         on E : Exception do
           lLog.save('e', E.ClassName+', с сообщением: '+E.Message);
@@ -152,8 +145,8 @@ begin
         Synchronize(@SyncSqlReadTable);
 
         //dbgrid текущая выбраная заготовка
-//        if Fpkdat_in <> '' then
-//          Synchronize(@NextWeightToRecordLocation);
+        if Fpkdat_in <> '' then
+          Synchronize(@SyncNextWeightToRecordLocation);
 
   {$IFDEF DEBUG}
     lLog.save('d', 'count -> '+inttostr(count));
@@ -192,6 +185,7 @@ begin
   end;
   //исправляем отображение даты в DBGrid -> pFIBDataSet1
   TDateTimeField(MainFSql.FQuery.FieldByName('time_ingot')).DisplayFormat:='hh:nn:ss';
+  TDateTimeField(MainFSql.FQuery.FieldByName('weight_ingot')).DisplayFormat:='#,###0.00';
 end;
 
 

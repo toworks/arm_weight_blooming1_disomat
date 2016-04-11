@@ -22,7 +22,6 @@ type
   public
     Constructor Create(_Log: TLog); overload;
     Destructor Destroy; override;
-    procedure SyncSqlMax;
   end;
 
 var
@@ -74,7 +73,6 @@ begin
    begin
 
       try
-          Synchronize(@SyncSqlMax);
           SqlNewRecord;
       except
         on E : Exception do
@@ -195,8 +193,6 @@ begin
 //     if Fpkdat_in <> '' then
         NextWeightToRecordLocation;
 end;
-
-
 
 
 // При загрузке программы класс будет создаваться

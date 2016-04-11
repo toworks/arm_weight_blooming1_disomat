@@ -56,12 +56,13 @@ var
   MainFSql: TFsql;
   FDataSource: TDataSource;
 
-//    {$DEFINE DEBUG}
-
   function ViewSelectedIngot: boolean;
   function PointReplace(DataIn: string): string;
   function ViewClear: boolean;
   procedure NextWeightToRecordLocation;
+
+
+  //    {$DEFINE DEBUG}
 
 
 implementation
@@ -262,6 +263,8 @@ begin
   FDataSource.DataSet := MainFSql.FQuery;
   DBGrid1.DataSource := FDataSource;
 
+  ThreadStop := false;
+
   ThreadSqlRead := TThreadSqlRead.Create(Log);
   ThreadSqlSend := TThreadSqlSend.Create(Log);
   ThreadComPort := TThreadComPort.Create(Log);
@@ -386,6 +389,7 @@ begin
   num_ingot := Form1.DBGrid1.DataSource.DataSet.FieldByName('NUM_INGOT').AsString;
   num_heat := Form1.DBGrid1.DataSource.DataSet.FieldByName('NUM_HEAT').AsString;
   smena := Form1.DBGrid1.DataSource.DataSet.FieldByName('SMENA').AsString;
+  showmessage(pkdat+' | '+num+' | '+num_ingot);
 end;
 
 

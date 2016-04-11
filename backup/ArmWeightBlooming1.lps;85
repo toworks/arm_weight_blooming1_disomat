@@ -18,7 +18,7 @@
         <ComponentName Value="Form1"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <TopLine Value="42"/>
+        <TopLine Value="396"/>
         <CursorPos X="16" Y="125"/>
         <UsageCount Value="220"/>
         <Loaded Value="True"/>
@@ -46,8 +46,8 @@
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="50"/>
-        <CursorPos X="35" Y="85"/>
+        <TopLine Value="53"/>
+        <CursorPos X="30" Y="97"/>
         <UsageCount Value="220"/>
         <Loaded Value="True"/>
       </Unit4>
@@ -55,7 +55,7 @@
         <Filename Value="sql.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="4"/>
-        <TopLine Value="259"/>
+        <TopLine Value="247"/>
         <CursorPos Y="49"/>
         <UsageCount Value="219"/>
         <Loaded Value="True"/>
@@ -73,8 +73,8 @@
         <Filename Value="thread_comport.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="5"/>
-        <TopLine Value="335"/>
-        <CursorPos X="6" Y="279"/>
+        <TopLine Value="86"/>
+        <CursorPos X="27" Y="111"/>
         <UsageCount Value="218"/>
         <Loaded Value="True"/>
       </Unit7>
@@ -84,7 +84,7 @@
         <EditorIndex Value="2"/>
         <TopLine Value="3"/>
         <CursorPos X="20" Y="178"/>
-        <UsageCount Value="188"/>
+        <UsageCount Value="189"/>
         <Loaded Value="True"/>
       </Unit8>
       <Unit9>

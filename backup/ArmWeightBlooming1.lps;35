@@ -52,8 +52,8 @@
         <Filename Value="sql.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="2"/>
-        <TopLine Value="255"/>
-        <CursorPos X="25" Y="286"/>
+        <TopLine Value="258"/>
+        <CursorPos X="32" Y="284"/>
         <UsageCount Value="219"/>
         <Loaded Value="True"/>
       </Unit5>
@@ -71,8 +71,8 @@
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
         <EditorIndex Value="4"/>
-        <TopLine Value="345"/>
-        <CursorPos X="32" Y="49"/>
+        <TopLine Value="75"/>
+        <CursorPos X="19" Y="106"/>
         <UsageCount Value="218"/>
         <Loaded Value="True"/>
       </Unit7>
@@ -242,7 +242,7 @@
       </Position29>
       <Position30>
         <Filename Value="sql.pas"/>
-        <Caret Line="286" Column="25" TopLine="258"/>
+        <Caret Line="286" Column="25" TopLine="255"/>
       </Position30>
     </JumpHistory>
   </ProjectSession>

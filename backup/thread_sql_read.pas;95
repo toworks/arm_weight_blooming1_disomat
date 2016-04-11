@@ -159,7 +159,7 @@ begin
 
   // маркер следующей заготовки
   if MarkerNextWait then
-    Synchronize(@NextWeightToRecord); //следующая запись (слиток) от записаной
+//    Synchronize(@NextWeightToRecord); //следующая запись (слиток) от записаной
 end;
 
 

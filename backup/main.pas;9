@@ -267,7 +267,7 @@ begin
   DBGrid1.DataSource := FDataSource;
 
 //  ThreadSqlRead := TThreadSqlRead.Create(Log);
-//  ThreadSqlSend := TThreadSqlSend.Create(Log);
+  ThreadSqlSend := TThreadSqlSend.Create(Log);
 //  ThreadComPort := TThreadComPort.Create(Log);
 
   Form1.Caption := SettingsApp.HeadName+'  build('+SettingsApp.GetVersion+')';
@@ -380,19 +380,16 @@ end;
 
 function ViewSelectedIngot: boolean;
 begin
-  if not Form1.DBGrid1.DataSource.DataSet.FieldByName('PKDAT').IsNull then
-  begin
-    Form1.l_number_ingot.Caption := Form1.DBGrid1.DataSource.DataSet.FieldByName('NUM_INGOT').AsString;
-    Form1.l_datetime.Caption := Form1.DBGrid1.DataSource.DataSet.FieldByName('TIME_INGOT').AsString;
-    Form1.l_heat.Caption := Form1.DBGrid1.DataSource.DataSet.FieldByName('NUM_HEAT').AsString;
-    Form1.l_grade.Caption := Form1.DBGrid1.DataSource.DataSet.FieldByName('NAME').AsString;
-    Form1.l_weight_ingot.Caption := Form1.DBGrid1.DataSource.DataSet.FieldByName('WEIGHT_INGOT').AsString;
-    pkdat := Form1.DBGrid1.DataSource.DataSet.FieldByName('PKDAT').AsString;
-    num := Form1.DBGrid1.DataSource.DataSet.FieldByName('NUM').AsString;
-    num_ingot := Form1.DBGrid1.DataSource.DataSet.FieldByName('NUM_INGOT').AsString;
-    num_heat := Form1.DBGrid1.DataSource.DataSet.FieldByName('NUM_HEAT').AsString;
-    smena := Form1.DBGrid1.DataSource.DataSet.FieldByName('SMENA').AsString;
-  end;
+  Form1.l_number_ingot.Caption := Form1.DBGrid1.DataSource.DataSet.FieldByName('NUM_INGOT').AsString;
+  Form1.l_datetime.Caption := Form1.DBGrid1.DataSource.DataSet.FieldByName('TIME_INGOT').AsString;
+  Form1.l_heat.Caption := Form1.DBGrid1.DataSource.DataSet.FieldByName('NUM_HEAT').AsString;
+  Form1.l_grade.Caption := Form1.DBGrid1.DataSource.DataSet.FieldByName('NAME').AsString;
+  Form1.l_weight_ingot.Caption := Form1.DBGrid1.DataSource.DataSet.FieldByName('WEIGHT_INGOT').AsString;
+  pkdat := Form1.DBGrid1.DataSource.DataSet.FieldByName('PKDAT').AsString;
+  num := Form1.DBGrid1.DataSource.DataSet.FieldByName('NUM').AsString;
+  num_ingot := Form1.DBGrid1.DataSource.DataSet.FieldByName('NUM_INGOT').AsString;
+  num_heat := Form1.DBGrid1.DataSource.DataSet.FieldByName('NUM_HEAT').AsString;
+  smena := Form1.DBGrid1.DataSource.DataSet.FieldByName('SMENA').AsString;
 end;
 
 

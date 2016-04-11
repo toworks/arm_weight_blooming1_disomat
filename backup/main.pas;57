@@ -36,8 +36,6 @@ type
       Column: TColumn; AState: TGridDrawState);
     procedure DBGrid2DrawColumnCell(Sender: TObject; const Rect: TRect;
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
-    procedure DBGrid2PrepareCanvas(sender: TObject; DataCol: Integer;
-      Column: TColumn; AState: TGridDrawState);
     procedure FormCloseQuery(Sender: TObject; var CanClose: boolean);
     procedure FormCreate(Sender: TObject);
     function CreateMenu: boolean;
@@ -142,28 +140,23 @@ begin
   end;
   DBGrid1.Canvas.FillRect(Rect);
   Dbgrid1.DefaultDrawColumnCell(Rect, DataCol, Column, State);
-end;
 
-
-procedure TForm1.DBGrid1PrepareCanvas(sender: TObject; DataCol: Integer;
-  Column: TColumn; AState: TGridDrawState);
-var
-   i: integer;
-   TitleWidth: integer;
-   TextWidth: integer;
-begin
-    with (Sender As TDBGrid) do begin
-      for i:=0 to Columns.Count-1 do begin
-          TitleWidth := Canvas.TextWidth(Columns.Items[i].Title.Caption);
-          TextWidth := Canvas.TextWidth(Columns.Items[i].Field.ToString);
-//          if (TextWidth < Columns.Items[i].Width) then begin
-             Columns.Items[i].Width := TitleWidth+25;
-             Columns.Items[i].Alignment := taCenter;//taLeftJustify;
-             Columns.Items[i].Title.Alignment := taCenter;//taLeftJustify;
-//          end;
+  if Column.Field <> nil then
+  begin
+      with (Sender As TDBGrid) do begin
+        for i:=0 to Columns.Count-1 do begin
+            TitleWidth := Canvas.TextWidth(Columns.Items[i].Title.Caption);
+            TextWidth := Canvas.TextWidth(Columns.Items[i].Field.ToString);
+  //          if (TextWidth < Columns.Items[i].Width) then begin
+               Columns.Items[i].Width := TitleWidth+25;
+               Columns.Items[i].Alignment := taCenter;//taLeftJustify;
+               Columns.Items[i].Title.Alignment := taCenter;//taLeftJustify;
+  //          end;
+        end;
       end;
-    end;
+  end;
 end;
+
 
 procedure TForm1.DBGrid2DrawColumnCell(Sender: TObject; const Rect: TRect;
   DataCol: Integer; Column: TColumn; State: TGridDrawState);
@@ -198,75 +191,55 @@ begin
        (Sender As TDBGrid).Canvas.TextRect(R, R.Left + 2, R.Top + 2,
                                     Column.Field.AsWideString);
 
-{          with (Sender As TDBGrid) do begin
-            for i:=0 to Columns.Count-1 do begin
-                TitleWidth := Canvas.TextWidth(Columns.Items[i].Title.Caption);
-                TextWidth := Canvas.TextWidth(Columns.Items[i].Field.ToString);
-      //          if (TitleWidth < TextWidth {Columns.Items[i].Width}) then begin}
-{                if ( Columns.Items[i].FieldName = 'timestamp' ) then
-                   Columns.Items[i].Width := TextWidth+55;
-                if ( Columns.Items[i].FieldName = 'weight' ) or
-                   (Columns.Items[i].FieldName = 'transferred') then
-                   Columns.Items[i].Width := TitleWidth+30;
-                if ( Columns.Items[i].FieldName = 'shift' ) or
-                   (Columns.Items[i].FieldName = 'num_ingot') or
-                   (Columns.Items[i].FieldName = 'heat') then
-                   Columns.Items[i].Width := TitleWidth+20;
+       // fix size title and column
+       with (Sender As TDBGrid) do begin
+          for i:=0 to Columns.Count-1 do begin
+              TitleWidth := Canvas.TextWidth(Columns.Items[i].Title.Caption);
+              TextWidth := Canvas.TextWidth(Columns.Items[i].Field.ToString);
+    //          if (TitleWidth < TextWidth {Columns.Items[i].Width}) then begin}
+              if ( Columns.Items[i].FieldName = 'timestamp' ) then
+                 Columns.Items[i].Width := TextWidth+55;
+              if ( Columns.Items[i].FieldName = 'weight' ) or
+                 (Columns.Items[i].FieldName = 'transferred') then
+                 Columns.Items[i].Width := TitleWidth+30;
+              if ( Columns.Items[i].FieldName = 'shift' ) or
+                 (Columns.Items[i].FieldName = 'num_ingot') or
+                 (Columns.Items[i].FieldName = 'heat') then
+                 Columns.Items[i].Width := TitleWidth+20;
 
-                Columns.Items[i].Alignment := taCenter;//taLeftJustify;
-                Columns.Items[i].Title.Alignment := taCenter;//taLeftJustify;
-            end;
-          end;}
+              Columns.Items[i].Alignment := taCenter;//taLeftJustify;
+              Columns.Items[i].Title.Alignment := taCenter;//taLeftJustify;
+          end;
+       end;
 
-          //Exception: fixed header should always be drawn like normal:
-            // this never gets picked up as OnDrawColumnCell apparently only deals with data cells!!!
-            if (gdFixed in State) then
-            begin
-//              OverrideDraw:=false;
-              Log.save('e', '++++++ gdFixed | '+Column.FieldName);
-            end;
-
-    {  if (Column.FieldName = 'shift') or
-         (Column.FieldName = 'timestamp') {or
-         (Column.FieldName = 'transferred')} then
-      begin
-         (Sender As TDBGrid).Canvas.FillRect(Rect); //не смазывает при прокрутке
-         (Sender As TDBGrid).Canvas.TextRect(R, R.Left + 2, R.Top + 2,
-                                  Column.Field.AsWideString);
-      end
-      else begin
-          TDBGrid(Sender).Canvas.FillRect(Rect); //не смазывает при прокрутке
-          TDBGrid(Sender).DefaultDrawColumnCell(Rect, DataCol, Column, State);
-      end; }
-
-      if ( Column.FieldName = 'transferred' ) then
-      begin
-         Log.save('i', 'transferred | '+Column.Field.AsWideString);
-         if ( Column.Field.AsWideString = UTF8Encode('не передан') ) then
-         begin
-           (Sender As TDBGrid).Canvas.FillRect(Rect); //не смазывает при прокрутке
-            with DBGrid2.Canvas do
-            begin
-              Font.Color := clRed;
-              font.Style:= [fsBold];
-              (Sender as TDBGrid).Canvas.TextRect(Rect, Rect.Left + 2,
+       // colored text in column
+       if ( Column.FieldName = 'transferred' ) then
+       begin
+          if ( Column.Field.AsWideString = UTF8Encode('не передан') ) then
+          begin
+            (Sender As TDBGrid).Canvas.FillRect(Rect); //не смазывает при прокрутке
+             with DBGrid2.Canvas do
+             begin
+               Font.Color := clRed;
+               font.Style:= [fsBold];
+               (Sender as TDBGrid).Canvas.TextRect(Rect, Rect.Left + 2,
                                     Rect.Top + 2, Column.Field.AsWideString);
-            end
-         end
-        else
-         begin
-           (Sender As TDBGrid).Canvas.FillRect(Rect); //не смазывает при прокрутке
-            with DBGrid2.Canvas do
-            begin
-              Font.Color := $002CB902;//green
-              font.Style:= [fsBold];
-              (Sender as TDBGrid).Canvas.TextRect(Rect, Rect.Left + 2,
+             end
+          end
+         else
+          begin
+            (Sender As TDBGrid).Canvas.FillRect(Rect); //не смазывает при прокрутке
+             with DBGrid2.Canvas do
+             begin
+               Font.Color := $002CB902;//green
+               font.Style:= [fsBold];
+               (Sender as TDBGrid).Canvas.TextRect(Rect, Rect.Left + 2,
                                     Rect.Top + 2, Column.Field.AsWideString);
-            end
-        end;
-      end;
+             end
+         end;
+       end;
 
-  end;
+   end;
 end;
 
 

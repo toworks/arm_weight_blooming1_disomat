@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, DBGrids,
-  ExtCtrls, StdCtrls, Menus, db, {$ifdef windows} Windows, {$endif} Grids,
+  ExtCtrls, StdCtrls, Menus, db, Windows, Grids, PopupNotifier, Variants,
   logging, sql, thread_sql_read, thread_sql_send, thread_comport;
 
 type
@@ -29,6 +29,7 @@ type
     l_n_number_ingot: TLabel;
     l_number_ingot: TLabel;
     l_n_datetime: TLabel;
+    PopupNotifier1: TPopupNotifier;
     procedure DBGrid1DblClick(Sender: TObject);
     procedure DBGrid1DrawColumnCell(Sender: TObject; const Rect: TRect;
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
@@ -54,12 +55,15 @@ var
   SDataSource: TDataSource;
   MainFSql: TFsql;
   FDataSource: TDataSource;
-
-//    {$DEFINE DEBUG}
+  ThreadStop: boolean;
 
   function ViewSelectedIngot: boolean;
   function PointReplace(DataIn: string): string;
   function ViewClear: boolean;
+  procedure NextWeightToRecordLocation;
+
+
+  //    {$DEFINE DEBUG}
 
 
 implementation
@@ -260,6 +264,8 @@ begin
   FDataSource.DataSet := MainFSql.FQuery;
   DBGrid1.DataSource := FDataSource;
 
+  ThreadStop := false;
+
   ThreadSqlRead := TThreadSqlRead.Create(Log);
   ThreadSqlSend := TThreadSqlSend.Create(Log);
   ThreadComPort := TThreadComPort.Create(Log);
@@ -398,39 +404,15 @@ var
   i: integer;
 begin
 
-  for i:=0 to form1.ComponentCount - 1 do
+  for i:=0 to Form1.ComponentCount - 1 do
    begin
-    if (form1.Components[i] is Tlabel) then
+    if (Form1.Components[i] is Tlabel) then
       begin
-        if copy(form1.Components[i].Name,1,4) <> 'l_n_' then
-          Tlabel(Form1.FindComponent(form1.Components[i].Name)).Caption := '';
+        if copy(Form1.Components[i].Name,1,4) <> 'l_n_' then
+          Tlabel(Form1.FindComponent(Form1.Components[i].Name)).Caption := '';
       end;
    end;
 
-end;
-
-
-procedure SqlReadTable;
-begin
-  try
-      MainFSql.FQuery.Close;
-      MainFSql.FQuery.SQL.Clear;
-      MainFSql.FQuery.SQL.Add('select i.pkdat,i.num,i.num_ingot,h.num_heat, s.name,i.weight_ingot, i.time_ingot, s.steel_group, sh.smena');
-      MainFSql.FQuery.SQL.Add('from ingots i, heats h, steels s, shifts sh');
-      MainFSql.FQuery.SQL.Add('where i.pkdat=h.pkdat');
-      MainFSql.FQuery.SQL.Add('and i.pkdat=sh.pkdat');
-      MainFSql.FQuery.SQL.Add('and i.num=h.num');
-      MainFSql.FQuery.SQL.Add('and h.steel_grade=s.steel_grade');
-      MainFSql.FQuery.SQL.Add('and i.pkdat in ('+Fpkdat_in+')');
-      MainFSql.FQuery.SQL.Add('order by i.pkdat desc, i.num desc, i.num_ingot desc');
-      MainFSql.FQuery.Open;
-  except
-    on E : Exception do
-      lLog.save('e', E.ClassName+', с сообщением: '+E.Message);
-  end;
-  //исправляем отображение даты в DBGrid
-  TDateTimeField(MainFSql.FQuery.FieldByName('time_ingot')).DisplayFormat:='hh:nn:ss';
-  TDateTimeField(MainFSql.FQuery.FieldByName('weight_ingot')).DisplayFormat:='#,###0.000';
 end;
 
 

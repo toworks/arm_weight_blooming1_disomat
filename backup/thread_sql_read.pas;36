@@ -158,7 +158,8 @@ begin
   end;
 
   // маркер следующей заготовки
-//  if MarkerNextWait then
+  if not MarkerNextWait then
+     Synchronize(NextWeightToRecordLocation);
 //    Synchronize(@NextWeightToRecord); //следующая запись (слиток) от записаной
 end;
 
@@ -189,9 +190,7 @@ end;
 
 procedure TThreadSqlRead.SyncNextWeightToRecord;
 begin
-     //dbgrid текущая выбраная заготовка
-//     if Fpkdat_in <> '' then
-        NextWeightToRecordLocation;
+     NextWeightToRecordLocation;
 end;
 
 

@@ -188,7 +188,7 @@ begin
        // fix (memo)
        (Sender As TDBGrid).Canvas.FillRect(Rect); //не смазывает при прокрутке
        (Sender As TDBGrid).Canvas.TextRect(R, R.Left + 2, R.Top + 2,
-                                    Column.Field.AsWideString);
+                                                   Column.Field.AsWideString);
 
        // fix size title and column
        with (Sender As TDBGrid) do begin

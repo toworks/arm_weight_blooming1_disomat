@@ -39,6 +39,9 @@ type
     procedure FormCreate(Sender: TObject);
     function CreateMenu: boolean;
     procedure ActionMenuItemClick(Sender: TObject);
+    function OneInstance: boolean;
+    procedure UniqueInstanceAppOtherInstance(Sender: TObject;
+      ParamCount: Integer; Parameters: array of String);
   private
     procedure DBgrid1Create(Sender: TObject);
     procedure DBgrid2Create(Sender: TObject);
@@ -266,8 +269,8 @@ begin
   FDataSource.DataSet := MainFSql.FQuery;
   DBGrid1.DataSource := FDataSource;
 
-//  ThreadSqlRead := TThreadSqlRead.Create(Log);
-//  ThreadSqlSend := TThreadSqlSend.Create(Log);
+  ThreadSqlRead := TThreadSqlRead.Create(Log);
+  ThreadSqlSend := TThreadSqlSend.Create(Log);
   ThreadComPort := TThreadComPort.Create(Log);
 
   Form1.Caption := SettingsApp.HeadName+'  build('+SettingsApp.GetVersion+')';
@@ -276,11 +279,36 @@ begin
 
   //запрет на изменение формы
   BorderStyle := bsToolWindow;
-  BorderIcons := BorderIcons - [biMaximize];
+  BorderIcons := BorderIcons - [biMaximize, biSystemMenu];
 
   ViewClear;
 
   CreateMenu;
+end;
+
+
+function TForm1.OneInstance: boolean;
+begin
+  //проверка 1 экземпляр программы
+  UniqueInstanceApp := TUniqueInstance.Create(Self);
+  with UniqueInstanceApp do
+    begin
+      Identifier := 'uSOvRn8tcCo5dkerIp2Eg6F65X5tOVQ8R1tBnbRvm4X8gavyJe';//ID program
+      UpdateInterval := 800;
+      OnOtherInstance := @UniqueInstanceAppOtherInstance;
+      Enabled := True;
+      Loaded;
+    end;
+end;
+
+
+procedure TForm1.UniqueInstanceAppOtherInstance(Sender: TObject;
+  ParamCount: Integer; Parameters: array of String);
+begin
+  //hack to force app bring to front
+{  FormStyle := fsSystemStayOnTop;
+  FormStyle := fsNormal;}
+  ShowForm(Self);
 end;
 
 

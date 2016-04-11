@@ -79,10 +79,10 @@ begin
           SqlNewRecord;
           //dbgrid текущая выбраная заготовка
           if Fpkdat_in <> '' then
-             Synchronize(@NextWeightToRecordLocation);
+             Synchronize(@SyncNextWeightToRecordLocation);
           // маркер следующей заготовки
           if MarkerNextWait then
-             Synchronize(@NextWeightToRecord); //следующая запись (слиток) от записаной
+             Synchronize(@SyncNextWeightToRecord); //следующая запись (слиток) от записаной
       except
         on E : Exception do
           lLog.save('e', E.ClassName+', с сообщением: '+E.Message);
@@ -195,7 +195,7 @@ begin
 end;
 
 
-procedure NextWeightToRecord;
+procedure TThreadSqlRead.SyncNextWeightToRecord;
 var
   KeyValues : Variant;
 begin
@@ -204,7 +204,7 @@ begin
       form1.DBGrid1.DataSource.DataSet.DisableControls;
       SqlNextWeightToRecord;
       //dbgrid текущая выбраная заготовка
-      NextWeightToRecordLocation;
+      Synchronize(@NextWeightToRecordLocation);
   finally
       //включаем управление
       form1.DBGrid1.DataSource.DataSet.EnableControls;
@@ -212,7 +212,7 @@ begin
 end;
 
 
-procedure NextWeightToRecordLocation;
+procedure TThreadSqlRead.SyncNextWeightToRecordLocation;
 var
   KeyValues : Variant;
 begin

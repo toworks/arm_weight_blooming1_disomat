@@ -18,9 +18,8 @@
         <ComponentName Value="Form1"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <IsVisibleTab Value="True"/>
         <TopLine Value="89"/>
-        <CursorPos Y="121"/>
+        <CursorPos X="48" Y="120"/>
         <UsageCount Value="220"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -45,10 +44,12 @@
       <Unit4>
         <Filename Value="testing.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="-1"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="2"/>
         <TopLine Value="53"/>
-        <CursorPos X="47" Y="99"/>
+        <CursorPos X="26" Y="98"/>
         <UsageCount Value="220"/>
+        <Loaded Value="True"/>
       </Unit4>
       <Unit5>
         <Filename Value="sql.pas"/>
@@ -69,9 +70,9 @@
       <Unit7>
         <Filename Value="thread_comport.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="3"/>
-        <TopLine Value="159"/>
-        <CursorPos Y="125"/>
+        <EditorIndex Value="4"/>
+        <TopLine Value="334"/>
+        <CursorPos X="8" Y="370"/>
         <UsageCount Value="218"/>
         <Loaded Value="True"/>
       </Unit7>
@@ -86,9 +87,9 @@
       </Unit8>
       <Unit9>
         <Filename Value="thread_sql_read.pas"/>
-        <EditorIndex Value="2"/>
-        <TopLine Value="60"/>
-        <CursorPos Y="74"/>
+        <EditorIndex Value="3"/>
+        <TopLine Value="141"/>
+        <CursorPos X="6" Y="165"/>
         <UsageCount Value="109"/>
         <Loaded Value="True"/>
       </Unit9>
@@ -123,7 +124,7 @@
         <UsageCount Value="5"/>
       </Unit13>
     </Units>
-    <JumpHistory Count="24" HistoryIndex="23">
+    <JumpHistory Count="25" HistoryIndex="24">
       <Position1>
         <Filename Value="thread_comport.pas"/>
         <Caret Line="105" Column="51" TopLine="73"/>
@@ -220,6 +221,10 @@
         <Filename Value="thread_comport.pas"/>
         <Caret Line="221" Column="29" TopLine="196"/>
       </Position24>
+      <Position25>
+        <Filename Value="thread_sql_read.pas"/>
+        <Caret Line="74" TopLine="60"/>
+      </Position25>
     </JumpHistory>
   </ProjectSession>
 </CONFIG>

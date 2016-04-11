@@ -22,7 +22,6 @@ type
   public
     Constructor Create(_Log: TLog); overload;
     Destructor Destroy; override;
-    procedure SyncSqlMax;
   end;
 
 var
@@ -74,7 +73,6 @@ begin
    begin
 
       try
-          Synchronize(@SyncSqlMax);
           SqlNewRecord;
       except
         on E : Exception do
@@ -194,12 +192,6 @@ begin
      //dbgrid текущая выбраная заготовка
 //     if Fpkdat_in <> '' then
         NextWeightToRecordLocation;
-end;
-
-
-procedure TThreadSqlRead.SyncSqlMax;
-begin
-//  Form1.SqlMax := FSqlMax;
 end;
 
 

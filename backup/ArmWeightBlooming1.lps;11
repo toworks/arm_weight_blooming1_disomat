@@ -4,7 +4,7 @@
     <PathDelim Value="\"/>
     <Version Value="9"/>
     <BuildModes Active="Debug"/>
-    <Units Count="14">
+    <Units Count="10">
       <Unit0>
         <Filename Value="ArmWeightBlooming1.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -18,9 +18,8 @@
         <ComponentName Value="Form1"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <IsVisibleTab Value="True"/>
         <TopLine Value="244"/>
-        <CursorPos Y="271"/>
+        <CursorPos X="14" Y="264"/>
         <UsageCount Value="220"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -53,8 +52,8 @@
         <Filename Value="sql.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="2"/>
-        <TopLine Value="258"/>
-        <CursorPos Y="283"/>
+        <TopLine Value="182"/>
+        <CursorPos X="25" Y="223"/>
         <UsageCount Value="219"/>
         <Loaded Value="True"/>
       </Unit5>
@@ -70,9 +69,10 @@
       <Unit7>
         <Filename Value="thread_comport.pas"/>
         <IsPartOfProject Value="True"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="4"/>
-        <TopLine Value="46"/>
-        <CursorPos Y="39"/>
+        <TopLine Value="90"/>
+        <CursorPos X="97" Y="122"/>
         <UsageCount Value="218"/>
         <Loaded Value="True"/>
       </Unit7>
@@ -87,41 +87,11 @@
       <Unit9>
         <Filename Value="thread_sql_read.pas"/>
         <EditorIndex Value="3"/>
-        <TopLine Value="51"/>
+        <TopLine Value="159"/>
         <CursorPos X="14" Y="85"/>
         <UsageCount Value="109"/>
         <Loaded Value="True"/>
       </Unit9>
-      <Unit10>
-        <Filename Value="D:\bin\lazarus\lcl\grids.pas"/>
-        <UnitName Value="Grids"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="11892"/>
-        <CursorPos Y="11912"/>
-        <UsageCount Value="0"/>
-      </Unit10>
-      <Unit11>
-        <Filename Value="D:\bin\lazarus\components_outside\zeosdbo\packages\lazarus\packages\lazarus\zcore.pas"/>
-        <EditorIndex Value="-1"/>
-        <CursorPos X="3" Y="10"/>
-        <UsageCount Value="0"/>
-      </Unit11>
-      <Unit12>
-        <Filename Value="D:\bin\lazarus\components_outside\zeosdbo\src\dbc\ZDbcInterbase6Utils.pas"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="812"/>
-        <CursorPos Y="831"/>
-        <UsageCount Value="0"/>
-        <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit12>
-      <Unit13>
-        <Filename Value="D:\bin\lazarus\lcl\dbgrids.pas"/>
-        <UnitName Value="DBGrids"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="3066"/>
-        <CursorPos X="47" Y="3105"/>
-        <UsageCount Value="0"/>
-      </Unit13>
     </Units>
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>

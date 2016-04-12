@@ -121,7 +121,7 @@ begin
    begin
       try
           SqlSend;
-          GetMaxLocalCount;
+//          GetMaxLocalCount;
 //          Synchronize(SyncSqlMaxLocal);
       except
         on E : Exception do
@@ -182,7 +182,8 @@ begin
       try
 //        send_error := SqlSaveToOracle(Byffer[i,0], Byffer[i,1], Byffer[i,2]);
         if Byffer[i,0] <> '' then
-          send_error := SqlSaveToOracle(Byffer[i,0], Byffer[i,1], Byffer[i,2]);
+//          send_error := SqlSaveToOracle(Byffer[i,0], Byffer[i,1], Byffer[i,2]);
+        send_error := false;
   {$IFDEF DEBUG}
     lLog.save('d', 'send_error | '+booltostr(send_error));
   {$ENDIF}

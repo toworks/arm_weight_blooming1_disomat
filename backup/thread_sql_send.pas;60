@@ -4,7 +4,7 @@ unit thread_sql_send;
 interface
 
 uses
-  SysUtils, Classes, Data.DB, ActiveX, ZConnection, ZDataset, ZDbcIntfs,
+  SysUtils, Classes, DB, ActiveX, ZConnection, ZDataset, ZDbcIntfs,
   logging, sql;
 
 type
@@ -122,7 +122,7 @@ begin
       try
           SqlSend;
           GetMaxLocalCount;
-          Synchronize(SyncSqlMaxLocal);
+//          Synchronize(SyncSqlMaxLocal);
       except
         on E : Exception do
           lLog.save('e', E.ClassName+'3, с сообщением: '+E.Message);
@@ -228,7 +228,7 @@ begin
     FOraQuery.SQL.Clear;
     FOraQuery.SQL.Add('INSERT INTO crop');
     FOraQuery.SQL.Add('(id_asutp, weight_bloom, date_weight_bloom)');
-    FOraQuery.SQL.Add('VALUES ('+IdIn+', '+PointReplace(WeightIn)+',');
+//    FOraQuery.SQL.Add('VALUES ('+IdIn+', '+PointReplace(WeightIn)+',');
     FOraQuery.SQL.Add('TO_DATE('''+TimestampIn+''', ''yyyy-mm-dd hh24:mi:ss''))');
     FOraQuery.ExecSQL;
   {$IFDEF DEBUG}

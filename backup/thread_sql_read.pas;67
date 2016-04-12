@@ -77,7 +77,7 @@ begin
           SqlNewRecord;
           //dbgrid текущая выбраная заготовка
           if Fpkdat_in <> '' then
-             Synchronize(@form1.NextWeightToRecordLocation);
+             Synchronize(@main.NextWeightToRecordLocation);
           // маркер следующей заготовки
           if MarkerNextWait then
              Synchronize(@NextWeightToRecord); //следующая запись (слиток) от записаной

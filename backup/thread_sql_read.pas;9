@@ -47,14 +47,12 @@ begin
 
   lLog := _Log;
   Fsql := TFsql.Create(lLog);
+  FSqlMax := 0;
 
   // создаем поток True - создание остановка, False - создание старт
   FThreadSqlRead := TThreadSqlRead.Create(True);
   FThreadSqlRead.Priority := tpNormal;
   FThreadSqlRead.FreeOnTerminate := True;
-
-  FSqlMax := 0;
-
   FThreadSqlRead.Start;
 end;
 
@@ -183,6 +181,9 @@ begin
   //исправляем отображение даты в DBGrid
   TDateTimeField(MainFSql.FQuery.FieldByName('time_ingot')).DisplayFormat:='hh:nn:ss';
   TDateTimeField(MainFSql.FQuery.FieldByName('weight_ingot')).DisplayFormat:='#,###0.000';
+
+  // возвращаем курсор на данные
+  NextWeightToRecordLocation;
 end;
 
 

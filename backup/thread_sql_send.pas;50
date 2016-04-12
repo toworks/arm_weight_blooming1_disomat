@@ -122,7 +122,7 @@ begin
       try
           SqlSend;
           GetMaxLocalCount;
-          Synchronize(SyncSqlMaxLocal);
+//          Synchronize(SyncSqlMaxLocal);
       except
         on E : Exception do
           lLog.save('e', E.ClassName+'3, с сообщением: '+E.Message);
@@ -182,7 +182,7 @@ begin
       try
 //        send_error := SqlSaveToOracle(Byffer[i,0], Byffer[i,1], Byffer[i,2]);
         if Byffer[i,0] <> '' then
-          send_error := SqlSaveToOracle(Byffer[i,0], Byffer[i,1], Byffer[i,2]);
+//          send_error := SqlSaveToOracle(Byffer[i,0], Byffer[i,1], Byffer[i,2]);
   {$IFDEF DEBUG}
     lLog.save('d', 'send_error | '+booltostr(send_error));
   {$ENDIF}
@@ -279,7 +279,8 @@ begin
       MainSqlite.SQuery.SQL.Add('SELECT substr(pkdat,7,1) as shift, num_ingot,');
       MainSqlite.SQuery.SQL.Add('datetime(timestamp, ''unixepoch'', ''localtime'' ) as timestamp,');
       MainSqlite.SQuery.SQL.Add('heat, weight,');
-      MainSqlite.SQuery.SQL.Add('case when transferred = 1 then ''передан'' else ''не передан'' end as transferred');
+//      MainSqlite.SQuery.SQL.Add('case when transferred = 1 then ''передан'' else ''не передан'' end as transferred');
+      MainSqlite.SQuery.SQL.Add('transferred');
       MainSqlite.SQuery.SQL.Add('FROM weight');
       MainSqlite.SQuery.SQL.Add('order by timestamp desc limit 100');
       MainSqlite.SQuery.Open;

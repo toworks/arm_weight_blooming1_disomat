@@ -182,7 +182,7 @@ begin
       try
 //        send_error := SqlSaveToOracle(Byffer[i,0], Byffer[i,1], Byffer[i,2]);
         if Byffer[i,0] <> '' then
-//          send_error := SqlSaveToOracle(Byffer[i,0], Byffer[i,1], Byffer[i,2]);
+          send_error := SqlSaveToOracle(Byffer[i,0], Byffer[i,1], Byffer[i,2]);
   {$IFDEF DEBUG}
     lLog.save('d', 'send_error | '+booltostr(send_error));
   {$ENDIF}
@@ -279,24 +279,10 @@ begin
       MainSqlite.SQuery.SQL.Add('SELECT substr(pkdat,7,1) as shift, num_ingot,');
       MainSqlite.SQuery.SQL.Add('datetime(timestamp, ''unixepoch'', ''localtime'' ) as timestamp,');
       MainSqlite.SQuery.SQL.Add('heat, weight,');
-//      MainSqlite.SQuery.SQL.Add('case when transferred = 1 then ''передан'' else ''не передан'' end as transferred');
-      MainSqlite.SQuery.SQL.Add('transferred');
+      MainSqlite.SQuery.SQL.Add('case when transferred = 1 then ''передан'' else ''не передан'' end as transferred');
       MainSqlite.SQuery.SQL.Add('FROM weight');
       MainSqlite.SQuery.SQL.Add('order by timestamp desc limit 100');
       MainSqlite.SQuery.Open;
-
-{  while not _SLQuery.Eof do
-   begin
-      Log.save('e', 'shift | '+_SLQuery.FieldByName('shift').AsString);
-      Log.save('e', 'weight | '+_SLQuery.FieldByName('weight').AsString);
-      Log.save('e', 'heat | '+_SLQuery.FieldByName('heat').AsString);
-      _SLQuery.Next;
-   end;}
-
- //     if assigned(Form1.DBGrid2) then begin
-//        Form1.DBGrid2.DataSource := SLDataSource;
-//        Synchronize(Form1.DBGrid2.Refresh);//views взвешенные заготовки
- //     end;
 
       //исправляем отображение даты в DBGrid -> 20 characters
       TStringField(MainSqlite.SQuery.FieldByName('shift')).DisplayWidth := 3;

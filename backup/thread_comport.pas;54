@@ -44,6 +44,9 @@ type
     property NextSave: boolean read FNextSave write FNextSave;
     property no_save: boolean read Fno_save write Fno_save;
     property SendAttribute: boolean read SendEKMessage;
+{    property Apkdat: string read Fpkdat;
+    property Anum: string read Fnum write Fnum;
+    property Anum_ingot: string read Fnum_ingot write Fnum_ingot;}
   end;
 
 var
@@ -70,8 +73,8 @@ begin
   lLog := _Log;
   TCsqlite := TSqlite.Create(lLog);
 
-  no_save := false;
-  NextSave := true;
+  Fno_save := false;
+  FNextSave := true;
 
   // создаем поток True - создание остановка, False - создание старт
   FThreadComPort := TThreadComPort.Create(True);
@@ -92,7 +95,8 @@ end;
 
 procedure TThreadComPort.Execute;
 begin
-//  CoInitialize(nil);
+  CoInitialize(nil);
+  FNextSave := true; //не правильно
   while True do
   begin
       try
@@ -125,7 +129,7 @@ begin
           lLog.save('e', E.ClassName+' serial execute, с сообщением: '+E.Message);
       end;
    end;
-//   CoUninitialize;
+   CoUninitialize;
 end;
 
 
@@ -371,6 +375,7 @@ end;
 
 function TThreadComPort.ComparePkdat: boolean;
 begin
+//  lLog.save('t', 'pkdat | '+pkdat+' | '+Fpkdat+' | num | '+num+' | '+Anum+' | '+' | num_ingot | '+num_ingot+' | '+Anum_ingot);
   lLog.save('t', pkdat+' | '+num+' | '+num_ingot);
   // first run and after next weight
 {  if (pkdat = '') then begin

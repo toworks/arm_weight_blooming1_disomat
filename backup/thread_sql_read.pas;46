@@ -191,17 +191,9 @@ end;
 
 procedure TThreadSqlRead.SyncNextWeightToRecord;
 begin
-//  SqlNextWeightToRecord;
-  //dbgrid текущая выбраная заготовка
-  if Fpkdat_in <> '' then
-     NextWeightToRecordLocation;
-
-end;
-
-
-procedure TThreadSqlRead.SyncSqlMax;
-begin
-//  Form1.SqlMax := FSqlMax;
+     //dbgrid текущая выбраная заготовка
+//     if Fpkdat_in <> '' then
+        NextWeightToRecordLocation;
 end;
 
 

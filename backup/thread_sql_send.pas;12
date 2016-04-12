@@ -235,7 +235,6 @@ begin
   except
     on E : Exception do begin
       error := true;
- //     Result := true;
       lLog.save('e', E.ClassName+' sql save to oracle, с сообщением: '+E.Message+' | '+FOraQuery.SQL.Text);
     end;
   end;
@@ -259,16 +258,12 @@ begin
     except
       on E : Exception do begin
         error := true;
-//        Result := true;
         lLog.save('e', E.ClassName+'7, с сообщением: '+E.Message+' | '+FOraQuery.SQL.Text);
       end;
     end;
   end;
 
-  if error then
-     Result := false
-  else
-     Result := true;
+  Result := error;
 end;
 
 
@@ -333,13 +328,12 @@ begin
       begin
         timestamp := TSSsqlite.SQuery.FieldByName('timestamp').AsLargeInt;
 
-        if FSqlMaxLocal >= timestamp then
-          exit;
-
-        FSqlMaxLocal := timestamp;
-
-        if assigned(MainSqlite.SQuery) then
-          Synchronize(@SqlReadTableLocal);//views взвешенные заготовки
+        if FSqlMaxLocal <= timestamp then
+        begin
+             FSqlMaxLocal := timestamp;
+             if assigned(MainSqlite.SQuery) then
+                Synchronize(@SqlReadTableLocal);//views взвешенные заготовки
+        end;
       end
   except
     on E : Exception do

@@ -18,7 +18,7 @@ type
     procedure SqlSend;
     function SqlSaveToOracle(IdIn, WeightIn, TimestampIn: AnsiString): boolean;
     function GetMaxLocalCount: boolean;
-
+    procedure SqlReadTableLocal;
   protected
     procedure Execute; override;
   public
@@ -228,7 +228,7 @@ begin
     FOraQuery.SQL.Clear;
     FOraQuery.SQL.Add('INSERT INTO crop');
     FOraQuery.SQL.Add('(id_asutp, weight_bloom, date_weight_bloom)');
-//    FOraQuery.SQL.Add('VALUES ('+IdIn+', '+PointReplace(WeightIn)+',');
+    FOraQuery.SQL.Add('VALUES ('+IdIn+', '+PointReplace(WeightIn)+',');
     FOraQuery.SQL.Add('TO_DATE('''+TimestampIn+''', ''yyyy-mm-dd hh24:mi:ss''))');
     FOraQuery.ExecSQL;
   {$IFDEF DEBUG}
@@ -247,7 +247,7 @@ begin
         FOraQuery.Close;
         FOraQuery.SQL.Clear;
         FOraQuery.SQL.Add('update crop');
-//        FOraQuery.SQL.Add('set weight_bloom = '+PointReplace(WeightIn)+',');
+        FOraQuery.SQL.Add('set weight_bloom = '+PointReplace(WeightIn)+',');
         FOraQuery.SQL.Add('date_weight_bloom = TO_DATE('''+TimestampIn+''',');
         FOraQuery.SQL.Add('''yyyy-mm-dd hh24:mi:ss'')');
         FOraQuery.SQL.Add('where id_asutp = '+IdIn+'');
@@ -271,18 +271,18 @@ end;
 
 
 //-- start main
-{procedure TThreadSqlSend.SqlReadTableLocal;
+procedure TThreadSqlSend.SqlReadTableLocal;
 begin
   try
-      SLQuery.Close;
-      SLQuery.SQL.Clear;
-      SLQuery.SQL.Add('SELECT substr(pkdat,7,1) as shift, num_ingot,');
-      SLQuery.SQL.Add('datetime(timestamp, ''unixepoch'', ''localtime'' ) as timestamp,');
-      SLQuery.SQL.Add('heat, weight,');
-      SLQuery.SQL.Add('case when transferred = 1 then ''передан'' else ''не передан'' end as transferred');
-      SLQuery.SQL.Add('FROM weight');
-      SLQuery.SQL.Add('order by timestamp desc limit 100');
-      SLQuery.Open;
+      TSSsqlite.SQuery.Close;
+      TSSsqlite.SQuery.SQL.Clear;
+      TSSsqlite.SQuery.SQL.Add('SELECT substr(pkdat,7,1) as shift, num_ingot,');
+      TSSsqlite.SQuery.SQL.Add('datetime(timestamp, ''unixepoch'', ''localtime'' ) as timestamp,');
+      TSSsqlite.SQuery.SQL.Add('heat, weight,');
+      TSSsqlite.SQuery.SQL.Add('case when transferred = 1 then ''передан'' else ''не передан'' end as transferred');
+      TSSsqlite.SQuery.SQL.Add('FROM weight');
+      TSSsqlite.SQuery.SQL.Add('order by timestamp desc limit 100');
+      TSSsqlite.SQuery.Open;
 
 {  while not _SLQuery.Eof do
    begin
@@ -298,14 +298,14 @@ begin
  //     end;
 
       //исправляем отображение даты в DBGrid -> 20 characters
-{      TStringField(SLQuery.FieldByName('shift')).DisplayWidth := 3;
-      TStringField(SLQuery.FieldByName('timestamp')).DisplayWidth := 20;
-      TStringField(SLQuery.FieldByName('transferred')).DisplayWidth := 20;
+      TStringField(TSSsqlite.SQuery.FieldByName('shift')).DisplayWidth := 3;
+      TStringField(TSSsqlite.SQuery.FieldByName('timestamp')).DisplayWidth := 20;
+      TStringField(TSSsqlite.SQuery.FieldByName('transferred')).DisplayWidth := 20;
   except
     on E : Exception do
       Log.save('e', E.ClassName+'8, с сообщением: '+E.Message);
   end;
-end;}
+end;
 //-- end main
 
 
@@ -349,7 +349,7 @@ begin
         FSqlMaxLocal := timestamp;
 
         if assigned(MainSqlite.SQuery) then
-          Synchronize(SqlReadTableLocal);//views взвешенные заготовки
+          Synchronize(@SqlReadTableLocal);//views взвешенные заготовки
       end
   except
     on E : Exception do

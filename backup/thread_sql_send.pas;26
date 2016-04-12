@@ -12,12 +12,12 @@ type
   TThreadSqlSend = class(TThread)
   private
     FThreadSqlSend: TThreadSqlSend;
-//    FSqlMaxLocal: Int64;
+    FSqlMaxLocal: Int64;
 
     function ConfigOracleSetting(InData: boolean): boolean;
     procedure SqlSend;
     function SqlSaveToOracle(IdIn, WeightIn, TimestampIn: AnsiString): boolean;
-//    function GetMaxLocalCount: boolean;
+    function GetMaxLocalCount: boolean;
 //    procedure SqlReadTableLocal;
   protected
     procedure Execute; override;
@@ -57,7 +57,7 @@ begin
   FThreadSqlSend.Priority := tpNormal;
   FThreadSqlSend.FreeOnTerminate := True;
 
-//  FSqlMaxLocal := 0;
+  FSqlMaxLocal := 0;
 
   ConfigOracleSetting(true);
 
@@ -74,8 +74,6 @@ begin
   TSSsqlite.Destroy;
   inherited Destroy;
 end;
-
-
 
 
 function TThreadSqlSend.ConfigOracleSetting(InData: boolean): boolean;
@@ -121,7 +119,7 @@ begin
    begin
       try
           SqlSend;
-//          GetMaxLocalCount;
+          GetMaxLocalCount;
 //          Synchronize(SyncSqlMaxLocal);
       except
         on E : Exception do
@@ -271,7 +269,7 @@ end;
 
 
 //-- start main
-{procedure TThreadSqlSend.SqlReadTableLocal;
+procedure TThreadSqlSend.SqlReadTableLocal;
 begin
   try
       MainSqlite.SQuery.Close;
@@ -344,7 +342,7 @@ begin
       lLog.save('e', E.ClassName+' sql max local synchronize, с сообщением: '+E.Message);
   end;
   //-- локальные данные
-end;}
+end;
 
 
 

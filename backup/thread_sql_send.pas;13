@@ -231,11 +231,10 @@ begin
   {$IFDEF DEBUG}
     Log.save('d', 'OraQuery insert | '+FOraQuery.SQL.Text);
   {$ENDIF}
-     error := true;
+     error := false;
   except
     on E : Exception do begin
       error := true;
- //     Result := true;
       lLog.save('e', E.ClassName+' sql save to oracle, с сообщением: '+E.Message+' | '+FOraQuery.SQL.Text);
     end;
   end;
@@ -259,16 +258,12 @@ begin
     except
       on E : Exception do begin
         error := true;
-//        Result := true;
         lLog.save('e', E.ClassName+'7, с сообщением: '+E.Message+' | '+FOraQuery.SQL.Text);
       end;
     end;
   end;
 
-  if error then
-     Result := false
-  else
-     Result := true;
+  Result := error;
 end;
 
 

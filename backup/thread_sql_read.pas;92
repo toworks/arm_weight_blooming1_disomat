@@ -183,6 +183,11 @@ begin
   end;
   //исправляем отображение даты в DBGrid -> pFIBDataSet1
   TDateTimeField(MainFSql.FQuery.FieldByName('time_ingot')).DisplayFormat:='hh:nn:ss';
+
+  while not MainFSql.FQuery.Eof do
+  begin
+        lLog.save('d', MainFSql.FQuery.FieldByName('name').AsWideString);
+  end;
 end;
 
 

@@ -18,7 +18,7 @@ type
     procedure SqlSend;
     function SqlSaveToOracle(IdIn, WeightIn, TimestampIn: AnsiString): boolean;
     function GetMaxLocalCount: boolean;
-//    procedure SqlReadTableLocal;
+    procedure SqlReadTableLocal;
   protected
     procedure Execute; override;
   public
@@ -235,6 +235,7 @@ begin
   except
     on E : Exception do begin
       error := true;
+ //     Result := true;
       lLog.save('e', E.ClassName+' sql save to oracle, с сообщением: '+E.Message+' | '+FOraQuery.SQL.Text);
     end;
   end;
@@ -258,13 +259,16 @@ begin
     except
       on E : Exception do begin
         error := true;
+//        Result := true;
         lLog.save('e', E.ClassName+'7, с сообщением: '+E.Message+' | '+FOraQuery.SQL.Text);
       end;
     end;
   end;
 
-  Result := error;
-
+  if error then
+     Result := error;
+  else
+     Result := error;
 end;
 
 

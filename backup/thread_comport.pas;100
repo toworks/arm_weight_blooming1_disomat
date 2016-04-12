@@ -40,6 +40,7 @@ type
   public
     Constructor Create(_Log: TLog); overload;
     Destructor Destroy; override;
+    property NextSave: boolean read FNextSave write FNextSave;
     property SendAttribute: boolean read SendEKMessage;
   end;
 
@@ -62,18 +63,19 @@ uses
 
 constructor TThreadComPort.Create(_Log: TLog);
 begin
-  inherited Create(True);
+  inherited Create(False);
 
   lLog := _Log;
   TCsqlite := TSqlite.Create(lLog);
+
+  no_save := false;
+  NextSave := true;
+
   // создаем поток True - создание остановка, False - создание старт
   FThreadComPort := TThreadComPort.Create(True);
   FThreadComPort.Priority := tpNormal;
   FThreadComPort.FreeOnTerminate := True;
   FThreadComPort.Start;
-
-  Fno_save := false;
-  FNextSave := true;
 end;
 
 
@@ -88,7 +90,7 @@ end;
 
 procedure TThreadComPort.Execute;
 begin
-  CoInitialize(nil);
+//  CoInitialize(nil);
   while True do
   begin
       try
@@ -103,14 +105,14 @@ begin
               //калибровка
               if assigned(CalibrationForm) then
                  Synchronize(@SyncCalibration);
-
+              lLog.save('e', 'main do NextSave | '+booltostr(NextSave));
               if FNextSave and not MarkerNextWait then
                  SendTKMessage;
 
               if Fno_save then begin
                  SendEKMessage;
               end;
-
+              lLog.save('e', 'main NextSave | '+booltostr(NextSave));
               if not FNextSave then
                  Synchronize(@SyncNextWeightToRecord);
           end
@@ -121,7 +123,7 @@ begin
           lLog.save('e', E.ClassName+' serial execute, с сообщением: '+E.Message);
       end;
    end;
-   CoUninitialize;
+//   CoUninitialize;
 end;
 
 
@@ -216,6 +218,7 @@ begin
     //{ test }      SqlSaveInBuffer(trim(copy(Data, 60, 6)))
             SqlSaveInBuffer(trim(copy(Data, 40, 6)));
             FNextSave := false;
+            lLog.save('w', 'ReceiveTKData | '+trim(copy(Data, 40, 6)));
           end
           else
             lLog.save('w', 'заготовка не выбрана'+#9+'weight | '+trim(copy(Data, 40, 6)));
@@ -337,13 +340,18 @@ end;
 
 
 procedure TThreadComPort.SyncNextWeightToRecord;
+var
+  t: boolean;
 begin
 {$IFDEF DEBUG}
   lLog.save('t', 'step 6');
 {$ENDIF}
-lLog.save('t', 'SyncNextWeightToRecord');
+     SqlNextWeightToRecord;
      NextWeightToRecordLocation;
-     FNextSave := ComparePkdat;//разрешаем снятие следующего показания
+     t := ComparePkdat;//разрешаем снятие следующего показания
+     //FNextSave := ComparePkdat;//разрешаем снятие следующего показания
+     FNextSave := t;
+     lLog.save('t', 'SyncNextWeightToRecord | ComparePkdat | '+booltostr(t));
 end;
 
 
@@ -363,10 +371,10 @@ function TThreadComPort.ComparePkdat: boolean;
 begin
   lLog.save('t', pkdat+' | '+num+' | '+num_ingot);
   // first run and after next weight
-  if (pkdat = '') then begin
+{  if (pkdat = '') then begin
      Result := true;
      exit;
-  end;
+  end;}
 
   if (pkdat = Fpkdat) and (num = Fnum) and (num_ingot = Fnum_ingot) then
      Result := false

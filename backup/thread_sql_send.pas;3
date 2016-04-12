@@ -214,7 +214,7 @@ end;
 function TThreadSqlSend.SqlSaveToOracle(IdIn, WeightIn, TimestampIn: AnsiString): boolean;
 var
   error: boolean;
-  position: integer;
+  err_oci_no_data: integer;
 begin
 
   try
@@ -236,12 +236,14 @@ begin
   except
     on E : Exception do begin
       error := true;
-      position := AnsiPos('OCI_NO_DATA', E.Message);
+      err_oci_no_data := AnsiPos('OCI_NO_DATA', E.Message);
       lLog.save('e', E.ClassName+' sql save to oracle, с сообщением: '+E.Message+' | '+FOraQuery.SQL.Text);
     end;
   end;
-  Log.save('d', 'position | '+inttostr(position));
-  if error then
+{$IFDEF DEBUG}
+  Log.save('d', 'position | '+inttostr(err_oci_no_data));
+{$ENDIF}
+  if error and (err_oci_no_data = 0) then
   begin
     try
         FOraQuery.Close;

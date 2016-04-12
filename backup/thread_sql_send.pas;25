@@ -17,8 +17,8 @@ type
     function ConfigOracleSetting(InData: boolean): boolean;
     procedure SqlSend;
     function SqlSaveToOracle(IdIn, WeightIn, TimestampIn: AnsiString): boolean;
-//    function GetMaxLocalCount: boolean;
-//    procedure SqlReadTableLocal;
+    function GetMaxLocalCount: boolean;
+    procedure SqlReadTableLocal;
   protected
     procedure Execute; override;
   public
@@ -342,8 +342,7 @@ begin
       lLog.save('e', E.ClassName+' sql max local synchronize, с сообщением: '+E.Message);
   end;
   //-- локальные данные
-end;}
-
+end;
 
 
 

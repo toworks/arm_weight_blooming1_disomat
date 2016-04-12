@@ -153,16 +153,13 @@ begin
     on E : Exception do
       lLog.save('e', E.ClassName+', с сообщением: '+E.Message);
   end;
-
-  // маркер следующей заготовки
-{  if MarkerNextWait then
-    Synchronize(@NextWeightToRecord); //следующая запись (слиток) от записаной}
 end;
 
 
 procedure TThreadSqlRead.SyncSqlReadTable;
 begin
   try
+      lLog.save('d', 'thread sql read refresh');
       MainFSql.FQuery.Close;
       MainFSql.FQuery.SQL.Clear;
       MainFSql.FQuery.SQL.Add('select i.pkdat,i.num,i.num_ingot,h.num_heat, s.name,i.weight_ingot, i.time_ingot, s.steel_group, sh.smena');

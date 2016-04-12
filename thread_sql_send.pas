@@ -5,7 +5,7 @@ interface
 
 uses
   SysUtils, Classes, DB, ActiveX, ZConnection, ZDataset, ZDbcIntfs,
-  logging, sql;
+   {$ifdef windows} Windows, Forms, {$endif} logging, sql;
 
 type
   //Здесь необходимо описать класс TThreadSql:
@@ -219,7 +219,7 @@ begin
 
   try
     //была ошибака: EZSQLException, с сообщением: SQL Error: OCI_NO_DATA
-    if not FOraConnect.Connected then
+    if not FOraConnect.Ping then
       FOraConnect.Reconnect;
 
     FOraQuery.Close;
@@ -283,6 +283,7 @@ begin
       MainSqlite.SQuery.SQL.Add('case when transferred = 1 then ''передан'' else ''не передан'' end as transferred');
       MainSqlite.SQuery.SQL.Add('FROM weight');
       MainSqlite.SQuery.SQL.Add('order by timestamp desc limit 100');
+      Application.ProcessMessages; // следующая операция не тормозит интерфейс
       MainSqlite.SQuery.Open;
 
       //исправляем отображение даты в DBGrid -> 20 characters

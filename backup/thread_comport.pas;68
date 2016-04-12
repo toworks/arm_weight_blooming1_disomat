@@ -40,6 +40,7 @@ type
   public
     Constructor Create(_Log: TLog); overload;
     Destructor Destroy; override;
+  published
     property NextSave: boolean read FNextSave write FNextSave;
     property no_save: boolean read Fno_save write Fno_save;
     property SendAttribute: boolean read SendEKMessage;
@@ -69,8 +70,8 @@ begin
   lLog := _Log;
   TCsqlite := TSqlite.Create(lLog);
 
-  no_save := false;
-  NextSave := true;
+  Fno_save := false;
+  FNextSave := true;
 
   // создаем поток True - создание остановка, False - создание старт
   FThreadComPort := TThreadComPort.Create(True);
@@ -91,7 +92,8 @@ end;
 
 procedure TThreadComPort.Execute;
 begin
-//  CoInitialize(nil);
+  CoInitialize(nil);
+  FNextSave := true; //не правильно
   while True do
   begin
       try
@@ -124,7 +126,7 @@ begin
           lLog.save('e', E.ClassName+' serial execute, с сообщением: '+E.Message);
       end;
    end;
-//   CoUninitialize;
+   CoUninitialize;
 end;
 
 

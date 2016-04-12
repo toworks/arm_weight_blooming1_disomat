@@ -215,7 +215,7 @@ function TThreadSqlSend.SqlSaveToOracle(IdIn, WeightIn, TimestampIn: AnsiString)
 var
   error: boolean;
 begin
-  error := false;
+//  error := false;
 
   try
     //была ошибака: EZSQLException, с сообщением: SQL Error: OCI_NO_DATA
@@ -232,6 +232,7 @@ begin
   {$IFDEF DEBUG}
     Log.save('d', 'OraQuery insert | '+FOraQuery.SQL.Text);
   {$ENDIF}
+     error := true;
   except
     on E : Exception do begin
       error := true;
@@ -266,7 +267,7 @@ begin
   end;
 
   if error then
-     Result := false;
+     Result := false
   else
      Result := true;
 end;

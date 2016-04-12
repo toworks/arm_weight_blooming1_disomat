@@ -41,9 +41,12 @@ type
     Constructor Create(_Log: TLog); overload;
     Destructor Destroy; override;
   published
-    property NextSave: boolean read FNextSave write FNextSave default true;
+    property NextSave: boolean read FNextSave write FNextSave;
     property no_save: boolean read Fno_save write Fno_save;
     property SendAttribute: boolean read SendEKMessage;
+{    property Apkdat: string read Fpkdat;
+    property Anum: string read Fnum write Fnum;
+    property Anum_ingot: string read Fnum_ingot write Fnum_ingot;}
   end;
 
 var
@@ -77,10 +80,6 @@ begin
   FThreadComPort := TThreadComPort.Create(True);
   FThreadComPort.Priority := tpNormal;
   FThreadComPort.FreeOnTerminate := True;
-
-  Fno_save := false;
-  FNextSave := true;
-
   FThreadComPort.Start;
 end;
 
@@ -96,7 +95,8 @@ end;
 
 procedure TThreadComPort.Execute;
 begin
-//  CoInitialize(nil);
+  CoInitialize(nil);
+  FNextSave := true; //не правильно
   while True do
   begin
       try
@@ -121,7 +121,8 @@ begin
               lLog.save('e', 'main NextSave | '+booltostr(NextSave));
               if not NextSave then
                  Synchronize(@SyncNextWeightToRecord);
-          end
+          end;
+              sleep(1000)
           else
               sleep(1000);
       except
@@ -129,7 +130,7 @@ begin
           lLog.save('e', E.ClassName+' serial execute, с сообщением: '+E.Message);
       end;
    end;
-//   CoUninitialize;
+   CoUninitialize;
 end;
 
 
@@ -375,6 +376,7 @@ end;
 
 function TThreadComPort.ComparePkdat: boolean;
 begin
+//  lLog.save('t', 'pkdat | '+pkdat+' | '+Fpkdat+' | num | '+num+' | '+Anum+' | '+' | num_ingot | '+num_ingot+' | '+Anum_ingot);
   lLog.save('t', pkdat+' | '+num+' | '+num_ingot);
   // first run and after next weight
 {  if (pkdat = '') then begin

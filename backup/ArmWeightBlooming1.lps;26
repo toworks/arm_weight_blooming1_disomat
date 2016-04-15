@@ -70,8 +70,8 @@
         <Filename Value="thread_comport.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="7"/>
-        <TopLine Value="109"/>
-        <CursorPos X="27" Y="129"/>
+        <TopLine Value="101"/>
+        <CursorPos X="21" Y="129"/>
         <UsageCount Value="218"/>
         <Loaded Value="True"/>
       </Unit7>
@@ -80,8 +80,8 @@
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
         <EditorIndex Value="4"/>
-        <TopLine Value="222"/>
-        <CursorPos Y="239"/>
+        <TopLine Value="272"/>
+        <CursorPos X="21" Y="293"/>
         <UsageCount Value="228"/>
         <Loaded Value="True"/>
       </Unit8>

@@ -72,7 +72,7 @@ begin
   while True do
    begin
 
-     try
+      try
           SqlNewRecord;
       except
         on E : Exception do

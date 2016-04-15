@@ -79,10 +79,10 @@ begin
           SqlNewRecord;
           //dbgrid текущая выбраная заготовка
           if Fpkdat_in <> '' then
-             Synchronize(@NextWeightToRecordLocation);
+             Synchronize(@SyncNextWeightToRecordLocation);
           // маркер следующей заготовки
           if MarkerNextWait then
-             Synchronize(@NextWeightToRecord); //следующая запись (слиток) от записаной
+             Synchronize(@SyncNextWeightToRecord); //следующая запись (слиток) от записаной
       except
         on E : Exception do
           lLog.save('e', E.ClassName+', с сообщением: '+E.Message);

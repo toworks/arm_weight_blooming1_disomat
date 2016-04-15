@@ -182,7 +182,10 @@ begin
     Log.save('d', 'timestamp | '+Byffer[i,2]);
   {$ENDIF}
       try
+        try
         send_error := SqlSaveToOracle(Byffer[i,0], Byffer[i,1], Byffer[i,2]);
+        Finally
+        End;
   {$IFDEF DEBUG}
     lLog.save('d', 'send_error | '+booltostr(send_error));
   {$ENDIF}
@@ -224,7 +227,6 @@ var
   error: boolean;
   err_oci_no_data: integer;
 begin
-  try
   { при режиме debug не обрабатывается try и при вызове ExecSQL ломает поток }
   try
     //была ошибака: EZSQLException, с сообщением: SQL Error: OCI_NO_DATA
@@ -284,8 +286,6 @@ begin
     end;
   end;
 
-  finally
-  end;
   Result := error;
 end;
 

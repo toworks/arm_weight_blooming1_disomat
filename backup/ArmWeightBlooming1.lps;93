@@ -19,7 +19,7 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <TopLine Value="248"/>
-        <CursorPos X="21" Y="267"/>
+        <CursorPos X="10" Y="267"/>
         <UsageCount Value="220"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -80,8 +80,8 @@
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
         <EditorIndex Value="4"/>
-        <TopLine Value="318"/>
-        <CursorPos X="70" Y="343"/>
+        <TopLine Value="316"/>
+        <CursorPos X="50" Y="343"/>
         <UsageCount Value="228"/>
         <Loaded Value="True"/>
       </Unit8>
@@ -212,7 +212,7 @@
       </Position29>
       <Position30>
         <Filename Value="thread_sql_send.pas"/>
-        <Caret Line="343" Column="29" TopLine="316"/>
+        <Caret Line="343" Column="39" TopLine="315"/>
       </Position30>
     </JumpHistory>
   </ProjectSession>

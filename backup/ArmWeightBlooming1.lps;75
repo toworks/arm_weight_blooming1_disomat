@@ -3,7 +3,7 @@
   <ProjectSession>
     <PathDelim Value="\"/>
     <Version Value="9"/>
-    <BuildModes Active="Release"/>
+    <BuildModes Active="Default"/>
     <Units Count="10">
       <Unit0>
         <Filename Value="ArmWeightBlooming1.lpr"/>
@@ -18,7 +18,7 @@
         <ComponentName Value="Form1"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <TopLine Value="41"/>
+        <TopLine Value="77"/>
         <CursorPos Y="60"/>
         <UsageCount Value="220"/>
         <Loaded Value="True"/>
@@ -81,8 +81,8 @@
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
         <EditorIndex Value="4"/>
-        <TopLine Value="265"/>
-        <CursorPos Y="287"/>
+        <TopLine Value="174"/>
+        <CursorPos Y="183"/>
         <UsageCount Value="228"/>
         <Loaded Value="True"/>
       </Unit8>

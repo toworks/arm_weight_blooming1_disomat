@@ -58,7 +58,7 @@ begin
   // создаем поток True - создание остановка, False - создание старт
   FThreadSqlSend := TThreadSqlSend.Create(True);
   FThreadSqlSend.Priority := tpNormal;
-//  FThreadSqlSend.FreeOnTerminate := True;
+  FThreadSqlSend.FreeOnTerminate := True;
   FThreadSqlSend.Start;
 end;
 

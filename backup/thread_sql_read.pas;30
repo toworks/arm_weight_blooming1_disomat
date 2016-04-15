@@ -153,10 +153,6 @@ begin
     on E : Exception do
       lLog.save('e', E.ClassName+', с сообщением: '+E.Message);
   end;
-
-  // маркер следующей заготовки
-{  if MarkerNextWait then
-    Synchronize(@NextWeightToRecord); //следующая запись (слиток) от записаной}
 end;
 
 

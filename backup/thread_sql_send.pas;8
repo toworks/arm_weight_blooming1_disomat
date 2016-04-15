@@ -68,7 +68,7 @@ end;
 
 procedure TThreadSqlSend.ArnoldThread(Sender: TObject);
 begin
-   lLog.save('w', 'Hasta la vista, thread');
+   Log.save('w', 'Hasta la vista, thread');
 end;
 
 destructor TThreadSqlSend.Destroy;
@@ -129,6 +129,7 @@ begin
           try
               SqlSend;
               SyncViewLocal;
+              ThreadSqlSend.Terminate;
           except
             on E : Exception do
               lLog.save('e', E.ClassName+' TThreadSqlSend, с сообщением: '+E.Message);

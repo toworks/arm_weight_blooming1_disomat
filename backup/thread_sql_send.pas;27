@@ -93,8 +93,6 @@ begin
         FOraConnect.User := OraSqlSettings.user;
         FOraConnect.Password := OraSqlSettings.password;
         FOraConnect.ClientCodepage := 'CL8MSWIN1251';
-{        FOraConnect.Properties.Add('hard_commit=TRUE');
-        FOraConnect.AutoCommit := False;}
         FOraConnect.Connect;
         FOraQuery.Connection := FOraConnect;
       except
@@ -278,7 +276,6 @@ FOraQuery.Open;
         FOraQuery.SQL.Add('''yyyy-mm-dd hh24:mi:ss'')');
         FOraQuery.SQL.Add('where id_asutp = '+IdIn+'');
         FOraQuery.ExecSQL;
-//        FOraConnect.Commit;
 
         error := false;
   {$IFDEF DEBUG}

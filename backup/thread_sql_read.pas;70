@@ -195,7 +195,7 @@ begin
 end;
 
 
-procedure NextWeightToRecord;
+procedure TThreadSqlRead.SyncNextWeightToRecord;
 var
   KeyValues : Variant;
 begin
@@ -212,7 +212,7 @@ begin
 end;
 
 
-procedure NextWeightToRecordLocation;
+procedure TThreadSqlRead.SyncNextWeightToRecordLocation;
 var
   KeyValues : Variant;
 begin

@@ -58,7 +58,7 @@ begin
   // создаем поток True - создание остановка, False - создание старт
   FThreadSqlSend := TThreadSqlSend.Create(True);
   FThreadSqlSend.Priority := tpNormal;
-  FThreadSqlSend.FreeOnTerminate := True;
+//  FThreadSqlSend.FreeOnTerminate := True;
   FThreadSqlSend.Start;
 end;
 
@@ -228,15 +228,15 @@ begin
     if not FOraConnect.Ping then
       FOraConnect.Reconnect;
 
-  {
+
 FOraQuery.Close;
 FOraQuery.SQL.Clear;
 FOraQuery.SQL.Add('select * from crop');
 FOraQuery.SQL.Add('WHERE rownum = 1');
 FOraQuery.SQL.Add('order by id_asutp desc');
 FOraQuery.Open;
-   }
-//lLog.save('i', 'id_asutp | '+FOraQuery.FieldByName('id_asutp').AsString);
+
+lLog.save('i', 'id_asutp | '+FOraQuery.FieldByName('id_asutp').AsString);
 
     FOraQuery.Close;
     FOraQuery.SQL.Clear;

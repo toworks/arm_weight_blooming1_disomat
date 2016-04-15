@@ -242,7 +242,7 @@ FOraQuery.SQL.Add('WHERE rownum = 1');
 FOraQuery.SQL.Add('order by id_asutp desc');
 FOraQuery.Open;
    }
-lLog.save('i', 'id_asutp | '+FOraQuery.FieldByName('id_asutp').AsString);
+//lLog.save('i', 'id_asutp | '+FOraQuery.FieldByName('id_asutp').AsString);
 
     FOraQuery.Close;
     FOraQuery.SQL.Clear;
@@ -266,7 +266,7 @@ lLog.save('i', 'id_asutp | '+FOraQuery.FieldByName('id_asutp').AsString);
 {$IFDEF DEBUG}
   Log.save('d', 'position | '+inttostr(err_oci_no_data));
 {$ENDIF}
-  end;
+
   if error and (err_oci_no_data = 0) then
   begin
     try

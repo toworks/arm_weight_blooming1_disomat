@@ -227,10 +227,6 @@ begin
     //была ошибака: EZSQLException, с сообщением: SQL Error: OCI_NO_DATA
     if not FOraConnect.Ping then
       FOraConnect.Reconnect;
-    lLog.save('e', 'do InTransaction | '+booltostr(FOraConnect.InTransaction));
-
-
-//    FOraConnect.TransactIsolationLevel := tiReadUncommitted;
 
   {
 FOraQuery.Close;
@@ -276,7 +272,6 @@ FOraQuery.Open;
         FOraQuery.SQL.Add('''yyyy-mm-dd hh24:mi:ss'')');
         FOraQuery.SQL.Add('where id_asutp = '+IdIn+'');
         FOraQuery.ExecSQL;
-//        FOraConnect.Commit;
 
         error := false;
   {$IFDEF DEBUG}

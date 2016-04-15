@@ -148,7 +148,7 @@ begin
       TSSsqlite.SQuery.SQL.Add('FROM weight');
       TSSsqlite.SQuery.SQL.Add('where transferred=0');
       TSSsqlite.SQuery.SQL.Add('and timestamp > strftime(''%s'', ''now'') - (86400*3)'); //за 3 дня от текущей даты
-      TSSsqlite.SQuery.SQL.Add('order by id asc limit 10'); //порциями по 10 шт
+      TSSsqlite.SQuery.SQL.Add('order by id asc limit 100'); //порциями по 10 шт
       TSSsqlite.SQuery.Open;
    except
     on E : Exception do
@@ -235,7 +235,7 @@ begin
     FOraQuery.SQL.Add('(id_asutp, weight_bloom, date_weight_bloom)');
     FOraQuery.SQL.Add('VALUES ('+IdIn+', '+PointReplace(WeightIn)+',');
     FOraQuery.SQL.Add('TO_DATE('''+TimestampIn+''', ''yyyy-mm-dd hh24:mi:ss''))');
-    FOraQuery.ExecSQL;
+//    FOraQuery.ExecSQL;
 
   {$IFDEF DEBUG}
     Log.save('d', 'OraQuery insert | '+FOraQuery.SQL.Text);
@@ -262,7 +262,7 @@ begin
         FOraQuery.SQL.Add('date_weight_bloom = TO_DATE('''+TimestampIn+''',');
         FOraQuery.SQL.Add('''yyyy-mm-dd hh24:mi:ss'')');
         FOraQuery.SQL.Add('where id_asutp = '+IdIn+'');
-        FOraQuery.ExecSQL;
+//        FOraQuery.ExecSQL;
 
         error := false;
   {$IFDEF DEBUG}

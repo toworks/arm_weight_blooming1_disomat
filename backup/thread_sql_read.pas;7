@@ -107,7 +107,7 @@ begin
   {$ENDIF}
   except
     on E : Exception do
-      lLog.save('e', E.ClassName+', с сообщением: '+E.Message);
+      lLog.save('e', E.ClassName+' mouse moved, с сообщением: '+E.Message);
   end;
 
   try

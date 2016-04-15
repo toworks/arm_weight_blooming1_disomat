@@ -187,12 +187,10 @@ begin
 end;
 
 
-{procedure TThreadSqlRead.SyncNextWeightToRecord;
+procedure TThreadSqlRead.SyncNextWeightToRecord;
 begin
-     //dbgrid текущая выбраная заготовка
-     if Fpkdat_in <> '' then
-        NextWeightToRecordLocation;
-end;}
+     NextWeightToRecordLocation;
+end;
 
 
 // При загрузке программы класс будет создаваться

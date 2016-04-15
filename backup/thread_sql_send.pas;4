@@ -24,6 +24,7 @@ type
   public
     Constructor Create(_Log: TLog); overload;
     Destructor Destroy; override;
+    property OnTerminate: TNotifyEvent;
   end;
 
 var
@@ -129,7 +130,7 @@ begin
           try
               SqlSend;
               SyncViewLocal;
-              ThreadSqlSend.Terminated := true;
+              ThreadSqlSend.Terminated. := true;
           except
             on E : Exception do
               lLog.save('e', E.ClassName+' TThreadSqlSend, с сообщением: '+E.Message);

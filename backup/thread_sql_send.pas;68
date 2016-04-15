@@ -230,9 +230,7 @@ begin
     if not FOraConnect.Ping then
       FOraConnect.Reconnect;
 
-//    FOraConnect.TransactIsolationLevel := tiRepeatableRead;//[tiReadCommitted, tiReadUncommitted];
-
-    lLog.save('d', 'InTransaction | '+booltostr(FOraConnect.InTransaction));
+    FOraConnect.Commit;
     FOraQuery.Close;
     FOraQuery.SQL.Clear;
     FOraQuery.SQL.Add('INSERT INTO crop');
@@ -240,7 +238,7 @@ begin
     FOraQuery.SQL.Add('VALUES ('+IdIn+', '+PointReplace(WeightIn)+',');
     FOraQuery.SQL.Add('TO_DATE('''+TimestampIn+''', ''yyyy-mm-dd hh24:mi:ss''))');
     FOraQuery.ExecSQL;
-    FOraConnect.Commit;
+
   {$IFDEF DEBUG}
     Log.save('d', 'OraQuery insert | '+FOraQuery.SQL.Text);
   {$ENDIF}

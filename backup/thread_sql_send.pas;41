@@ -248,17 +248,19 @@ begin
     Log.save('d', 'OraQuery insert | '+FOraQuery.SQL.Text);
   {$ENDIF}
      error := false;
-  except
+ { except
     on E : Exception do begin
       error := true;
       err_oci_no_data := AnsiPos('OCI_NO_DATA', E.Message);
       lLog.save('e', E.ClassName+' sql save to oracle, с сообщением: '+E.Message+' | '+FOraQuery.SQL.Text);
-    end;
+    end;}
+
+  finally
   end;
 {$IFDEF DEBUG}
   Log.save('d', 'position | '+inttostr(err_oci_no_data));
 {$ENDIF}
-  if error and (err_oci_no_data = 0) then
+{  if error and (err_oci_no_data = 0) then
   begin
     try
         FOraQuery.Close;
@@ -281,7 +283,7 @@ begin
         lLog.save('e', E.ClassName+' sql update to oracle, с сообщением: '+E.Message+' | '+FOraQuery.SQL.Text);
       end;
     end;
-  end;
+  end;}
 
   Result := error;
 end;

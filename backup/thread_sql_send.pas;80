@@ -228,8 +228,7 @@ begin
     if not FOraConnect.Ping then
       FOraConnect.Reconnect;
 
-    FOraConnect.AutoCommit := false;
-    FOraConnect.Commit;
+    FOraConnect.TransactIsolationLevel := tiReadCommitted;
     FOraQuery.Close;
     FOraQuery.SQL.Clear;
     FOraQuery.SQL.Add('INSERT INTO crop');
@@ -237,7 +236,6 @@ begin
     FOraQuery.SQL.Add('VALUES ('+IdIn+', '+PointReplace(WeightIn)+',');
     FOraQuery.SQL.Add('TO_DATE('''+TimestampIn+''', ''yyyy-mm-dd hh24:mi:ss''))');
     FOraQuery.ExecSQL;
-    FOraConnect.Commit;
   {$IFDEF DEBUG}
     Log.save('d', 'OraQuery insert | '+FOraQuery.SQL.Text);
   {$ENDIF}
@@ -263,7 +261,6 @@ begin
         FOraQuery.SQL.Add('''yyyy-mm-dd hh24:mi:ss'')');
         FOraQuery.SQL.Add('where id_asutp = '+IdIn+'');
         FOraQuery.ExecSQL;
-        FOraConnect.Commit;
 
         error := false;
   {$IFDEF DEBUG}

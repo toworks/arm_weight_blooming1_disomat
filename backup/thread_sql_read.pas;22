@@ -78,9 +78,9 @@ if not ThreadStop then begin
         on E : Exception do
           lLog.save('e', E.ClassName+', с сообщением: '+E.Message);
       end;
-
-      sleep(1000);
 end;
+      sleep(1000);
+
    end;
    CoUninitialize;
 end;

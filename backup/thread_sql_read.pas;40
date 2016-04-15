@@ -15,7 +15,7 @@ type
 
     procedure SyncSqlReadTable;
     procedure SqlNewRecord;
-    procedure SyncNextWeightToRecord;
+//    procedure SyncNextWeightToRecord;
 //    procedure SyncNextWeightToRecordLocation;
   protected
     procedure Execute; override;

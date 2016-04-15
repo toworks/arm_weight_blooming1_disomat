@@ -8,10 +8,9 @@
       <Unit0>
         <Filename Value="ArmWeightBlooming1.lpr"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="5"/>
+        <EditorIndex Value="-1"/>
         <CursorPos Y="21"/>
         <UsageCount Value="220"/>
-        <Loaded Value="True"/>
       </Unit0>
       <Unit1>
         <Filename Value="main.pas"/>
@@ -55,7 +54,7 @@
       <Unit5>
         <Filename Value="sql.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="6"/>
+        <EditorIndex Value="5"/>
         <TopLine Value="4"/>
         <CursorPos X="24" Y="32"/>
         <UsageCount Value="219"/>
@@ -64,14 +63,14 @@
       <Unit6>
         <Filename Value="calibration.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="7"/>
+        <EditorIndex Value="6"/>
         <UsageCount Value="219"/>
         <Loaded Value="True"/>
       </Unit6>
       <Unit7>
         <Filename Value="thread_comport.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="9"/>
+        <EditorIndex Value="8"/>
         <TopLine Value="372"/>
         <CursorPos Y="48"/>
         <UsageCount Value="218"/>
@@ -82,20 +81,20 @@
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
         <EditorIndex Value="4"/>
-        <TopLine Value="211"/>
-        <CursorPos Y="226"/>
+        <TopLine Value="265"/>
+        <CursorPos Y="287"/>
         <UsageCount Value="228"/>
         <Loaded Value="True"/>
       </Unit8>
       <Unit9>
         <Filename Value="thread_sql_read.pas"/>
-        <EditorIndex Value="8"/>
+        <EditorIndex Value="7"/>
         <CursorPos X="3" Y="171"/>
         <UsageCount Value="109"/>
         <Loaded Value="True"/>
       </Unit9>
     </Units>
-    <JumpHistory Count="30" HistoryIndex="29">
+    <JumpHistory Count="28" HistoryIndex="27">
       <Position1>
         <Filename Value="thread_sql_send.pas"/>
         <Caret Line="75" Column="34" TopLine="46"/>
@@ -205,17 +204,9 @@
         <Caret Line="23" Column="22"/>
       </Position27>
       <Position28>
-        <Filename Value="ArmWeightBlooming1.lpr"/>
-        <Caret Line="15" Column="13"/>
-      </Position28>
-      <Position29>
-        <Filename Value="ArmWeightBlooming1.lpr"/>
-        <Caret Line="22" Column="14"/>
-      </Position29>
-      <Position30>
         <Filename Value="thread_sql_send.pas"/>
         <Caret Line="128" Column="7" TopLine="90"/>
-      </Position30>
+      </Position28>
     </JumpHistory>
   </ProjectSession>
 </CONFIG>

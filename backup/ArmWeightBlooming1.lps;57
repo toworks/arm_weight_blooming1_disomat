@@ -71,8 +71,8 @@
         <Filename Value="thread_comport.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="8"/>
-        <TopLine Value="372"/>
-        <CursorPos Y="48"/>
+        <TopLine Value="109"/>
+        <CursorPos X="27" Y="129"/>
         <UsageCount Value="218"/>
         <Loaded Value="True"/>
       </Unit7>
@@ -81,20 +81,21 @@
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
         <EditorIndex Value="4"/>
-        <TopLine Value="205"/>
-        <CursorPos X="62" Y="231"/>
+        <TopLine Value="218"/>
+        <CursorPos X="3" Y="268"/>
         <UsageCount Value="228"/>
         <Loaded Value="True"/>
       </Unit8>
       <Unit9>
         <Filename Value="thread_sql_read.pas"/>
         <EditorIndex Value="7"/>
-        <CursorPos X="3" Y="171"/>
+        <TopLine Value="52"/>
+        <CursorPos X="7" Y="64"/>
         <UsageCount Value="109"/>
         <Loaded Value="True"/>
       </Unit9>
     </Units>
-    <JumpHistory Count="29" HistoryIndex="28">
+    <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
         <Filename Value="thread_sql_send.pas"/>
         <Caret Line="75" Column="34" TopLine="46"/>
@@ -211,6 +212,10 @@
         <Filename Value="thread_sql_send.pas"/>
         <Caret Line="231" Column="61" TopLine="203"/>
       </Position29>
+      <Position30>
+        <Filename Value="thread_sql_send.pas"/>
+        <Caret Line="232" Column="41" TopLine="214"/>
+      </Position30>
     </JumpHistory>
   </ProjectSession>
 </CONFIG>

@@ -143,6 +143,7 @@ begin
         //обновление отображение записанных данных ViewDbWeight;
         Synchronize(@SyncSqlReadTable);
 
+        lLog.save('d', 'count -> '+inttostr(count));
   {$IFDEF DEBUG}
     lLog.save('d', 'count -> '+inttostr(count));
     lLog.save('d', 'SqlMax -> '+inttostr(SqlMax));

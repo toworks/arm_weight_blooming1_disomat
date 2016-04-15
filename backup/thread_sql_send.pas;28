@@ -93,8 +93,6 @@ begin
         FOraConnect.User := OraSqlSettings.user;
         FOraConnect.Password := OraSqlSettings.password;
         FOraConnect.ClientCodepage := 'CL8MSWIN1251';
-{        FOraConnect.Properties.Add('hard_commit=TRUE');
-        FOraConnect.AutoCommit := False;}
         FOraConnect.Connect;
         FOraQuery.Connection := FOraConnect;
       except
@@ -242,7 +240,7 @@ FOraQuery.SQL.Add('WHERE rownum = 1');
 FOraQuery.SQL.Add('order by id_asutp desc');
 FOraQuery.Open;
    }
-lLog.save('i', 'id_asutp | '+FOraQuery.FieldByName('id_asutp').AsString);
+//lLog.save('i', 'id_asutp | '+FOraQuery.FieldByName('id_asutp').AsString);
 
     FOraQuery.Close;
     FOraQuery.SQL.Clear;

@@ -186,7 +186,7 @@ begin
 
   while not MainFSql.FQuery.Eof do
   begin
-        MainFSql.FQuery.FieldByName('name').AsWideString;
+        lLog.save('d', MainFSql.FQuery.FieldByName('name').AsWideString);
   end;
 end;
 

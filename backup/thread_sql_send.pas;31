@@ -234,14 +234,14 @@ begin
 
 //    FOraConnect.TransactIsolationLevel := tiReadUncommitted;
 
-
+  {
 FOraQuery.Close;
 FOraQuery.SQL.Clear;
 FOraQuery.SQL.Add('select * from crop');
 FOraQuery.SQL.Add('WHERE rownum = 1');
 FOraQuery.SQL.Add('order by id_asutp desc');
 FOraQuery.Open;
-
+   }
 lLog.save('i', 'id_asutp | '+FOraQuery.FieldByName('id_asutp').AsString);
 
     FOraQuery.Close;
@@ -251,21 +251,22 @@ lLog.save('i', 'id_asutp | '+FOraQuery.FieldByName('id_asutp').AsString);
     FOraQuery.SQL.Add('VALUES ('+IdIn+', '+PointReplace(WeightIn)+',');
     FOraQuery.SQL.Add('TO_DATE('''+TimestampIn+''', ''yyyy-mm-dd hh24:mi:ss''))');
     FOraQuery.ExecSQL;
-//    FOraConnect.Commit;
 
   {$IFDEF DEBUG}
     Log.save('d', 'OraQuery insert | '+FOraQuery.SQL.Text);
   {$ENDIF}
      error := false;
-  except
-    on E : Exception do begin
-      error := true;
-      err_oci_no_data := AnsiPos('OCI_NO_DATA', E.Message);
-      lLog.save('e', E.ClassName+' sql save to oracle, с сообщением: '+E.Message+' | '+FOraQuery.SQL.Text);
+    except
+      on E : Exception do begin
+        error := true;
+        err_oci_no_data := AnsiPos('OCI_NO_DATA', E.Message);
+        lLog.save('e', E.ClassName+' sql save to oracle, с сообщением: '+E.Message+' | '+FOraQuery.SQL.Text);
+    end;
   end;
 {$IFDEF DEBUG}
   Log.save('d', 'position | '+inttostr(err_oci_no_data));
 {$ENDIF}
+  end;
   if error and (err_oci_no_data = 0) then
   begin
     try

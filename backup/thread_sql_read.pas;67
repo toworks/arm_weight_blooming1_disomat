@@ -204,7 +204,7 @@ begin
       form1.DBGrid1.DataSource.DataSet.DisableControls;
       SqlNextWeightToRecord;
       //dbgrid текущая выбраная заготовка
-      Synchronize(@NextWeightToRecordLocation);
+      Synchronize(@SyncNextWeightToRecordLocation);
   finally
       //включаем управление
       form1.DBGrid1.DataSource.DataSet.EnableControls;

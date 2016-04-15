@@ -180,7 +180,7 @@ begin
     Log.save('d', 'timestamp | '+Byffer[i,2]);
   {$ENDIF}
       try
-        send_error := SqlSaveToOracle(Byffer[i,0], Byffer[i,1], Byffer[i,2]);
+//        send_error := SqlSaveToOracle(Byffer[i,0], Byffer[i,1], Byffer[i,2]);
   {$IFDEF DEBUG}
     lLog.save('d', 'send_error | '+booltostr(send_error));
   {$ENDIF}
@@ -321,20 +321,6 @@ function TThreadSqlSend.SyncViewLocal: boolean;
 begin
 //-- локальные данные
   try
-{      if FSqlMaxLocal = 0 then
-      begin
-          TSSsqlite.SQuery.Close;
-          TSSsqlite.SQuery.SQL.Clear;
-          TSSsqlite.SQuery.SQL.Add('select * from sqlite_master');
-          TSSsqlite.SQuery.SQL.Add('where type = ''table'' and tbl_name = ''weight''');
-          TSSsqlite.SQuery.Open;
-
-          if TSSsqlite.SQuery.FieldByName('tbl_name').IsNull then
-          begin
-            exit;
-          end;
-      end;}
-
       if FSendCount <> 0 then
       begin
          FSendCount := 0;

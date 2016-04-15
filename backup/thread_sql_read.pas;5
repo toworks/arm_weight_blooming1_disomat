@@ -182,6 +182,7 @@ begin
           MainFSql.FQuery.SQL.Add('and h.steel_grade=s.steel_grade');
           MainFSql.FQuery.SQL.Add('and i.pkdat in ('+Fpkdat_in+')');
           MainFSql.FQuery.SQL.Add('order by i.pkdat desc, i.num desc, i.num_ingot desc');
+          Application.ProcessMessages; // следующая операция не тормозит интерфейс
           MainFSql.FQuery.Open;
       except
         on E : Exception do

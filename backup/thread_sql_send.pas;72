@@ -228,7 +228,7 @@ begin
     if not FOraConnect.Ping then
       FOraConnect.Reconnect;
 
-    FOraConnect.TransactIsolationLevel := [tiReadCommitted, tiReadUncommitted];
+//    FOraConnect.TransactIsolationLevel := tiRepeatableRead;//[tiReadCommitted, tiReadUncommitted];
     lLog.save('d', 'InTransaction | '+booltostr(FOraConnect.InTransaction));
     FOraQuery.Close;
     FOraQuery.SQL.Clear;

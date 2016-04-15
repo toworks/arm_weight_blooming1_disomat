@@ -158,7 +158,7 @@ begin
   end;
 
   // маркер следующей заготовки
-  if not MarkerNextWait then
+  if MarkerNextWait then
      Synchronize(@SyncNextWeightToRecord);
 //    Synchronize(@NextWeightToRecord); //следующая запись (слиток) от записаной
 end;

@@ -237,7 +237,7 @@ begin
 
 FOraQuery.Close;
 FOraQuery.SQL.Clear;
-FOraQuery.SQL.Add('select * crop');
+FOraQuery.SQL.Add('select * from crop');
 FOraQuery.SQL.Add('WHERE rownum = 1');
 FOraQuery.SQL.Add('order by id_asutp desc');
 FOraQuery.Open;
@@ -250,7 +250,7 @@ lLog.save('i', 'id_asutp | '+FOraQuery.FieldByName('id_asutp').AsString);
     FOraQuery.SQL.Add('(id_asutp, weight_bloom, date_weight_bloom)');
     FOraQuery.SQL.Add('VALUES ('+IdIn+', '+PointReplace(WeightIn)+',');
     FOraQuery.SQL.Add('TO_DATE('''+TimestampIn+''', ''yyyy-mm-dd hh24:mi:ss''))');
-//    FOraQuery.ExecSQL;
+    FOraQuery.ExecSQL;
 //    FOraConnect.Commit;
 
   {$IFDEF DEBUG}

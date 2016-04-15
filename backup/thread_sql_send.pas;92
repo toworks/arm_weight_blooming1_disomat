@@ -286,7 +286,8 @@ begin
 
       //отключаем управление
 //      form1.DBGrid2.DataSource.DataSet.DisableControls;
-//      MainSqlite.SQuery.DisableControls;
+      MainSqlite.SQuery.Active := true;
+      MainSqlite.SQuery.DisableControls;
       try
           MainSqlite.SQuery.Close;
           MainSqlite.SQuery.SQL.Clear;
@@ -311,7 +312,7 @@ begin
     finally
       //включаем управление
 //      form1.DBGrid2.DataSource.DataSet.EnableControls;
-//      MainSqlite.SQuery.EnableControls;
+      MainSqlite.SQuery.EnableControls;
     end;
 end;
 //-- end main
@@ -321,20 +322,6 @@ function TThreadSqlSend.SyncViewLocal: boolean;
 begin
 //-- локальные данные
   try
-{      if FSqlMaxLocal = 0 then
-      begin
-          TSSsqlite.SQuery.Close;
-          TSSsqlite.SQuery.SQL.Clear;
-          TSSsqlite.SQuery.SQL.Add('select * from sqlite_master');
-          TSSsqlite.SQuery.SQL.Add('where type = ''table'' and tbl_name = ''weight''');
-          TSSsqlite.SQuery.Open;
-
-          if TSSsqlite.SQuery.FieldByName('tbl_name').IsNull then
-          begin
-            exit;
-          end;
-      end;}
-
       if FSendCount <> 0 then
       begin
          FSendCount := 0;

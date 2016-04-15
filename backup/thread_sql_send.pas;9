@@ -61,14 +61,14 @@ begin
   FThreadSqlSend.Priority := tpNormal;
   FThreadSqlSend.FreeOnTerminate := True;
 
-  FThreadSqlSend.OnTerminate := ArnoldThread;;
+  FThreadSqlSend.OnTerminate := @ArnoldThread;;
 
   FThreadSqlSend.Start;
 end;
 
 procedure TThreadSqlSend.ArnoldThread(Sender: TObject);
 begin
-   lLog.save('w', 'Hasta la vista, thread');
+   Log.save('w', 'Hasta la vista, thread');
 end;
 
 destructor TThreadSqlSend.Destroy;

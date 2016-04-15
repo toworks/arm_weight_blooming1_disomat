@@ -18,7 +18,7 @@
         <ComponentName Value="Form1"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <TopLine Value="41"/>
+        <TopLine Value="77"/>
         <CursorPos Y="60"/>
         <UsageCount Value="220"/>
         <Loaded Value="True"/>
@@ -81,8 +81,8 @@
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
         <EditorIndex Value="4"/>
-        <TopLine Value="265"/>
-        <CursorPos X="40" Y="312"/>
+        <TopLine Value="174"/>
+        <CursorPos X="3" Y="183"/>
         <UsageCount Value="228"/>
         <Loaded Value="True"/>
       </Unit8>

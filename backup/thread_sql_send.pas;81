@@ -228,8 +228,7 @@ begin
     if not FOraConnect.Ping then
       FOraConnect.Reconnect;
 
-    FOraConnect.AutoCommit:=false;
-    FOraConnect.Commit;
+    FOraConnect.TransactIsolationLevel.tiReadCommitted;
     FOraQuery.Close;
     FOraQuery.SQL.Clear;
     FOraQuery.SQL.Add('INSERT INTO crop');

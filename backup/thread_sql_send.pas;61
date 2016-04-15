@@ -229,7 +229,9 @@ begin
     //была ошибака: EZSQLException, с сообщением: SQL Error: OCI_NO_DATA
     if not FOraConnect.Ping then
       FOraConnect.Reconnect;
-    lLog.save('e', 'InTransaction | '+booltostr(FOraConnect.InTransaction));
+    lLog.save('e', 'do InTransaction | '+booltostr(FOraConnect.InTransaction));
+    if FOraConnect.InTransaction then       FOraConnect.Reconnect;
+    lLog.save('e', 'after InTransaction | '+booltostr(FOraConnect.InTransaction));
 
     FOraConnect.Commit;
     FOraQuery.Close;
@@ -238,7 +240,7 @@ begin
     FOraQuery.SQL.Add('(id_asutp, weight_bloom, date_weight_bloom)');
     FOraQuery.SQL.Add('VALUES ('+IdIn+', '+PointReplace(WeightIn)+',');
     FOraQuery.SQL.Add('TO_DATE('''+TimestampIn+''', ''yyyy-mm-dd hh24:mi:ss''))');
- //   FOraQuery.ExecSQL;
+    FOraQuery.ExecSQL;
     FOraConnect.Commit;
 
   {$IFDEF DEBUG}

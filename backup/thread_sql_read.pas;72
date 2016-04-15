@@ -4,7 +4,7 @@ unit thread_sql_read;
 interface
 
 uses
-  SysUtils, DB, Classes, ActiveX, ZDataset, logging, sql, main;
+  SysUtils, DB, Classes, ActiveX, ZDataset, logging, sql;
 
 type
   //Здесь необходимо описать класс TThreadSql:
@@ -35,9 +35,9 @@ var
 
 implementation
 
-{uses
+uses
   main;
-}
+
 
 
 

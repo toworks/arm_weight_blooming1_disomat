@@ -41,7 +41,7 @@ type
     Constructor Create(_Log: TLog); overload;
     Destructor Destroy; override;
   published
-    property NextSave: boolean read FNextSave write FNextSave;
+    property NextSave: boolean read FNextSave write FNextSave default true;
     property no_save: boolean read Fno_save write Fno_save;
     property SendAttribute: boolean read SendEKMessage;
   end;
@@ -69,10 +69,10 @@ begin
 
   lLog := _Log;
   TCsqlite := TSqlite.Create(lLog);
- lLog.save('e', 'create do NextSave | '+booltostr(NextSave));
-  no_save := false;
-  NextSave := true;
- lLog.save('e', 'create NextSave | '+booltostr(NextSave));
+
+  Fno_save := false;
+  FNextSave := true;
+
   // создаем поток True - создание остановка, False - создание старт
   FThreadComPort := TThreadComPort.Create(True);
   FThreadComPort.Priority := tpNormal;

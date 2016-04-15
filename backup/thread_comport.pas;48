@@ -105,26 +105,26 @@ begin
 {$ENDIF}
           // при выбор заготовки останавливаем чтение
           if not ThreadStop and not MarkerNextWait then begin
+              lLog.save('t', 'NextSave | '+booltostr(NextSave));
               //тестирование
               if assigned(MemoTesting) then
                  Synchronize(@SyncMemoTesting);
               //калибровка
               if assigned(CalibrationForm) then
                  Synchronize(@SyncCalibration);
-              lLog.save('e', 'main do NextSave | '+booltostr(NextSave));
+//              lLog.save('e', 'main do NextSave | '+booltostr(NextSave));
               if NextSave and not MarkerNextWait then
                  SendTKMessage;
 
               if no_save then begin
                  SendEKMessage;
               end;
-              lLog.save('e', 'main NextSave | '+booltostr(NextSave));
-//              if not NextSave then
+//              lLog.save('e', 'main NextSave | '+booltostr(NextSave));
+              if not NextSave then
                  Synchronize(@SyncNextWeightToRecord);
-          end;
-{          else
-              sleep(1000);}
-          sleep(1000);
+          end
+          else
+              sleep(1000);
       except
         on E : Exception do
           lLog.save('e', E.ClassName+' serial execute, с сообщением: '+E.Message);

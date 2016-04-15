@@ -96,7 +96,7 @@ end;
 procedure TThreadComPort.Execute;
 begin
   CoInitialize(nil);
-  FNextSave := true; //не правильно
+  NextSave := true; //не правильно
   while True do
   begin
       try
@@ -105,21 +105,21 @@ begin
 {$ENDIF}
           // при выбор заготовки останавливаем чтение
           if not ThreadStop and not MarkerNextWait then begin
-              lLog.save('t', 'step 1');
+//              lLog.save('t', 'NextSave | '+booltostr(NextSave)+' | '+booltostr(FNextSave));
               //тестирование
               if assigned(MemoTesting) then
                  Synchronize(@SyncMemoTesting);
               //калибровка
               if assigned(CalibrationForm) then
                  Synchronize(@SyncCalibration);
-//              lLog.save('e', 'main do NextSave | '+booltostr(NextSave));
+//              lLog.save('e', 'main do NextSave | '+booltostr(NextSave)+' | '+booltostr(FNextSave));
               if NextSave and not MarkerNextWait then
                  SendTKMessage;
 
               if no_save then begin
                  SendEKMessage;
               end;
-//              lLog.save('e', 'main NextSave | '+booltostr(NextSave));
+//              lLog.save('e', 'main NextSave | '+booltostr(NextSave)+' | '+booltostr(FNextSave));
               if not NextSave then
                  Synchronize(@SyncNextWeightToRecord);
           end
@@ -225,7 +225,7 @@ begin
     //{ test }      SqlSaveInBuffer(trim(copy(Data, 60, 6)))
             SqlSaveInBuffer(trim(copy(Data, 40, 6)));
             NextSave := false;
-            lLog.save('w', 'ReceiveTKData | '+trim(copy(Data, 40, 6)));
+//            lLog.save('w', 'ReceiveTKData | '+trim(copy(Data, 40, 6)));
           end
           else
             lLog.save('w', 'заготовка не выбрана'+#9+'weight | '+trim(copy(Data, 40, 6)));
@@ -355,10 +355,12 @@ begin
 {$ENDIF}
      SqlNextWeightToRecord;
      NextWeightToRecordLocation;
+//     lLog.save('t', 'do pkdat | '+pkdat+' | '+Fpkdat+' | num | '+num+' | '+Fnum+' | num_ingot | '+num_ingot+' | '+Fnum_ingot);
      t := ComparePkdat;//разрешаем снятие следующего показания
      //NextSave := ComparePkdat;//разрешаем снятие следующего показания
      NextSave := t;
-     lLog.save('t', 'SyncNextWeightToRecord | ComparePkdat | '+booltostr(t));
+//     lLog.save('t', 'after pkdat | '+pkdat+' | '+Fpkdat+' | num | '+num+' | '+Fnum+' | num_ingot | '+num_ingot+' | '+Fnum_ingot);
+//     lLog.save('t', 'SyncNextWeightToRecord | ComparePkdat | '+booltostr(t));
 end;
 
 
@@ -376,14 +378,8 @@ end;
 
 function TThreadComPort.ComparePkdat: boolean;
 begin
-//  lLog.save('t', 'pkdat | '+pkdat+' | '+Fpkdat+' | num | '+num+' | '+Anum+' | '+' | num_ingot | '+num_ingot+' | '+Anum_ingot);
-  lLog.save('t', pkdat+' | '+num+' | '+num_ingot);
-  // first run and after next weight
-{  if (pkdat = '') then begin
-     Result := true;
-     exit;
-  end;}
-
+//  lLog.save('t', 'pkdat | '+pkdat+' | '+Fpkdat+' | num | '+num+' | '+Anum+' | num_ingot | '+num_ingot+' | '+Anum_ingot);
+//  lLog.save('t', pkdat+' | '+num+' | '+num_ingot);
   if (pkdat = Fpkdat) and (num = Fnum) and (num_ingot = Fnum_ingot) then
      Result := false
   else begin

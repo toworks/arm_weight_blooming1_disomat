@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, DBGrids,
-  ExtCtrls, StdCtrls, Menus, db, {$ifdef windows} Windows, {$endif} Grids,
+  ExtCtrls, StdCtrls, Menus, db, Windows, Grids, PopupNotifier, Variants,
   logging, sql, thread_sql_read, thread_sql_send, thread_comport;
 
 type
@@ -29,6 +29,7 @@ type
     l_n_number_ingot: TLabel;
     l_number_ingot: TLabel;
     l_n_datetime: TLabel;
+    PopupNotifier1: TPopupNotifier;
     procedure DBGrid1DblClick(Sender: TObject);
     procedure DBGrid1DrawColumnCell(Sender: TObject; const Rect: TRect;
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
@@ -38,6 +39,9 @@ type
     procedure FormCreate(Sender: TObject);
     function CreateMenu: boolean;
     procedure ActionMenuItemClick(Sender: TObject);
+    function OneInstance: boolean;
+    procedure UniqueInstanceAppOtherInstance(Sender: TObject;
+      ParamCount: Integer; Parameters: array of String);
   private
     procedure DBgrid1Create(Sender: TObject);
     procedure DBgrid2Create(Sender: TObject);
@@ -54,13 +58,15 @@ var
   SDataSource: TDataSource;
   MainFSql: TFsql;
   FDataSource: TDataSource;
-
-//    {$DEFINE DEBUG}
+  ThreadStop: boolean = false;
 
   function ViewSelectedIngot: boolean;
   function PointReplace(DataIn: string): string;
   function ViewClear: boolean;
   procedure NextWeightToRecordLocation;
+
+
+  //    {$DEFINE DEBUG}
 
 
 implementation
@@ -75,8 +81,6 @@ uses
 procedure TForm1.FormCloseQuery(Sender: TObject; var CanClose: boolean);
 begin
   try
-      Log.save('i', 'close '+Log.ProgFileName);
-
       if assigned(ThreadComPort) then
         ThreadComPort.Terminate;
       if assigned(ThreadSqlRead) then
@@ -93,6 +97,7 @@ begin
       if assigned(FDataSource) then
         FDataSource.Destroy;
   finally
+    Log.save('i', 'close '+Log.ProgFileName);
     // закрываем приложение
     {$ifdef unix}
       FpKill(FpGetpid, 9);
@@ -107,17 +112,20 @@ end;
 procedure TForm1.DBGrid1DblClick(Sender: TObject);
 begin
   // маркер следующей заготовки
-  if not MarkerNextWait then begin
+//  if not MarkerNextWait then begin
     try
+        ThreadStop := true;// останавливаем потоки
         //отключаем управление
         form1.DBGrid1.DataSource.DataSet.DisableControls;
         if MessageDlg('Выбрать заготовку для взвешивания?', mtCustom, mbYesNo, 0) = mrYes then
           ViewSelectedIngot;
+        ThreadStop := false;// запускаем потоки
+        MarkerNextWait := false;// сбрасываем маркер следующей заготовки при выборе новой
     finally
         //включаем управление
         form1.DBGrid1.DataSource.DataSet.EnableControls;
     end;
-  end;
+//  end;
 end;
 
 
@@ -271,11 +279,36 @@ begin
 
   //запрет на изменение формы
   BorderStyle := bsToolWindow;
-  BorderIcons := BorderIcons - [biMaximize];
+  BorderIcons := BorderIcons - [biMaximize, biSystemMenu];
 
   ViewClear;
 
   CreateMenu;
+end;
+
+
+function TForm1.OneInstance: boolean;
+begin
+  //проверка 1 экземпляр программы
+  UniqueInstanceApp := TUniqueInstance.Create(Self);
+  with UniqueInstanceApp do
+    begin
+      Identifier := 'uSOvRn8tcCo5dkerIp2Eg6F65X5tOVQ8R1tBnbRvm4X8gavyJe';//ID program
+      UpdateInterval := 800;
+      OnOtherInstance := @UniqueInstanceAppOtherInstance;
+      Enabled := True;
+      Loaded;
+    end;
+end;
+
+
+procedure TForm1.UniqueInstanceAppOtherInstance(Sender: TObject;
+  ParamCount: Integer; Parameters: array of String);
+begin
+  //hack to force app bring to front
+{  FormStyle := fsSystemStayOnTop;
+  FormStyle := fsNormal;}
+  ShowForm(Self);
 end;
 
 
@@ -399,12 +432,12 @@ var
   i: integer;
 begin
 
-  for i:=0 to form1.ComponentCount - 1 do
+  for i:=0 to Form1.ComponentCount - 1 do
    begin
-    if (form1.Components[i] is Tlabel) then
+    if (Form1.Components[i] is Tlabel) then
       begin
-        if copy(form1.Components[i].Name,1,4) <> 'l_n_' then
-          Tlabel(Form1.FindComponent(form1.Components[i].Name)).Caption := '';
+        if copy(Form1.Components[i].Name,1,4) <> 'l_n_' then
+          Tlabel(Form1.FindComponent(Form1.Components[i].Name)).Caption := '';
       end;
    end;
 

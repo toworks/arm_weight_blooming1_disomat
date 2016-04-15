@@ -105,6 +105,7 @@ begin
 {$ENDIF}
           // при выбор заготовки останавливаем чтение
           if not ThreadStop and not MarkerNextWait then begin
+              lLog.save('t', 'NextSave | '+booltostr(NextSave)+' | '+booltostr(FNextSave));
               //тестирование
               if assigned(MemoTesting) then
                  Synchronize(@SyncMemoTesting);
@@ -115,15 +116,12 @@ begin
               if NextSave and not MarkerNextWait then
                  SendTKMessage;
 
-              if not NextSave then
-                 Synchronize(@SyncNextWeightToRecord);
-
               if no_save then begin
                  SendEKMessage;
               end;
 //              lLog.save('e', 'main NextSave | '+booltostr(NextSave));
               if not NextSave then
-                 Synchronize(@SyncNextWeightToRecord);
+//                 Synchronize(@SyncNextWeightToRecord);
           end
           else
               sleep(1000);

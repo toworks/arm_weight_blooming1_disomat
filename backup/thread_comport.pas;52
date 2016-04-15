@@ -100,9 +100,9 @@ begin
   while True do
   begin
       try
-{$IFDEF DEBUG}
+//{$IFDEF DEBUG}
   lLog.save('t', 'step 1');
-{$ENDIF}
+//{$ENDIF}
           // при выбор заготовки останавливаем чтение
           if not ThreadStop and not MarkerNextWait then begin
               //тестирование
@@ -111,18 +111,17 @@ begin
               //калибровка
               if assigned(CalibrationForm) then
                  Synchronize(@SyncCalibration);
-              lLog.save('e', 'main do NextSave | '+booltostr(NextSave));
+//              lLog.save('e', 'main do NextSave | '+booltostr(NextSave));
               if NextSave and not MarkerNextWait then
                  SendTKMessage;
 
               if no_save then begin
                  SendEKMessage;
               end;
-              lLog.save('e', 'main NextSave | '+booltostr(NextSave));
+//              lLog.save('e', 'main NextSave | '+booltostr(NextSave));
               if not NextSave then
                  Synchronize(@SyncNextWeightToRecord);
           end
-              sleep(1000);
           else
               sleep(1000);
       except

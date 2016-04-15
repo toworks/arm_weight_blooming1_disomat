@@ -40,6 +40,7 @@ type
   public
     Constructor Create(_Log: TLog); overload;
     Destructor Destroy; override;
+  published
     property NextSave: boolean read FNextSave write FNextSave;
     property no_save: boolean read Fno_save write Fno_save;
     property SendAttribute: boolean read SendEKMessage;

@@ -4,7 +4,7 @@ interface
 
 uses
    SysUtils, ActiveX, Variants, Classes, StrUtils, DB, ZConnection, ZDataset,
-   ZDbcIntfs, sqldblib, SyncObjs, logging;
+   ZDbcIntfs, ZCompatibility, SyncObjs, logging;
 
 var
     time_ingot, pkdat, num, num_ingot, num_heat, name, weight_ingot, steel_group,
@@ -84,9 +84,6 @@ begin
         SConnect.Database := '.\'+SettingsApp.DBFile;
         SConnect.LibraryLocation := '.\sqlite3.dll';
         SConnect.Protocol := 'sqlite-3';
-        SConnect.AutoEncodeStrings := true;// перекодировка с сервера в клиент
-//        SConnect.ClientCodepage := 'CL8MSWIN1251';// кодировка на сервере
-//        SConnect.ControlsCodePage := cCP_UTF8;// кодировка на клиенте
         SConnect.Connect;
         SQuery.Connection := SConnect;
         SqlJournalMode;

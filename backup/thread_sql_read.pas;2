@@ -82,7 +82,7 @@ begin
         end;
       end;
 
-      sleep(5000);
+      sleep(1000*10);
 
    end;
    CoUninitialize;
@@ -111,7 +111,7 @@ begin
   end;
 
   try
-    //if not Fsql.FConnect.Connected then
+    if not Fsql.FConnect.Ping then
        Fsql.FConnect.Reconnect;
 
     Fsql.FQuery.Close;
@@ -167,9 +167,10 @@ procedure TThreadSqlRead.SyncSqlReadTable;
 begin
   try
       //отключаем управление
-      form1.DBGrid1.DataSource.DataSet.DisableControls;
+//      form1.DBGrid1.DataSource.DataSet.DisableControls;
+        MainFSql.FQuery.DisableControls;
       try
-         // if not MainFSql.FConnect.Connected then
+          if not MainFSql.FConnect.Ping then
              MainFSql.FConnect.Reconnect;
 
           MainFSql.FQuery.Close;
@@ -182,6 +183,7 @@ begin
           MainFSql.FQuery.SQL.Add('and h.steel_grade=s.steel_grade');
           MainFSql.FQuery.SQL.Add('and i.pkdat in ('+Fpkdat_in+')');
           MainFSql.FQuery.SQL.Add('order by i.pkdat desc, i.num desc, i.num_ingot desc');
+          Application.ProcessMessages; // следующая операция не тормозит интерфейс
           MainFSql.FQuery.Open;
       except
         on E : Exception do
@@ -193,7 +195,8 @@ begin
 
   finally
       //включаем управление
-      form1.DBGrid1.DataSource.DataSet.EnableControls;
+//      form1.DBGrid1.DataSource.DataSet.EnableControls;
+      MainFSql.FQuery.EnableControls;
   end;
 
 end;

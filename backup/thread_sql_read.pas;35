@@ -139,12 +139,9 @@ begin
     if (FSqlMax < count) then
     begin
         FSqlMax := count;
+
         //обновление отображение записанных данных ViewDbWeight;
         Synchronize(@SyncSqlReadTable);
-
-{        //dbgrid текущая выбраная заготовка
-        if Fpkdat_in <> '' then
-          Synchronize(@SyncNextWeightToRecordLocation);}
 
   {$IFDEF DEBUG}
     lLog.save('d', 'count -> '+inttostr(count));

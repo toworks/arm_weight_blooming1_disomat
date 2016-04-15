@@ -40,7 +40,8 @@ type
   public
     Constructor Create(_Log: TLog); overload;
     Destructor Destroy; override;
-    property NextSave: boolean read FNextSave write FNextSave default true;
+  published
+    property NextSave: boolean read FNextSave write FNextSave;
     property no_save: boolean read Fno_save write Fno_save;
     property SendAttribute: boolean read SendEKMessage;
   end;
@@ -64,13 +65,15 @@ uses
 
 constructor TThreadComPort.Create(_Log: TLog);
 begin
-  inherited Create(False);
+//  inherited Create(True);
 
   lLog := _Log;
   TCsqlite := TSqlite.Create(lLog);
 
-  no_save := false;
-//  NextSave := true;
+  self.no_save := false;
+  self.NextSave := true;
+
+  inherited Create(True);
 
   // создаем поток True - создание остановка, False - создание старт
   FThreadComPort := TThreadComPort.Create(True);
@@ -107,14 +110,14 @@ begin
               if assigned(CalibrationForm) then
                  Synchronize(@SyncCalibration);
               lLog.save('e', 'main do NextSave | '+booltostr(NextSave));
-              if FNextSave and not MarkerNextWait then
+              if NextSave and not MarkerNextWait then
                  SendTKMessage;
 
               if no_save then begin
                  SendEKMessage;
               end;
               lLog.save('e', 'main NextSave | '+booltostr(NextSave));
-              if not FNextSave then
+              if not NextSave then
                  Synchronize(@SyncNextWeightToRecord);
           end
           else
@@ -204,7 +207,7 @@ end;
 function TThreadComPort.ReceiveTKData(Data: AnsiString): string;
 begin
 {$IFDEF DEBUG}
-  lLog.save('t', 'TK marker | '+copy(Data, 28, 1)+' | no_save | '+booltostr(no_save)+' | FNextSave | '+booltostr(FNextSave));
+  lLog.save('t', 'TK marker | '+copy(Data, 28, 1)+' | no_save | '+booltostr(no_save)+' | NextSave | '+booltostr(NextSave));
 {$ENDIF}
 //{ test }  if (copy(Data, 2, 6) = '00#TK#') and (copy(Data, 26, 1) = '1') and (no_save = false) then
   if ( {copy(Data, 2, 6) = '00#TK#' )
@@ -218,7 +221,7 @@ begin
           if pkdat <> '' then begin
     //{ test }      SqlSaveInBuffer(trim(copy(Data, 60, 6)))
             SqlSaveInBuffer(trim(copy(Data, 40, 6)));
-            FNextSave := false;
+            NextSave := false;
             lLog.save('w', 'ReceiveTKData | '+trim(copy(Data, 40, 6)));
           end
           else
@@ -350,8 +353,8 @@ begin
      SqlNextWeightToRecord;
      NextWeightToRecordLocation;
      t := ComparePkdat;//разрешаем снятие следующего показания
-     //FNextSave := ComparePkdat;//разрешаем снятие следующего показания
-     FNextSave := t;
+     //NextSave := ComparePkdat;//разрешаем снятие следующего показания
+     NextSave := t;
      lLog.save('t', 'SyncNextWeightToRecord | ComparePkdat | '+booltostr(t));
 end;
 

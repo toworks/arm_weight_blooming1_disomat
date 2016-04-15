@@ -95,7 +95,7 @@ begin
       if NOW > FutureDate then
       begin
         FutureDate := Now + 4 / (24 * 60); //+4 minutes
-//        MouseMoved;//двигаем мышку
+        MouseMoved;//двигаем мышку
       end;
   {$IFDEF DEBUG}
     lLog.save('d', 'NOW -> '+datetimetostr(now));
@@ -139,12 +139,9 @@ begin
     if (FSqlMax < count) then
     begin
         FSqlMax := count;
-        //обновление отображение записанных данных ViewDbWeight;
-//        Synchronize(@SyncSqlReadTable);
 
-{        //dbgrid текущая выбраная заготовка
-        if Fpkdat_in <> '' then
-          Synchronize(@SyncNextWeightToRecordLocation);}
+        //обновление отображение записанных данных ViewDbWeight;
+        Synchronize(@SyncSqlReadTable);
 
   {$IFDEF DEBUG}
     lLog.save('d', 'count -> '+inttostr(count));

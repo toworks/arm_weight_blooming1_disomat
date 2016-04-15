@@ -82,7 +82,7 @@ begin
         end;
       end;
 
-      sleep(5000);
+      sleep(1000*5);
 
    end;
    CoUninitialize;
@@ -168,6 +168,7 @@ begin
   try
       //отключаем управление
       form1.DBGrid1.DataSource.DataSet.DisableControls;
+//        MainFSql.FQuery.DisableControls;
       try
           if not MainFSql.FConnect.Ping then
              MainFSql.FConnect.Reconnect;
@@ -195,6 +196,7 @@ begin
   finally
       //включаем управление
       form1.DBGrid1.DataSource.DataSet.EnableControls;
+//      MainFSql.FQuery.EnableControls;
   end;
 
 end;

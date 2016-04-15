@@ -65,15 +65,13 @@ uses
 
 constructor TThreadComPort.Create(_Log: TLog);
 begin
-//  inherited Create(True);
+  inherited Create(True);
 
   lLog := _Log;
   TCsqlite := TSqlite.Create(lLog);
 
-  self.no_save := false;
-  self.NextSave := true;
-
-//  inherited Create(True);
+  Fno_save := false;
+  FNextSave := true;
 
   // создаем поток True - создание остановка, False - создание старт
   FThreadComPort := TThreadComPort.Create(True);
@@ -94,7 +92,8 @@ end;
 
 procedure TThreadComPort.Execute;
 begin
-//  CoInitialize(nil);
+  CoInitialize(nil);
+  FNextSave := true; //не правильно
   while True do
   begin
       try
@@ -127,7 +126,7 @@ begin
           lLog.save('e', E.ClassName+' serial execute, с сообщением: '+E.Message);
       end;
    end;
-//   CoUninitialize;
+   CoUninitialize;
 end;
 
 

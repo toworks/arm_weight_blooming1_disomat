@@ -241,11 +241,7 @@ begin
 //          form1.l_n_message.Caption := ' Ожидание сдедующей заготовки ';
           MarkerNextWait := true;
 
-          form1.l_weight_ingot.Visible := false;
-          form1.l_grade.Visible := false;
-          form1.l_heat.Visible := false;
-          form1.l_datetime.Visible := false;
-          form1.l_number_ingot.Visible := false;
+          EnableViewSelectedIngot(false);
           FreeAndNil(_FSql);
           exit;
       end
@@ -253,11 +249,7 @@ begin
       begin
 //          form1.l_n_message.Visible := false;
           MarkerNextWait := false;
-          form1.l_weight_ingot.Visible := true;
-          form1.l_grade.Visible := true;
-          form1.l_heat.Visible := true;
-          form1.l_datetime.Visible := true;
-          form1.l_number_ingot.Visible := true;
+          EnableViewSelectedIngot(true);
       end;
   except
     on E : Exception do

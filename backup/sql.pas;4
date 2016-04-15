@@ -20,6 +20,7 @@ type
   private
     FSQuery: TZQuery;
     FSConnect: TZConnection;
+    FSTransaction: TZTransaction;
     Log: TLog;
     function ConfigSettings(InData: boolean): boolean;
     function SqlJournalMode: boolean;
@@ -28,6 +29,7 @@ type
     Destructor Destroy; override;
     property SConnect: TZConnection read FSConnect write FSConnect;
     property SQuery: TZQuery read FSQuery write FSQuery;
+    property STransaction: TSQLTransaction read FSTransaction write FSTransaction;
   end;
 
 
@@ -201,8 +203,6 @@ begin
       Log.save('e', E.ClassName+' sql create _FSql, с сообщением: '+E.Message);
   end;
 
-  i:=0;
-
   if ( pkdat = '') then
      exit;
 
@@ -266,8 +266,10 @@ begin
       Log.save('e', E.ClassName+' sql 3, с сообщением: '+E.Message);
   end;
 
+  i:=0;
+
   try
-      while not MainFSql.FQuery.Eof do
+      while not _FSql.FQuery.Eof do
       begin
           if i = 1 then
             break;
@@ -280,10 +282,6 @@ begin
           name := _FSql.FQuery.FieldByName('name').AsString;
           weight_ingot := _FSql.FQuery.FieldByName('weight_ingot').AsString;
           smena := _FSql.FQuery.FieldByName('smena').AsString;
-
-          ThreadComPort.Apkdat := pkdat.;
-          ThreadComPort.Anum := num;
-          ThreadComPort.Anum_ingot := num_ingot;
 
           Form1.l_number_ingot.Caption := num_ingot;
           Form1.l_datetime.Caption := time_ingot;

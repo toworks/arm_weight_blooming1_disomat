@@ -82,7 +82,7 @@ begin
         end;
       end;
 
-      sleep(1000);
+      sleep(5000);
 
    end;
    CoUninitialize;
@@ -111,6 +111,9 @@ begin
   end;
 
   try
+    if not Fsql.FConnect.Connected then
+       Fsql.FConnect.Reconnect;
+
     Fsql.FQuery.Close;
     Fsql.FQuery.SQL.Clear;
     Fsql.FQuery.SQL.Add('select distinct pkdat from ingots');
@@ -163,35 +166,36 @@ end;
 procedure TThreadSqlRead.SyncSqlReadTable;
 begin
   try
-  //отключаем управление
-  form1.DBGrid1.DataSource.DataSet.DisableControls;
-  try
-      MainFSql.FQuery.Close;
-      MainFSql.FQuery.SQL.Clear;
-      MainFSql.FQuery.SQL.Add('select i.pkdat,i.num,i.num_ingot,h.num_heat, s.name,i.weight_ingot, i.time_ingot, s.steel_group, sh.smena');
-      MainFSql.FQuery.SQL.Add('from ingots i, heats h, steels s, shifts sh');
-      MainFSql.FQuery.SQL.Add('where i.pkdat=h.pkdat');
-      MainFSql.FQuery.SQL.Add('and i.pkdat=sh.pkdat');
-      MainFSql.FQuery.SQL.Add('and i.num=h.num');
-      MainFSql.FQuery.SQL.Add('and h.steel_grade=s.steel_grade');
-      MainFSql.FQuery.SQL.Add('and i.pkdat in ('+Fpkdat_in+')');
-      MainFSql.FQuery.SQL.Add('order by i.pkdat desc, i.num desc, i.num_ingot desc');
-      MainFSql.FQuery.Open;
-  except
-    on E : Exception do
-      lLog.save('e', E.ClassName+', с сообщением: '+E.Message);
-  end;
-  //исправляем отображение даты в DBGrid
-  TDateTimeField(MainFSql.FQuery.FieldByName('time_ingot')).DisplayFormat:='hh:nn:ss';
-  TDateTimeField(MainFSql.FQuery.FieldByName('weight_ingot')).DisplayFormat:='#,###0.000';
+      //отключаем управление
+      form1.DBGrid1.DataSource.DataSet.DisableControls;
+      try
+          if not MainFSql.FConnect.Connected then
+             MainFSql.FConnect.Reconnect;
+
+          MainFSql.FQuery.Close;
+          MainFSql.FQuery.SQL.Clear;
+          MainFSql.FQuery.SQL.Add('select i.pkdat,i.num,i.num_ingot,h.num_heat, s.name,i.weight_ingot, i.time_ingot, s.steel_group, sh.smena');
+          MainFSql.FQuery.SQL.Add('from ingots i, heats h, steels s, shifts sh');
+          MainFSql.FQuery.SQL.Add('where i.pkdat=h.pkdat');
+          MainFSql.FQuery.SQL.Add('and i.pkdat=sh.pkdat');
+          MainFSql.FQuery.SQL.Add('and i.num=h.num');
+          MainFSql.FQuery.SQL.Add('and h.steel_grade=s.steel_grade');
+          MainFSql.FQuery.SQL.Add('and i.pkdat in ('+Fpkdat_in+')');
+          MainFSql.FQuery.SQL.Add('order by i.pkdat desc, i.num desc, i.num_ingot desc');
+          MainFSql.FQuery.Open;
+      except
+        on E : Exception do
+          lLog.save('e', E.ClassName+', с сообщением: '+E.Message);
+      end;
+      //исправляем отображение даты в DBGrid
+      TDateTimeField(MainFSql.FQuery.FieldByName('time_ingot')).DisplayFormat:='hh:nn:ss';
+      TDateTimeField(MainFSql.FQuery.FieldByName('weight_ingot')).DisplayFormat:='#,###0.000';
 
   finally
       //включаем управление
       form1.DBGrid1.DataSource.DataSet.EnableControls;
   end;
 
-  // возвращаем курсор на данные
-  //NextWeightToRecordLocation;
 end;
 
 

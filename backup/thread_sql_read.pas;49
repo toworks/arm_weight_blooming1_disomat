@@ -22,7 +22,6 @@ type
   public
     Constructor Create(_Log: TLog); overload;
     Destructor Destroy; override;
-    procedure SyncSqlMax;
   end;
 
 var
@@ -191,16 +190,9 @@ end;
 
 procedure TThreadSqlRead.SyncNextWeightToRecord;
 begin
-  //dbgrid текущая выбраная заготовка
-  if Fpkdat_in <> '' then
-     NextWeightToRecordLocation;
-
-end;
-
-
-procedure TThreadSqlRead.SyncSqlMax;
-begin
-//  Form1.SqlMax := FSqlMax;
+     //dbgrid текущая выбраная заготовка
+//     if Fpkdat_in <> '' then
+        NextWeightToRecordLocation;
 end;
 
 

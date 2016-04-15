@@ -7,13 +7,14 @@ interface
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, DBGrids,
   ExtCtrls, StdCtrls, Menus, db, Windows, Grids, PopupNotifier, Variants,
-  logging, sql, thread_sql_read, thread_sql_send, thread_comport;
+  UniqueInstance, logging, sql, thread_sql_read, thread_sql_send, thread_comport;
 
 type
 
   { TForm1 }
 
   TForm1 = class(TForm)
+    UniqueInstanceApp: TUniqueInstance;
     DBGrid1: TDBGrid;
     DBGrid2: TDBGrid;
     gb_data_pu1: TGroupBox;
@@ -39,6 +40,9 @@ type
     procedure FormCreate(Sender: TObject);
     function CreateMenu: boolean;
     procedure ActionMenuItemClick(Sender: TObject);
+    function OneInstance: boolean;
+    procedure UniqueInstanceAppOtherInstance(Sender: TObject;
+      ParamCount: Integer; Parameters: array of String);
   private
     procedure DBgrid1Create(Sender: TObject);
     procedure DBgrid2Create(Sender: TObject);
@@ -55,7 +59,7 @@ var
   SDataSource: TDataSource;
   MainFSql: TFsql;
   FDataSource: TDataSource;
-  ThreadStop: boolean;
+  ThreadStop: boolean = false;
 
   function ViewSelectedIngot: boolean;
   function PointReplace(DataIn: string): string;
@@ -78,8 +82,6 @@ uses
 procedure TForm1.FormCloseQuery(Sender: TObject; var CanClose: boolean);
 begin
   try
-      Log.save('i', 'close '+Log.ProgFileName);
-
       if assigned(ThreadComPort) then
         ThreadComPort.Terminate;
       if assigned(ThreadSqlRead) then
@@ -96,6 +98,7 @@ begin
       if assigned(FDataSource) then
         FDataSource.Destroy;
   finally
+    Log.save('i', 'close '+Log.ProgFileName);
     // закрываем приложение
     {$ifdef unix}
       FpKill(FpGetpid, 9);
@@ -110,17 +113,20 @@ end;
 procedure TForm1.DBGrid1DblClick(Sender: TObject);
 begin
   // маркер следующей заготовки
-  if not MarkerNextWait then begin
+//  if not MarkerNextWait then begin
     try
+        ThreadStop := true;// останавливаем потоки
         //отключаем управление
         form1.DBGrid1.DataSource.DataSet.DisableControls;
         if MessageDlg('Выбрать заготовку для взвешивания?', mtCustom, mbYesNo, 0) = mrYes then
           ViewSelectedIngot;
+        ThreadStop := false;// запускаем потоки
+        MarkerNextWait := false;// сбрасываем маркер следующей заготовки при выборе новой
     finally
         //включаем управление
         form1.DBGrid1.DataSource.DataSet.EnableControls;
     end;
-  end;
+//  end;
 end;
 
 
@@ -248,6 +254,9 @@ end;
 
 procedure TForm1.FormCreate(Sender: TObject);
 begin
+  //проверка 1 экземпляр программы
+  OneInstance;
+
   Log.save('i', 'start '+Log.ProgFileName);
 
   MainSqlite := TSqlite.Create(Log);
@@ -264,8 +273,6 @@ begin
   FDataSource.DataSet := MainFSql.FQuery;
   DBGrid1.DataSource := FDataSource;
 
-  ThreadStop := false;
-
   ThreadSqlRead := TThreadSqlRead.Create(Log);
   ThreadSqlSend := TThreadSqlSend.Create(Log);
   ThreadComPort := TThreadComPort.Create(Log);
@@ -276,11 +283,36 @@ begin
 
   //запрет на изменение формы
   BorderStyle := bsToolWindow;
-  BorderIcons := BorderIcons - [biMaximize];
+  BorderIcons := BorderIcons - [biMaximize, biSystemMenu];
 
   ViewClear;
 
   CreateMenu;
+end;
+
+
+function TForm1.OneInstance: boolean;
+begin
+  //проверка 1 экземпляр программы
+  UniqueInstanceApp := TUniqueInstance.Create(Self);
+  with UniqueInstanceApp do
+    begin
+      Identifier := 'uSOvRn8tcCo5dkerIp2Eg6F65X5tOVQ8R1tBnbRvm4X8gavyJe';//ID program
+      UpdateInterval := 800;
+      OnOtherInstance := @UniqueInstanceAppOtherInstance;
+      Enabled := True;
+      Loaded;
+    end;
+end;
+
+
+procedure TForm1.UniqueInstanceAppOtherInstance(Sender: TObject;
+  ParamCount: Integer; Parameters: array of String);
+begin
+  //hack to force app bring to front
+  FormStyle := fsSystemStayOnTop;
+  FormStyle := fsNormal;
+  Show;
 end;
 
 

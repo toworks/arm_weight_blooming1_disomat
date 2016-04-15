@@ -70,8 +70,8 @@ begin
   lLog := _Log;
   TCsqlite := TSqlite.Create(lLog);
 
-  self.no_save := false;
-  self.NextSave := true;
+  Fno_save := false;
+  FNextSave := true;
 
   // создаем поток True - создание остановка, False - создание старт
   FThreadComPort := TThreadComPort.Create(True);
@@ -93,6 +93,7 @@ end;
 procedure TThreadComPort.Execute;
 begin
 //  CoInitialize(nil);
+    FNextSave := true;
   while True do
   begin
       try

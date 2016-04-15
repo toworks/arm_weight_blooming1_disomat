@@ -80,6 +80,7 @@ if not ThreadStop then begin
       end;
 end;
       sleep(1000);
+
    end;
    CoUninitialize;
 end;

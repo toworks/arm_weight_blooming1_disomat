@@ -107,11 +107,11 @@ begin
   {$ENDIF}
   except
     on E : Exception do
-      lLog.save('e', E.ClassName+', с сообщением: '+E.Message);
+      lLog.save('e', E.ClassName+' mouse moved, с сообщением: '+E.Message);
   end;
 
   try
-    if not Fsql.FConnect.Connected then
+    if not Fsql.FConnect.Ping then
        Fsql.FConnect.Reconnect;
 
     Fsql.FQuery.Close;
@@ -169,6 +169,9 @@ begin
       //отключаем управление
       form1.DBGrid1.DataSource.DataSet.DisableControls;
       try
+          if not MainFSql.FConnect.Ping then
+             MainFSql.FConnect.Reconnect;
+
           MainFSql.FQuery.Close;
           MainFSql.FQuery.SQL.Clear;
           MainFSql.FQuery.SQL.Add('select i.pkdat,i.num,i.num_ingot,h.num_heat, s.name,i.weight_ingot, i.time_ingot, s.steel_group, sh.smena');

@@ -71,7 +71,7 @@ begin
   CoInitialize(nil);
   while True do
    begin
-
+if not ThreadStop then begin
       try
           SqlNewRecord;
       except
@@ -80,6 +80,7 @@ begin
       end;
 
       sleep(1000);
+end;
    end;
    CoUninitialize;
 end;

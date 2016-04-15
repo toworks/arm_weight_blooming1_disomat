@@ -107,25 +107,26 @@ begin
           // при выбор заготовки останавливаем чтение
           if not ThreadStop and not MarkerNextWait then begin
 //              lLog.save('t', 'NextSave | '+booltostr(NextSave)+' | '+booltostr(FNextSave));
+//              lLog.save('e', 'main do NextSave | '+booltostr(NextSave)+' | '+booltostr(FNextSave));
+              if NextSave and not MarkerNextWait then
+                 SendTKMessage;
+
               //тестирование
               if assigned(MemoTesting) then
                  Synchronize(@SyncMemoTesting);
               //калибровка
               if assigned(CalibrationForm) then
                  Synchronize(@SyncCalibration);
-//              lLog.save('e', 'main do NextSave | '+booltostr(NextSave)+' | '+booltostr(FNextSave));
-              if NextSave and not MarkerNextWait then
-                 SendTKMessage;
 
-              if no_save then begin
+              if no_save then
                  SendEKMessage;
-              end;
+
 //              lLog.save('e', 'main NextSave | '+booltostr(NextSave)+' | '+booltostr(FNextSave));
 {              if not NextSave then
                  Synchronize(@SyncNextWeightToRecord);}
-          end
-          else
-              sleep(1000);
+          end;
+//          else
+          sleep(1000*2);
 
           if not NextSave then
              Synchronize(@SyncNextWeightToRecord);
@@ -196,7 +197,7 @@ begin
 {$ENDIF}
      //передаем ЭОД вход1-4 переменные 1|0|0|0
      msg := SendReadToSerial(#2'00#EK#1#0#0#0#'#16#3+hash_bcc('00#EK#1#0#0#0#'#16#3));
-     FMessageData := msg;
+     //FMessageData := msg;
   except
     on E : Exception do
       lLog.save('e', E.ClassName+' send ek attribute, с сообщением: '+E.Message);
@@ -215,7 +216,13 @@ function TThreadComPort.ReceiveTKData(Data: AnsiString): string;
 var
    weight: AnsiString;
 begin
-  weight := CleanData( trim(copy(FMessageData, 40, 6)) );
+
+ { copy(Data, 2, 6);          //ответ по весу
+   copy(Data, 28, 1);         //признак
+   trim(copy(Data, 40, 6));   //вес только целая часть }
+
+  weight := CleanData( trim(copy(Data, 40, 6)) );
+
 {$IFDEF DEBUG}
   lLog.save('t', 'TK marker | '+copy(Data, 28, 1)+' | no_save | '+booltostr(no_save)+' | NextSave | '+booltostr(NextSave));
 {$ENDIF}
@@ -235,10 +242,7 @@ begin
 //            lLog.save('w', 'ReceiveTKData | '+trim(copy(Data, 40, 6)));
           end
           else
-            lLog.save('w', 'заготовка не выбрана'+#9+'weight | '+trim(copy(Data, 40, 6)));
-        //copy(Data, 2, 6);          //ответ по весу
-        //copy(Data, 28, 1);         //признак
-        //trim(copy(Data, 40, 6));   //вес только целая часть
+            lLog.save('w', 'заготовка не выбрана'+#9+'weight | '+weight);
       end;
   end;
 end;
@@ -298,10 +302,10 @@ procedure TThreadComPort.SyncCalibration;
 var
    weight: AnsiString;
 begin
-     weight := trim(copy(FMessageData, 40, 6));
+     weight := CleanData( trim(copy(FMessageData, 40, 6)) );
      if assigned(CalibrationForm.l_calibration) then
         if weight <>  '' then
-          CalibrationForm.l_calibration.caption := CleanData(weight);
+          CalibrationForm.l_calibration.caption := weight;
 end;
 
 

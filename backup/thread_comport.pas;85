@@ -65,13 +65,13 @@ uses
 
 constructor TThreadComPort.Create(_Log: TLog);
 begin
-  inherited Create(nil);
+  inherited Create(True);
 
   lLog := _Log;
   TCsqlite := TSqlite.Create(lLog);
 
-  self.no_save := false;
-  self.NextSave := true;
+  Fno_save := false;
+  FNextSave := true;
 
   // создаем поток True - создание остановка, False - создание старт
   FThreadComPort := TThreadComPort.Create(True);

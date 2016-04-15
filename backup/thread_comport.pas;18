@@ -35,6 +35,7 @@ type
     function SqlSaveInBuffer(DataIn: AnsiString): boolean;
     function ManipulationWithDate(InDate: string): string;
     procedure SyncNextWeightToRecord;
+    function CleanData(str: AnsiString): AnsiString;
   protected
     procedure Execute; override;
   public
@@ -195,7 +196,7 @@ begin
 {$ENDIF}
      //передаем ЭОД вход1-4 переменные 1|0|0|0
      msg := SendReadToSerial(#2'00#EK#1#0#0#0#'#16#3+hash_bcc('00#EK#1#0#0#0#'#16#3));
-     FMessageData := msg;
+     //FMessageData := msg;
   except
     on E : Exception do
       lLog.save('e', E.ClassName+' send ek attribute, с сообщением: '+E.Message);
@@ -211,7 +212,16 @@ end;
 
 
 function TThreadComPort.ReceiveTKData(Data: AnsiString): string;
+var
+   weight: AnsiString;
 begin
+
+ { copy(Data, 2, 6);          //ответ по весу
+   copy(Data, 28, 1);         //признак
+   trim(copy(Data, 40, 6));   //вес только целая часть }
+
+  weight := CleanData( trim(copy(Data, 40, 6)) );
+
 {$IFDEF DEBUG}
   lLog.save('t', 'TK marker | '+copy(Data, 28, 1)+' | no_save | '+booltostr(no_save)+' | NextSave | '+booltostr(NextSave));
 {$ENDIF}
@@ -223,18 +233,15 @@ begin
 {$IFDEF DEBUG}
   lLog.save('t', 'step 3');
 {$ENDIF}
-      if ( trim(copy(Data, 40, 6)) <> '' ) then begin //не пропускать пустых значений
+      if ( weight <> '' ) then begin //не пропускать пустых значений
           if pkdat <> '' then begin
     //{ test }      SqlSaveInBuffer(trim(copy(Data, 60, 6)))
-            SqlSaveInBuffer(trim(copy(Data, 40, 6)));
+            SqlSaveInBuffer(weight);
             NextSave := false;
 //            lLog.save('w', 'ReceiveTKData | '+trim(copy(Data, 40, 6)));
           end
           else
-            lLog.save('w', 'заготовка не выбрана'+#9+'weight | '+trim(copy(Data, 40, 6)));
-        //copy(Data, 2, 6);          //ответ по весу
-        //copy(Data, 28, 1);         //признак
-        //trim(copy(Data, 40, 6));   //вес только целая часть
+            lLog.save('w', 'заготовка не выбрана'+#9+'weight | '+weight);
       end;
   end;
 end;
@@ -294,10 +301,10 @@ procedure TThreadComPort.SyncCalibration;
 var
    weight: AnsiString;
 begin
-     weight := trim(copy(FMessageData, 40, 6));
+     weight := CleanData( trim(copy(FMessageData, 40, 6)) );
      if assigned(CalibrationForm.l_calibration) then
         if weight <>  '' then
-          CalibrationForm.l_calibration.caption := weight;
+          CalibrationForm.l_calibration.caption := CleanData(weight);
 end;
 
 
@@ -399,6 +406,17 @@ begin
   end;
 end;
 
+
+function TThreadComPort.CleanData(str: AnsiString): AnsiString;
+var
+   buf: AnsiString;
+   i: integer;
+begin
+  buf := '';
+  for i := 1 to length(str) do
+  if str[i] in ['0'..'9', '.', ','] then buf := buf + str[i];
+  Result := buf;
+end;
 
 end.
 

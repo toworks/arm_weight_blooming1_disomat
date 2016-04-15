@@ -4,7 +4,8 @@ interface
 
 uses
    SysUtils, ActiveX, Variants, Classes, StrUtils, DB, ZConnection, ZDataset,
-   ZDbcIntfs, ZCompatibility, SyncObjs, logging;
+   ZDbcIntfs, ZCompatibility, SyncObjs, {$ifdef windows} Windows, Forms, {$endif}
+   logging;
 
 var
     time_ingot, pkdat, num, num_ingot, num_heat, name, weight_ingot, steel_group,
@@ -192,7 +193,6 @@ end;
 
 function SqlNextWeightToRecord: boolean;
 var
-//  _SSql: TZQuery;
   _FSql: TFsql;
   i: integer;
 begin
@@ -205,25 +205,9 @@ begin
   end;
 
   i:=0;
-{
-  try
-      _SSql := TZQuery.Create(nil);
-      _SSql.Connection := MainSqlite.SConnect;
-      _SSql.Close;
-      _SSql.SQL.Clear;
-      _SSql.SQL.Add('SELECT pkdat, num, num_ingot FROM weight');
-      _SSql.SQL.Add('order by id desc limit 1');
-      _SSql.Open;
-  except
-    on E : Exception do begin
-      Log.save('e', E.ClassName+' sql next weight to record, с сообщением: '+E.Message);
-      FreeAndNil(_SSql);
-      exit;
-    end;
-  end;
 
-  if (_SSql.FieldByName('pkdat').IsNull) then
-     exit;}
+  if ( pkdat = '') then
+     exit;
 
   try
       _FSql.FQuery.Close;
@@ -316,7 +300,6 @@ begin
     on E : Exception do
       Log.save('e', E.ClassName+' sql 4, с сообщением: '+E.Message);
   end;
-//  FreeAndNil(_SSql);
   FreeAndNil(_FSql);
 end;
 

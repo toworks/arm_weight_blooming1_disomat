@@ -38,7 +38,7 @@ type
   protected
     procedure Execute; override;
   public
-    Constructor Create(_Log: TLog); overload;
+    Constructor Create(_Log: TLog);// overload;
     Destructor Destroy; override;
   published
     property NextSave: boolean read FNextSave write FNextSave;
@@ -65,13 +65,13 @@ uses
 
 constructor TThreadComPort.Create(_Log: TLog);
 begin
-  inherited Create(owner);
+  inherited Create(True);
 
   lLog := _Log;
   TCsqlite := TSqlite.Create(lLog);
 
-  self.no_save := false;
-  self.NextSave := true;
+  Fno_save := false;
+  FNextSave := true;
 
   // создаем поток True - создание остановка, False - создание старт
   FThreadComPort := TThreadComPort.Create(True);

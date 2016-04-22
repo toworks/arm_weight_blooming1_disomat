@@ -20,6 +20,7 @@ type
   private
     FSQuery: TZQuery;
     FSConnect: TZConnection;
+    FSTransaction: TZTransaction;
     Log: TLog;
     function ConfigSettings(InData: boolean): boolean;
     function SqlJournalMode: boolean;
@@ -28,6 +29,7 @@ type
     Destructor Destroy; override;
     property SConnect: TZConnection read FSConnect write FSConnect;
     property SQuery: TZQuery read FSQuery write FSQuery;
+    property STransaction: TSQLTransaction read FSTransaction write FSTransaction;
   end;
 
 
@@ -201,12 +203,8 @@ begin
       Log.save('e', E.ClassName+' sql create _FSql, с сообщением: '+E.Message);
   end;
 
-  i:=0;
-
-  if ( pkdat = '') then begin
-     Result := false;
+  if ( pkdat = '') then
      exit;
-  end;
 
   try
       _FSql.FQuery.Close;
@@ -251,7 +249,6 @@ begin
           form1.l_datetime.Visible := false;
           form1.l_number_ingot.Visible := false;
           FreeAndNil(_FSql);
-          Result := false;
           exit;
       end
       else
@@ -269,8 +266,10 @@ begin
       Log.save('e', E.ClassName+' sql 3, с сообщением: '+E.Message);
   end;
 
+  i:=0;
+
   try
-      while not MainFSql.FQuery.Eof do
+      while not _FSql.FQuery.Eof do
       begin
           if i = 1 then
             break;
@@ -298,9 +297,8 @@ begin
       end;
   except
     on E : Exception do
-      Log.save('e', E.ClassName+' sql 4, с сообщением: '+E.Message);
+      Log.save('e', E.ClassName+' sql set pkdat | num | num_ingot, с сообщением: '+E.Message);
   end;
-  Result := true;
   FreeAndNil(_FSql);
 end;
 

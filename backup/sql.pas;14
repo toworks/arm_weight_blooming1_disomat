@@ -201,8 +201,6 @@ begin
       Log.save('e', E.ClassName+' sql create _FSql, с сообщением: '+E.Message);
   end;
 
-  i:=0;
-
   if ( pkdat = '') then
      exit;
 
@@ -255,19 +253,17 @@ begin
       begin
 //          form1.l_n_message.Visible := false;
           MarkerNextWait := false;
-          form1.l_weight_ingot.Visible := true;
-          form1.l_grade.Visible := true;
-          form1.l_heat.Visible := true;
-          form1.l_datetime.Visible := true;
-          form1.l_number_ingot.Visible := true;
+          EnableViewSelectedIngotж
       end;
   except
     on E : Exception do
       Log.save('e', E.ClassName+' sql 3, с сообщением: '+E.Message);
   end;
 
+  i:=0;
+
   try
-      while not MainFSql.FQuery.Eof do
+      while not _FSql.FQuery.Eof do
       begin
           if i = 1 then
             break;

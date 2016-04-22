@@ -12,12 +12,7 @@ var
     MarkerNextWait: boolean = false;
 
 
-//    {$DEFINE DEBUG}
-
-
-//    function ConfigFirebirdSetting(InData: boolean): boolean;
     function SqlNextWeightToRecord: boolean;
-
 
 
 type
@@ -25,6 +20,7 @@ type
   private
     FSQuery: TZQuery;
     FSConnect: TZConnection;
+    FSTransaction: TSQLTransaction;
     Log: TLog;
     function ConfigSettings(InData: boolean): boolean;
     function SqlJournalMode: boolean;
@@ -49,6 +45,9 @@ type
     property FConnect: TZConnection read FFConnect write FFConnect;
     property FQuery: TZQuery read FFQuery write FFQuery;
   end;
+
+
+//    {$DEFINE DEBUG}
 
 
 implementation
@@ -203,8 +202,6 @@ begin
       Log.save('e', E.ClassName+' sql create _FSql, с сообщением: '+E.Message);
   end;
 
-  i:=0;
-
   if ( pkdat = '') then
      exit;
 
@@ -268,8 +265,10 @@ begin
       Log.save('e', E.ClassName+' sql 3, с сообщением: '+E.Message);
   end;
 
+  i:=0;
+
   try
-      while not MainFSql.FQuery.Eof do
+      while not _FSql.FQuery.Eof do
       begin
           if i = 1 then
             break;
@@ -297,7 +296,7 @@ begin
       end;
   except
     on E : Exception do
-      Log.save('e', E.ClassName+' sql 4, с сообщением: '+E.Message);
+      Log.save('e', E.ClassName+' sql set pkdat | num | num_ingot, с сообщением: '+E.Message);
   end;
   FreeAndNil(_FSql);
 end;

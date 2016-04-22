@@ -44,6 +44,9 @@ type
     property NextSave: boolean read FNextSave write FNextSave;
     property no_save: boolean read Fno_save write Fno_save;
     property SendAttribute: boolean read SendEKMessage;
+    property Apkdat: boolean read Fpkdat write Fpkdat;
+    property Anum: boolean read Fnum write Fnum;
+    property Anum_ingot: boolean read Fnum_ingot write Fnum_ingot;
   end;
 
 var
@@ -65,15 +68,13 @@ uses
 
 constructor TThreadComPort.Create(_Log: TLog);
 begin
-//  inherited Create(True);
+  inherited Create(True);
 
   lLog := _Log;
   TCsqlite := TSqlite.Create(lLog);
 
-  self.no_save := false;
-  self.NextSave := true;
-
-//  inherited Create(True);
+  Fno_save := false;
+  FNextSave := true;
 
   // создаем поток True - создание остановка, False - создание старт
   FThreadComPort := TThreadComPort.Create(True);
@@ -94,7 +95,8 @@ end;
 
 procedure TThreadComPort.Execute;
 begin
-//  CoInitialize(nil);
+  CoInitialize(nil);
+  FNextSave := true; //не правильно
   while True do
   begin
       try
@@ -127,7 +129,7 @@ begin
           lLog.save('e', E.ClassName+' serial execute, с сообщением: '+E.Message);
       end;
    end;
-//   CoUninitialize;
+   CoUninitialize;
 end;
 
 
@@ -373,7 +375,7 @@ end;
 
 function TThreadComPort.ComparePkdat: boolean;
 begin
-  lLog.save('t', pkdat+' | '+num+' | '+num_ingot);
+  lLog.save('t', 'pkdat | '+pkdat+' | '+Apkdat+' | num | '+num+' | '+Anum+' | '+' | num_ingot | '+num_ingot+' | '+Anum_ingot);
   // first run and after next weight
 {  if (pkdat = '') then begin
      Result := true;
@@ -383,9 +385,9 @@ begin
   if (pkdat = Fpkdat) and (num = Fnum) and (num_ingot = Fnum_ingot) then
      Result := false
   else begin
-     Fpkdat := pkdat;
+{     Fpkdat := pkdat;
      Fnum := num;
-     Fnum_ingot := num_ingot;
+     Fnum_ingot := num_ingot;}
      Result := true;
   end;
 end;

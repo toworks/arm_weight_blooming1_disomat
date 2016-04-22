@@ -11,7 +11,7 @@ type
   TThreadSqlRead = class(TThread)
   private
     FThreadSqlRead: TThreadSqlRead;
-    FSqlMax: int64;
+    FLastSqlRecord: AnsiString;
     Fpkdat_in: string;
 
     procedure SyncSqlReadTable;
@@ -47,7 +47,7 @@ begin
 
   lLog := _Log;
   Fsql := TFsql.Create(lLog);
-  FSqlMax := 0;
+  FLastSqlRecord := '';
 
   // создаем поток True - создание остановка, False - создание старт
   FThreadSqlRead := TThreadSqlRead.Create(True);
@@ -92,7 +92,7 @@ end;
 procedure TThreadSqlRead.SqlNewRecord;
 var
   i, timestamp: integer;
-  count: int64;
+  NextSqlRecord: AnsiString;
 begin
   // двигаем мышку
   try
@@ -133,7 +133,6 @@ begin
       Fsql.FQuery.Next;
     end;
 
-    count := 0;
     Fsql.FQuery.Close;
     Fsql.FQuery.SQL.Clear;
     Fsql.FQuery.SQL.Add('select pkdat||num||num_ingot as c from ingots');
@@ -141,15 +140,17 @@ begin
     Fsql.FQuery.SQL.Add('rows 1');
     Fsql.FQuery.Open;
 
-    count := Fsql.FQuery.FieldByName('c').AsLargeInt;
+    NextSqlRecord := Fsql.FQuery.FieldByName('c').AsString;
 
-    if (FSqlMax < count) then
+lLog.save('d', 'do NextSqlRecord | '+NextSqlRecord+' | FLastSqlRecord | '+FLastSqlRecord);
+
+    if (FLastSqlRecord <> NextSqlRecord) then
     begin
-        FSqlMax := count;
+        FLastSqlRecord := NextSqlRecord;
 
         //обновление отображение записанных данных ViewDbWeight;
         Synchronize(@SyncSqlReadTable);
-
+lLog.save('d', 'count -> '+NextSqlRecord);
   {$IFDEF DEBUG}
     lLog.save('d', 'count -> '+inttostr(count));
     lLog.save('d', 'SqlMax -> '+inttostr(SqlMax));

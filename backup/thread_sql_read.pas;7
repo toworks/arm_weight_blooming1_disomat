@@ -82,7 +82,7 @@ begin
         end;
       end;
 
-      sleep(5000);
+      sleep(1000*5);
 
    end;
    CoUninitialize;
@@ -92,7 +92,7 @@ end;
 procedure TThreadSqlRead.SqlNewRecord;
 var
   i, timestamp: integer;
-  count: int64;
+  count: AnsiString;
 begin
   // двигаем мышку
   try
@@ -111,7 +111,7 @@ begin
   end;
 
   try
-    //if not Fsql.FConnect.Connected then
+    if not Fsql.FConnect.Ping then
        Fsql.FConnect.Reconnect;
 
     Fsql.FQuery.Close;
@@ -133,7 +133,6 @@ begin
       Fsql.FQuery.Next;
     end;
 
-    count := 0;
     Fsql.FQuery.Close;
     Fsql.FQuery.SQL.Clear;
     Fsql.FQuery.SQL.Add('select pkdat||num||num_ingot as c from ingots');
@@ -141,15 +140,20 @@ begin
     Fsql.FQuery.SQL.Add('rows 1');
     Fsql.FQuery.Open;
 
-    count := Fsql.FQuery.FieldByName('c').AsLargeInt;
+    count := Fsql.FQuery.FieldByName('c').AsString;
 
+//    for i:=1 to UTF8Length(inttostrcount) do
+    for i:=1 to Length(c) do
+       count := count+strtoint(c[i]);
+
+lLog.save('d', 'do sqlmax count | '+inttostr(count)+' | FSqlMax | '+inttostr(FSqlMax)+' | sum | '+c);
     if (FSqlMax < count) then
     begin
         FSqlMax := count;
 
         //обновление отображение записанных данных ViewDbWeight;
         Synchronize(@SyncSqlReadTable);
-
+lLog.save('d', 'count -> '+inttostr(count));
   {$IFDEF DEBUG}
     lLog.save('d', 'count -> '+inttostr(count));
     lLog.save('d', 'SqlMax -> '+inttostr(SqlMax));
@@ -167,9 +171,11 @@ procedure TThreadSqlRead.SyncSqlReadTable;
 begin
   try
       //отключаем управление
-      form1.DBGrid1.DataSource.DataSet.DisableControls;
+//      form1.DBGrid1.DataSource.DataSet.DisableControls;
+      MainFSql.FQuery.DisableControls;
+      MainFSql.FQuery.Active:=false;
       try
-         // if not MainFSql.FConnect.Connected then
+          if not MainFSql.FConnect.Ping then
              MainFSql.FConnect.Reconnect;
 
           MainFSql.FQuery.Close;
@@ -182,6 +188,7 @@ begin
           MainFSql.FQuery.SQL.Add('and h.steel_grade=s.steel_grade');
           MainFSql.FQuery.SQL.Add('and i.pkdat in ('+Fpkdat_in+')');
           MainFSql.FQuery.SQL.Add('order by i.pkdat desc, i.num desc, i.num_ingot desc');
+          Application.ProcessMessages; // следующая операция не тормозит интерфейс
           MainFSql.FQuery.Open;
       except
         on E : Exception do
@@ -193,7 +200,9 @@ begin
 
   finally
       //включаем управление
-      form1.DBGrid1.DataSource.DataSet.EnableControls;
+//      form1.DBGrid1.DataSource.DataSet.EnableControls;
+      MainFSql.FQuery.Active:=true;
+      MainFSql.FQuery.EnableControls;
   end;
 
 end;

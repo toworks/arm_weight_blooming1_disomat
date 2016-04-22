@@ -84,6 +84,8 @@ begin
         SConnect.Database := '.\'+SettingsApp.DBFile;
         SConnect.LibraryLocation := '.\sqlite3.dll';
         SConnect.Protocol := 'sqlite-3';
+//        SConnect.AutoEncodeStrings := true;
+        SConnect.ControlsCodePage := cCP_UTF8;
         SConnect.Connect;
         SQuery.Connection := SConnect;
         SqlJournalMode;
@@ -167,6 +169,7 @@ begin
              Add('isc_tpb_concurrency');              // Needed for multiuser environments
              Add('isc_tpb_nowait');                   // Needed for multiuser environments
              Add('timeout=3');
+             Add('codepage=win1251');
 //             Add('codepage=NONE');
 //             Add('controls_cp=CP_UTF8');
 //             Add('AutoEncodeStrings=ON');
@@ -191,7 +194,6 @@ end;
 
 function SqlNextWeightToRecord: boolean;
 var
-  _SSql: TZQuery;
   _FSql: TFsql;
   i: integer;
 begin
@@ -205,31 +207,19 @@ begin
 
   i:=0;
 
-  try
-      _SSql := TZQuery.Create(nil);
-      _SSql.Connection := MainSqlite.SConnect;
-      _SSql.Close;
-      _SSql.SQL.Clear;
-      _SSql.SQL.Add('SELECT pkdat, num, num_ingot FROM weight');
-      _SSql.SQL.Add('order by id desc limit 1');
-      _SSql.Open;
-  except
-    on E : Exception do begin
-      Log.save('e', E.ClassName+' sql next weight to record, с сообщением: '+E.Message);
-      exit;
-    end;
-  end;
+  if ( pkdat = '') then
+     exit;
 
   try
       _FSql.FQuery.Close;
       _FSql.FQuery.SQL.Clear;
       _FSql.FQuery.SQL.Add('select i.pkdat,i.num,i.num_ingot,h.num_heat, s.name,i.weight_ingot, i.time_ingot, s.steel_group , sh.smena');
       _FSql.FQuery.SQL.Add('from ingots i, heats h, steels s, shifts sh');
-      _FSql.FQuery.SQL.Add('where ((i.pkdat='+ _SSql.FieldByName('pkdat').AsString +'');
-      _FSql.FQuery.SQL.Add('and (i.num='+ _SSql.FieldByName('num').AsString +'');
-      _FSql.FQuery.SQL.Add('and i.num_ingot>'+ _SSql.FieldByName('num_ingot').AsString +'');
-      _FSql.FQuery.SQL.Add('or i.num>'+ _SSql.FieldByName('num').AsString +'))');
-      _FSql.FQuery.SQL.Add('or i.pkdat>'+ _SSql.FieldByName('pkdat').AsString +')');
+      _FSql.FQuery.SQL.Add('where ((i.pkdat='+ pkdat +'');
+      _FSql.FQuery.SQL.Add('and (i.num='+ num +'');
+      _FSql.FQuery.SQL.Add('and i.num_ingot>'+ num_ingot +'');
+      _FSql.FQuery.SQL.Add('or i.num>'+ num +'))');
+      _FSql.FQuery.SQL.Add('or i.pkdat>'+ pkdat +')');
       _FSql.FQuery.SQL.Add('and i.pkdat=h.pkdat and i.num=h.num');
       _FSql.FQuery.SQL.Add('and i.pkdat=sh.pkdat');
       _FSql.FQuery.SQL.Add('and h.steel_grade=s.steel_grade');

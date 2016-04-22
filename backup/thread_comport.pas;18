@@ -107,25 +107,26 @@ begin
           // при выбор заготовки останавливаем чтение
           if not ThreadStop and not MarkerNextWait then begin
 //              lLog.save('t', 'NextSave | '+booltostr(NextSave)+' | '+booltostr(FNextSave));
+//              lLog.save('i', 'main do NextSave | '+booltostr(NextSave)+' | '+booltostr(FNextSave));
+              if NextSave and not MarkerNextWait then
+                 SendTKMessage;
+
               //тестирование
               if assigned(MemoTesting) then
                  Synchronize(@SyncMemoTesting);
               //калибровка
               if assigned(CalibrationForm) then
                  Synchronize(@SyncCalibration);
-//              lLog.save('e', 'main do NextSave | '+booltostr(NextSave)+' | '+booltostr(FNextSave));
-              if NextSave and not MarkerNextWait then
-                 SendTKMessage;
 
-              if no_save then begin
+              if no_save then
                  SendEKMessage;
-              end;
+
 //              lLog.save('e', 'main NextSave | '+booltostr(NextSave)+' | '+booltostr(FNextSave));
 {              if not NextSave then
                  Synchronize(@SyncNextWeightToRecord);}
-          end
-          else
-              sleep(1000);
+          end;
+
+          sleep(1000);
 
           if not NextSave then
              Synchronize(@SyncNextWeightToRecord);
@@ -251,9 +252,9 @@ function TThreadComPort.ReceiveEKData(Data: AnsiString): string;
 begin
   if (copy(Data, 2, 6) = '00#EK#') and (copy(Data, 8, 1) = '0') then
   begin
-{$IFDEF DEBUG}
+//{$IFDEF DEBUG}
   lLog.save('t', 'step 5');
-{$ENDIF}
+//{$ENDIF}
       no_save := false;//запрещаем отправку подтверждения в контроллер -> сброс в SqlSaveInBuffer
   end;
 end;
@@ -304,7 +305,7 @@ begin
      weight := CleanData( trim(copy(FMessageData, 40, 6)) );
      if assigned(CalibrationForm.l_calibration) then
         if weight <>  '' then
-          CalibrationForm.l_calibration.caption := CleanData(weight);
+          CalibrationForm.l_calibration.caption := weight;
 end;
 
 
@@ -356,7 +357,7 @@ begin
       lLog.save('e', E.ClassName+' sql save in buffer, с сообщением: '+E.Message+' | '+TCsqlite.SQuery.SQL.Text);
   end;
 
-  no_save := true;//разрешаем отправку подтверждения в контроллер
+  no_save := false;//разрешаем отправку подтверждения в контроллер
 end;
 
 
@@ -373,8 +374,10 @@ begin
 //     t := ComparePkdat;//разрешаем снятие следующего показания
      NextSave := ComparePkdat;//разрешаем снятие следующего показания
 //     NextSave := t;
-     if NextSave then
+     if NextSave then begin
+//        SqlNextWeightToRecord;
         NextWeightToRecordLocation;
+     end;
 //     lLog.save('t', 'after pkdat | '+pkdat+' | '+Fpkdat+' | num | '+num+' | '+Fnum+' | num_ingot | '+num_ingot+' | '+Fnum_ingot);
 //     lLog.save('t', 'SyncNextWeightToRecord | ComparePkdat | '+booltostr(t));
 end;

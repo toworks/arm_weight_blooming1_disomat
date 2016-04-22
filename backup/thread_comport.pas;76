@@ -44,9 +44,9 @@ type
     property NextSave: boolean read FNextSave write FNextSave;
     property no_save: boolean read Fno_save write Fno_save;
     property SendAttribute: boolean read SendEKMessage;
-    property Apkdat: string read Fpkdat write Fpkdat;
+{    property Apkdat: string read Fpkdat;
     property Anum: string read Fnum write Fnum;
-    property Anum_ingot: string read Fnum_ingot write Fnum_ingot;
+    property Anum_ingot: string read Fnum_ingot write Fnum_ingot;}
   end;
 
 var
@@ -68,7 +68,7 @@ uses
 
 constructor TThreadComPort.Create(_Log: TLog);
 begin
-  inherited Create(True);
+//  inherited Create(True);
 
   lLog := _Log;
   TCsqlite := TSqlite.Create(lLog);
@@ -111,14 +111,14 @@ begin
               //калибровка
               if assigned(CalibrationForm) then
                  Synchronize(@SyncCalibration);
-              lLog.save('e', 'main do NextSave | '+booltostr(NextSave));
+//              lLog.save('e', 'main do NextSave | '+booltostr(NextSave));
               if NextSave and not MarkerNextWait then
                  SendTKMessage;
 
               if no_save then begin
                  SendEKMessage;
               end;
-              lLog.save('e', 'main NextSave | '+booltostr(NextSave));
+//              lLog.save('e', 'main NextSave | '+booltostr(NextSave));
               if not NextSave then
                  Synchronize(@SyncNextWeightToRecord);
           end
@@ -375,7 +375,8 @@ end;
 
 function TThreadComPort.ComparePkdat: boolean;
 begin
-  lLog.save('t', 'pkdat | '+pkdat+' | '+Apkdat+' | num | '+num+' | '+Anum+' | '+' | num_ingot | '+num_ingot+' | '+Anum_ingot);
+//  lLog.save('t', 'pkdat | '+pkdat+' | '+Fpkdat+' | num | '+num+' | '+Anum+' | '+' | num_ingot | '+num_ingot+' | '+Anum_ingot);
+  lLog.save('t', pkdat+' | '+num+' | '+num_ingot);
   // first run and after next weight
 {  if (pkdat = '') then begin
      Result := true;
@@ -385,9 +386,9 @@ begin
   if (pkdat = Fpkdat) and (num = Fnum) and (num_ingot = Fnum_ingot) then
      Result := false
   else begin
-{     Fpkdat := pkdat;
+     Fpkdat := pkdat;
      Fnum := num;
-     Fnum_ingot := num_ingot;}
+     Fnum_ingot := num_ingot;
      Result := true;
   end;
 end;

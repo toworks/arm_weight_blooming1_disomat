@@ -241,11 +241,7 @@ begin
 //          form1.l_n_message.Caption := ' Ожидание сдедующей заготовки ';
           MarkerNextWait := true;
 
-          form1.l_weight_ingot.Visible := false;
-          form1.l_grade.Visible := false;
-          form1.l_heat.Visible := false;
-          form1.l_datetime.Visible := false;
-          form1.l_number_ingot.Visible := false;
+          EnableViewSelectedIngot(false);
           FreeAndNil(_FSql);
           exit;
       end
@@ -253,11 +249,8 @@ begin
       begin
 //          form1.l_n_message.Visible := false;
           MarkerNextWait := false;
-          form1.l_weight_ingot.Visible := true;
-          form1.l_grade.Visible := true;
-          form1.l_heat.Visible := true;
-          form1.l_datetime.Visible := true;
-          form1.l_number_ingot.Visible := true;
+          ThreadComPort.NextSave := true;
+          EnableViewSelectedIngot(true);
       end;
   except
     on E : Exception do
@@ -287,6 +280,10 @@ begin
           Form1.l_grade.Caption := name;
           Form1.l_weight_ingot.Caption := weight_ingot;
 
+          // перезаписываем данные что бы при выборе не проскакивала выбранная запись
+          ThreadComPort.Apkdat := pkdat;
+          ThreadComPort.Anum := num;
+          ThreadComPort.Anum_ingot := num_ingot;
           //-- test
 //          Form1.l_next_id.Caption := pkdat+'|'+num+'|'+num_ingot;
 

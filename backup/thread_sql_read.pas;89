@@ -197,12 +197,6 @@ begin
 end;
 
 
-procedure TThreadSqlRead.SyncSqlMax;
-begin
-//  Form1.SqlMax := FSqlMax;
-end;
-
-
 
 
 // При загрузке программы класс будет создаваться

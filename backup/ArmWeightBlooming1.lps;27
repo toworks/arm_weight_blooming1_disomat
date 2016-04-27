@@ -18,8 +18,8 @@
         <ComponentName Value="Form1"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <TopLine Value="99"/>
-        <CursorPos X="11" Y="125"/>
+        <TopLine Value="69"/>
+        <CursorPos X="22" Y="89"/>
         <UsageCount Value="220"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -53,8 +53,8 @@
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
         <EditorIndex Value="2"/>
-        <TopLine Value="214"/>
-        <CursorPos X="28" Y="252"/>
+        <TopLine Value="227"/>
+        <CursorPos X="25" Y="252"/>
         <UsageCount Value="219"/>
         <Loaded Value="True"/>
       </Unit5>
@@ -93,124 +93,124 @@
     </Units>
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
-        <Filename Value="thread_sql_read.pas"/>
-        <Caret Column="21" TopLine="82"/>
+        <Filename Value="thread_comport.pas"/>
+        <Caret Line="378" Column="30" TopLine="357"/>
       </Position1>
       <Position2>
         <Filename Value="thread_comport.pas"/>
-        <Caret Line="378" Column="30" TopLine="357"/>
+        <Caret Line="371" Column="6" TopLine="357"/>
       </Position2>
       <Position3>
-        <Filename Value="thread_comport.pas"/>
-        <Caret Line="371" Column="6" TopLine="357"/>
+        <Filename Value="sql.pas"/>
+        <Caret Line="243" TopLine="226"/>
       </Position3>
       <Position4>
         <Filename Value="sql.pas"/>
-        <Caret Line="243" TopLine="226"/>
+        <Caret Line="15" Column="14"/>
       </Position4>
       <Position5>
         <Filename Value="sql.pas"/>
-        <Caret Line="15" Column="14"/>
+        <Caret Line="284" Column="25" TopLine="254"/>
       </Position5>
       <Position6>
-        <Filename Value="sql.pas"/>
-        <Caret Line="284" Column="25" TopLine="254"/>
+        <Filename Value="main.pas"/>
+        <Caret Line="57" Column="16" TopLine="65"/>
       </Position6>
       <Position7>
         <Filename Value="main.pas"/>
-        <Caret Line="57" Column="16" TopLine="65"/>
+        <Caret Line="62" Column="3" TopLine="36"/>
       </Position7>
       <Position8>
         <Filename Value="main.pas"/>
-        <Caret Line="62" Column="3" TopLine="36"/>
+        <Caret Line="119" Column="9" TopLine="93"/>
       </Position8>
       <Position9>
         <Filename Value="main.pas"/>
-        <Caret Line="119" Column="9" TopLine="93"/>
+        <Caret Line="127" Column="9" TopLine="93"/>
       </Position9>
       <Position10>
-        <Filename Value="main.pas"/>
-        <Caret Line="127" Column="9" TopLine="93"/>
-      </Position10>
-      <Position11>
         <Filename Value="thread_sql_send.pas"/>
         <Caret Line="265" Column="28" TopLine="224"/>
-      </Position11>
-      <Position12>
+      </Position10>
+      <Position11>
         <Filename Value="thread_sql_read.pas"/>
         <Caret Line="76" Column="24" TopLine="64"/>
+      </Position11>
+      <Position12>
+        <Filename Value="thread_comport.pas"/>
+        <Caret Line="65" Column="61" TopLine="88"/>
       </Position12>
       <Position13>
         <Filename Value="thread_comport.pas"/>
-        <Caret Line="65" Column="61" TopLine="88"/>
+        <Caret Line="108" Column="18" TopLine="88"/>
       </Position13>
       <Position14>
-        <Filename Value="thread_comport.pas"/>
-        <Caret Line="108" Column="18" TopLine="88"/>
+        <Filename Value="thread_sql_read.pas"/>
+        <Caret Line="148" Column="16" TopLine="111"/>
       </Position14>
       <Position15>
         <Filename Value="thread_sql_read.pas"/>
-        <Caret Line="148" Column="16" TopLine="111"/>
+        <Caret Line="14" Column="5"/>
       </Position15>
       <Position16>
         <Filename Value="thread_sql_read.pas"/>
-        <Caret Line="14" Column="5"/>
+        <Caret Line="50" Column="3" TopLine="6"/>
       </Position16>
       <Position17>
         <Filename Value="thread_sql_read.pas"/>
-        <Caret Line="50" Column="3" TopLine="6"/>
+        <Caret Line="145" Column="57" TopLine="120"/>
       </Position17>
       <Position18>
         <Filename Value="thread_sql_read.pas"/>
-        <Caret Line="145" Column="57" TopLine="120"/>
+        <Caret Line="146" Column="9" TopLine="120"/>
       </Position18>
       <Position19>
         <Filename Value="thread_sql_read.pas"/>
-        <Caret Line="146" Column="9" TopLine="120"/>
+        <Caret Line="148" Column="9" TopLine="120"/>
       </Position19>
       <Position20>
-        <Filename Value="thread_sql_read.pas"/>
-        <Caret Line="148" Column="9" TopLine="120"/>
+        <Filename Value="sql.pas"/>
+        <Caret Line="282" Column="149" TopLine="245"/>
       </Position20>
       <Position21>
         <Filename Value="sql.pas"/>
-        <Caret Line="282" Column="149" TopLine="245"/>
+        <Caret Line="15" Column="14"/>
       </Position21>
       <Position22>
-        <Filename Value="sql.pas"/>
-        <Caret Line="15" Column="14"/>
+        <Filename Value="thread_comport.pas"/>
+        <Caret Line="378" Column="30" TopLine="352"/>
       </Position22>
       <Position23>
         <Filename Value="thread_comport.pas"/>
-        <Caret Line="378" Column="30" TopLine="352"/>
+        <Caret Line="371" Column="29" TopLine="360"/>
       </Position23>
       <Position24>
         <Filename Value="thread_comport.pas"/>
-        <Caret Line="371" Column="29" TopLine="360"/>
+        <Caret Line="131" Column="23" TopLine="110"/>
       </Position24>
       <Position25>
         <Filename Value="thread_comport.pas"/>
-        <Caret Line="131" Column="23" TopLine="110"/>
+        <Caret Line="111" Column="18" TopLine="103"/>
       </Position25>
       <Position26>
-        <Filename Value="thread_comport.pas"/>
-        <Caret Line="111" Column="18" TopLine="103"/>
+        <Filename Value="main.pas"/>
+        <Caret Line="127" Column="9" TopLine="93"/>
       </Position26>
       <Position27>
         <Filename Value="main.pas"/>
-        <Caret Line="127" Column="9" TopLine="93"/>
+        <Caret Line="117" Column="12"/>
       </Position27>
       <Position28>
-        <Filename Value="main.pas"/>
-        <Caret Line="117" Column="12"/>
+        <Filename Value="sql.pas"/>
+        <Caret Line="191" Column="10" TopLine="165"/>
       </Position28>
       <Position29>
         <Filename Value="sql.pas"/>
-        <Caret Line="191" Column="10" TopLine="165"/>
+        <Caret Line="12" Column="5"/>
       </Position29>
       <Position30>
         <Filename Value="sql.pas"/>
-        <Caret Line="12" Column="5"/>
+        <Caret Line="252" Column="28" TopLine="214"/>
       </Position30>
     </JumpHistory>
   </ProjectSession>

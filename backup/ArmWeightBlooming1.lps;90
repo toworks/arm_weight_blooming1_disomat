@@ -81,8 +81,8 @@
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
         <EditorIndex Value="4"/>
-        <TopLine Value="240"/>
-        <CursorPos Y="271"/>
+        <TopLine Value="75"/>
+        <CursorPos X="42" Y="97"/>
         <UsageCount Value="228"/>
         <Loaded Value="True"/>
       </Unit8>

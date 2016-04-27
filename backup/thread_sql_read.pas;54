@@ -82,7 +82,7 @@ begin
         end;
       end;
 
-      sleep(1000);
+      sleep(5000);
 
    end;
    CoUninitialize;

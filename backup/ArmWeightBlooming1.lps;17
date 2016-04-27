@@ -83,8 +83,8 @@
         <Filename Value="thread_sql_read.pas"/>
         <IsVisibleTab Value="True"/>
         <EditorIndex Value="3"/>
-        <TopLine Value="126"/>
-        <CursorPos X="27" Y="147"/>
+        <TopLine Value="122"/>
+        <CursorPos X="3" Y="149"/>
         <UsageCount Value="109"/>
         <Loaded Value="True"/>
       </Unit9>
@@ -208,7 +208,7 @@
       </Position29>
       <Position30>
         <Filename Value="thread_sql_read.pas"/>
-        <Caret Line="147" Column="17" TopLine="122"/>
+        <Caret Line="147" Column="27" TopLine="126"/>
       </Position30>
     </JumpHistory>
   </ProjectSession>

@@ -143,10 +143,10 @@ begin
     Fsql.FQuery.Open;
 
 //    count := Fsql.FQuery.FieldByName('c').AsLargeInt;
-    count := Fsql.FQuery.FieldByName('c').AsString;
+    c := Fsql.FQuery.FieldByName('c').AsString;
 
 //    for i:=1 to UTF8Length(inttostrcount) do
-    for i:=1 to Length(count) do
+    for i:=1 to Length(c) do
        c := c+strtoint(count[i])
 
 lLog.save('d', 'do sqlmax count | '+inttostr(count)+' | FSqlMax | '+inttostr(FSqlMax)+' | sum | '+strtoint(c));

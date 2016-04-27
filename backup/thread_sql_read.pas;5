@@ -11,7 +11,7 @@ type
   TThreadSqlRead = class(TThread)
   private
     FThreadSqlRead: TThreadSqlRead;
-    FNextSqlRecord: AnsiString;
+    FLastSqlRecord: AnsiString;
     Fpkdat_in: string;
 
     procedure SyncSqlReadTable;
@@ -92,7 +92,7 @@ end;
 procedure TThreadSqlRead.SqlNewRecord;
 var
   i, timestamp: integer;
-  count: AnsiString;
+  NextSqlRecord: AnsiString;
 begin
   // двигаем мышку
   try

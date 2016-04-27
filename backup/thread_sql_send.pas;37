@@ -239,7 +239,7 @@ FOraQuery.Close;
 FOraQuery.SQL.Clear;
 FOraQuery.SQL.Add('select * crop');
 FOraQuery.SQL.Add('WHERE rownum = 1');
-FOraQuery.SQL.Add('order by id_asutp desc);
+FOraQuery.SQL.Add('order by id_asutp desc');
 FOraQuery.Open;
 
 lLog.save('i', 'id_asutp | '+FOraQuery.FieldByName('id_asutp').AsString);

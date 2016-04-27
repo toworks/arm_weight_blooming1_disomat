@@ -230,9 +230,6 @@ begin
     if not FOraConnect.Ping then
       FOraConnect.Reconnect;
 
-//    FOraConnect.TransactIsolationLevel := tiRepeatableRead;//[tiReadCommitted, tiReadUncommitted];
-
-    lLog.save('d', 'InTransaction | '+booltostr(FOraConnect.InTransaction));
     FOraQuery.Close;
     FOraQuery.SQL.Clear;
     FOraQuery.SQL.Add('INSERT INTO crop');

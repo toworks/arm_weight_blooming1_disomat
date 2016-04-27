@@ -17,6 +17,7 @@ type
     procedure SqlNewRecord;
 //    procedure SyncNextWeightToRecord;
 //    procedure SyncNextWeightToRecordLocation;
+    function MouseMoved: boolean;
   protected
     procedure Execute; override;
   public
@@ -185,7 +186,7 @@ end;
 
 
 
-function TThreadComPort.MouseMoved: boolean;
+function TThreadSqlRead.MouseMoved: boolean;
 var
   MousePoint: TPoint;
 begin

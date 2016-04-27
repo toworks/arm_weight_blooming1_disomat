@@ -314,6 +314,7 @@ begin
       //включаем управление
 //      form1.DBGrid2.DataSource.DataSet.EnableControls;
       MainSqlite.SQuery.EnableControls;
+      MainSqlite.SQuery.Active := false;
     end;
 end;
 //-- end main

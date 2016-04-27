@@ -286,7 +286,7 @@ begin
         появляется данная ошибка }
 
       //отключаем управление
-      MainSqlite.SQuery.Active := true;
+      form1.DBGrid2.DataSource.DataSet.Active := true;
       form1.DBGrid2.DataSource.DataSet.DisableControls;
 //      MainSqlite.SQuery.DisableControls;
       try

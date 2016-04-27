@@ -18,8 +18,8 @@
         <ComponentName Value="Form1"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <TopLine Value="77"/>
-        <CursorPos Y="60"/>
+        <TopLine Value="255"/>
+        <CursorPos X="8" Y="286"/>
         <UsageCount Value="220"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -81,8 +81,8 @@
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
         <EditorIndex Value="4"/>
-        <TopLine Value="203"/>
-        <CursorPos Y="232"/>
+        <TopLine Value="205"/>
+        <CursorPos X="62" Y="231"/>
         <UsageCount Value="228"/>
         <Loaded Value="True"/>
       </Unit8>
@@ -94,7 +94,7 @@
         <Loaded Value="True"/>
       </Unit9>
     </Units>
-    <JumpHistory Count="28" HistoryIndex="27">
+    <JumpHistory Count="29" HistoryIndex="28">
       <Position1>
         <Filename Value="thread_sql_send.pas"/>
         <Caret Line="75" Column="34" TopLine="46"/>
@@ -207,6 +207,10 @@
         <Filename Value="thread_sql_send.pas"/>
         <Caret Line="128" Column="7" TopLine="90"/>
       </Position28>
+      <Position29>
+        <Filename Value="thread_sql_send.pas"/>
+        <Caret Line="231" Column="61" TopLine="203"/>
+      </Position29>
     </JumpHistory>
   </ProjectSession>
 </CONFIG>

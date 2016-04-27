@@ -73,7 +73,6 @@ begin
    begin
 
       try
-          Synchronize(@SyncSqlMax);
           SqlNewRecord;
       except
         on E : Exception do

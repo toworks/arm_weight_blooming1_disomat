@@ -61,7 +61,7 @@ begin
   FThreadSqlSend.Priority := tpNormal;
   FThreadSqlSend.FreeOnTerminate := True;
 
-  FThreadSqlSend.OnTerminate := ArnoldThread;;
+  FThreadSqlSend.OnTerminate := @ArnoldThread;;
 
   FThreadSqlSend.Start;
 end;

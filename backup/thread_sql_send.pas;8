@@ -129,7 +129,7 @@ begin
           try
               SqlSend;
               SyncViewLocal;
-              ThreadSqlSend.Terminate;
+              ThreadSqlSend.Terminated;
           except
             on E : Exception do
               lLog.save('e', E.ClassName+' TThreadSqlSend, с сообщением: '+E.Message);

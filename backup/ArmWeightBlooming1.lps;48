@@ -19,8 +19,8 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="99"/>
-        <CursorPos X="25" Y="125"/>
+        <TopLine Value="109"/>
+        <CursorPos X="80" Y="127"/>
         <UsageCount Value="220"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -29,33 +29,30 @@
         <Filename Value="logging.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="Logging"/>
-        <EditorIndex Value="1"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="13"/>
         <CursorPos Y="17"/>
         <UsageCount Value="220"/>
-        <Loaded Value="True"/>
       </Unit2>
       <Unit3>
         <Filename Value="settings.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="2"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="29"/>
         <CursorPos Y="87"/>
         <UsageCount Value="220"/>
-        <Loaded Value="True"/>
       </Unit3>
       <Unit4>
         <Filename Value="testing.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="3"/>
+        <EditorIndex Value="-1"/>
         <CursorPos X="30" Y="86"/>
         <UsageCount Value="220"/>
-        <Loaded Value="True"/>
       </Unit4>
       <Unit5>
         <Filename Value="sql.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="5"/>
+        <EditorIndex Value="2"/>
         <TopLine Value="226"/>
         <CursorPos X="24" Y="32"/>
         <UsageCount Value="219"/>
@@ -64,14 +61,13 @@
       <Unit6>
         <Filename Value="calibration.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="6"/>
+        <EditorIndex Value="-1"/>
         <UsageCount Value="219"/>
-        <Loaded Value="True"/>
       </Unit6>
       <Unit7>
         <Filename Value="thread_comport.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="8"/>
+        <EditorIndex Value="4"/>
         <TopLine Value="77"/>
         <CursorPos X="26" Y="111"/>
         <UsageCount Value="218"/>
@@ -80,7 +76,7 @@
       <Unit8>
         <Filename Value="thread_sql_send.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="4"/>
+        <EditorIndex Value="1"/>
         <TopLine Value="98"/>
         <CursorPos X="18" Y="127"/>
         <UsageCount Value="228"/>
@@ -88,7 +84,7 @@
       </Unit8>
       <Unit9>
         <Filename Value="thread_sql_read.pas"/>
-        <EditorIndex Value="7"/>
+        <EditorIndex Value="3"/>
         <TopLine Value="115"/>
         <CursorPos X="7" Y="64"/>
         <UsageCount Value="109"/>

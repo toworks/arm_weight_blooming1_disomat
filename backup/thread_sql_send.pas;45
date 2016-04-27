@@ -182,7 +182,10 @@ begin
     Log.save('d', 'timestamp | '+Byffer[i,2]);
   {$ENDIF}
       try
+        try
         send_error := SqlSaveToOracle(Byffer[i,0], Byffer[i,1], Byffer[i,2]);
+        Finally
+        End;
   {$IFDEF DEBUG}
     lLog.save('d', 'send_error | '+booltostr(send_error));
   {$ENDIF}
@@ -241,10 +244,7 @@ begin
     FOraQuery.SQL.Add('(id_asutp, weight_bloom, date_weight_bloom)');
     FOraQuery.SQL.Add('VALUES ('+IdIn+', '+PointReplace(WeightIn)+',');
     FOraQuery.SQL.Add('TO_DATE('''+TimestampIn+''', ''yyyy-mm-dd hh24:mi:ss''))');
-    try
     FOraQuery.ExecSQL;
-    Finally
-    End;
 //    FOraConnect.Commit;
 
   {$IFDEF DEBUG}
@@ -271,10 +271,7 @@ begin
         FOraQuery.SQL.Add('date_weight_bloom = TO_DATE('''+TimestampIn+''',');
         FOraQuery.SQL.Add('''yyyy-mm-dd hh24:mi:ss'')');
         FOraQuery.SQL.Add('where id_asutp = '+IdIn+'');
-        try
         FOraQuery.ExecSQL;
-            Finally
-    End;
 //        FOraConnect.Commit;
 
         error := false;

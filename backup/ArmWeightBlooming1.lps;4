@@ -8,11 +8,9 @@
       <Unit0>
         <Filename Value="ArmWeightBlooming1.lpr"/>
         <IsPartOfProject Value="True"/>
-        <IsVisibleTab Value="True"/>
-        <EditorIndex Value="4"/>
-        <CursorPos Y="21"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="27" Y="8"/>
         <UsageCount Value="220"/>
-        <Loaded Value="True"/>
       </Unit0>
       <Unit1>
         <Filename Value="main.pas"/>
@@ -52,9 +50,10 @@
       <Unit5>
         <Filename Value="sql.pas"/>
         <IsPartOfProject Value="True"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="2"/>
         <TopLine Value="233"/>
-        <CursorPos X="13" Y="252"/>
+        <CursorPos X="11" Y="252"/>
         <UsageCount Value="219"/>
         <Loaded Value="True"/>
       </Unit5>
@@ -67,7 +66,7 @@
       <Unit7>
         <Filename Value="thread_comport.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="5"/>
+        <EditorIndex Value="4"/>
         <CursorPos X="26" Y="111"/>
         <UsageCount Value="218"/>
         <Loaded Value="True"/>
@@ -84,13 +83,13 @@
       <Unit9>
         <Filename Value="thread_sql_read.pas"/>
         <EditorIndex Value="3"/>
-        <TopLine Value="24"/>
+        <TopLine Value="120"/>
         <CursorPos X="23" Y="50"/>
         <UsageCount Value="109"/>
         <Loaded Value="True"/>
       </Unit9>
     </Units>
-    <JumpHistory Count="30" HistoryIndex="29">
+    <JumpHistory Count="29" HistoryIndex="28">
       <Position1>
         <Filename Value="main.pas"/>
         <Caret Line="117" Column="12"/>
@@ -207,10 +206,6 @@
         <Filename Value="thread_sql_read.pas"/>
         <Caret Line="50" Column="17" TopLine="19"/>
       </Position29>
-      <Position30>
-        <Filename Value="ArmWeightBlooming1.lpr"/>
-        <Caret Line="17" Column="15"/>
-      </Position30>
     </JumpHistory>
   </ProjectSession>
 </CONFIG>

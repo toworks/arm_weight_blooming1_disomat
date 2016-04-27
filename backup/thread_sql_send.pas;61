@@ -267,7 +267,7 @@ begin
         FOraQuery.SQL.Add('date_weight_bloom = TO_DATE('''+TimestampIn+''',');
         FOraQuery.SQL.Add('''yyyy-mm-dd hh24:mi:ss'')');
         FOraQuery.SQL.Add('where id_asutp = '+IdIn+'');
-//        FOraQuery.ExecSQL;
+        FOraQuery.ExecSQL;
         FOraConnect.Commit;
 
         error := false;

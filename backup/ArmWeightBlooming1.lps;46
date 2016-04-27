@@ -18,8 +18,9 @@
         <ComponentName Value="Form1"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <TopLine Value="381"/>
-        <CursorPos X="9" Y="127"/>
+        <IsVisibleTab Value="True"/>
+        <TopLine Value="387"/>
+        <CursorPos X="35" Y="418"/>
         <UsageCount Value="220"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -66,7 +67,6 @@
       <Unit7>
         <Filename Value="thread_comport.pas"/>
         <IsPartOfProject Value="True"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="4"/>
         <TopLine Value="358"/>
         <CursorPos X="28" Y="377"/>
@@ -85,8 +85,8 @@
       <Unit9>
         <Filename Value="thread_sql_read.pas"/>
         <EditorIndex Value="3"/>
-        <TopLine Value="115"/>
-        <CursorPos X="7" Y="64"/>
+        <TopLine Value="128"/>
+        <CursorPos X="7" Y="161"/>
         <UsageCount Value="109"/>
         <Loaded Value="True"/>
       </Unit9>

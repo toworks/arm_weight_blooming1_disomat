@@ -184,9 +184,13 @@ begin
   {$IFDEF DEBUG}
     lLog.save('d', 'send_error | '+booltostr(send_error));
   {$ENDIF}
+      except
+        on E : Exception do
+          lLog.save('e', E.ClassName+' sql send update, с сообщением: '+E.Message);
+      end;
 
+      try
         inc(FSendCount);// если есть данные для запись увеличиваем
-
         if not send_error then begin
             TSSsqlite.SQuery.Close;
             TSSsqlite.SQuery.SQL.Clear;

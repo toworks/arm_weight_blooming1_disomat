@@ -19,7 +19,7 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <TopLine Value="69"/>
-        <CursorPos X="22" Y="89"/>
+        <CursorPos X="22" Y="87"/>
         <UsageCount Value="220"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -54,7 +54,7 @@
         <IsVisibleTab Value="True"/>
         <EditorIndex Value="2"/>
         <TopLine Value="227"/>
-        <CursorPos X="25" Y="252"/>
+        <CursorPos X="24" Y="252"/>
         <UsageCount Value="219"/>
         <Loaded Value="True"/>
       </Unit5>
@@ -68,7 +68,6 @@
         <Filename Value="thread_comport.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="4"/>
-        <TopLine Value="91"/>
         <CursorPos X="26" Y="111"/>
         <UsageCount Value="218"/>
         <Loaded Value="True"/>
@@ -210,7 +209,7 @@
       </Position29>
       <Position30>
         <Filename Value="sql.pas"/>
-        <Caret Line="252" Column="28" TopLine="214"/>
+        <Caret Line="252" Column="25" TopLine="227"/>
       </Position30>
     </JumpHistory>
   </ProjectSession>

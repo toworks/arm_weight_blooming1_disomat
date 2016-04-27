@@ -229,8 +229,6 @@ begin
       FOraConnect.Reconnect;
 
     FOraConnect.TransactIsolationLevel := tiReadUncommitted;
-    FOraConnect.AutoCommit := false;
-    FOraConnect.InTransaction;
     lLog.save('d', 'InTransaction | '+booltostr(FOraConnect.InTransaction));
     FOraQuery.Close;
     FOraQuery.SQL.Clear;

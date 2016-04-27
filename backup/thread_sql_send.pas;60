@@ -93,8 +93,8 @@ begin
         FOraConnect.User := OraSqlSettings.user;
         FOraConnect.Password := OraSqlSettings.password;
         FOraConnect.ClientCodepage := 'CL8MSWIN1251';
-        FOraConnect.Properties.Add('hard_commit=TRUE');
-        FOraConnect.AutoCommit := False;
+{        FOraConnect.Properties.Add('hard_commit=TRUE');
+        FOraConnect.AutoCommit := False;}
         FOraConnect.Connect;
         FOraQuery.Connection := FOraConnect;
       except
@@ -231,9 +231,10 @@ begin
       FOraConnect.Reconnect;
     lLog.save('e', 'do InTransaction | '+booltostr(FOraConnect.InTransaction));
     if FOraConnect.InTransaction then       FOraConnect.Reconnect;
-    lLog.save('e', 'after InTransaction | '+booltostr(FOraConnect.InTransaction));
+    lLog.save('e', 'after InTransaction | '+booltostr(FOraConnect.TransactIsolationLevel.tiNone));
+    TransactIsolationLevel := tiNone;
 
-    FOraConnect.Commit;
+//    FOraConnect.Commit;
     FOraQuery.Close;
     FOraQuery.SQL.Clear;
     FOraQuery.SQL.Add('INSERT INTO crop');
@@ -241,7 +242,7 @@ begin
     FOraQuery.SQL.Add('VALUES ('+IdIn+', '+PointReplace(WeightIn)+',');
     FOraQuery.SQL.Add('TO_DATE('''+TimestampIn+''', ''yyyy-mm-dd hh24:mi:ss''))');
     FOraQuery.ExecSQL;
-    FOraConnect.Commit;
+//    FOraConnect.Commit;
 
   {$IFDEF DEBUG}
     Log.save('d', 'OraQuery insert | '+FOraQuery.SQL.Text);
@@ -268,7 +269,7 @@ begin
         FOraQuery.SQL.Add('''yyyy-mm-dd hh24:mi:ss'')');
         FOraQuery.SQL.Add('where id_asutp = '+IdIn+'');
         FOraQuery.ExecSQL;
-        FOraConnect.Commit;
+//        FOraConnect.Commit;
 
         error := false;
   {$IFDEF DEBUG}

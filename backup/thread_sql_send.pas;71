@@ -231,7 +231,7 @@ begin
       FOraConnect.Reconnect;
 
 //    FOraConnect.TransactIsolationLevel := tiRepeatableRead;//[tiReadCommitted, tiReadUncommitted];
-      FOraConnect.a
+
     lLog.save('d', 'InTransaction | '+booltostr(FOraConnect.InTransaction));
     FOraQuery.Close;
     FOraQuery.SQL.Clear;
@@ -266,6 +266,7 @@ begin
         FOraQuery.SQL.Add('''yyyy-mm-dd hh24:mi:ss'')');
         FOraQuery.SQL.Add('where id_asutp = '+IdIn+'');
         FOraQuery.ExecSQL;
+        FOraConnect.Commit;
 
         error := false;
   {$IFDEF DEBUG}

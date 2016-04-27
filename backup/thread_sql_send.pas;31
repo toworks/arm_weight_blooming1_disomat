@@ -266,7 +266,7 @@ lLog.save('i', 'id_asutp | '+FOraQuery.FieldByName('id_asutp').AsString);
 {$IFDEF DEBUG}
   Log.save('d', 'position | '+inttostr(err_oci_no_data));
 {$ENDIF}
-  end;
+
   if error and (err_oci_no_data = 0) then
   begin
     try

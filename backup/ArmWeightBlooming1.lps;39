@@ -8,7 +8,6 @@
       <Unit0>
         <Filename Value="ArmWeightBlooming1.lpr"/>
         <IsPartOfProject Value="True"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="2"/>
         <CursorPos X="15" Y="17"/>
         <UsageCount Value="220"/>
@@ -20,7 +19,7 @@
         <ComponentName Value="Form1"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <TopLine Value="415"/>
+        <TopLine Value="379"/>
         <CursorPos X="41" Y="430"/>
         <UsageCount Value="220"/>
         <Loaded Value="True"/>
@@ -77,9 +76,10 @@
       <Unit8>
         <Filename Value="thread_sql_send.pas"/>
         <IsPartOfProject Value="True"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
         <TopLine Value="280"/>
-        <CursorPos X="37" Y="319"/>
+        <CursorPos Y="293"/>
         <UsageCount Value="228"/>
         <Loaded Value="True"/>
       </Unit8>

@@ -51,10 +51,9 @@
       <Unit5>
         <Filename Value="sql.pas"/>
         <IsPartOfProject Value="True"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="2"/>
         <TopLine Value="218"/>
-        <CursorPos X="3" Y="252"/>
+        <CursorPos X="26" Y="245"/>
         <UsageCount Value="219"/>
         <Loaded Value="True"/>
       </Unit5>
@@ -76,16 +75,18 @@
       <Unit8>
         <Filename Value="thread_sql_send.pas"/>
         <IsPartOfProject Value="True"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
-        <CursorPos X="14" Y="120"/>
+        <TopLine Value="279"/>
+        <CursorPos X="41" Y="319"/>
         <UsageCount Value="228"/>
         <Loaded Value="True"/>
       </Unit8>
       <Unit9>
         <Filename Value="thread_sql_read.pas"/>
         <EditorIndex Value="3"/>
-        <TopLine Value="184"/>
-        <CursorPos X="5" Y="14"/>
+        <TopLine Value="158"/>
+        <CursorPos X="39" Y="202"/>
         <UsageCount Value="109"/>
         <Loaded Value="True"/>
       </Unit9>

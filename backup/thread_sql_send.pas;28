@@ -276,7 +276,6 @@ FOraQuery.Open;
         FOraQuery.SQL.Add('''yyyy-mm-dd hh24:mi:ss'')');
         FOraQuery.SQL.Add('where id_asutp = '+IdIn+'');
         FOraQuery.ExecSQL;
-//        FOraConnect.Commit;
 
         error := false;
   {$IFDEF DEBUG}

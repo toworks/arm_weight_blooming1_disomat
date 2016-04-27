@@ -69,19 +69,19 @@
       <Unit7>
         <Filename Value="thread_comport.pas"/>
         <IsPartOfProject Value="True"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="7"/>
-        <TopLine Value="109"/>
-        <CursorPos X="27" Y="129"/>
+        <TopLine Value="101"/>
+        <CursorPos X="23" Y="129"/>
         <UsageCount Value="218"/>
         <Loaded Value="True"/>
       </Unit7>
       <Unit8>
         <Filename Value="thread_sql_send.pas"/>
         <IsPartOfProject Value="True"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="4"/>
-        <TopLine Value="35"/>
-        <CursorPos X="42" Y="62"/>
+        <TopLine Value="219"/>
+        <CursorPos X="24" Y="237"/>
         <UsageCount Value="228"/>
         <Loaded Value="True"/>
       </Unit8>

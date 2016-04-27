@@ -71,8 +71,8 @@
         <Filename Value="thread_comport.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="8"/>
-        <TopLine Value="372"/>
-        <CursorPos Y="48"/>
+        <TopLine Value="109"/>
+        <CursorPos X="27" Y="129"/>
         <UsageCount Value="218"/>
         <Loaded Value="True"/>
       </Unit7>
@@ -81,15 +81,16 @@
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
         <EditorIndex Value="4"/>
-        <TopLine Value="205"/>
-        <CursorPos X="3" Y="231"/>
+        <TopLine Value="224"/>
+        <CursorPos Y="270"/>
         <UsageCount Value="228"/>
         <Loaded Value="True"/>
       </Unit8>
       <Unit9>
         <Filename Value="thread_sql_read.pas"/>
         <EditorIndex Value="7"/>
-        <CursorPos X="3" Y="171"/>
+        <TopLine Value="52"/>
+        <CursorPos X="7" Y="64"/>
         <UsageCount Value="109"/>
         <Loaded Value="True"/>
       </Unit9>

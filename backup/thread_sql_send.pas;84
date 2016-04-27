@@ -228,6 +228,7 @@ begin
     if not FOraConnect.Ping then
       FOraConnect.Reconnect;
 
+    FOraConnect.AutoCommit:=false;
     FOraConnect.Commit;
     FOraQuery.Close;
     FOraQuery.SQL.Clear;

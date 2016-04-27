@@ -147,7 +147,7 @@ begin
 
 //    for i:=1 to UTF8Length(inttostrcount) do
     for i:=1 to Length(c) do
-       count := count+strtoint(c[i])
+       count := count+strtoint(c[i]);
 
 lLog.save('d', 'do sqlmax count | '+inttostr(count)+' | FSqlMax | '+inttostr(FSqlMax)+' | sum | '+strtoint(c));
     if (FSqlMax < count) then

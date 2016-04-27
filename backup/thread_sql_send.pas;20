@@ -222,7 +222,8 @@ var
   error: boolean;
   err_oci_no_data: integer;
 begin
-  { при режиме debug не обрабатывается try и при вызове ExecSQL ломает поток }
+  { если небыло commit из любого места ExecSQL ломает поток
+    и не обрабатывается try и при вызове ExecSQL ломает поток }
   try
     //была ошибака: EZSQLException, с сообщением: SQL Error: OCI_NO_DATA
     if not FOraConnect.Ping then

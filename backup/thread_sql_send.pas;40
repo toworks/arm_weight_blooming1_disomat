@@ -234,7 +234,15 @@ begin
 
 //    FOraConnect.TransactIsolationLevel := tiReadUncommitted;
 
-//    FOraConnect.Commit;
+
+FOraQuery.Close;
+FOraQuery.SQL.Clear;
+FOraQuery.SQL.Add('select * crop');
+FOraQuery.SQL.Add('WHERE rownum = 1;');
+FOraQuery.SQL.Add('order by id_asutp desc);
+FOraQuery.Open;
+
+
     FOraQuery.Close;
     FOraQuery.SQL.Clear;
     FOraQuery.SQL.Add('INSERT INTO crop');

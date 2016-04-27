@@ -71,6 +71,7 @@ begin
   CoInitialize(nil);
   while True do
    begin
+
       // при выбор заготовки останавливаем чтение
       if not ThreadStop then begin
         try

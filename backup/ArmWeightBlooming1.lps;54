@@ -81,8 +81,7 @@
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
         <EditorIndex Value="4"/>
-        <TopLine Value="106"/>
-        <CursorPos X="47" Y="132"/>
+        <CursorPos X="40" Y="22"/>
         <UsageCount Value="228"/>
         <Loaded Value="True"/>
       </Unit8>
@@ -214,7 +213,7 @@
       </Position29>
       <Position30>
         <Filename Value="thread_sql_send.pas"/>
-        <Caret Line="132" Column="39" TopLine="116"/>
+        <Caret Line="132" Column="47" TopLine="106"/>
       </Position30>
     </JumpHistory>
   </ProjectSession>

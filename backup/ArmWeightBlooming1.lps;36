@@ -19,7 +19,7 @@
         <ComponentName Value="Form1"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <TopLine Value="379"/>
+        <TopLine Value="385"/>
         <CursorPos X="41" Y="430"/>
         <UsageCount Value="220"/>
         <Loaded Value="True"/>
@@ -53,7 +53,7 @@
         <Filename Value="sql.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="3"/>
-        <TopLine Value="184"/>
+        <TopLine Value="247"/>
         <CursorPos X="61" Y="190"/>
         <UsageCount Value="219"/>
         <Loaded Value="True"/>
@@ -69,8 +69,8 @@
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
         <EditorIndex Value="5"/>
-        <TopLine Value="357"/>
-        <CursorPos Y="371"/>
+        <TopLine Value="372"/>
+        <CursorPos X="70" Y="381"/>
         <UsageCount Value="218"/>
         <Loaded Value="True"/>
       </Unit7>

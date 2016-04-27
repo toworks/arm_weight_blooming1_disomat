@@ -231,7 +231,7 @@ begin
       FOraConnect.Reconnect;
     lLog.save('e', 'do InTransaction | '+booltostr(FOraConnect.InTransaction));
 
-    if FOraConnect.InTransaction then
+    if not FOraConnect.InTransaction then
        FOraConnect.TransactIsolationLevel := tiReadUncommitted
     else
        FOraConnect.TransactIsolationLevel := tiReadCommitted;

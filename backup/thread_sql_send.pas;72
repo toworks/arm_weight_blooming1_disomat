@@ -93,6 +93,8 @@ begin
         FOraConnect.User := OraSqlSettings.user;
         FOraConnect.Password := OraSqlSettings.password;
         FOraConnect.ClientCodepage := 'CL8MSWIN1251';
+        FOraConnect.Properties.Add('hard_commit=TRUE');
+        FOraConnect.AutoCommit := False;
         FOraConnect.Connect;
         FOraQuery.Connection := FOraConnect;
       except
@@ -229,6 +231,7 @@ begin
       FOraConnect.Reconnect;
 
 //    FOraConnect.TransactIsolationLevel := tiRepeatableRead;//[tiReadCommitted, tiReadUncommitted];
+      FOraConnect.a
     lLog.save('d', 'InTransaction | '+booltostr(FOraConnect.InTransaction));
     FOraQuery.Close;
     FOraQuery.SQL.Clear;
@@ -237,6 +240,7 @@ begin
     FOraQuery.SQL.Add('VALUES ('+IdIn+', '+PointReplace(WeightIn)+',');
     FOraQuery.SQL.Add('TO_DATE('''+TimestampIn+''', ''yyyy-mm-dd hh24:mi:ss''))');
     FOraQuery.ExecSQL;
+    FOraConnect.Commit;
   {$IFDEF DEBUG}
     Log.save('d', 'OraQuery insert | '+FOraQuery.SQL.Text);
   {$ENDIF}

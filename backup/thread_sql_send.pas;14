@@ -65,6 +65,10 @@ begin
   FThreadSqlSend.Start;
 end;
 
+procedure TForm1.ArnoldThread(Sender: TObject);
+begin
+   lLog.save('W', 'Hasta la vista, thread');
+end;
 
 destructor TThreadSqlSend.Destroy;
 begin

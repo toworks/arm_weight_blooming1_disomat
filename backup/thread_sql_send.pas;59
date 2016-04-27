@@ -125,7 +125,7 @@ begin
               SyncViewLocal;
           except
             on E : Exception do
-              lLog.save('e', E.ClassName+'3, с сообщением: '+E.Message);
+              lLog.save('e', E.ClassName+' TThreadSqlSend, с сообщением: '+E.Message);
           end;
       end;
 
@@ -231,7 +231,7 @@ begin
       FOraConnect.Reconnect;
     lLog.save('e', 'do InTransaction | '+booltostr(FOraConnect.InTransaction));
     if FOraConnect.InTransaction then       FOraConnect.Reconnect;
-    lLog.save('e', 'after InTransaction | '+booltostr(FOraConnect.TransactIsolationLevel.tiNone));
+    lLog.save('e', 'after InTransaction | '+booltostr(FOraConnect.InTransaction));
     TransactIsolationLevel := tiNone;
 
 //    FOraConnect.Commit;

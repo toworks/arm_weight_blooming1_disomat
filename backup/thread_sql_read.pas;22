@@ -148,7 +148,7 @@ begin
 //    for i:=1 to Length(count) do
 //       c := c+strtoint(count[i])
 
-lLog.save('d', 'do sqlmax count | '+inttostr(count)+' | FSqlMax | '+inttostr(FSqlMax)+' | sum | '+strtoint(c));
+//lLog.save('d', 'do sqlmax count | '+inttostr(count)+' | FSqlMax | '+inttostr(FSqlMax)+' | sum | '+strtoint(c));
     if (FSqlMax < count) then
     begin
         FSqlMax := count;

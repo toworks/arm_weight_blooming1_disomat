@@ -232,7 +232,7 @@ begin
     lLog.save('e', 'do InTransaction | '+booltostr(FOraConnect.InTransaction));
 
 
-    FOraConnect.TransactIsolationLevel := tiReadUncommitted
+    FOraConnect.TransactIsolationLevel := tiReadUncommitted;
 
 //    FOraConnect.Commit;
     FOraQuery.Close;

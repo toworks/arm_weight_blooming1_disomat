@@ -111,6 +111,9 @@ begin
   end;
 
   try
+    if not Fsql.FConnect.Connected then
+       Fsql.FConnect.Reconnect;
+
     Fsql.FQuery.Close;
     Fsql.FQuery.SQL.Clear;
     Fsql.FQuery.SQL.Add('select distinct pkdat from ingots');

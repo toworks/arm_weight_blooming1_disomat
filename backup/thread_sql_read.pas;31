@@ -145,9 +145,9 @@ begin
     count := Fsql.FQuery.FieldByName('c').AsLargeInt;
 
     for i:=1 to Length(count) do
-       if count[i]
+       c := c+strtoint(count[i])
 
-lLog.save('d', 'do sqlmax count | '+inttostr(count)+' | FSqlMax | '+inttostr(FSqlMax));
+lLog.save('d', 'do sqlmax count | '+inttostr(count)+' | FSqlMax | '+inttostr(FSqlMax)+' | sum | '+strtoint(c));
     if (FSqlMax < count) then
     begin
         FSqlMax := count;

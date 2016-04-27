@@ -93,7 +93,7 @@ procedure TThreadSqlRead.SqlNewRecord;
 var
   i, timestamp: integer;
   count: int64;
-  c: int64;
+  c: AnsiString;
 begin
   // двигаем мышку
   try

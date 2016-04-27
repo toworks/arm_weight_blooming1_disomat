@@ -191,7 +191,8 @@ end;
 
 procedure TThreadSqlRead.SyncNextWeightToRecord;
 begin
-
+  SqlNextWeightToRecord;
+  NextWeightToRecordLocation;
 end;
 
 

@@ -182,10 +182,7 @@ begin
     Log.save('d', 'timestamp | '+Byffer[i,2]);
   {$ENDIF}
       try
-        try
         send_error := SqlSaveToOracle(Byffer[i,0], Byffer[i,1], Byffer[i,2]);
-        Finally
-        End;
   {$IFDEF DEBUG}
     lLog.save('d', 'send_error | '+booltostr(send_error));
   {$ENDIF}

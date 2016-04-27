@@ -228,7 +228,9 @@ begin
     if not FOraConnect.Ping then
       FOraConnect.Reconnect;
 
-    FOraConnect.TransactIsolationLevel := tiSerializable;//tiReadUncommitted;
+    FOraConnect.TransactIsolationLevel := tiReadUncommitted;
+    FOraConnect.AutoCommit := false;
+    FOraConnect.Commit;
     FOraQuery.Close;
     FOraQuery.SQL.Clear;
     FOraQuery.SQL.Add('INSERT INTO crop');

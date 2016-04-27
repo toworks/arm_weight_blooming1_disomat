@@ -169,8 +169,8 @@ begin
   try
       //отключаем управление
 //      form1.DBGrid1.DataSource.DataSet.DisableControls;
-      MainFSql.FQuery.DisableControls;
-      MainFSql.FQuery.Active:=false;
+{      MainFSql.FQuery.DisableControls;
+      MainFSql.FQuery.Active:=false;}
       try
           if not MainFSql.FConnect.Ping then
              MainFSql.FConnect.Reconnect;
@@ -198,8 +198,8 @@ begin
   finally
       //включаем управление
 //      form1.DBGrid1.DataSource.DataSet.EnableControls;
-      MainFSql.FQuery.Active:=true;
-      MainFSql.FQuery.EnableControls;
+{      MainFSql.FQuery.Active:=true;
+      MainFSql.FQuery.EnableControls;}
   end;
 
 end;

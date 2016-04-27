@@ -18,13 +18,11 @@ type
     function SqlSaveToOracle(IdIn, WeightIn, TimestampIn: AnsiString): boolean;
     function SyncViewLocal: boolean;
     procedure SqlReadTableLocal;
-    procedure ArnoldThread(Sender: TObject);
   protected
     procedure Execute; override;
   public
     Constructor Create(_Log: TLog); overload;
     Destructor Destroy; override;
-    property OnTerminate: TNotifyEvent;
   end;
 
 var
@@ -61,16 +59,9 @@ begin
   FThreadSqlSend := TThreadSqlSend.Create(True);
   FThreadSqlSend.Priority := tpNormal;
   FThreadSqlSend.FreeOnTerminate := True;
-
-  FThreadSqlSend.OnTerminate := @ArnoldThread;;
-
   FThreadSqlSend.Start;
 end;
 
-procedure TThreadSqlSend.ArnoldThread(Sender: TObject);
-begin
-   Log.save('w', 'Hasta la vista, thread');
-end;
 
 destructor TThreadSqlSend.Destroy;
 begin

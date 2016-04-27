@@ -230,7 +230,8 @@ begin
 
     FOraConnect.TransactIsolationLevel := tiReadUncommitted;
     FOraConnect.AutoCommit := false;
-    FOraConnect.Commit;
+    FOraConnect.InTransaction;
+    lLog.save('d', 'InTransaction | '+booltostr(FOraConnect.InTransaction));
     FOraQuery.Close;
     FOraQuery.SQL.Clear;
     FOraQuery.SQL.Add('INSERT INTO crop');

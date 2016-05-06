@@ -4,7 +4,8 @@ unit thread_sql_read;
 interface
 
 uses
-  SysUtils, DB, Classes, ActiveX, ZDataset, Variants, logging, sql;
+  SysUtils, DB, Classes, ActiveX, ZDataset, Variants,
+  {$ifdef windows} Windows, Forms, {$endif} logging, sql;
 
 type
   TThreadSqlRead = class(TThread)
@@ -15,8 +16,6 @@ type
 
     procedure SyncSqlReadTable;
     procedure SqlNewRecord;
-//    procedure SyncNextWeightToRecord;
-//    procedure SyncNextWeightToRecordLocation;
     function MouseMoved: boolean;
   protected
     procedure Execute; override;

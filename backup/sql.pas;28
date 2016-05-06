@@ -203,10 +203,8 @@ begin
 
   i:=0;
 
-  if ( pkdat = '') then begin
-     Result := false;
+  if ( pkdat = '') then
      exit;
-  end;
 
   try
       _FSql.FQuery.Close;
@@ -251,7 +249,6 @@ begin
           form1.l_datetime.Visible := false;
           form1.l_number_ingot.Visible := false;
           FreeAndNil(_FSql);
-          Result := false;
           exit;
       end
       else
@@ -284,6 +281,10 @@ begin
           weight_ingot := _FSql.FQuery.FieldByName('weight_ingot').AsString;
           smena := _FSql.FQuery.FieldByName('smena').AsString;
 
+          Apkdat := pkdat;
+          Anum := num;
+          Anum_ingot := num_ingot;
+
           Form1.l_number_ingot.Caption := num_ingot;
           Form1.l_datetime.Caption := time_ingot;
           Form1.l_heat.Caption := num_heat;
@@ -298,9 +299,8 @@ begin
       end;
   except
     on E : Exception do
-      Log.save('e', E.ClassName+' sql 4, с сообщением: '+E.Message);
+      Log.save('e', E.ClassName+' sql set pkdat | num | num_ingot, с сообщением: '+E.Message);
   end;
-  Result := true;
   FreeAndNil(_FSql);
 end;
 

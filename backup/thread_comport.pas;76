@@ -35,6 +35,7 @@ type
     function SqlSaveInBuffer(DataIn: AnsiString): boolean;
     function ManipulationWithDate(InDate: string): string;
     procedure SyncNextWeightToRecord;
+    function CleanData(str: AnsiString): AnsiString;
   protected
     procedure Execute; override;
   public
@@ -68,7 +69,7 @@ uses
 
 constructor TThreadComPort.Create(_Log: TLog);
 begin
-//  inherited Create(True);
+  inherited Create(True);
 
   lLog := _Log;
   TCsqlite := TSqlite.Create(lLog);
@@ -96,7 +97,7 @@ end;
 procedure TThreadComPort.Execute;
 begin
   CoInitialize(nil);
-  FNextSave := true; //не правильно
+  NextSave := true; //не правильно
   while True do
   begin
       try
@@ -105,25 +106,29 @@ begin
 {$ENDIF}
           // при выбор заготовки останавливаем чтение
           if not ThreadStop and not MarkerNextWait then begin
+//              lLog.save('t', 'NextSave | '+booltostr(NextSave)+' | '+booltostr(FNextSave));
               //тестирование
               if assigned(MemoTesting) then
                  Synchronize(@SyncMemoTesting);
               //калибровка
               if assigned(CalibrationForm) then
                  Synchronize(@SyncCalibration);
-//              lLog.save('e', 'main do NextSave | '+booltostr(NextSave));
+//              lLog.save('e', 'main do NextSave | '+booltostr(NextSave)+' | '+booltostr(FNextSave));
               if NextSave and not MarkerNextWait then
                  SendTKMessage;
 
               if no_save then begin
                  SendEKMessage;
               end;
-//              lLog.save('e', 'main NextSave | '+booltostr(NextSave));
-              if not NextSave then
-                 Synchronize(@SyncNextWeightToRecord);
+//              lLog.save('e', 'main NextSave | '+booltostr(NextSave)+' | '+booltostr(FNextSave));
+{              if not NextSave then
+                 Synchronize(@SyncNextWeightToRecord);}
           end
           else
               sleep(1000);
+
+          if not NextSave then
+             Synchronize(@SyncNextWeightToRecord);
       except
         on E : Exception do
           lLog.save('e', E.ClassName+' serial execute, с сообщением: '+E.Message);
@@ -224,7 +229,7 @@ begin
     //{ test }      SqlSaveInBuffer(trim(copy(Data, 60, 6)))
             SqlSaveInBuffer(trim(copy(Data, 40, 6)));
             NextSave := false;
-            lLog.save('w', 'ReceiveTKData | '+trim(copy(Data, 40, 6)));
+//            lLog.save('w', 'ReceiveTKData | '+trim(copy(Data, 40, 6)));
           end
           else
             lLog.save('w', 'заготовка не выбрана'+#9+'weight | '+trim(copy(Data, 40, 6)));
@@ -287,9 +292,13 @@ end;
 
 
 procedure TThreadComPort.SyncCalibration;
+var
+   weight: AnsiString;
 begin
+     weight := trim(copy(FMessageData, 40, 6));
      if assigned(CalibrationForm.l_calibration) then
-        CalibrationForm.l_calibration.caption := trim(copy(FMessageData, 40, 6));
+        if weight <>  '' then
+          CalibrationForm.l_calibration.caption := CleanData(weight);
 end;
 
 
@@ -346,18 +355,22 @@ end;
 
 
 procedure TThreadComPort.SyncNextWeightToRecord;
-var
-  t: boolean;
+{var
+  t: boolean;}
 begin
 {$IFDEF DEBUG}
   lLog.save('t', 'step 6');
 {$ENDIF}
      SqlNextWeightToRecord;
-     NextWeightToRecordLocation;
-     t := ComparePkdat;//разрешаем снятие следующего показания
-     //NextSave := ComparePkdat;//разрешаем снятие следующего показания
-     NextSave := t;
-     lLog.save('t', 'SyncNextWeightToRecord | ComparePkdat | '+booltostr(t));
+//     NextWeightToRecordLocation;
+//     lLog.save('t', 'do pkdat | '+pkdat+' | '+Fpkdat+' | num | '+num+' | '+Fnum+' | num_ingot | '+num_ingot+' | '+Fnum_ingot);
+//     t := ComparePkdat;//разрешаем снятие следующего показания
+     NextSave := ComparePkdat;//разрешаем снятие следующего показания
+//     NextSave := t;
+     if NextSave then
+        NextWeightToRecordLocation;
+//     lLog.save('t', 'after pkdat | '+pkdat+' | '+Fpkdat+' | num | '+num+' | '+Fnum+' | num_ingot | '+num_ingot+' | '+Fnum_ingot);
+//     lLog.save('t', 'SyncNextWeightToRecord | ComparePkdat | '+booltostr(t));
 end;
 
 
@@ -375,14 +388,8 @@ end;
 
 function TThreadComPort.ComparePkdat: boolean;
 begin
-//  lLog.save('t', 'pkdat | '+pkdat+' | '+Fpkdat+' | num | '+num+' | '+Anum+' | '+' | num_ingot | '+num_ingot+' | '+Anum_ingot);
-  lLog.save('t', pkdat+' | '+num+' | '+num_ingot);
-  // first run and after next weight
-{  if (pkdat = '') then begin
-     Result := true;
-     exit;
-  end;}
-
+//  lLog.save('t', 'pkdat | '+pkdat+' | '+Fpkdat+' | num | '+num+' | '+Anum+' | num_ingot | '+num_ingot+' | '+Anum_ingot);
+//  lLog.save('t', pkdat+' | '+num+' | '+num_ingot);
   if (pkdat = Fpkdat) and (num = Fnum) and (num_ingot = Fnum_ingot) then
      Result := false
   else begin
@@ -393,6 +400,17 @@ begin
   end;
 end;
 
+
+function TThreadComPort.CleanData(str: AnsiString): AnsiString;
+var
+   buf: AnsiString;
+   i: integer;
+begin
+  buf := '';
+  for i := 1 to length(str) do
+  if str[i] in ['0'..'9', '.', ','] then buf := buf + str[i];
+  Result := buf;
+end;
 
 end.
 

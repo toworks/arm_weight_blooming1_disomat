@@ -8,7 +8,6 @@ uses
    {$ifdef windows} Windows, Forms, {$endif} logging, sql;
 
 type
-  //Здесь необходимо описать класс TThreadSql:
   TThreadSqlSend = class(TThread)
   private
     FThreadSqlSend: TThreadSqlSend;
@@ -31,6 +30,7 @@ var
   FOraQuery: TZQuery;
   TSSsqlite: TSqlite;
   FSendCount: Int64;
+
 
 //  {$DEFINE DEBUG}
 
@@ -58,17 +58,10 @@ begin
   // создаем поток True - создание остановка, False - создание старт
   FThreadSqlSend := TThreadSqlSend.Create(True);
   FThreadSqlSend.Priority := tpNormal;
-  FThreadSqlSend.FreeOnTerminate := True;
-
-  FThreadSqlSend.OnTerminate := ArnoldThread;;
-
+  FThreadSqlSend.FreeOnTerminate := False; //True;
   FThreadSqlSend.Start;
 end;
 
-procedure TForm1.ArnoldThread(Sender: TObject);
-begin
-   lLog.save('w', 'Hasta la vista, thread');
-end;
 
 destructor TThreadSqlSend.Destroy;
 begin
@@ -122,7 +115,7 @@ begin
   CoInitialize(nil);
   while True do
    begin
-
+      lLog.save('t', 'TThreadSqlSend main ');
       // при выбор заготовки останавливаем чтение
       if not ThreadStop then begin
           try
@@ -236,13 +229,51 @@ begin
     if not FOraConnect.Ping then
       FOraConnect.Reconnect;
 
+//    FOraConnect.ExecuteDirect('SET TRANSACTION ISOLATION LEVEL READ COMMITTED ; ');
+
+
+FOraQuery.Close;
+FOraQuery.SQL.Clear;
+FOraQuery.SQL.Add('select TO_DATE(sysdate, ''yyyy-mm-dd hh24:mi:ss'') from dual');
+try
+FOraQuery.ExecSQL;
+finally
+      Log.save('d', 'OraQuery insert | '+FOraQuery.SQL.Text);
+end;
+
     FOraQuery.Close;
     FOraQuery.SQL.Clear;
     FOraQuery.SQL.Add('INSERT INTO crop');
     FOraQuery.SQL.Add('(id_asutp, weight_bloom, date_weight_bloom)');
     FOraQuery.SQL.Add('VALUES ('+IdIn+', '+PointReplace(WeightIn)+',');
     FOraQuery.SQL.Add('TO_DATE('''+TimestampIn+''', ''yyyy-mm-dd hh24:mi:ss''))');
-    FOraQuery.ExecSQL;
+
+{    FOraQuery.SQL.Text := 'SET TRANSACTION ISOLATION LEVEL READ COMMITTED ; '+
+                          'INSERT INTO crop '+
+                          '(id_asutp, weight_bloom, date_weight_bloom) '+
+                          'VALUES ('+IdIn+', '+PointReplace(WeightIn)+', '+
+                          'TO_DATE('''+TimestampIn+''', ''yyyy-mm-dd hh24:mi:ss'')) ; '+
+                          'COMMIT ; ';}
+
+//FOraQuery.SQL.Text := 'select * from dual;';
+
+
+try
+//    FOraConnect.ExecuteDirect('ROLLBACK;');
+//    FOraConnect.StartTransaction;
+//    FOraConnect.ExecuteDirect('SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;');
+//    FOraConnect.ExecuteDirect('SET TRANSACTION ISOLATION LEVEL READ COMMITTED;');
+{    FOraQuery.ExecSQL;
+    FOraConnect.Commit;}
+//    FOraConnect.ExecuteDirect('COMMIT ; ');
+//    FOraQuery.ExecSQL;
+//    FOraConnect.Commit;
+//    FOraConnect.ExecuteDirect('COMMIT ; ');
+finally
+//      FOraConnect.Rollback;
+//    FOraConnect.ExecuteDirect('ROLLBACK;');
+//   FOraConnect.ExecuteDirect('COMMIT;');
+end;
 
   {$IFDEF DEBUG}
     Log.save('d', 'OraQuery insert | '+FOraQuery.SQL.Text);
@@ -259,9 +290,10 @@ begin
   Log.save('d', 'position | '+inttostr(err_oci_no_data));
 {$ENDIF}
 
-  if error and (err_oci_no_data = 0) then
-  begin
+//  if error and (err_oci_no_data = 0) then
+//  begin
     try
+
         FOraQuery.Close;
         FOraQuery.SQL.Clear;
         FOraQuery.SQL.Add('update crop');
@@ -272,16 +304,16 @@ begin
         FOraQuery.ExecSQL;
 
         error := false;
-  {$IFDEF DEBUG}
-    Log.save('d', 'OraQuery update | '+OraQuery.SQL.Text);
-  {$ENDIF}
+//  {$IFDEF DEBUG}
+    Log.save('d', 'OraQuery update | '+FOraQuery.SQL.Text);
+//  {$ENDIF}
     except
       on E : Exception do begin
         error := true;
         lLog.save('e', E.ClassName+' sql update to oracle, с сообщением: '+E.Message+' | '+FOraQuery.SQL.Text);
       end;
     end;
-  end;
+//  end;
 
   Result := error;
 end;
@@ -296,7 +328,8 @@ begin
 
       //отключаем управление
 //      form1.DBGrid2.DataSource.DataSet.DisableControls;
-//      MainSqlite.SQuery.DisableControls;
+{      MainSqlite.SQuery.DisableControls;
+      MainSqlite.SQuery.Active:=false;}
       try
           MainSqlite.SQuery.Close;
           MainSqlite.SQuery.SQL.Clear;
@@ -321,7 +354,8 @@ begin
     finally
       //включаем управление
 //      form1.DBGrid2.DataSource.DataSet.EnableControls;
-//      MainSqlite.SQuery.EnableControls;
+{      MainSqlite.SQuery.Active:=true;
+      MainSqlite.SQuery.EnableControls;}
     end;
 end;
 //-- end main

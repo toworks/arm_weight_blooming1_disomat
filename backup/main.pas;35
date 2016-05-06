@@ -264,7 +264,7 @@ begin
   SDataSource := TDataSource.Create(nil);
   DBgrid2Create(self);
   SDataSource.DataSet := MainSqlite.SQuery;
-  DBGrid2.DataSource := SDataSource;
+//  DBGrid2.DataSource := SDataSource;
 
   MainFSql := TFsql.Create(Log);
   //отображение в dbgrid

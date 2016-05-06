@@ -76,6 +76,7 @@ begin
       if not ThreadStop then begin
         try
             SqlNewRecord;
+            lLog.save('e', 'sql main read');
         except
           on E : Exception do
             lLog.save('e', E.ClassName+', с сообщением: '+E.Message);
@@ -142,7 +143,7 @@ begin
     Fsql.FQuery.Open;
 
     count := Fsql.FQuery.FieldByName('c').AsLargeInt;
-
+lLog.save('d', 'do sqlmax count -> '+inttostr(count));
     if (FSqlMax < count) then
     begin
         FSqlMax := count;

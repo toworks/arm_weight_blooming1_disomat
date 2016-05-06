@@ -201,8 +201,6 @@ begin
       Log.save('e', E.ClassName+' sql create _FSql, с сообщением: '+E.Message);
   end;
 
-  i:=0;
-
   if ( pkdat = '') then
      exit;
 
@@ -266,8 +264,10 @@ begin
       Log.save('e', E.ClassName+' sql 3, с сообщением: '+E.Message);
   end;
 
+  i:=0;
+
   try
-      while not MainFSql.FQuery.Eof do
+      while not _FSql.FQuery.Eof do
       begin
           if i = 1 then
             break;

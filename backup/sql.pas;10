@@ -249,6 +249,7 @@ begin
       begin
 //          form1.l_n_message.Visible := false;
           MarkerNextWait := false;
+          ThreadSqlRead.NextSave := true;
           EnableViewSelectedIngot(true);
       end;
   except
@@ -279,6 +280,7 @@ begin
           Form1.l_grade.Caption := name;
           Form1.l_weight_ingot.Caption := weight_ingot;
 
+          // перезаписываем данные что бы при выборе не проскакивала выбранная запись
           ThreadComPort.Apkdat := pkdat;
           ThreadComPort.Anum := num;
           ThreadComPort.Anum_ingot := num_ingot;

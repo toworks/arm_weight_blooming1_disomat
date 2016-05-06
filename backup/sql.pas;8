@@ -249,7 +249,7 @@ begin
       begin
 //          form1.l_n_message.Visible := false;
           MarkerNextWait := false;
-          NextSave := true;
+          //ThreadComPort.NextSave := true;
           EnableViewSelectedIngot(true);
       end;
   except

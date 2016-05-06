@@ -191,10 +191,9 @@ end;
 
 procedure TThreadSqlRead.SyncNextWeightToRecord;
 begin
-  //dbgrid текущая выбраная заготовка
-  if Fpkdat_in <> '' then
-     NextWeightToRecordLocation;
-
+     //dbgrid текущая выбраная заготовка
+//     if Fpkdat_in <> '' then
+        NextWeightToRecordLocation;
 end;
 
 

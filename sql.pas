@@ -218,7 +218,12 @@ begin
       _FSql.FQuery.SQL.Add('and i.pkdat=sh.pkdat');
       _FSql.FQuery.SQL.Add('and h.steel_grade=s.steel_grade');
       _FSql.FQuery.SQL.Add('order by i.pkdat asc, i.num asc, i.num_ingot asc');
-      _FSql.FQuery.Open;
+
+      if assigned(_FSql) then
+         _FSql.FQuery.Open
+      else
+          exit;
+
   {$IFDEF DEBUG}
     Log.save('d', 'FQueryNextRecord -> '+_FSql.FQuery.SQL.Text);
   {$ENDIF}
@@ -249,7 +254,7 @@ begin
       begin
 //          form1.l_n_message.Visible := false;
 //          MarkerNextWait := false;
-          ThreadComPort.NextSave := true;
+//          NextSave := true;
           EnableViewSelectedIngot(true);
       end;
   except

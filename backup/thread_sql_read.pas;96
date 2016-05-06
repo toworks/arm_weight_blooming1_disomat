@@ -144,9 +144,9 @@ begin
         //обновление отображение записанных данных ViewDbWeight;
         Synchronize(@SyncSqlReadTable);
 
-        //dbgrid текущая выбраная заготовка
+{        //dbgrid текущая выбраная заготовка
         if Fpkdat_in <> '' then
-          Synchronize(@SyncNextWeightToRecordLocation);
+          Synchronize(@SyncNextWeightToRecordLocation);}
 
   {$IFDEF DEBUG}
     lLog.save('d', 'count -> '+inttostr(count));
@@ -192,46 +192,12 @@ end;
 procedure TThreadSqlRead.SyncNextWeightToRecord;
 begin
   SqlNextWeightToRecord;
-  NextWeightToRecordLocation;
+  //dbgrid текущая выбраная заготовка
+  if Fpkdat_in <> '' then
+     NextWeightToRecordLocation;
+
 end;
 
-
-{procedure TThreadSqlRead.SyncNextWeightToRecord;
-var
-  KeyValues : Variant;
-begin
-  try
-      //отключаем управление
-      form1.DBGrid1.DataSource.DataSet.DisableControls;
-      SqlNextWeightToRecord;
-      //dbgrid текущая выбраная заготовка
-      Synchronize(@SyncNextWeightToRecordLocation);
-  finally
-      //включаем управление
-      form1.DBGrid1.DataSource.DataSet.EnableControls;
-  end;
-end;
-
-
-procedure TThreadSqlRead.SyncNextWeightToRecordLocation;
-var
-  KeyValues : Variant;
-begin
-  try
-      //отключаем управление
-      form1.DBGrid1.DataSource.DataSet.DisableControls;
-      //переменные по которым будет производиться поиск
-      KeyValues := VarArrayOf([pkdat,num,num_ingot]);
-      //поиск по ключивым полям
-      form1.DBGrid1.DataSource.DataSet.Locate('pkdat;num;num_ingot', KeyValues, []);
-  finally
-      //включаем управление
-      form1.DBGrid1.DataSource.DataSet.EnableControls;
-  end;
-  //-- test
-  //Form1.l_next_id.Caption:=pkdat+'|'+num+'|'+num_ingot;
-end;
-}
 
 procedure TThreadSqlRead.SyncSqlMax;
 begin

@@ -60,6 +60,7 @@ var
   MainFSql: TFsql;
   FDataSource: TDataSource;
   ThreadStop: boolean = false;
+  NextSave: boolean = false;
 
   function ViewSelectedIngot: boolean;
   function PointReplace(DataIn: string): string;
@@ -125,7 +126,7 @@ begin
           MarkerNextWait := false;// сбрасываем маркер следующей заготовки при выборе новой
         end;
         ThreadStop := false;// запускаем потоки
-        ThreadComPort.NextSave := false; // сбрасываем флаг следующей заготовки
+        NextSave := true; // устанавливаем флаг следующей заготовки
     finally
         //включаем управление
         form1.DBGrid1.DataSource.DataSet.EnableControls;

@@ -119,9 +119,12 @@ begin
         //отключаем управление
         form1.DBGrid1.DataSource.DataSet.DisableControls;
         if MessageDlg('Выбрать заготовку для взвешивания?', mtCustom, mbYesNo, 0) = mrYes then
+        begin
           ViewSelectedIngot;
+          MarkerNextWait := false;// сбрасываем маркер следующей заготовки при выборе новой
+        end;
         ThreadStop := false;// запускаем потоки
-        MarkerNextWait := false;// сбрасываем маркер следующей заготовки при выборе новой
+        ThreadComPort.NextSave := false; // сбрасываем флаг следующей заготовки
     finally
         //включаем управление
         form1.DBGrid1.DataSource.DataSet.EnableControls;
@@ -288,7 +291,6 @@ begin
   ViewClear;
 
   CreateMenu;
-  Log.save('w', '||||| '+Log.ProgFileName);
 end;
 
 
@@ -314,7 +316,6 @@ begin
   FormStyle := fsSystemStayOnTop;
   FormStyle := fsNormal;
   Show;
-  Form1.Close;
 end;
 
 
@@ -414,6 +415,7 @@ end;
 
 function ViewSelectedIngot: boolean;
 begin
+  Log.save('w', 'ViewSelectedIngot');
   Form1.l_number_ingot.Caption := Form1.DBGrid1.DataSource.DataSet.FieldByName('NUM_INGOT').AsString;
   Form1.l_datetime.Caption := Form1.DBGrid1.DataSource.DataSet.FieldByName('TIME_INGOT').AsString;
   Form1.l_heat.Caption := Form1.DBGrid1.DataSource.DataSet.FieldByName('NUM_HEAT').AsString;
@@ -424,6 +426,12 @@ begin
   num_ingot := Form1.DBGrid1.DataSource.DataSet.FieldByName('NUM_INGOT').AsString;
   num_heat := Form1.DBGrid1.DataSource.DataSet.FieldByName('NUM_HEAT').AsString;
   smena := Form1.DBGrid1.DataSource.DataSet.FieldByName('SMENA').AsString;
+
+  form1.l_weight_ingot.Visible := true;
+  form1.l_grade.Visible := true;
+  form1.l_heat.Visible := true;
+  form1.l_datetime.Visible := true;
+  form1.l_number_ingot.Visible := true;
 end;
 
 

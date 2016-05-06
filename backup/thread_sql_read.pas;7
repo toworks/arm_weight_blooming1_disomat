@@ -11,7 +11,7 @@ type
   TThreadSqlRead = class(TThread)
   private
     FThreadSqlRead: TThreadSqlRead;
-    FSqlMax: AnsiString;
+    FLastSqlRecord: AnsiString;
     Fpkdat_in: string;
 
     procedure SyncSqlReadTable;
@@ -92,7 +92,7 @@ end;
 procedure TThreadSqlRead.SqlNewRecord;
 var
   i, timestamp: integer;
-  count: AnsiString;
+  NextSqlRecord: AnsiString;
 begin
   // двигаем мышку
   try
@@ -142,11 +142,11 @@ begin
 
     count := Fsql.FQuery.FieldByName('c').AsString;
 
-lLog.save('d', 'do sqlmax count | '+inttostr(count)+' | FSqlMax | '+inttostr(FSqlMax)+' | sum | '+c);
+lLog.save('d', 'do sqlmax count | '+inttostr(count)+' | FNextSqlRecord | '+inttostr(FNextSqlRecord)+' | sum | '+c);
 
-    if (FSqlMax < count) then
+    if (FNextSqlRecord <> count) then
     begin
-        FSqlMax := count;
+        FNextSqlRecord := count;
 
         //обновление отображение записанных данных ViewDbWeight;
         Synchronize(@SyncSqlReadTable);

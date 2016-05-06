@@ -65,6 +65,7 @@ var
   function PointReplace(DataIn: string): string;
   function ViewClear: boolean;
   procedure NextWeightToRecordLocation;
+  function EnableViewSelectedIngot(Enable: boolean): boolean;
 
 
   //    {$DEFINE DEBUG}
@@ -119,9 +120,12 @@ begin
         //отключаем управление
         form1.DBGrid1.DataSource.DataSet.DisableControls;
         if MessageDlg('Выбрать заготовку для взвешивания?', mtCustom, mbYesNo, 0) = mrYes then
+        begin
           ViewSelectedIngot;
+          MarkerNextWait := false;// сбрасываем маркер следующей заготовки при выборе новой
+        end;
         ThreadStop := false;// запускаем потоки
-        MarkerNextWait := false;// сбрасываем маркер следующей заготовки при выборе новой
+        ThreadComPort.NextSave := false; // сбрасываем флаг следующей заготовки
     finally
         //включаем управление
         form1.DBGrid1.DataSource.DataSet.EnableControls;
@@ -270,15 +274,12 @@ begin
   //отображение в dbgrid
   FDataSource := TDataSource.Create(nil);
   DBgrid1Create(self);
-{  FDataSource.DataSet := MainFSql.FQuery;
-  DBGrid1.DataSource := FDataSource;}
+  FDataSource.DataSet := MainFSql.FQuery;
+  DBGrid1.DataSource := FDataSource;
 
   ThreadSqlRead := TThreadSqlRead.Create(Log);
   ThreadSqlSend := TThreadSqlSend.Create(Log);
   ThreadComPort := TThreadComPort.Create(Log);
-
-FDataSource.DataSet := MainFSql.FQuery;
-DBGrid1.DataSource := FDataSource;}
 
   Form1.Caption := SettingsApp.HeadName+'  build('+SettingsApp.GetVersion+')';
   //заголовки к showmessage
@@ -425,6 +426,27 @@ begin
   num_ingot := Form1.DBGrid1.DataSource.DataSet.FieldByName('NUM_INGOT').AsString;
   num_heat := Form1.DBGrid1.DataSource.DataSet.FieldByName('NUM_HEAT').AsString;
   smena := Form1.DBGrid1.DataSource.DataSet.FieldByName('SMENA').AsString;
+
+  EnableViewSelectedIngot(true); // надо если выбор произошел при ожидании следующего слитка
+end;
+
+
+function EnableViewSelectedIngot(Enable: boolean): boolean;
+begin
+     if Enable then begin
+        form1.l_weight_ingot.Visible := true;
+        form1.l_grade.Visible := true;
+        form1.l_heat.Visible := true;
+        form1.l_datetime.Visible := true;
+        form1.l_number_ingot.Visible := true;
+     end
+     else begin
+        form1.l_weight_ingot.Visible := false;
+        form1.l_grade.Visible := false;
+        form1.l_heat.Visible := false;
+        form1.l_datetime.Visible := false;
+        form1.l_number_ingot.Visible := false;
+     end;
 end;
 
 

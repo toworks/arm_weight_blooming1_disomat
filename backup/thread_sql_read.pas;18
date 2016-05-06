@@ -4,7 +4,7 @@ unit thread_sql_read;
 interface
 
 uses
-  LCLProc, SysUtils, DB, Classes, ActiveX, ZDataset, Variants,
+  SysUtils, DB, Classes, ActiveX, ZDataset, Variants,
   {$ifdef windows} Windows, Forms, {$endif} logging, sql;
 
 type
@@ -142,13 +142,14 @@ begin
     Fsql.FQuery.SQL.Add('rows 1');
     Fsql.FQuery.Open;
 
-    count := Fsql.FQuery.FieldByName('c').AsLargeInt;
+//    count := Fsql.FQuery.FieldByName('c').AsLargeInt;
+    count := Fsql.FQuery.FieldByName('c').AsString;
 
-    for i:=1 to UTF8Length(count) do
+//    for i:=1 to UTF8Length(inttostrcount) do
     for i:=1 to Length(count) do
-//       c := c+strtoint(count[i])
+       c := c+strtoint(count[i])
 
-//lLog.save('d', 'do sqlmax count | '+inttostr(count)+' | FSqlMax | '+inttostr(FSqlMax)+' | sum | '+strtoint(c));
+lLog.save('d', 'do sqlmax count | '+inttostr(count)+' | FSqlMax | '+inttostr(FSqlMax)+' | sum | '+strtoint(c));
     if (FSqlMax < count) then
     begin
         FSqlMax := count;

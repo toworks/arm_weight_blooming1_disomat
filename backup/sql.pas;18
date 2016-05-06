@@ -20,7 +20,6 @@ type
   private
     FSQuery: TZQuery;
     FSConnect: TZConnection;
-    FSTransaction: TSQLTransaction;
     Log: TLog;
     function ConfigSettings(InData: boolean): boolean;
     function SqlJournalMode: boolean;

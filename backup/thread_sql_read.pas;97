@@ -144,9 +144,9 @@ begin
         //обновление отображение записанных данных ViewDbWeight;
         Synchronize(@SyncSqlReadTable);
 
-        //dbgrid текущая выбраная заготовка
+{        //dbgrid текущая выбраная заготовка
         if Fpkdat_in <> '' then
-          Synchronize(@SyncNextWeightToRecordLocation);
+          Synchronize(@SyncNextWeightToRecordLocation);}
 
   {$IFDEF DEBUG}
     lLog.save('d', 'count -> '+inttostr(count));
@@ -191,6 +191,10 @@ end;
 
 procedure TThreadSqlRead.SyncNextWeightToRecord;
 begin
+  SqlNextWeightToRecord;
+  //dbgrid текущая выбраная заготовка
+  if Fpkdat_in <> '' then
+     NextWeightToRecordLocation;
 
 end;
 

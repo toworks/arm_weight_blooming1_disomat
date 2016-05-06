@@ -65,6 +65,7 @@ var
   function PointReplace(DataIn: string): string;
   function ViewClear: boolean;
   procedure NextWeightToRecordLocation;
+  function EnableViewSelectedIngot: boolean;
 
 
   //    {$DEFINE DEBUG}
@@ -119,9 +120,12 @@ begin
         //отключаем управление
         form1.DBGrid1.DataSource.DataSet.DisableControls;
         if MessageDlg('Выбрать заготовку для взвешивания?', mtCustom, mbYesNo, 0) = mrYes then
+        begin
           ViewSelectedIngot;
+          MarkerNextWait := false;// сбрасываем маркер следующей заготовки при выборе новой
+        end;
         ThreadStop := false;// запускаем потоки
-        MarkerNextWait := false;// сбрасываем маркер следующей заготовки при выборе новой
+        ThreadComPort.NextSave := false; // сбрасываем флаг следующей заготовки
     finally
         //включаем управление
         form1.DBGrid1.DataSource.DataSet.EnableControls;
@@ -288,7 +292,6 @@ begin
   ViewClear;
 
   CreateMenu;
-  Log.save('w', '||||| '+Log.ProgFileName);
 end;
 
 
@@ -313,7 +316,7 @@ begin
   //hack to force app bring to front
   FormStyle := fsSystemStayOnTop;
   FormStyle := fsNormal;
-//  Show;
+  Show;
 end;
 
 
@@ -423,6 +426,18 @@ begin
   num_ingot := Form1.DBGrid1.DataSource.DataSet.FieldByName('NUM_INGOT').AsString;
   num_heat := Form1.DBGrid1.DataSource.DataSet.FieldByName('NUM_HEAT').AsString;
   smena := Form1.DBGrid1.DataSource.DataSet.FieldByName('SMENA').AsString;
+
+  EnableViewSelectedIngot; // надо если выбор произошел при ожидании следующего слитка
+end;
+
+
+function EnableViewSelectedIngot: boolean;
+begin
+    form1.l_weight_ingot.Visible := true;
+    form1.l_grade.Visible := true;
+    form1.l_heat.Visible := true;
+    form1.l_datetime.Visible := true;
+    form1.l_number_ingot.Visible := true;
 end;
 
 

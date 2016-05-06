@@ -20,6 +20,7 @@ type
   private
     FSQuery: TZQuery;
     FSConnect: TZConnection;
+    FSTransaction: TZTransaction;
     Log: TLog;
     function ConfigSettings(InData: boolean): boolean;
     function SqlJournalMode: boolean;
@@ -28,6 +29,7 @@ type
     Destructor Destroy; override;
     property SConnect: TZConnection read FSConnect write FSConnect;
     property SQuery: TZQuery read FSQuery write FSQuery;
+    property STransaction: TSQLTransaction read FSTransaction write FSTransaction;
   end;
 
 

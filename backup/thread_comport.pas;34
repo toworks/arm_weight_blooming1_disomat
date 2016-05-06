@@ -19,6 +19,7 @@ type
     Fpkdat: string;
     Fnum: string;
     Fnum_ingot: string;
+    FLastRecord: AnsiString;
 
     function CPortParity(InData: String): Char;
     function SendReadToSerial(InData: AnsiString): AnsiString;
@@ -45,9 +46,9 @@ type
     property NextSave: boolean read FNextSave write FNextSave;
     property no_save: boolean read Fno_save write Fno_save;
     property SendAttribute: boolean read SendEKMessage;
-{    property Apkdat: string read Fpkdat;
+    property Apkdat: string read Fpkdat write Fpkdat;
     property Anum: string read Fnum write Fnum;
-    property Anum_ingot: string read Fnum_ingot write Fnum_ingot;}
+    property Anum_ingot: string read Fnum_ingot write Fnum_ingot;
   end;
 
 var
@@ -107,7 +108,7 @@ begin
           // при выбор заготовки останавливаем чтение
           if not ThreadStop and not MarkerNextWait then begin
 //              lLog.save('t', 'NextSave | '+booltostr(NextSave)+' | '+booltostr(FNextSave));
-//              lLog.save('e', 'main do NextSave | '+booltostr(NextSave)+' | '+booltostr(FNextSave));
+//              lLog.save('i', 'main do NextSave | '+booltostr(NextSave)+' | '+booltostr(FNextSave));
               if NextSave and not MarkerNextWait then
                  SendTKMessage;
 
@@ -121,19 +122,12 @@ begin
               if no_save then
                  SendEKMessage;
 
-              //тестирование
-              if assigned(MemoTesting) then
-                 Synchronize(@SyncMemoTesting);
-              //калибровка
-              if assigned(CalibrationForm) then
-                 Synchronize(@SyncCalibration);
-
 //              lLog.save('e', 'main NextSave | '+booltostr(NextSave)+' | '+booltostr(FNextSave));
 {              if not NextSave then
                  Synchronize(@SyncNextWeightToRecord);}
-          end
-          else
-              sleep(1000);
+          end;
+
+          sleep(1000);
 
           if not NextSave then
              Synchronize(@SyncNextWeightToRecord);
@@ -259,9 +253,9 @@ function TThreadComPort.ReceiveEKData(Data: AnsiString): string;
 begin
   if (copy(Data, 2, 6) = '00#EK#') and (copy(Data, 8, 1) = '0') then
   begin
-{$IFDEF DEBUG}
+//{$IFDEF DEBUG}
   lLog.save('t', 'step 5');
-{$ENDIF}
+//{$ENDIF}
       no_save := false;//запрещаем отправку подтверждения в контроллер -> сброс в SqlSaveInBuffer
   end;
 end;
@@ -364,7 +358,7 @@ begin
       lLog.save('e', E.ClassName+' sql save in buffer, с сообщением: '+E.Message+' | '+TCsqlite.SQuery.SQL.Text);
   end;
 
-  no_save := true;//разрешаем отправку подтверждения в контроллер
+  no_save := false;//разрешаем отправку подтверждения в контроллер
 end;
 
 
@@ -375,14 +369,17 @@ begin
 {$IFDEF DEBUG}
   lLog.save('t', 'step 6');
 {$ENDIF}
-     SqlNextWeightToRecord;
+//     SqlNextWeightToRecord;
 //     NextWeightToRecordLocation;
 //     lLog.save('t', 'do pkdat | '+pkdat+' | '+Fpkdat+' | num | '+num+' | '+Fnum+' | num_ingot | '+num_ingot+' | '+Fnum_ingot);
 //     t := ComparePkdat;//разрешаем снятие следующего показания
-     NextSave := ComparePkdat;//разрешаем снятие следующего показания
+//     NextSave := ComparePkdat;//разрешаем снятие следующего показания
 //     NextSave := t;
-     if NextSave then
+//     if NextSave then begin
+        SqlNextWeightToRecord;
         NextWeightToRecordLocation;
+//     end;
+     NextSave := ComparePkdat;//разрешаем снятие следующего показания
 //     lLog.save('t', 'after pkdat | '+pkdat+' | '+Fpkdat+' | num | '+num+' | '+Fnum+' | num_ingot | '+num_ingot+' | '+Fnum_ingot);
 //     lLog.save('t', 'SyncNextWeightToRecord | ComparePkdat | '+booltostr(t));
 end;
@@ -402,8 +399,13 @@ end;
 
 function TThreadComPort.ComparePkdat: boolean;
 begin
-//  lLog.save('t', 'pkdat | '+pkdat+' | '+Fpkdat+' | num | '+num+' | '+Anum+' | num_ingot | '+num_ingot+' | '+Anum_ingot);
-//  lLog.save('t', pkdat+' | '+num+' | '+num_ingot);
+  lLog.save('t', 'NextRecord | '+pkdat+num+num_ingot+' FLastRecord | '+FLastRecord);
+
+  if (FLastRecord <> NextRecord) then
+  begin
+      FLastRecord := NextRecord;
+
+  //  lLog.save('t', pkdat+' | '+num+' | '+num_ingot);
   if (pkdat = Fpkdat) and (num = Fnum) and (num_ingot = Fnum_ingot) then
      Result := false
   else begin

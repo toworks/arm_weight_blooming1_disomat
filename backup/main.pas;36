@@ -254,6 +254,9 @@ end;
 
 procedure TForm1.FormCreate(Sender: TObject);
 begin
+  //проверка 1 экземпляр программы
+  OneInstance;
+
   Log.save('i', 'start '+Log.ProgFileName);
 
   MainSqlite := TSqlite.Create(Log);

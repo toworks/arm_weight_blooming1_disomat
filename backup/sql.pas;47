@@ -158,7 +158,6 @@ begin
         FFConnect.ReadOnly := True;
         FFConnect.LoginPrompt := false;
         FFConnect.Port := 3050;
-        FFConnect.AutoEncodeStrings := true;// перекодировка с сервера в клиент
         FFConnect.AutoCommit := False;
         FFConnect.TransactIsolationLevel := tiReadCommitted;
         with FFConnect.Properties do
@@ -173,6 +172,7 @@ begin
 //             Add('AutoEncodeStrings=ON');
 //             Add('codepage=win1251');
 //             Add('client_encoding=UTF8');
+               Add('codepage=win1251');
         end;
         FFConnect.Connect;
         FFQuery.Connection := FFConnect;

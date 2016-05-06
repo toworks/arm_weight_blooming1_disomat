@@ -4,7 +4,7 @@ unit thread_sql_read;
 interface
 
 uses
-  SysUtils, DB, Classes, ActiveX, ZDataset, Variants,
+  {System,} SysUtils, DB, Classes, ActiveX, ZDataset, Variants,
   {$ifdef windows} Windows, Forms, {$endif} logging, sql;
 
 type

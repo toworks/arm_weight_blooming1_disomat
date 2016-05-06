@@ -251,10 +251,10 @@ begin
       // маркер следующей заготовки (ожидание)
       if _FSql.FQuery.FieldByName('pkdat').AsString = '' then
       begin
-          form1.SqlMax := 0;
-          form1.l_n_message.Visible := true;
-          form1.l_n_message.Font.Color := $002CB902;//green
-          form1.l_n_message.Caption := ' ќжидание сдедующей заготовки ';
+//          form1.SqlMax := 0;
+//          form1.l_n_message.Visible := true;
+//          form1.l_n_message.Font.Color := $002CB902;//green
+//          form1.l_n_message.Caption := ' ќжидание сдедующей заготовки ';
           MarkerNextWait := true;
 
           form1.l_weight_ingot.Visible := false;
@@ -267,7 +267,7 @@ begin
       end
       else
       begin
-          form1.l_n_message.Visible := false;
+//          form1.l_n_message.Visible := false;
           MarkerNextWait := false;
           form1.l_weight_ingot.Visible := true;
           form1.l_grade.Visible := true;

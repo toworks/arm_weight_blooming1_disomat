@@ -72,6 +72,8 @@ begin
   while True do
    begin
 
+      lLog.save('t', 'NextSave | '+booltostr(NextSave));
+
       // при выбор заготовки останавливаем чтение
       if not ThreadStop then begin
         try

@@ -92,8 +92,7 @@ end;
 procedure TThreadSqlRead.SqlNewRecord;
 var
   i, timestamp: integer;
-  count: int64;
-  c: AnsiString;
+  count: AnsiString;
 begin
   // двигаем мышку
   try
@@ -134,7 +133,6 @@ begin
       Fsql.FQuery.Next;
     end;
 
-    count := 0;
     Fsql.FQuery.Close;
     Fsql.FQuery.SQL.Clear;
     Fsql.FQuery.SQL.Add('select pkdat||num||num_ingot as c from ingots');
@@ -142,8 +140,7 @@ begin
     Fsql.FQuery.SQL.Add('rows 1');
     Fsql.FQuery.Open;
 
-//    count := Fsql.FQuery.FieldByName('c').AsLargeInt;
-    c := Fsql.FQuery.FieldByName('c').AsString;
+    count := Fsql.FQuery.FieldByName('c').AsString;
 
 //    for i:=1 to UTF8Length(inttostrcount) do
     for i:=1 to Length(c) do

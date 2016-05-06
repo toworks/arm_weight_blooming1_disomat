@@ -71,16 +71,18 @@ begin
   CoInitialize(nil);
   while True do
    begin
-if not ThreadStop then begin
-      try
-          SqlNewRecord;
-      except
-        on E : Exception do
-          lLog.save('e', E.ClassName+', с сообщением: '+E.Message);
+      // при выбор заготовки останавливаем чтение
+      if not ThreadStop then begin
+        try
+            SqlNewRecord;
+        except
+          on E : Exception do
+            lLog.save('e', E.ClassName+', с сообщением: '+E.Message);
+        end;
       end;
 
       sleep(1000);
-end;
+
    end;
    CoUninitialize;
 end;

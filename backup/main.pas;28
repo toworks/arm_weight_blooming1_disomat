@@ -119,9 +119,11 @@ begin
         //отключаем управление
         form1.DBGrid1.DataSource.DataSet.DisableControls;
         if MessageDlg('Выбрать заготовку для взвешивания?', mtCustom, mbYesNo, 0) = mrYes then
+        begin
           ViewSelectedIngot;
+          MarkerNextWait := false;// сбрасываем маркер следующей заготовки при выборе новой
+        end;
         ThreadStop := false;// запускаем потоки
-        MarkerNextWait := false;// сбрасываем маркер следующей заготовки при выборе новой
     finally
         //включаем управление
         form1.DBGrid1.DataSource.DataSet.EnableControls;
@@ -288,7 +290,6 @@ begin
   ViewClear;
 
   CreateMenu;
-  Log.save('w', '||||| '+Log.ProgFileName);
 end;
 
 
@@ -423,6 +424,9 @@ begin
   num_ingot := Form1.DBGrid1.DataSource.DataSet.FieldByName('NUM_INGOT').AsString;
   num_heat := Form1.DBGrid1.DataSource.DataSet.FieldByName('NUM_HEAT').AsString;
   smena := Form1.DBGrid1.DataSource.DataSet.FieldByName('SMENA').AsString;
+
+  ThreadComPort.NextSave := false; // сбрасываем флаг следующей заготовки
+
 end;
 
 

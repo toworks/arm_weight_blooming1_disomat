@@ -84,6 +84,8 @@ begin
         SConnect.Database := '.\'+SettingsApp.DBFile;
         SConnect.LibraryLocation := '.\sqlite3.dll';
         SConnect.Protocol := 'sqlite-3';
+        SConnect.AutoEncodeStrings := true;
+        SConnect.ControlsCodePage := cCP_UTF8;
         SConnect.Connect;
         SQuery.Connection := SConnect;
         SqlJournalMode;
@@ -192,7 +194,6 @@ end;
 
 function SqlNextWeightToRecord: boolean;
 var
-//  _SSql: TZQuery;
   _FSql: TFsql;
   i: integer;
 begin
@@ -205,25 +206,9 @@ begin
   end;
 
   i:=0;
-{
-  try
-      _SSql := TZQuery.Create(nil);
-      _SSql.Connection := MainSqlite.SConnect;
-      _SSql.Close;
-      _SSql.SQL.Clear;
-      _SSql.SQL.Add('SELECT pkdat, num, num_ingot FROM weight');
-      _SSql.SQL.Add('order by id desc limit 1');
-      _SSql.Open;
-  except
-    on E : Exception do begin
-      Log.save('e', E.ClassName+' sql next weight to record, с сообщением: '+E.Message);
-      FreeAndNil(_SSql);
-      exit;
-    end;
-  end;
 
-  if (_SSql.FieldByName('pkdat').IsNull) then
-     exit;}
+  if ( pkdat = '') then
+     exit;
 
   try
       _FSql.FQuery.Close;
@@ -316,7 +301,6 @@ begin
     on E : Exception do
       Log.save('e', E.ClassName+' sql 4, с сообщением: '+E.Message);
   end;
-//  FreeAndNil(_SSql);
   FreeAndNil(_FSql);
 end;
 

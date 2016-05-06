@@ -15,7 +15,7 @@ type
 
     procedure SyncSqlReadTable;
     procedure SqlNewRecord;
-    procedure SyncNextWeightToRecord;
+//    procedure SyncNextWeightToRecord;
 //    procedure SyncNextWeightToRecordLocation;
   protected
     procedure Execute; override;
@@ -158,9 +158,8 @@ begin
   end;
 
   // маркер следующей заготовки
-  if MarkerNextWait then
-     Synchronize(@SyncNextWeightToRecord);
-//    Synchronize(@NextWeightToRecord); //следующая запись (слиток) от записаной
+{  if MarkerNextWait then
+    Synchronize(@NextWeightToRecord); //следующая запись (слиток) от записаной}
 end;
 
 
@@ -185,12 +184,6 @@ begin
   //исправляем отображение даты в DBGrid
   TDateTimeField(MainFSql.FQuery.FieldByName('time_ingot')).DisplayFormat:='hh:nn:ss';
   TDateTimeField(MainFSql.FQuery.FieldByName('weight_ingot')).DisplayFormat:='#,###0.000';
-end;
-
-
-procedure TThreadSqlRead.SyncNextWeightToRecord;
-begin
-     NextWeightToRecordLocation;
 end;
 
 

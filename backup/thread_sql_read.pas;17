@@ -4,7 +4,7 @@ unit thread_sql_read;
 interface
 
 uses
-  LCLProc, SysUtils, DB, Classes, ActiveX, ZDataset, Variants,
+  SysUtils, DB, Classes, ActiveX, ZDataset, Variants,
   {$ifdef windows} Windows, Forms, {$endif} logging, sql;
 
 type
@@ -93,7 +93,7 @@ procedure TThreadSqlRead.SqlNewRecord;
 var
   i, timestamp: integer;
   count: int64;
-  c: int64;
+  c: AnsiString;
 begin
   // двигаем мышку
   try

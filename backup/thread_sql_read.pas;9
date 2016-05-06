@@ -11,7 +11,7 @@ type
   TThreadSqlRead = class(TThread)
   private
     FThreadSqlRead: TThreadSqlRead;
-    FSqlMax: int64;
+    FSqlMax: AnsiString;
     Fpkdat_in: string;
 
     procedure SyncSqlReadTable;
@@ -133,7 +133,6 @@ begin
       Fsql.FQuery.Next;
     end;
 
-    count := 0;
     Fsql.FQuery.Close;
     Fsql.FQuery.SQL.Clear;
     Fsql.FQuery.SQL.Add('select pkdat||num||num_ingot as c from ingots');
@@ -141,14 +140,10 @@ begin
     Fsql.FQuery.SQL.Add('rows 1');
     Fsql.FQuery.Open;
 
-//    count := Fsql.FQuery.FieldByName('c').AsLargeInt;
-    c := Fsql.FQuery.FieldByName('c').AsString;
-
-//    for i:=1 to UTF8Length(inttostrcount) do
-    for i:=1 to Length(c) do
-       count := count+strtoint(c[i]);
+    count := Fsql.FQuery.FieldByName('c').AsString;
 
 lLog.save('d', 'do sqlmax count | '+inttostr(count)+' | FSqlMax | '+inttostr(FSqlMax)+' | sum | '+c);
+
     if (FSqlMax < count) then
     begin
         FSqlMax := count;

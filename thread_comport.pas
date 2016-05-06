@@ -43,7 +43,6 @@ type
     Constructor Create(_Log: TLog); overload;
     Destructor Destroy; override;
   published
-    property NextSave: boolean read FNextSave write FNextSave;
     property no_save: boolean read Fno_save write Fno_save;
     property SendAttribute: boolean read SendEKMessage;
     property Apkdat: string read Fpkdat write Fpkdat;
@@ -98,7 +97,6 @@ end;
 procedure TThreadComPort.Execute;
 begin
   CoInitialize(nil);
-  NextSave := true; //не правильно
   while True do
   begin
       try
@@ -401,25 +399,18 @@ function TThreadComPort.ComparePkdat: boolean;
 var
   NextRecord: AnsiString;
 begin
-  NextRecord := pkdat+num+num_ingot;
-  lLog.save('t', 'NextRecord | '+NextRecord+' FLastRecord | '+FLastRecord);
+  try
+       NextRecord := pkdat+num+num_ingot;
+  finally
+  end;
 
-  if (FLastRecord <> NextRecord) then
+  if ( FLastRecord <> NextRecord ) then
   begin
       FLastRecord := NextRecord;
-
-  //  lLog.save('t', pkdat+' | '+num+' | '+num_ingot);
-//  if (pkdat = Fpkdat) and (num = Fnum) and (num_ingot = Fnum_ingot) then
-//     Result := false
-       Result := true;
+      Result := true;
   end
-  else begin
-{     Fpkdat := pkdat;
-     Fnum := num;
-     Fnum_ingot := num_ingot;
-     Result := true;}
+  else
      Result := false;
-  end;
 end;
 
 

@@ -119,9 +119,12 @@ begin
         //отключаем управление
         form1.DBGrid1.DataSource.DataSet.DisableControls;
         if MessageDlg('Выбрать заготовку для взвешивания?', mtCustom, mbYesNo, 0) = mrYes then
+        begin
           ViewSelectedIngot;
+          MarkerNextWait := false;// сбрасываем маркер следующей заготовки при выборе новой
+        end;
         ThreadStop := false;// запускаем потоки
-        MarkerNextWait := false;// сбрасываем маркер следующей заготовки при выборе новой
+        ThreadComPort.NextSave := false; // сбрасываем флаг следующей заготовки
     finally
         //включаем управление
         form1.DBGrid1.DataSource.DataSet.EnableControls;
@@ -288,7 +291,6 @@ begin
   ViewClear;
 
   CreateMenu;
-  Log.save('w', '||||| '+Log.ProgFileName);
 end;
 
 
@@ -314,7 +316,6 @@ begin
   FormStyle := fsSystemStayOnTop;
   FormStyle := fsNormal;
   Show;
-  FormCloseQuery(Sender);
 end;
 
 

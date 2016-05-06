@@ -163,6 +163,9 @@ end;
 procedure TThreadSqlRead.SyncSqlReadTable;
 begin
   try
+  //отключаем управление
+  form1.DBGrid1.DataSource.DataSet.DisableControls;
+  try
       MainFSql.FQuery.Close;
       MainFSql.FQuery.SQL.Clear;
       MainFSql.FQuery.SQL.Add('select i.pkdat,i.num,i.num_ingot,h.num_heat, s.name,i.weight_ingot, i.time_ingot, s.steel_group, sh.smena');
@@ -181,6 +184,14 @@ begin
   //исправляем отображение даты в DBGrid
   TDateTimeField(MainFSql.FQuery.FieldByName('time_ingot')).DisplayFormat:='hh:nn:ss';
   TDateTimeField(MainFSql.FQuery.FieldByName('weight_ingot')).DisplayFormat:='#,###0.000';
+
+  finally
+      //включаем управление
+      form1.DBGrid1.DataSource.DataSet.EnableControls;
+  end;
+
+  // возвращаем курсор на данные
+  //NextWeightToRecordLocation;
 end;
 
 

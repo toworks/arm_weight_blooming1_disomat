@@ -8,7 +8,6 @@ uses
    {$ifdef windows} Windows, Forms, {$endif} logging, sql;
 
 type
-  //Здесь необходимо описать класс TThreadSql:
   TThreadSqlSend = class(TThread)
   private
     FThreadSqlSend: TThreadSqlSend;
@@ -31,6 +30,7 @@ var
   FOraQuery: TZQuery;
   TSSsqlite: TSqlite;
   FSendCount: Int64;
+
 
 //  {$DEFINE DEBUG}
 
@@ -58,7 +58,7 @@ begin
   // создаем поток True - создание остановка, False - создание старт
   FThreadSqlSend := TThreadSqlSend.Create(True);
   FThreadSqlSend.Priority := tpNormal;
-  FThreadSqlSend.FreeOnTerminate := True;
+  FThreadSqlSend.FreeOnTerminate := False; //True;
   FThreadSqlSend.Start;
 end;
 
@@ -93,8 +93,8 @@ begin
         FOraConnect.User := OraSqlSettings.user;
         FOraConnect.Password := OraSqlSettings.password;
         FOraConnect.ClientCodepage := 'CL8MSWIN1251';
-{        FOraConnect.Properties.Add('hard_commit=TRUE');
-        FOraConnect.AutoCommit := False;}
+        FOraConnect.AutoCommit := False;
+        FOraConnect.TransactIsolationLevel := tiNone;
         FOraConnect.Connect;
         FOraQuery.Connection := FOraConnect;
       except
@@ -117,7 +117,7 @@ begin
   CoInitialize(nil);
   while True do
    begin
-
+      lLog.save('t', 'TThreadSqlSend main ');
       // при выбор заготовки останавливаем чтение
       if not ThreadStop then begin
           try
@@ -150,7 +150,7 @@ begin
       TSSsqlite.SQuery.SQL.Add('FROM weight');
       TSSsqlite.SQuery.SQL.Add('where transferred=0');
       TSSsqlite.SQuery.SQL.Add('and timestamp > strftime(''%s'', ''now'') - (86400*3)'); //за 3 дня от текущей даты
-      TSSsqlite.SQuery.SQL.Add('order by id asc limit 10'); //порциями по 10 шт
+      TSSsqlite.SQuery.SQL.Add('order by id asc limit 100'); //порциями по 100 шт
       TSSsqlite.SQuery.Open;
    except
     on E : Exception do
@@ -224,25 +224,14 @@ var
   error: boolean;
   err_oci_no_data: integer;
 begin
-  { при режиме debug не обрабатывается try и при вызове ExecSQL ломает поток }
+  { если небыло commit из любого места ExecSQL ломает поток
+    и не обрабатывается try и при вызове ExecSQL ломает поток }
   try
     //была ошибака: EZSQLException, с сообщением: SQL Error: OCI_NO_DATA
     if not FOraConnect.Ping then
       FOraConnect.Reconnect;
-    lLog.save('e', 'do InTransaction | '+booltostr(FOraConnect.InTransaction));
 
-
-//    FOraConnect.TransactIsolationLevel := tiReadUncommitted;
-
-  {
-FOraQuery.Close;
-FOraQuery.SQL.Clear;
-FOraQuery.SQL.Add('select * from crop');
-FOraQuery.SQL.Add('WHERE rownum = 1');
-FOraQuery.SQL.Add('order by id_asutp desc');
-FOraQuery.Open;
-   }
-lLog.save('i', 'id_asutp | '+FOraQuery.FieldByName('id_asutp').AsString);
+//    FOraConnect.ExecuteDirect('SET TRANSACTION ISOLATION LEVEL READ COMMITTED ; ');
 
     FOraQuery.Close;
     FOraQuery.SQL.Clear;
@@ -250,7 +239,31 @@ lLog.save('i', 'id_asutp | '+FOraQuery.FieldByName('id_asutp').AsString);
     FOraQuery.SQL.Add('(id_asutp, weight_bloom, date_weight_bloom)');
     FOraQuery.SQL.Add('VALUES ('+IdIn+', '+PointReplace(WeightIn)+',');
     FOraQuery.SQL.Add('TO_DATE('''+TimestampIn+''', ''yyyy-mm-dd hh24:mi:ss''))');
+
+{    FOraQuery.SQL.Text := 'SET TRANSACTION ISOLATION LEVEL READ COMMITTED ; '+
+                          'INSERT INTO crop '+
+                          '(id_asutp, weight_bloom, date_weight_bloom) '+
+                          'VALUES ('+IdIn+', '+PointReplace(WeightIn)+', '+
+                          'TO_DATE('''+TimestampIn+''', ''yyyy-mm-dd hh24:mi:ss'')) ; '+
+                          'COMMIT ; ';}
+
+//FOraQuery.SQL.Text := 'select * from dual;';
+
+try
+//    FOraConnect.ExecuteDirect('ROLLBACK;');
+//  FOraConnect.StartTransaction;
+//    FOraConnect.ExecuteDirect('SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;');
+    FOraConnect.ExecuteDirect('SET TRANSACTION ISOLATION LEVEL READ COMMITTED;');
+{    FOraQuery.ExecSQL;
+    FOraConnect.Commit;}
+
     FOraQuery.ExecSQL;
+//    FOraConnect.Commit;
+    FOraConnect.ExecuteDirect('COMMIT ; ');
+finally
+//    FOraConnect.ExecuteDirect('ROLLBACK;');
+//   FOraConnect.ExecuteDirect('COMMIT;');
+end;
 
   {$IFDEF DEBUG}
     Log.save('d', 'OraQuery insert | '+FOraQuery.SQL.Text);
@@ -266,10 +279,11 @@ lLog.save('i', 'id_asutp | '+FOraQuery.FieldByName('id_asutp').AsString);
 {$IFDEF DEBUG}
   Log.save('d', 'position | '+inttostr(err_oci_no_data));
 {$ENDIF}
-  end;
+
   if error and (err_oci_no_data = 0) then
   begin
     try
+
         FOraQuery.Close;
         FOraQuery.SQL.Clear;
         FOraQuery.SQL.Add('update crop');
@@ -277,9 +291,18 @@ lLog.save('i', 'id_asutp | '+FOraQuery.FieldByName('id_asutp').AsString);
         FOraQuery.SQL.Add('date_weight_bloom = TO_DATE('''+TimestampIn+''',');
         FOraQuery.SQL.Add('''yyyy-mm-dd hh24:mi:ss'')');
         FOraQuery.SQL.Add('where id_asutp = '+IdIn+'');
-        FOraQuery.ExecSQL;
-//        FOraConnect.Commit;
 
+
+try
+//    FOraConnect.StartTransaction;
+//    FOraConnect.ExecuteDirect('SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;');
+    FOraConnect.ExecuteDirect('SET TRANSACTION ISOLATION LEVEL READ COMMITTED;');
+    FOraQuery.ExecSQL;
+//    FOraConnect.Commit;
+    FOraConnect.ExecuteDirect('COMMIT;');
+except
+//    FOraConnect.ExecuteDirect('ROLLBACK;');
+end;
         error := false;
   {$IFDEF DEBUG}
     Log.save('d', 'OraQuery update | '+OraQuery.SQL.Text);
@@ -305,7 +328,8 @@ begin
 
       //отключаем управление
 //      form1.DBGrid2.DataSource.DataSet.DisableControls;
-//      MainSqlite.SQuery.DisableControls;
+{      MainSqlite.SQuery.DisableControls;
+      MainSqlite.SQuery.Active:=false;}
       try
           MainSqlite.SQuery.Close;
           MainSqlite.SQuery.SQL.Clear;
@@ -330,7 +354,8 @@ begin
     finally
       //включаем управление
 //      form1.DBGrid2.DataSource.DataSet.EnableControls;
-//      MainSqlite.SQuery.EnableControls;
+{      MainSqlite.SQuery.Active:=true;
+      MainSqlite.SQuery.EnableControls;}
     end;
 end;
 //-- end main

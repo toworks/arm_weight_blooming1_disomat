@@ -95,7 +95,7 @@ begin
       if NOW > FutureDate then
       begin
         FutureDate := Now + 4 / (24 * 60); //+4 minutes
-//        MouseMoved;//двигаем мышку
+        MouseMoved;//двигаем мышку
       end;
   {$IFDEF DEBUG}
     lLog.save('d', 'NOW -> '+datetimetostr(now));
@@ -143,7 +143,6 @@ begin
         //обновление отображение записанных данных ViewDbWeight;
         Synchronize(@SyncSqlReadTable);
 
-        lLog.save('d', 'count -> '+inttostr(count));
   {$IFDEF DEBUG}
     lLog.save('d', 'count -> '+inttostr(count));
     lLog.save('d', 'SqlMax -> '+inttostr(SqlMax));

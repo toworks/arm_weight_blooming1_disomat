@@ -73,7 +73,6 @@ begin
    begin
 
       try
-          Synchronize(@SyncSqlMax);
           SqlNewRecord;
       except
         on E : Exception do
@@ -194,8 +193,6 @@ begin
 //     if Fpkdat_in <> '' then
         NextWeightToRecordLocation;
 end;
-
-
 
 
 // При загрузке программы класс будет создаваться

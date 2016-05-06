@@ -8,7 +8,6 @@ uses
    {$ifdef windows} Windows, Forms, {$endif} logging, sql;
 
 type
-  //Здесь необходимо описать класс TThreadSql:
   TThreadSqlSend = class(TThread)
   private
     FThreadSqlSend: TThreadSqlSend;
@@ -31,6 +30,7 @@ var
   FOraQuery: TZQuery;
   TSSsqlite: TSqlite;
   FSendCount: Int64;
+
 
 //  {$DEFINE DEBUG}
 
@@ -58,7 +58,7 @@ begin
   // создаем поток True - создание остановка, False - создание старт
   FThreadSqlSend := TThreadSqlSend.Create(True);
   FThreadSqlSend.Priority := tpNormal;
-  FThreadSqlSend.FreeOnTerminate := True;
+  FThreadSqlSend.FreeOnTerminate := False; //True;
   FThreadSqlSend.Start;
 end;
 
@@ -115,7 +115,14 @@ begin
   CoInitialize(nil);
   while True do
    begin
-
+      lLog.save('t', 'TThreadSqlSend main');
+      lLog.save('t', 'ThreadStop | '+booltostr(ThreadStop));
+      if ThreadSqlRead <> nil then
+         lLog.save('t', 'ThreadSqlRead | '+booltostr(ThreadSqlRead.Finished));
+      if ThreadSqlSend <> nil then
+         lLog.save('t', 'ThreadSqlSend | '+booltostr(ThreadSqlSend.Finished));
+      if ThreadComPort <> nil then
+         lLog.save('t', 'ThreadComPort | '+booltostr(ThreadComPort.Finished));
       // при выбор заготовки останавливаем чтение
       if not ThreadStop then begin
           try
@@ -255,6 +262,7 @@ begin
   if error and (err_oci_no_data = 0) then
   begin
     try
+
         FOraQuery.Close;
         FOraQuery.SQL.Clear;
         FOraQuery.SQL.Add('update crop');
@@ -266,7 +274,7 @@ begin
 
         error := false;
   {$IFDEF DEBUG}
-    Log.save('d', 'OraQuery update | '+OraQuery.SQL.Text);
+    Log.save('d', 'OraQuery update | '+FOraQuery.SQL.Text);
   {$ENDIF}
     except
       on E : Exception do begin

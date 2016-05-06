@@ -15,7 +15,7 @@ type
 
     procedure SyncSqlReadTable;
     procedure SqlNewRecord;
-    procedure SyncNextWeightToRecord;
+//    procedure SyncNextWeightToRecord;
 //    procedure SyncNextWeightToRecordLocation;
   protected
     procedure Execute; override;
@@ -140,7 +140,7 @@ begin
     begin
         FSqlMax := count;
         //обновление отображение записанных данных ViewDbWeight;
-        Synchronize(@SyncSqlReadTable);
+//        Synchronize(@SyncSqlReadTable);
 
 {        //dbgrid текущая выбраная заготовка
         if Fpkdat_in <> '' then

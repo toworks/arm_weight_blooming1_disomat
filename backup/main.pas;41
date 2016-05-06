@@ -7,13 +7,14 @@ interface
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, DBGrids,
   ExtCtrls, StdCtrls, Menus, db, Windows, Grids, PopupNotifier, Variants,
-  logging, sql, thread_sql_read, thread_sql_send, thread_comport;
+  UniqueInstance, logging, sql, thread_sql_read, thread_sql_send, thread_comport;
 
 type
 
   { TForm1 }
 
   TForm1 = class(TForm)
+    UniqueInstanceApp: TUniqueInstance;
     DBGrid1: TDBGrid;
     DBGrid2: TDBGrid;
     gb_data_pu1: TGroupBox;
@@ -39,6 +40,9 @@ type
     procedure FormCreate(Sender: TObject);
     function CreateMenu: boolean;
     procedure ActionMenuItemClick(Sender: TObject);
+    function OneInstance: boolean;
+    procedure UniqueInstanceAppOtherInstance(Sender: TObject;
+      ParamCount: Integer; Parameters: array of String);
   private
     procedure DBgrid1Create(Sender: TObject);
     procedure DBgrid2Create(Sender: TObject);
@@ -250,6 +254,9 @@ end;
 
 procedure TForm1.FormCreate(Sender: TObject);
 begin
+  //проверка 1 экземпляр программы
+  OneInstance;
+
   Log.save('i', 'start '+Log.ProgFileName);
 
   MainSqlite := TSqlite.Create(Log);
@@ -281,6 +288,31 @@ begin
   ViewClear;
 
   CreateMenu;
+end;
+
+
+function TForm1.OneInstance: boolean;
+begin
+  //проверка 1 экземпляр программы
+  UniqueInstanceApp := TUniqueInstance.Create(Self);
+  with UniqueInstanceApp do
+    begin
+      Identifier := 'uSOvRn8tcCo5dkerIp2Eg6F65X5tOVQ8R1tBnbRvm4X8gavyJe';//ID program
+      UpdateInterval := 800;
+      OnOtherInstance := @UniqueInstanceAppOtherInstance;
+      Enabled := True;
+      Loaded;
+    end;
+end;
+
+
+procedure TForm1.UniqueInstanceAppOtherInstance(Sender: TObject;
+  ParamCount: Integer; Parameters: array of String);
+begin
+  //hack to force app bring to front
+  FormStyle := fsSystemStayOnTop;
+  FormStyle := fsNormal;
+  Show;
 end;
 
 

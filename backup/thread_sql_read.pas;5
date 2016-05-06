@@ -140,17 +140,17 @@ begin
     Fsql.FQuery.SQL.Add('rows 1');
     Fsql.FQuery.Open;
 
-    count := Fsql.FQuery.FieldByName('c').AsString;
+    NextSqlRecord := Fsql.FQuery.FieldByName('c').AsString;
 
-lLog.save('d', 'do sqlmax count | '+inttostr(count)+' | FNextSqlRecord | '+inttostr(FNextSqlRecord)+' | sum | '+c);
+lLog.save('d', 'do NextSqlRecord | '+NextSqlRecord+' | FLastSqlRecord | '+FLastSqlRecord);
 
-    if (FNextSqlRecord <> count) then
+    if (FLastSqlRecord <> NextSqlRecord) then
     begin
-        FNextSqlRecord := count;
+        FLastSqlRecord := NextSqlRecord;
 
         //обновление отображение записанных данных ViewDbWeight;
         Synchronize(@SyncSqlReadTable);
-lLog.save('d', 'count -> '+inttostr(count));
+lLog.save('d', 'count -> '+NextSqlRecord);
   {$IFDEF DEBUG}
     lLog.save('d', 'count -> '+inttostr(count));
     lLog.save('d', 'SqlMax -> '+inttostr(SqlMax));

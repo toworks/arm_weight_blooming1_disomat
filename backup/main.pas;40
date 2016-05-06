@@ -7,13 +7,14 @@ interface
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, DBGrids,
   ExtCtrls, StdCtrls, Menus, db, Windows, Grids, PopupNotifier, Variants,
-  logging, sql, thread_sql_read, thread_sql_send, thread_comport;
+  UniqueInstance, logging, sql, thread_sql_read, thread_sql_send, thread_comport;
 
 type
 
   { TForm1 }
 
   TForm1 = class(TForm)
+    UniqueInstanceApp: TUniqueInstance;
     DBGrid1: TDBGrid;
     DBGrid2: TDBGrid;
     gb_data_pu1: TGroupBox;
@@ -253,6 +254,9 @@ end;
 
 procedure TForm1.FormCreate(Sender: TObject);
 begin
+  //проверка 1 экземпляр программы
+  OneInstance;
+
   Log.save('i', 'start '+Log.ProgFileName);
 
   MainSqlite := TSqlite.Create(Log);
@@ -266,12 +270,15 @@ begin
   //отображение в dbgrid
   FDataSource := TDataSource.Create(nil);
   DBgrid1Create(self);
-  FDataSource.DataSet := MainFSql.FQuery;
-  DBGrid1.DataSource := FDataSource;
+{  FDataSource.DataSet := MainFSql.FQuery;
+  DBGrid1.DataSource := FDataSource;}
 
   ThreadSqlRead := TThreadSqlRead.Create(Log);
   ThreadSqlSend := TThreadSqlSend.Create(Log);
   ThreadComPort := TThreadComPort.Create(Log);
+
+FDataSource.DataSet := MainFSql.FQuery;
+DBGrid1.DataSource := FDataSource;}
 
   Form1.Caption := SettingsApp.HeadName+'  build('+SettingsApp.GetVersion+')';
   //заголовки к showmessage
@@ -293,7 +300,7 @@ begin
   UniqueInstanceApp := TUniqueInstance.Create(Self);
   with UniqueInstanceApp do
     begin
-      Identifier := '47tu4C6a1yKP6NNWsvEEmzEvbD14L7OhzabAG21kqwVOo3FH2y';//ID program
+      Identifier := 'uSOvRn8tcCo5dkerIp2Eg6F65X5tOVQ8R1tBnbRvm4X8gavyJe';//ID program
       UpdateInterval := 800;
       OnOtherInstance := @UniqueInstanceAppOtherInstance;
       Enabled := True;
@@ -306,9 +313,9 @@ procedure TForm1.UniqueInstanceAppOtherInstance(Sender: TObject;
   ParamCount: Integer; Parameters: array of String);
 begin
   //hack to force app bring to front
-{  FormStyle := fsSystemStayOnTop;
-  FormStyle := fsNormal;}
-  ShowForm(Self);
+  FormStyle := fsSystemStayOnTop;
+  FormStyle := fsNormal;
+  Show;
 end;
 
 

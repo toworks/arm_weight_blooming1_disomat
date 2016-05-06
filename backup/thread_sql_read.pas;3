@@ -47,7 +47,7 @@ begin
 
   lLog := _Log;
   Fsql := TFsql.Create(lLog);
-  FSqlMax := 0;
+  FLastSqlRecord := '';
 
   // создаем поток True - создание остановка, False - создание старт
   FThreadSqlRead := TThreadSqlRead.Create(True);

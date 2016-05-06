@@ -295,7 +295,7 @@ begin
       end;
   except
     on E : Exception do
-      Log.save('e', E.ClassName+' sql 4, с сообщением: '+E.Message);
+      Log.save('e', E.ClassName+' sql set pkdat | num | num_ingot, с сообщением: '+E.Message);
   end;
   FreeAndNil(_FSql);
 end;

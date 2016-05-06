@@ -4,11 +4,10 @@ unit thread_sql_send;
 interface
 
 uses
-  SysUtils, Classes, DB, ActiveX, ZConnection, ZDataset, ZDbcIntfs,
+  SysUtils, Classes, DB, ActiveX, ZConnection, ZDataset, ZDbcIntfs, ZSQLProcessor,
    {$ifdef windows} Windows, Forms, {$endif} logging, sql;
 
 type
-  //Здесь необходимо описать класс TThreadSql:
   TThreadSqlSend = class(TThread)
   private
     FThreadSqlSend: TThreadSqlSend;
@@ -29,8 +28,10 @@ var
   lLog: TLog;
   FOraConnect: TZConnection;
   FOraQuery: TZQuery;
+  FOraProcessor: TZSQLProcessor;
   TSSsqlite: TSqlite;
   FSendCount: Int64;
+
 
 //  {$DEFINE DEBUG}
 
@@ -58,7 +59,7 @@ begin
   // создаем поток True - создание остановка, False - создание старт
   FThreadSqlSend := TThreadSqlSend.Create(True);
   FThreadSqlSend.Priority := tpNormal;
-  FThreadSqlSend.FreeOnTerminate := True;
+  FThreadSqlSend.FreeOnTerminate := False; //True;
   FThreadSqlSend.Start;
 end;
 
@@ -83,6 +84,7 @@ begin
       try
         FOraConnect := TZConnection.Create(nil);
         FOraQuery := TZQuery.Create(nil);
+        FOraProcessor := TZSQLProcessor.Create(nil);
         ConnectString:='(DESCRIPTION = (ADDRESS_LIST = (ADDRESS = (PROTOCOL = TCP)(HOST = '
                 +OraSqlSettings.ip+')(PORT = '+'1521'
                 +'))) (CONNECT_DATA = (SERVICE_NAME = '+
@@ -93,8 +95,10 @@ begin
         FOraConnect.User := OraSqlSettings.user;
         FOraConnect.Password := OraSqlSettings.password;
         FOraConnect.ClientCodepage := 'CL8MSWIN1251';
+        FOraConnect.AutoCommit := True;
         FOraConnect.Connect;
         FOraQuery.Connection := FOraConnect;
+        FOraProcessor.Connection := FOraConnect;
       except
         on E: Exception do begin
           lLog.save('e', E.ClassName+', с сообщением: '+E.Message);
@@ -115,7 +119,7 @@ begin
   CoInitialize(nil);
   while True do
    begin
-
+      lLog.save('t', 'TThreadSqlSend main ');
       // при выбор заготовки останавливаем чтение
       if not ThreadStop then begin
           try
@@ -123,7 +127,7 @@ begin
               SyncViewLocal;
           except
             on E : Exception do
-              lLog.save('e', E.ClassName+'3, с сообщением: '+E.Message);
+              lLog.save('e', E.ClassName+' TThreadSqlSend, с сообщением: '+E.Message);
           end;
       end;
 
@@ -148,7 +152,7 @@ begin
       TSSsqlite.SQuery.SQL.Add('FROM weight');
       TSSsqlite.SQuery.SQL.Add('where transferred=0');
       TSSsqlite.SQuery.SQL.Add('and timestamp > strftime(''%s'', ''now'') - (86400*3)'); //за 3 дня от текущей даты
-      TSSsqlite.SQuery.SQL.Add('order by id asc limit 10'); //порциями по 10 шт
+      TSSsqlite.SQuery.SQL.Add('order by id asc limit 100'); //порциями по 100 шт
       TSSsqlite.SQuery.Open;
    except
     on E : Exception do
@@ -221,46 +225,101 @@ function TThreadSqlSend.SqlSaveToOracle(IdIn, WeightIn, TimestampIn: AnsiString)
 var
   error: boolean;
   err_oci_no_data: integer;
+  str: TStringList;
 begin
-  { при режиме debug не обрабатывается try и при вызове ExecSQL ломает поток }
+
+  str := TStringList.Create;
+
+  { если небыло commit из любого места ExecSQL ломает поток
+    и не обрабатывается try и при вызове ExecSQL ломает поток }
   try
     //была ошибака: EZSQLException, с сообщением: SQL Error: OCI_NO_DATA
     if not FOraConnect.Ping then
       FOraConnect.Reconnect;
 
-    FOraQuery.Close;
+    str.Clear;
+    str.Text:='SET TRANSACTION ISOLATION LEVEL SERIALIZABLE; '+
+                        'INSERT INTO crop '+
+                        '(id_asutp, weight_bloom, date_weight_bloom) '+
+                        'VALUES ('+IdIn+', '+PointReplace(WeightIn)+', '+
+                        'TO_DATE('''+TimestampIn+''', ''yyyy-mm-dd hh24:mi:ss'')) '+
+                        'COMMIT; ';
+
+    FOraProcessor.Clear;
+    FOraProcessor.Script := str;
+
+{    FOraQuery.Close;
     FOraQuery.SQL.Clear;
     FOraQuery.SQL.Add('INSERT INTO crop');
     FOraQuery.SQL.Add('(id_asutp, weight_bloom, date_weight_bloom)');
     FOraQuery.SQL.Add('VALUES ('+IdIn+', '+PointReplace(WeightIn)+',');
-    FOraQuery.SQL.Add('TO_DATE('''+TimestampIn+''', ''yyyy-mm-dd hh24:mi:ss''))');
+    FOraQuery.SQL.Add('TO_DATE('''+TimestampIn+''', ''yyyy-mm-dd hh24:mi:ss'')) ;');}
+try
+       FOraProcessor.Execute;
+//    FOraConnect.ExecuteDirect('ROLLBACK;');
+ // FOraConnect.StartTransaction;
+{    FOraConnect.ExecuteDirect('SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;');
     FOraQuery.ExecSQL;
+    FOraConnect.Commit;}
+//    FOraConnect.ExecuteDirect('COMMIT;');
+Finally
+end;
+
   {$IFDEF DEBUG}
     Log.save('d', 'OraQuery insert | '+FOraQuery.SQL.Text);
   {$ENDIF}
      error := false;
-  except
-    on E : Exception do begin
-      error := true;
-      err_oci_no_data := AnsiPos('OCI_NO_DATA', E.Message);
-      lLog.save('e', E.ClassName+' sql save to oracle, с сообщением: '+E.Message+' | '+FOraQuery.SQL.Text);
+    except
+      on E : Exception do begin
+        error := true;
+        err_oci_no_data := AnsiPos('OCI_NO_DATA', E.Message);
+        lLog.save('e', E.ClassName+' sql save to oracle, с сообщением: '+E.Message+' | '+FOraQuery.SQL.Text);
     end;
   end;
 {$IFDEF DEBUG}
   Log.save('d', 'position | '+inttostr(err_oci_no_data));
 {$ENDIF}
+
   if error and (err_oci_no_data = 0) then
   begin
     try
-        FOraQuery.Close;
-        FOraQuery.SQL.Clear;
+
+{        FOraQuery.Close;
+        FOraQuery.SQL.Clear;}
+        {FOraQuery.SQL.Add('SET TRANSACTION ISOLATION LEVEL SERIALIZABLE; ');
         FOraQuery.SQL.Add('update crop');
         FOraQuery.SQL.Add('set weight_bloom = '+PointReplace(WeightIn)+',');
         FOraQuery.SQL.Add('date_weight_bloom = TO_DATE('''+TimestampIn+''',');
         FOraQuery.SQL.Add('''yyyy-mm-dd hh24:mi:ss'')');
-        FOraQuery.SQL.Add('where id_asutp = '+IdIn+'');
-        FOraQuery.ExecSQL;
+        FOraQuery.SQL.Add('where id_asutp = '+IdIn+' ; ');
+        FOraQuery.SQL.Add('COMMIT; ');}
 
+
+{        FOraQuery.Close;
+        FOraQuery.SQL.Clear;
+        FOraQuery.SQL.Add('select * from dual');}
+
+        str.Clear;
+        str.Text:='SET TRANSACTION ISOLATION LEVEL SERIALIZABLE; '+
+                            'update crop '+
+                            'set weight_bloom = '+PointReplace(WeightIn)+', '+
+                            'date_weight_bloom = TO_DATE('''+TimestampIn+''', '+
+                            '''yyyy-mm-dd hh24:mi:ss'') '+
+                            'where id_asutp = '+IdIn+' ; '+
+                            'COMMIT; ';
+
+        FOraProcessor.Clear;
+        FOraProcessor.Script := str;
+
+try
+     FOraProcessor.Execute;
+//    FOraConnect.StartTransaction;
+//    FOraConnect.ExecuteDirect('SET TRANSACTION ISOLATION LEVEL SERIALIZABLE ');
+//    FOraQuery.ExecSQL;
+//    FOraConnect.Commit;
+//    FOraConnect.ExecuteDirect('COMMIT;');
+Finally
+end;
         error := false;
   {$IFDEF DEBUG}
     Log.save('d', 'OraQuery update | '+OraQuery.SQL.Text);
@@ -286,8 +345,8 @@ begin
 
       //отключаем управление
 //      form1.DBGrid2.DataSource.DataSet.DisableControls;
-      MainSqlite.SQuery.Active := true;
-      MainSqlite.SQuery.DisableControls;
+{      MainSqlite.SQuery.DisableControls;
+      MainSqlite.SQuery.Active:=false;}
       try
           MainSqlite.SQuery.Close;
           MainSqlite.SQuery.SQL.Clear;
@@ -312,7 +371,8 @@ begin
     finally
       //включаем управление
 //      form1.DBGrid2.DataSource.DataSet.EnableControls;
-      MainSqlite.SQuery.EnableControls;
+{      MainSqlite.SQuery.Active:=true;
+      MainSqlite.SQuery.EnableControls;}
     end;
 end;
 //-- end main

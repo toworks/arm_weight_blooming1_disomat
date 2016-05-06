@@ -55,6 +55,7 @@ var
   SDataSource: TDataSource;
   MainFSql: TFsql;
   FDataSource: TDataSource;
+  ThreadStop: boolean = false;
 
   function ViewSelectedIngot: boolean;
   function PointReplace(DataIn: string): string;
@@ -77,8 +78,6 @@ uses
 procedure TForm1.FormCloseQuery(Sender: TObject; var CanClose: boolean);
 begin
   try
-      Log.save('i', 'close '+Log.ProgFileName);
-
       if assigned(ThreadComPort) then
         ThreadComPort.Terminate;
       if assigned(ThreadSqlRead) then
@@ -95,6 +94,7 @@ begin
       if assigned(FDataSource) then
         FDataSource.Destroy;
   finally
+    Log.save('i', 'close '+Log.ProgFileName);
     // закрываем приложение
     {$ifdef unix}
       FpKill(FpGetpid, 9);
@@ -109,17 +109,20 @@ end;
 procedure TForm1.DBGrid1DblClick(Sender: TObject);
 begin
   // маркер следующей заготовки
-  if not MarkerNextWait then begin
+//  if not MarkerNextWait then begin
     try
+        ThreadStop := true;// останавливаем потоки
         //отключаем управление
         form1.DBGrid1.DataSource.DataSet.DisableControls;
         if MessageDlg('Выбрать заготовку для взвешивания?', mtCustom, mbYesNo, 0) = mrYes then
           ViewSelectedIngot;
+        ThreadStop := false;// запускаем потоки
+        MarkerNextWait := false;// сбрасываем маркер следующей заготовки при выборе новой
     finally
         //включаем управление
         form1.DBGrid1.DataSource.DataSet.EnableControls;
     end;
-  end;
+//  end;
 end;
 
 
@@ -263,10 +266,8 @@ begin
   FDataSource.DataSet := MainFSql.FQuery;
   DBGrid1.DataSource := FDataSource;
 
-  ThreadStop := false;
-
-  ThreadSqlRead := TThreadSqlRead.Create(Log);
-  ThreadSqlSend := TThreadSqlSend.Create(Log);
+//  ThreadSqlRead := TThreadSqlRead.Create(Log);
+//  ThreadSqlSend := TThreadSqlSend.Create(Log);
   ThreadComPort := TThreadComPort.Create(Log);
 
   Form1.Caption := SettingsApp.HeadName+'  build('+SettingsApp.GetVersion+')';
@@ -389,7 +390,6 @@ begin
   num_ingot := Form1.DBGrid1.DataSource.DataSet.FieldByName('NUM_INGOT').AsString;
   num_heat := Form1.DBGrid1.DataSource.DataSet.FieldByName('NUM_HEAT').AsString;
   smena := Form1.DBGrid1.DataSource.DataSet.FieldByName('SMENA').AsString;
-  showmessage(pkdat+' | '+num+' | '+num_ingot);
 end;
 
 

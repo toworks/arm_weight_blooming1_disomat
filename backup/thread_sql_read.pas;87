@@ -158,8 +158,8 @@ begin
   end;
 
   // маркер следующей заготовки
-//  if MarkerNextWait then
-//    Synchronize(@NextWeightToRecord); //следующая запись (слиток) от записаной
+  if not MarkerNextWait then
+    Synchronize(@NextWeightToRecord); //следующая запись (слиток) от записаной
 end;
 
 
@@ -187,14 +187,12 @@ begin
 end;
 
 
-procedure TThreadSqlRead.SyncNextWeightToRecord;
+{procedure TThreadSqlRead.SyncNextWeightToRecord;
 begin
      //dbgrid текущая выбраная заготовка
-//     if Fpkdat_in <> '' then
+     if Fpkdat_in <> '' then
         NextWeightToRecordLocation;
-end;
-
-
+end;}
 
 
 // При загрузке программы класс будет создаваться

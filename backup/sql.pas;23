@@ -201,8 +201,6 @@ begin
       Log.save('e', E.ClassName+' sql create _FSql, с сообщением: '+E.Message);
   end;
 
-  i:=0;
-
   if ( pkdat = '') then
      exit;
 
@@ -266,6 +264,8 @@ begin
       Log.save('e', E.ClassName+' sql 3, с сообщением: '+E.Message);
   end;
 
+  i:=0;
+
   try
       while not MainFSql.FQuery.Eof do
       begin
@@ -280,10 +280,6 @@ begin
           name := _FSql.FQuery.FieldByName('name').AsString;
           weight_ingot := _FSql.FQuery.FieldByName('weight_ingot').AsString;
           smena := _FSql.FQuery.FieldByName('smena').AsString;
-
-          ThreadComPort.Apkdat := pkdat.;
-          ThreadComPort.Anum := num;
-          ThreadComPort.Anum_ingot := num_ingot;
 
           Form1.l_number_ingot.Caption := num_ingot;
           Form1.l_datetime.Caption := time_ingot;

@@ -82,7 +82,7 @@ begin
         end;
       end;
 
-      sleep(5000);
+      sleep(1000);
 
    end;
    CoUninitialize;
@@ -181,6 +181,9 @@ begin
   //исправляем отображение даты в DBGrid
   TDateTimeField(MainFSql.FQuery.FieldByName('time_ingot')).DisplayFormat:='hh:nn:ss';
   TDateTimeField(MainFSql.FQuery.FieldByName('weight_ingot')).DisplayFormat:='#,###0.000';
+
+  // возвращаем курсор на данные
+  NextWeightToRecordLocation;
 end;
 
 

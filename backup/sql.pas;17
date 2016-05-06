@@ -20,7 +20,6 @@ type
   private
     FSQuery: TZQuery;
     FSConnect: TZConnection;
-    FSTransaction: TSQLTransaction;
     Log: TLog;
     function ConfigSettings(InData: boolean): boolean;
     function SqlJournalMode: boolean;
@@ -29,7 +28,6 @@ type
     Destructor Destroy; override;
     property SConnect: TZConnection read FSConnect write FSConnect;
     property SQuery: TZQuery read FSQuery write FSQuery;
-    property STransaction: TSQLTransaction read FSTransaction write FSTransaction;
   end;
 
 
@@ -255,11 +253,7 @@ begin
       begin
 //          form1.l_n_message.Visible := false;
           MarkerNextWait := false;
-          form1.l_weight_ingot.Visible := true;
-          form1.l_grade.Visible := true;
-          form1.l_heat.Visible := true;
-          form1.l_datetime.Visible := true;
-          form1.l_number_ingot.Visible := true;
+          EnableViewSelectedIngotж
       end;
   except
     on E : Exception do

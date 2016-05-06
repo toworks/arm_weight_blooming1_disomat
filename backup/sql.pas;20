@@ -20,6 +20,7 @@ type
   private
     FSQuery: TZQuery;
     FSConnect: TZConnection;
+    FSTransaction: TSQLTransaction;
     Log: TLog;
     function ConfigSettings(InData: boolean): boolean;
     function SqlJournalMode: boolean;
@@ -28,6 +29,7 @@ type
     Destructor Destroy; override;
     property SConnect: TZConnection read FSConnect write FSConnect;
     property SQuery: TZQuery read FSQuery write FSQuery;
+    property STransaction: TSQLTransaction read FSTransaction write FSTransaction;
   end;
 
 
@@ -267,7 +269,7 @@ begin
   i:=0;
 
   try
-      while not MainFSql.FQuery.Eof do
+      while not _FSql.FQuery.Eof do
       begin
           if i = 1 then
             break;

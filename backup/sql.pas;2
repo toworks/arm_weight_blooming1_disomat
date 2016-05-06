@@ -248,7 +248,7 @@ begin
       else
       begin
 //          form1.l_n_message.Visible := false;
-          MarkerNextWait := false;
+//          MarkerNextWait := false;
 //          ThreadComPort.NextSave := true;
           EnableViewSelectedIngot(true);
       end;

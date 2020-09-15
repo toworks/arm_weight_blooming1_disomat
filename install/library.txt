@@ -1,0 +1,5 @@
+fbclient.dll
+oci.dll
+oraociicus12.dll
+oraons.dll
+sqlite3.dll
